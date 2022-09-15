@@ -252,4 +252,7 @@ function main(L)
     end
 end
 
-main(256)
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    main(128)
+end
