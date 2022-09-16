@@ -1,5 +1,7 @@
 
 using JLD2
+using Distributed
+
 include("burningMan.jl")
 
 function get_name(L, distribution, seed)
@@ -62,21 +64,39 @@ function main(L; distribution = "Uniform", seed::Int64=0, show_progress=true)
     end #file
 end
 
-function worker(seeds::Vector{Int64})
-    for s in seeds
-        main(L; seed=s, show_progress=false)
+function worker(seed::RemoteChannel, progress::RemoteChannel)
+    while true
+        main(L; seed=take!(seed), show_progress=false)
+        put!(progress, true)
     end
+
 end 
 
-const L = 64
-const threads = 3
-const seeds = 1000
-const progress = Progress(seeds)
-const path = "data/"
+L = 64
+threads = 3
+seeds = 1000
+p = Progress(seeds)
+progress_channel = RemoteChannel(()->Channel{Bool}(), 1)
+seed_channel = RemoteChannel(()->Channel{Int64}(), 1)
+path = "data/"
 
-chunk(arr, n) = [arr[i:min(i + n - 1, end)] for i in 1:n:length(arr)]
 
 println(Threads.nthreads())
-for seeds in chunk(1:seeds, threads)
-    Threads.@spawn main(L; seed=seeds, show_progress=true)
+    
+for _ in 1:threads
+    Threads.@spawn worker(seed_channel, progress_channel)
+end
+
+@sync begin
+
+    println("Start")
+    @async for s in 1:seeds
+        println("seed")
+        put!(seed_channel, s)
+    end
+
+    @async while take!(progress_channel)
+        println("ok")
+        next!(p)
+    end
 end
