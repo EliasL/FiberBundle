@@ -1,22 +1,24 @@
-
-using JLD2, CodecBzip2
+using ProgressMeter
 using Distributed
 
-include("burningMan.jl")
+@everywhere using JLD2, CodecBzip2
 
-function get_name(L, distribution, seed::Int64)
+
+@everywhere include("burningMan.jl")
+
+
+@everywhere function get_name(L, distribution, seed::Int64)
     #return path*distribution*", size $L x $L, seed: $seed.jld"
     return path*distribution*", size $L x $L, seed $seed.jld"
 end
 
-function save_step(file, step, x, σ, status)
+@everywhere function save_step(file, step, x, σ, status)
     file["x/$step"] = copy(x)
     file["σ/$step"] = copy(σ)
     file["status/$step"] = copy(status)
 end
 
-function main(L; distribution = "Uniform", seed=0, show_progress=true)
-
+@everywhere function main(L; distribution = "Uniform", seed=0, show_progress=true)
     # First check if we have already run this simulation
     name = get_name(L, distribution, seed)
     if !isdir(path)
@@ -30,6 +32,7 @@ function main(L; distribution = "Uniform", seed=0, show_progress=true)
     # We will continously be writing to our file in order to save RAM
     # use false or Bzip2Compressor(). This saves 35% space but increases runtime by 700%
     # so don't use it
+    
     jldopen(name, "w"; compress=false) do file
         N = L*L # Number of fibers
         Random.seed!(seed)
@@ -65,40 +68,27 @@ function main(L; distribution = "Uniform", seed=0, show_progress=true)
         file["cluster_outline_length"] = cluster_outline_length
     end #file
 end
-
-function worker(seed::RemoteChannel, progress::RemoteChannel)
-    while true
-        seed_int = take!(seed)
-        main(L; seed=seed_int, show_progress=true)
-        put!(progress, seed_int)
-    end
-end 
-
-L = 64
+@everywhere path = "data/"
+n_steps = 20
+p = Progress(n_steps)
+channel = RemoteChannel(()->Channel{Bool}(), 1)
 threads = Threads.nthreads()#Int(ceil(Threads.nthreads()/2))
-seeds = 8
-p = Progress(seeds)
-progress_channel = RemoteChannel(()->Channel{Int64}(), 1)
-seed_channel = RemoteChannel(()->Channel{Int64}(), 1)
-path = "data/"
+addprocs(threads-1)
+println("Threads: $threads")
 
-println("Startign $threads threads...")
-for _ in 1:threads
-    Threads.@spawn worker(seed_channel, progress_channel)
-end
-
-
-println("Usings seeds 1 to $seeds.")
-@sync begin
-    @async for s in 1:seeds
-        put!(seed_channel, s)
+@sync begin # start two tasks which will be synced in the very end
+    # the first task updates the progress bar
+    @async while take!(channel)
+        next!(p)
     end
 
-    @async while true
-        s = take!(progress_channel)
-        next!(p)
-        if s == seeds
-            break
+    # the second task does the computation
+    @async begin
+        @distributed (+) for i in 1:n_steps
+            main(15, seed=i, show_progress=false)
+            put!(channel, true) # trigger a progress bar update
+            i^2
         end
+        put!(channel, false) # this tells the printing task to finish
     end
 end
