@@ -113,9 +113,9 @@ end
 
 function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     adjacent::Array{Int64, 2},
-    cluster_size::SparseVector{Int64},
-    cluster_outline::SparseVector{Int64},
-    cluster_outline_length::SparseVector{Int64},
+    cluster_size::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64})
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
@@ -140,14 +140,15 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length)
         end
     end
+    return c
 end
 
 function explore_cluster_at(i::Int64, c::Int64,
     status::Vector{Int64},
     adjacent::Array{Int64, 2},
-    cluster_size::SparseVector{Int64},
-    cluster_outline::SparseVector{Int64},
-    cluster_outline_length::SparseVector{Int64},
+    cluster_size::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64})
     # We explore the cluster of broken fibers and
     # map the border of the cluster
@@ -177,9 +178,9 @@ end
 function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
     status::Vector{Int64},
     adjacent::Array{Int64, 2},
-    cluster_size::SparseVector{Int64},
-    cluster_outline::SparseVector{Int64},
-    cluster_outline_length::SparseVector{Int64},
+    cluster_size::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64})
     # Here we check the adjacent fibers of a given fiber
     # We want to see if the neighbours are broken, making them
@@ -220,9 +221,9 @@ end
 function update_cluster_outline_stress(c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
-    cluster_size::SparseVector{Int64},
-    cluster_outline::SparseVector{Int64},
-    cluster_outline_length::SparseVector{Int64})
+    cluster_size::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    cluster_outline_length::Vector{Int64})
 
     for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]

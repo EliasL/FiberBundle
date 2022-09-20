@@ -104,6 +104,7 @@ end
 function test()
     basic_test()
     cluster_test()
+    println("All tests completed!")
 end
 
 test()

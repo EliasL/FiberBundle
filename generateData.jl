@@ -1,102 +1,213 @@
-
-using JLD2
 using Distributed
+using ProgressMeter
+threads = Threads.nthreads()#Int(ceil(Threads.nthreads()/2))
 
-include("burningMan.jl")
-
-function get_name(L, distribution, seed)
-    return path*distribution*", size $L x $L, seed: $seed.jld"
+print("Starting $threads workers... ")
+addprocs(threads)
+println("Done!")
+@everywhere begin
+    using CodecBzip2
+    using JLD2
+    using Pkg
 end
 
-function save_step(file, step, x, σ, status, cluster_size, cluster_outline, cluster_outline_length)
-    group = JLD2.Group(file, "$step")
-    group["x"] = x
-    group["σ"] = σ
-    group["status"] = status
-    group["cluster_size"] = cluster_size
-    group["cluster_outline"] = cluster_outline
-    group["cluster_outline_length"] = cluster_outline_length
-end
 
-function main(L; distribution = "Uniform", seed::Int64=0, show_progress=true)
+@everywhere include("burningMan.jl")
 
-    # First check if we have already run this simulation
-    name = get_name(L, distribution, seed[])
-    if isfile(name) && false
-        println("\nFound $name")
-        return
+
+@everywhere function get_name(L, distribution, path, seed=-1)
+    if seed == -1
+        return path*distribution*"$L.jld2"
+    else
+        return path*distribution*"$L,$seed.jld2"
     end
-
-
-    # We will continously be writing to our file in order to save RAM
-    jldopen(name, "w"; compress=false) do file
-
-        N = L*L # Number of fibers
-        Random.seed!(seed)
-        x = rand(Float64, N) # Max extension (Distribution)
-        σ  = ones(Float64, N) # Relative tension
-        adjacent = fillAdjacent(L)
-        status = fill(-1,N)
-        cluster_size = spzeros(Int64, N)
-        cluster_outline = spzeros(Int64, N)
-        cluster_outline_length = spzeros(Int64, N)
-        unexplored = zeros(Int64, N)
-
-        # Do what you want
-        p = Progress(N; enabled=show_progress)
-        for step in 1:N
-
-            i = findNextFiber(σ, x)
-            resetClusters(status, σ)
-            break_fiber(i, status, σ)
-            update_σ(status,σ,adjacent, cluster_size, cluster_outline, cluster_outline_length, unexplored)
-
-            # Save data
-            # We don't want to wait for the pc to write the data, so we copy the data and we make a 
-            # subtask to handle the writing to file. 
-            # Here there is a balance of cores vs ram. If you have loads of ram, just run multiple instances
-            # if you have loads of cores, you can use the spare cores to multithread data saving
-            Threads.@spawn save_step(file, step, map(copy, [x, σ, status, cluster_size, cluster_outline, cluster_outline_length])...)
-
-            next!(p)
-
-        end #step loop
-    end #file
 end
 
-function worker(seed::RemoteChannel, progress::RemoteChannel)
-    while true
-        main(L; seed=take!(seed), show_progress=false)
-        put!(progress, true)
-    end
+@everywhere function break_bundle(L, progress_channel, working_channel, file_name; seed=0)
+    put!(working_channel, true) # trigger a progress bar update
 
-end 
+    N = L*L # Number of fibers
+    Random.seed!(seed)
+    x = rand(Float64, N) # Max extension (Distribution)
+    σ  = ones(Float64, N) # Relative tension
+    adjacent = fillAdjacent(L)
+    status = fill(-1,N)
+    cluster_size = zeros(Int64, N)
+    cluster_outline_length = zeros(Int64, N)
+    cluster_outline = zeros(Int64, N)
+    unexplored = zeros(Int64, N)
 
-L = 64
-threads = 3
-seeds = 1000
-p = Progress(seeds)
-progress_channel = RemoteChannel(()->Channel{Bool}(), 1)
-seed_channel = RemoteChannel(()->Channel{Int64}(), 1)
-path = "data/"
+    # These arrays store one value for each step
+    steps = N
+    most_stressed_fiber = zeros(Int64, steps)
+    nr_clusters = zeros(Int64, steps)
+    largest_cluster = zeros(Int64, steps)
+    largest_perimiter = zeros(Int64, steps)
+
+    # Do what you want
+    for step in 1:N
+
+        # Simulate step
+        i = findNextFiber(σ, x)
+        resetClusters(status, σ)
+        break_fiber(i, status, σ)
+        _nr_clusters = update_σ(status,σ,adjacent, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+
+        # Save important data from step
+        most_stressed_fiber[step] = σ[i]/x[i]
+        nr_clusters[step] = _nr_clusters
+        largest_cluster[step] = maximum(cluster_size)
+        largest_perimiter[step] = maximum(cluster_outline_length)
 
 
-println(Threads.nthreads())
+        put!(progress_channel, true) # trigger a progress bar update
+    end 
     
-for _ in 1:threads
-    Threads.@spawn worker(seed_channel, progress_channel)
+    jldopen(file_name, "w") do file
+        file["most_stressed_fiber"] = most_stressed_fiber./N
+        file["nr_clusters"] = nr_clusters./N
+        file["largest_cluster"] = largest_cluster./N
+        file["largest_perimiter"] = largest_perimiter./N
+    end
+    put!(working_channel, false) # trigger a progress bar update
+
 end
 
-@sync begin
+function run_workers(L, distribution, seeds, path)
+    p = Progress(length(seeds)*L^2)
+    progress = RemoteChannel(()->Channel{Bool}(), 1)
+    working = RemoteChannel(()->Channel{Bool}(), 1)
+    active_workers = Threads.Atomic{Int}(0)
+    completed_runs = Threads.Atomic{Int}(nr_seeds-length(seeds))
 
-    println("Start")
-    @async for s in 1:seeds
-        println("seed")
-        put!(seed_channel, s)
-    end
+    @sync begin # start two tasks which will be synced in the very end
+        # the first task updates the progress bar
+        @async while take!(progress)
+            ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+        end
+        @async while true
+            w = take!(working)
+            if w
+                active_workers[] += 1
+            else 
+                active_workers[] -=1 
+                completed_runs[] += 1
+                if nr_seeds == completed_runs[]
+                    put!(progress, false) # this tells the printing task to finish
+                    break
+                end
+            end
+        end
 
-    @async while take!(progress_channel)
-        println("ok")
-        next!(p)
+        # the second task does the computation
+        @async begin
+            @distributed (+) for i in seeds
+                name = get_name(L, distribution, path, i)
+                break_bundle(L, progress, working, name, seed=i)
+                i^2
+            end
+        end
     end
 end
+
+
+
+function generate_data(path, L, nr_seeds, distribution)
+
+    println("Processing L = $L ...")
+
+    if !isdir(path)
+        println("Creating folder... ")
+        mkdir(path)
+    end
+
+    test_seeds = 1:nr_seeds
+    seeds = collect(1:nr_seeds)
+    found_files = false
+    work_to_do = true
+    print("Checking existing seeds... ")
+
+    name = get_name(L, distribution, path)
+    if isfile(name) && !overwrite
+        jldopen(get_name(L, distribution, path), "r") do file
+            for seed in test_seeds
+                if haskey(file, "nr_clusters/$seed")
+                    if !found_files
+                        println("\nFound existing seeds!")
+                    end
+                    # Write out the file
+                    jldopen(get_name(L, distribution, path, seed), "w") do s_file
+                        for key in ["most_stressed_fiber", "nr_clusters", "largest_cluster", "largest_perimiter"]
+                            s_file[key] = file["$key/$seed"]
+                        end
+                    end
+                    found_files=true
+                    #print("$seed, ")
+                    deleteat!(seeds, findfirst(x->x==seed,seeds))
+                end
+            end
+        end
+    end
+    if found_files
+        println("\u1b[1D\u1b[1D.")
+        if length(seeds) == 0
+            println("All seeds have already been processed")
+            work_to_do = false
+        else
+            #println("Processing seeds: " * join(seeds, ", "))
+        end
+    else
+        println("Done!")
+    end
+
+    if work_to_do
+        println("Running workers...")
+        run_workers(L, distribution, seeds, path)
+        println("Done!")
+    end
+
+    println("Calculate averages ...")
+    keys = ["most_stressed_fiber", "nr_clusters", "largest_cluster", "largest_perimiter"]
+    averages = Dict()
+    for key in keys
+        averages[key] = zeros(L*L)
+    end
+    jldopen(get_name(L, distribution, path), "w") do file
+        for seed in 1:nr_seeds
+            seed_file_name = get_name(L, distribution, path, seed)
+            jldopen(seed_file_name, "r") do s_file
+                for key in keys
+                    averages[key] += s_file[key] ./ nr_seeds
+                    file["$key/$seed"] = s_file[key]
+                end
+            end
+            rm(seed_file_name)
+        end
+        for key in keys
+            file["average_$key"] = averages[key]
+        end
+        file["seeds_used"] = nr_seeds
+    end
+    println("Done!")
+
+end
+
+
+nr_seeds = 500
+distribution = "Uniform"
+overwrite = false
+global_path = "data/"
+if !isdir(global_path)
+    println("Creating folder...")
+    mkdir(global_path)
+end
+mkPath(L) = global_path*distribution*"/"
+
+for L in [256, 32, 64, 128] 
+    generate_data(mkPath(L),L, nr_seeds, distribution)
+end
+
+
+
+println("Removing workers")
+rmprocs(workers())
