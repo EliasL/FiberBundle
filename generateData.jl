@@ -24,25 +24,37 @@ end
 end
 
 @everywhere function break_bundle(L, progress_channel, working_channel, file_name; seed=0)
-    put!(working_channel, true) # trigger a progress bar update
+    put!(working_channel, true) # Indicate a process has started
 
     N = L*L # Number of fibers
     Random.seed!(seed)
     x = rand(Float64, N) # Max extension (Distribution)
+    adjacent = fillAdjacent(L) # recomputed adjacency lookup table
+
+    # These values are reset for each step
     σ  = ones(Float64, N) # Relative tension
-    adjacent = fillAdjacent(L)
     status = fill(-1,N)
     cluster_size = zeros(Int64, N)
     cluster_outline_length = zeros(Int64, N)
+    # These values are reset for each cluster
     cluster_outline = zeros(Int64, N)
     unexplored = zeros(Int64, N)
 
     # These arrays store one value for each step
-    steps = N
+    steps = N # just for readability
     most_stressed_fiber = zeros(Int64, steps)
     nr_clusters = zeros(Int64, steps)
     largest_cluster = zeros(Int64, steps)
     largest_perimiter = zeros(Int64, steps)
+
+    # We want to store some samples of the processed
+    # I'm thinking at 10%, 20%, ... 90% done would work
+    # ie, 9 images
+    division = 10
+    status_storage = zeros(Int64, division-1, N)
+    # If N=100 Steps to store is now [90, 80, ... , 10]
+    steps_to_store = [N/division * (division-i) for i in 1:division-1]
+    next_step_to_store = pop!(steps_to_store)
 
     # Do what you want
     for step in 1:N
@@ -58,6 +70,9 @@ end
         nr_clusters[step] = _nr_clusters
         largest_cluster[step] = maximum(cluster_size)
         largest_perimiter[step] = maximum(cluster_outline_length)
+
+        # Save step for visualization
+        if step == next_step_to_store
 
 
         put!(progress_channel, true) # trigger a progress bar update
