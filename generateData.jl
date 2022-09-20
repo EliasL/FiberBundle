@@ -110,6 +110,13 @@ function run_workers(L, distribution, seeds, path)
     end
 end
 
+L = 64
+threads = 3
+seeds = 1000
+p = Progress(seeds)
+progress_channel = RemoteChannel(()->Channel{Bool}(), 1)
+seed_channel = RemoteChannel(()->Channel{Int64}(), 1)
+path = "data/"
 
 
 function generate_data(path, L, nr_seeds, distribution)
