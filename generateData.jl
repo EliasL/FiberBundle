@@ -1,6 +1,6 @@
 using Distributed
 using ProgressMeter
-threads = Threads.nthreads()#Int(ceil(Threads.nthreads()/2))
+threads = Threads.nthreads()
 
 print("Starting $threads workers... ")
 addprocs(threads)
@@ -13,22 +13,16 @@ end
 
 
 @everywhere include("burningMan.jl")
+@everywhere include("dataManager.jl")
+@everywhere include("distributions.jl")
 
-
-@everywhere function get_name(L, distribution, path, seed=-1)
-    if seed == -1
-        return path*distribution*"$L.jld2"
-    else
-        return path*distribution*"$L,$seed.jld2"
-    end
-end
-
-@everywhere function break_bundle(L, progress_channel, working_channel, file_name; seed=0)
+@everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name; seed=0)
     put!(working_channel, true) # Indicate a process has started
 
     N = L*L # Number of fibers
+    @assert seed != -1 ""
     Random.seed!(seed)
-    x = rand(Float64, N) # Max extension (Distribution)
+    x = distribution(N) # Max extension (Distribution)
     adjacent = fillAdjacent(L) # recomputed adjacency lookup table
 
     # These values are reset for each step
@@ -53,8 +47,8 @@ end
     division = 10
     status_storage = zeros(Int64, division-1, N)
     # If N=100 Steps to store is now [90, 80, ... , 10]
-    steps_to_store = [N/division * (division-i) for i in 1:division-1]
-    next_step_to_store = pop!(steps_to_store)
+    steps_to_store = [round(Int64,N/division * i) for i in 1:division-1]
+    storage_index = 1
 
     # Do what you want
     for step in 1:N
@@ -72,13 +66,19 @@ end
         largest_perimiter[step] = maximum(cluster_outline_length)
 
         # Save step for visualization
-        if step == next_step_to_store
-
+        if step == steps_to_store[storage_index]
+            status_storage[storage_index, :] = status
+            if storage_index < length(steps_to_store)
+                storage_index += 1  
+            end
+        end
 
         put!(progress_channel, true) # trigger a progress bar update
     end 
     
     jldopen(file_name, "w") do file
+        file["sample_states"] = status_storage
+        file["sample_states_steps"] = steps_to_store./N
         file["most_stressed_fiber"] = most_stressed_fiber./N
         file["nr_clusters"] = nr_clusters./N
         file["largest_cluster"] = largest_cluster./N
@@ -88,26 +88,27 @@ end
 
 end
 
-function run_workers(L, distribution, seeds, path)
+function run_workers(L, distribution_name, distribution_function, seeds, path)
     p = Progress(length(seeds)*L^2)
     progress = RemoteChannel(()->Channel{Bool}(), 1)
     working = RemoteChannel(()->Channel{Bool}(), 1)
     active_workers = Threads.Atomic{Int}(0)
-    completed_runs = Threads.Atomic{Int}(nr_seeds-length(seeds))
+    completed_runs = Threads.Atomic{Int}(0)
 
     @sync begin # start two tasks which will be synced in the very end
         # the first task updates the progress bar
         @async while take!(progress)
             ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
         end
+
         @async while true
-            w = take!(working)
-            if w
+            started = take!(working)
+            if started
                 active_workers[] += 1
             else 
                 active_workers[] -=1 
                 completed_runs[] += 1
-                if nr_seeds == completed_runs[]
+                if length(seeds) == completed_runs[]
                     put!(progress, false) # this tells the printing task to finish
                     break
                 end
@@ -117,24 +118,15 @@ function run_workers(L, distribution, seeds, path)
         # the second task does the computation
         @async begin
             @distributed (+) for i in seeds
-                name = get_name(L, distribution, path, i)
-                break_bundle(L, progress, working, name, seed=i)
+                name = get_name(L, distribution_name, path, i)
+                break_bundle(L, distribution_function, progress, working, name, seed=i)
                 i^2
             end
         end
     end
 end
 
-L = 64
-threads = 3
-seeds = 1000
-p = Progress(seeds)
-progress_channel = RemoteChannel(()->Channel{Bool}(), 1)
-seed_channel = RemoteChannel(()->Channel{Int64}(), 1)
-path = "data/"
-
-
-function generate_data(path, L, nr_seeds, distribution)
+function generate_data(path, L, requested_seeds, distribution_name, overwrite)
 
     println("Processing L = $L ...")
 
@@ -142,91 +134,42 @@ function generate_data(path, L, nr_seeds, distribution)
         println("Creating folder... ")
         mkdir(path)
     end
+    # generate a function that takes a seed as input and generates a name
+    name_function = make_get_name(L, distribution_name, path)
+    missing_seeds = prepare_run(requested_seeds, name_function, overwrite)
 
-    test_seeds = 1:nr_seeds
-    seeds = collect(1:nr_seeds)
-    found_files = false
-    work_to_do = true
-    print("Checking existing seeds... ")
+    # get distribtion function
+    distribution_function(n) = zeros(n) # Default
 
-    name = get_name(L, distribution, path)
-    if isfile(name) && !overwrite
-        jldopen(get_name(L, distribution, path), "r") do file
-            for seed in test_seeds
-                if haskey(file, "nr_clusters/$seed")
-                    if !found_files
-                        println("\nFound existing seeds!")
-                    end
-                    # Write out the file
-                    jldopen(get_name(L, distribution, path, seed), "w") do s_file
-                        for key in ["most_stressed_fiber", "nr_clusters", "largest_cluster", "largest_perimiter"]
-                            s_file[key] = file["$key/$seed"]
-                        end
-                    end
-                    found_files=true
-                    #print("$seed, ")
-                    deleteat!(seeds, findfirst(x->x==seed,seeds))
-                end
-            end
-        end
-    end
-    if found_files
-        println("\u1b[1D\u1b[1D.")
-        if length(seeds) == 0
-            println("All seeds have already been processed")
-            work_to_do = false
-        else
-            #println("Processing seeds: " * join(seeds, ", "))
-        end
-    else
-        println("Done!")
+    if distribution_name == "Uniform"
+        distribution_function = uniform
     end
 
-    if work_to_do
+    if length(missing_seeds) > 0
         println("Running workers...")
-        run_workers(L, distribution, seeds, path)
+        run_workers(L, distribution_name, distribution_function, missing_seeds, path)
+        println("Done!")
+
+
+        println("Calculating averages ...")
+        clean_after_run(L, name_function(), name_function, requested_seeds)
         println("Done!")
     end
-
-    println("Calculate averages ...")
-    keys = ["most_stressed_fiber", "nr_clusters", "largest_cluster", "largest_perimiter"]
-    averages = Dict()
-    for key in keys
-        averages[key] = zeros(L*L)
-    end
-    jldopen(get_name(L, distribution, path), "w") do file
-        for seed in 1:nr_seeds
-            seed_file_name = get_name(L, distribution, path, seed)
-            jldopen(seed_file_name, "r") do s_file
-                for key in keys
-                    averages[key] += s_file[key] ./ nr_seeds
-                    file["$key/$seed"] = s_file[key]
-                end
-            end
-            rm(seed_file_name)
-        end
-        for key in keys
-            file["average_$key"] = averages[key]
-        end
-        file["seeds_used"] = nr_seeds
-    end
-    println("Done!")
-
 end
 
 
-nr_seeds = 500
-distribution = "Uniform"
-overwrite = false
+seeds = 1:1
+distribution_name = "Uniform"
+overwrite = true
 global_path = "data/"
 if !isdir(global_path)
     println("Creating folder...")
     mkdir(global_path)
 end
-mkPath(L) = global_path*distribution*"/"
+mkPath(L) = global_path*distribution_name*"/"
 
-for L in [256, 32, 64, 128] 
-    generate_data(mkPath(L),L, nr_seeds, distribution)
+for L in [256,32, 64, 128] 
+    generate_data(mkPath(L),L, seeds, distribution_name, overwrite)
 end
 
 

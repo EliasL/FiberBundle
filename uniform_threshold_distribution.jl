@@ -19,7 +19,7 @@ k_N = [1:n for n in N]./N
 lables = permutedims([latexstring("\$L={$(l)}\$") for l in L])
 
 files = [load(full_name(global_path, L, distribution)) for L in [32, 64, 128, 256]]
-seeds = files[1]["seeds_used"]
+seeds = files[1]["nr_seeds_used"]
 
 nr_clusters_plot = plot(k_N, [f["average_nr_clusters"] for f in files], label = lables,
                     xlabel=L"k/N", ylabel=L"\#/N", title="Relative number of clusters")
