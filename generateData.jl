@@ -158,7 +158,7 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite)
 end
 
 
-seeds = 1:1
+seeds = 1:500
 distribution_name = "Uniform"
 overwrite = true
 global_path = "data/"

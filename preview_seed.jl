@@ -24,6 +24,7 @@ axies = [Axis(ga[i,j]) for i=1:3, j=1:3]
 for (i, axis) in enumerate(axies)
     g = reshape(file["sample_states/$seed"][i, :], (L, L))
     fig, ax, pltobj = heatmap(g)
+    global f = fig
 end
 
 f
