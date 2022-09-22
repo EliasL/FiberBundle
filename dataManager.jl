@@ -127,8 +127,3 @@ end
 function clean_after_run(L, condensed_file_name, get_name_fun::Function, requested_seeds::AbstractArray)
     condense_files(L, condensed_file_name, get_name_fun, requested_seeds, remove_files=true)
 end
-
-    
-
-
-    
