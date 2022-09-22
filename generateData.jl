@@ -160,7 +160,7 @@ end
 
 seeds = 1:500
 distribution_name = "Uniform"
-overwrite = true
+overwrite = false
 global_path = "data/"
 if !isdir(global_path)
     println("Creating folder...")

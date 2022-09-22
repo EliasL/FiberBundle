@@ -46,10 +46,9 @@ function remove_rotations(n)
     for grid in n
         rotations = [rotr90(grid), rot180(grid), rotl90(grid)]
         for rotation in rotations
-            duplicates = findall
-            deleteat!(n, findall(x->x==rotation,n))
+            duplicates = findall(x->x==rotation,n)
+            deleteat!(n, duplicates)
         end
-        push!(n, grid)
     end
 
     return n
@@ -61,7 +60,6 @@ function remove_mirror(n)
         for mirror in mirrors
             deleteat!(n, findall(x->x==mirror,n))
         end
-        push!(n, grid)
     end
     return n
 end
