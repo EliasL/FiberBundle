@@ -26,58 +26,74 @@ end
 
 function reshape_neighbours(l)
     m = reshape(l, (3,3))
-    m[1,1] = m[2,2]
+    m[3,3] = m[2,3]
+    m[2,3] = m[1,3]
+    m[1,3] = m[3,2]
+    m[3,2] = m[2,2]
     m[2,2] = 2
     return m
 end
 
 function generate_neighbours()
-    nr_neighbours = 256
-    neighbours = [zeros(Int, (3, 3)) for i in 1:256]
+    nr_neighbours = 257
+    neighbours = [zeros(Int, (3, 3)) for i in 1:nr_neighbours]
     for i in 1:nr_neighbours
-        n = parse.(Int, split(string(i, base=2, pad=9), ""))
+        n = reverse(parse.(Int, split(string(i-1, base=2, pad=9), "")))
         neighbours[i] = reshape_neighbours(n)
     end
     return neighbours
 end
 
 
-function remove_rotations(n)
+function remove_symmetries(n)
     for grid in n
-        rotations = [rotr90(grid), rot180(grid), rotl90(grid)]
-        for rotation in rotations
-            duplicates = findall(x->x==rotation,n)
-            deleteat!(n, duplicates)
-        end
+        syms = [grid, rotr90(grid), rot180(grid), rotl90(grid), reverse(grid, dims=1), reverse(grid, dims=2), rotr90(reverse(grid, dims=1)), rotr90(reverse(grid, dims=2))]
+        duplicates = findall(x->x in syms,n)[2:end]
+        deleteat!(n, duplicates)
     end
-
     return n
 end
 
-function remove_mirror(n)
-    for grid in n
-        mirrors = [reverse(grid, dims=1), reverse(grid, dims=2)]
-        for mirror in mirrors
-            deleteat!(n, findall(x->x==mirror,n))
-        end
-    end
-    return n
+function compute_strength(m::Matrix)
+    # Here are the strength values
+    # 121
+    # 2_2
+    # 121
+    strength = sum([m[2,1], m[1,2], m[3,2], m[2,3]])*2
+    strength += sum([m[1,1], m[3,1], m[1,3], m[3,3]])
+    return strength
 end
 
 neighbours = generate_neighbours()
 
 # Remove symmetries
-neighbours = remove_rotations(neighbours)
-println(length(neighbours))
-neighbours = remove_mirror(neighbours)
-println(length(neighbours))
-# After removing symetries, there are 39 left, so we want to 
-# create a even number to display in two colunms
+neighbours = remove_symmetries(neighbours)
 
-push!(neighbours,zeros(Int64, (3,3)))
+# Sort by strength 
+neighbours = sort(neighbours, by=compute_strength)
+
+extra_strength = [
+    0,0,0,0,0, # 5
+    0,0,0,0,0, # 10
+    0,0,0,0,0, # 15
+    0,0,0,0,0, # 20
+    0,0,0,0,0, # 25
+    0,0,0,0,0, # 30
+    0,0,0,0,0, # 35
+    0,0,0,0,0, # 40
+    0,0,0,0,0, # 45
+    0,0,0,0,0, # 50
+    0,0        # 52
+]
+
+n = length(neighbours)
+# Just to fill the column, we add something
+if mod(n,2) == 1
+    push!(neighbours, zeros(Int64, (3,3)))
+end
 
 L = 3
-layout = (2,20)
+layout = (2,ceil(Int64, n/2))
 lx = layout[1] #layout x
 ly = layout[2] #layout y
 area = lx*ly
@@ -94,14 +110,16 @@ title_font_size = font_size * 4/3
 Drawing(image_size_x, image_size_y, "plots/Neighbours.pdf")
 fontface("Computer Modern")
 fontsize(title_font_size)
-text(latexstring("Neighbours"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
+text("Neighbours", image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
 fontsize(font_size)
 
 for j=1:ly, i=1:lx
     origin((L+spacing_x)*(i-1), (L+spacing_y)*(j-1) + title_space)
     drawmatrix(neighbours[i+(j-1)*lx])
     id = i+(j-1)*lx
-    text("$id", L/2, L+subtitle_space, halign=:center, valign=:bottom)
+    s = compute_strength(neighbours[i+(j-1)*lx])
+    ss = extra_strength[i+(j-1)*lx]
+    text("$id: $s + $ss", L/2, L+subtitle_space, halign=:center, valign=:bottom)
 end
 
 finish()
