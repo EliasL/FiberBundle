@@ -39,7 +39,7 @@ function reshape_neighbours(l)
 end
 
 function generate_neighbours()
-    nr_neighbours = 257
+    nr_neighbours = 256
     neighbours = [zeros(Int, (3, 3)) for i in 1:nr_neighbours]
     for i in 1:nr_neighbours
         n = reverse(parse.(Int, split(string(i-1, base=2, pad=9), "")))
@@ -50,6 +50,7 @@ end
 
 
 function remove_symmetries(n)
+    n = copy(n)
     for grid in n
         syms = [grid, rotr90(grid), rot180(grid), rotl90(grid), reverse(grid, dims=1), reverse(grid, dims=2), rotr90(reverse(grid, dims=1)), rotr90(reverse(grid, dims=2))]
         duplicates = findall(x->x in syms,n)[2:end]
@@ -73,16 +74,17 @@ function compute_strength(m::Matrix)
     return strength
 end
 
-neighbours = generate_neighbours()
+allNeighbours = generate_neighbours()
 
 # Remove symmetries
-neighbours = remove_symmetries(neighbours)
+neighbours = remove_symmetries(allNeighbours)
 
 # Sort by strength 
 neighbours = sort(neighbours, by=compute_strength)
+allNeighboursSorted = sort(allNeighbours, by=compute_strength)
 
 extra_strength = [
-    -0.5,0,0,0,0, # 5
+    0,0,0,0,0, # 5
     0,0,0,0,0, # 10
     0,0,0,0,0, # 15
     0,0,0,0,0, # 20
@@ -95,40 +97,45 @@ extra_strength = [
     0,0        # 52
 ]
 
-n = length(neighbours)
+function plot_neighbours(neighbours, title, path)
 
-L = 3
-columns = 5
-layout = (columns,ceil(Int64, n/columns))
-lx = layout[1] #layout x
-ly = layout[2] #layout y
-area = lx*ly
+    n = length(neighbours)
 
-title_space = L/2
-subtitle_space = L/5
-spacing_x = L/3
-spacing_y = spacing_x + subtitle_space
-image_size_x = L*lx+(lx-1)*spacing_x
-image_size_y = L*ly+(ly)*spacing_y + title_space
-font_size = 4*L/32
-title_font_size = font_size * 4/3
+    L = 3
+    columns = 5
+    layout = (columns,ceil(Int64, n/columns))
+    lx = layout[1] #layout x
+    ly = layout[2] #layout y
+    area = lx*ly
 
-Drawing(image_size_x, image_size_y, "plots/Neighbours.pdf")
-fontface("Computer Modern")
-fontsize(title_font_size)
-text("Neighbours", image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
-fontsize(font_size)
+    title_space = L/2
+    subtitle_space = L/5
+    spacing_x = L/3
+    spacing_y = spacing_x + subtitle_space
+    image_size_x = L*lx+(lx-1)*spacing_x
+    image_size_y = L*ly+(ly)*spacing_y + title_space
+    font_size = 4*L/32
+    title_font_size = font_size * 4/3
 
-for j=1:ly, i=1:lx
-    neighbour_index = i+(j-1)*lx
-    if neighbour_index<=length(neighbours)
-        origin((L+spacing_x)*(i-1), (L+spacing_y)*(j-1) + title_space)
-        drawmatrix(neighbours[neighbour_index])
-        id = i+(j-1)*lx
-        s = compute_strength(neighbours[neighbour_index])
-        ss = extra_strength[neighbour_index]
-        text("$id: $s", L/2, L+subtitle_space, halign=:center, valign=:bottom)
+    Drawing(image_size_x, image_size_y, path*title*".pdf")
+    fontface("Computer Modern")
+    fontsize(title_font_size)
+    text(title, image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
+    fontsize(font_size)
+
+    for j=1:ly, i=1:lx
+        neighbour_index = i+(j-1)*lx
+        if neighbour_index<=length(neighbours)
+            origin((L+spacing_x)*(i-1), (L+spacing_y)*(j-1) + title_space)
+            drawmatrix(neighbours[neighbour_index])
+            id = i+(j-1)*lx
+            s = compute_strength(neighbours[neighbour_index])
+            text("$id: $s", L/2, L+subtitle_space, halign=:center, valign=:bottom)
+        end
     end
+    finish()
 end
 
-finish()
+plot_neighbours(neighbours, "Neighbours", "plots/")
+plot_neighbours(allNeighbours, "All Neighbours", "plots/")
+plot_neighbours(allNeighbours, "All Neighbours Sorted", "plots/")
