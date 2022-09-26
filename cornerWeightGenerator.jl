@@ -61,6 +61,10 @@ function compute_strength(m::Matrix)
     # 121
     strength = sum([m[2,1], m[1,2], m[3,2], m[2,3]])*2
     strength += sum([m[1,1], m[3,1], m[1,3], m[3,3]])
+
+    if m == rot180(m)
+        strength += 0.5
+    end
     return strength
 end
 
