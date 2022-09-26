@@ -97,16 +97,14 @@ extra_strength = [
     0,0        # 52
 ]
 
-function plot_neighbours(neighbours, title, path)
+function plot_neighbours(neighbours, title, path, columns=5)
 
     n = length(neighbours)
 
     L = 3
-    columns = 5
     layout = (columns,ceil(Int64, n/columns))
     lx = layout[1] #layout x
     ly = layout[2] #layout y
-    area = lx*ly
 
     title_space = L/2
     subtitle_space = L/5
@@ -125,6 +123,7 @@ function plot_neighbours(neighbours, title, path)
 
     for j=1:ly, i=1:lx
         neighbour_index = i+(j-1)*lx
+        # 
         if neighbour_index<=length(neighbours)
             origin((L+spacing_x)*(i-1), (L+spacing_y)*(j-1) + title_space)
             drawmatrix(neighbours[neighbour_index])
@@ -138,4 +137,4 @@ end
 
 plot_neighbours(neighbours, "Neighbours", "plots/")
 plot_neighbours(allNeighbours, "All Neighbours", "plots/")
-plot_neighbours(allNeighbours, "All Neighbours Sorted", "plots/")
+plot_neighbours(allNeighboursSorted, "All Neighbours Sorted", "plots/")
