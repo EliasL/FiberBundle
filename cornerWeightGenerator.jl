@@ -12,7 +12,11 @@ function drawmatrix(A::Matrix)
         fiber = A[ceil(Int, pos[1]), ceil(Int, pos[2])]
         if fiber == 1
             box(pos, tiles.tilewidth*0.8, tiles.tileheight*0.8, :clip)
-            background(0.2,0.2,0.2)
+            if mod(tiles.currentcol+tiles.currentrow, 2) == 1
+                background(0.2,0.2,0.3)
+            else
+                background(0.2,0.2,0.1)
+            end
         elseif fiber == 2
             box(pos, tiles.tilewidth*0.8, tiles.tileheight*0.8, :clip)
             background(0.8,0.2,0.2)
@@ -91,13 +95,10 @@ extra_strength = [
 ]
 
 n = length(neighbours)
-# Just to fill the column, we add something
-if mod(n,2) == 1
-    push!(neighbours, zeros(Int64, (3,3)))
-end
 
 L = 3
-layout = (2,ceil(Int64, n/2))
+columns = 5
+layout = (columns,ceil(Int64, n/columns))
 lx = layout[1] #layout x
 ly = layout[2] #layout y
 area = lx*ly
@@ -118,12 +119,15 @@ text("Neighbours", image_size_x/2, title_space*2/3, halign=:center, valign=:bott
 fontsize(font_size)
 
 for j=1:ly, i=1:lx
-    origin((L+spacing_x)*(i-1), (L+spacing_y)*(j-1) + title_space)
-    drawmatrix(neighbours[i+(j-1)*lx])
-    id = i+(j-1)*lx
-    s = compute_strength(neighbours[i+(j-1)*lx])
-    ss = extra_strength[i+(j-1)*lx]
-    text("$id: $s + $ss", L/2, L+subtitle_space, halign=:center, valign=:bottom)
+    neighbour_index = i+(j-1)*lx
+    if neighbour_index<=length(neighbours)
+        origin((L+spacing_x)*(i-1), (L+spacing_y)*(j-1) + title_space)
+        drawmatrix(neighbours[neighbour_index])
+        id = i+(j-1)*lx
+        s = compute_strength(neighbours[neighbour_index])
+        ss = extra_strength[neighbour_index]
+        text("$id: $s + $ss", L/2, L+subtitle_space, halign=:center, valign=:bottom)
+    end
 end
 
 finish()
