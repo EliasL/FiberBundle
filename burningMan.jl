@@ -3,6 +3,8 @@ using Random
 using ProgressMeter
 using SparseArrays
 
+include("NeighbourhoodWeighting.jl")
+
 """
 Simulate breakage of an LxL fiber matrix
 """
@@ -14,16 +16,48 @@ PAST_BORDER::Int64 = -3 # The border of a cluster that has been explored
 BROKEN::Int64 = 0 # A broken fiber that has not been explored
 # Status larger than 0 represents the cluster id that the fiber belongs to
 
-function fillAdjacent(L::Int64)
+ #
+#x#
+ #
+NEIGHBOURS(i, L) = [
+    i-1, # Up
+    i+1, # Down
+    i+L, # Right
+    i-L  # Left
+]
+
+###
+#x#
+###
+# In order to optmize the code, we want the neighbourhood to be in 
+# this order:
+#   147
+#   258
+#   369
+# Note that unlike NEIGHBOURS, NEIGHBOURHOOD includes itself
+NEIGHBOURHOOD(i, L) = [
+    i-1-L, # Up Left
+    i-L,   # Left
+    i+1-L, # Down Left
+    i-1,   # Up
+    i,     # Itself
+    i+1,   # Down
+    i-1+L, # Up Right
+    i+L,   # Right
+    i+1+L, # Down Right
+]
+
+function fillAdjacent(L::Int64, adjacent_indexes::Function=NEIGHBOURS)
     N = L*L
-    adjacent = zeros(Int64, N, 4)
+    nr_adjacent = length(adjacent_indexes(1,L))
+    adjacent = zeros(Int64, N, nr_adjacent)
     for i in 1:N
-        adjacent[i, :] = findAdjacent(i, L)
+        adjacent[i, :] = findAdjacent(i, L, adjacent_indexes(i, L))
     end
     return adjacent
 end
 
-function findAdjacent(i::Int64, L::Int64)
+function findAdjacent(i::Int64, L::Int64, adjacent::Vector{Int64})
     # The structure of the matrix will be
     # 1 4 7
     # 2 5 8
@@ -32,36 +66,57 @@ function findAdjacent(i::Int64, L::Int64)
     # see what happens.
     # mod1(7,3) = mod1(1,3) = 1
     # mod1(3,3) = mod1(9,3) = 3
-
     N = L*L
-
     # Fill in adjacent
-    a = [
-        i-1, # Up
-        i+1, # Down
-        i+L, # Right
-        i-L  # Left
-        ]
+    a = adjacent
 
-    # Up check
-    if mod1(i, L) == 1
-        a[1] += L
-    end
-    # Down check
-    if mod1(i, L) == L
-        a[2] -= L
-    end
-    # Right check
-    if i>N-L
-        a[3] -= N
-    end
-    # Left check
-    if i<=L
-        a[4] += N
+    if length(a) == 4
+        # Up check
+        if mod1(i, L) == 1
+            a[1] += L
+        end
+        # Down check
+        if mod1(i, L) == L
+            a[2] -= L
+        end
+        # Right check
+        if i>N-L
+            a[3] -= N
+        end
+        # Left check
+        if i<=L
+            a[4] += N
+        end
+    elseif length(a) == 9
+        # Up check
+        if mod1(i, L) == 1
+            a[1] += L
+            a[4] += L
+            a[7] += L
+        end
+        # Down check
+        if mod1(i, L) == L
+            a[3] -= L
+            a[6] -= L
+            a[9] -= L
+        end
+        # Right check
+        if i>N-L
+            a[7] -= N
+            a[8] -= N
+            a[9] -= N
+        end
+        # Left check
+        if i<=L
+            a[1] += N
+            a[2] += N
+            a[3] += N
+        end
     end
 
     return a 
 end
+
 
 function resetClusters(status::Vector{Int64}, σ::Vector{Float64})
     # After having explored and assigned numbers to 
@@ -112,11 +167,13 @@ function break_fiber(i::Int64, status::Vector{Int64}, σ::Vector{Float64})
 end
 
 function update_σ(status::Vector{Int64}, σ::Vector{Float64},
-    adjacent::Array{Int64, 2},
+    neighbours::Array{Int64, 2},
+    neighbourhoods::Array{Int64, 2},
     cluster_size::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
-    unexplored::Vector{Int64})
+    unexplored::Vector{Int64};
+    use_neighbourhood_rules::Bool=false)
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -134,10 +191,14 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # assign fiber i to this new cluster
             status[i] = c
             # explore the new cluster
-            explore_cluster_at(i, c, status, adjacent, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+            explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_outline, cluster_outline_length, unexplored)
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
-            update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length)
+            if use_neighbourhood_rules
+                update_cluster_otline_stress_with_neighbourhood_rules(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
+            else
+                update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length)
+            end
         end
     end
     return c
@@ -145,7 +206,7 @@ end
 
 function explore_cluster_at(i::Int64, c::Int64,
     status::Vector{Int64},
-    adjacent::Array{Int64, 2},
+    neighbours::Array{Int64, 2},
     cluster_size::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
@@ -171,31 +232,31 @@ function explore_cluster_at(i::Int64, c::Int64,
         # Get the next unexplored fiber
         current_fiber = unexplored[nr_explored]
         # Go through all neighbours of the fiber
-        nr_unexplored = check_neighbours(current_fiber,nr_unexplored, c, status, adjacent, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+        nr_unexplored = check_neighbours(current_fiber,nr_unexplored, c, status, neighbours, cluster_size, cluster_outline, cluster_outline_length, unexplored)
     end
 end
 
 function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
     status::Vector{Int64},
-    adjacent::Array{Int64, 2},
+    neighbours::Array{Int64, 2},
     cluster_size::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64})
-    # Here we check the adjacent fibers of a given fiber
+    # Here we check the neighbour fibers of a given fiber
     # We want to see if the neighbours are broken, making them
     # part of the cluster, or if they are alive, in which case
     # we need to add them to the border of the cluster.
 
-    for adj_fiber in adjacent[current_fiber, :]
-        # Status of adjacent fiber
-        s::Int64 = status[adj_fiber]
+    for neighbour_fiber in neighbours[current_fiber, :]
+        # Status of neighbour fiber
+        s::Int64 = status[neighbour_fiber]
         # If this adjecent fiber is is BROKEN,
         if s == BROKEN
             # We then have to add this to the list of unexplored 
-            nr_unexplored = add_unexplored(adj_fiber, unexplored, nr_unexplored)
+            nr_unexplored = add_unexplored(neighbour_fiber, unexplored, nr_unexplored)
             # We set this fiber to be part of the current cluster
-            status[adj_fiber] = c
+            status[neighbour_fiber] = c
             # and increase the cluster size
             cluster_size[c] += 1
         # In some situations, a fiber will be part of the border of
@@ -204,9 +265,9 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
             # We have to change to CURRENT_BORDER so that
             # we don't count it again since a fiber will often
             # be checked multiple times
-            status[adj_fiber] = CURRENT_BORDER
+            status[neighbour_fiber] = CURRENT_BORDER
             cluster_outline_length[c] += 1
-            cluster_outline[cluster_outline_length[c]] = adj_fiber
+            cluster_outline[cluster_outline_length[c]] = neighbour_fiber
         end
     end
     return nr_unexplored
@@ -229,6 +290,44 @@ function update_cluster_outline_stress(c::Int64,
         fiber = cluster_outline[i]
         added_stress = cluster_size[c]/cluster_outline_length[c]
 
+        σ[fiber] += added_stress
+        status[fiber] = PAST_BORDER
+    end
+end
+
+function get_id_of_neighbourhoods_of_outline(
+    status::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    neighbourhoods::Array{Int64, 2})
+    return map(o -> neighbourhoodToInt(status[neighbourhoods[o, :]]), cluster_outline)
+end
+
+function update_cluster_otline_stress_with_neighbourhood_rules(c::Int64,
+    status::Vector{Int64},
+    σ::Vector{Float64},
+    cluster_size::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    cluster_outline_length::Vector{Int64},
+    neighbourhoods::Array{Int64, 2})
+
+    # Identifies the id of the neighbourhood of each outline fiber
+    outline_neihbourhoods = get_id_of_neighbourhoods_of_outline(status, cluster_outline[1:cluster_outline_length[c]], neighbourhoods)
+    outline_strengths = neighbourhoodStrengths[outline_neihbourhoods]
+
+    # initial_stress is an interesting parameter. If max strength is 11,
+    # then fibers whos neighbourhood has a missing corner will experience
+    # no stress at all. If the initial_stress is larger, for example 100,
+    # it means that the difference between the neighbourhood configurations
+    # is less significant. As initial_stress -> inf, the model will approach
+    # the LLS
+    initial_stress = 12
+    outline_stress = initial_stress .- outline_strengths
+    total_outline_stress = sum(outline_stress)
+    average_outline_stress = total_outline_stress/cluster_outline_length[c]
+
+    for i in 1:cluster_outline_length[c]
+        fiber = cluster_outline[i]
+        added_stress = cluster_size[c] / cluster_outline_length[c] * outline_stress[i] / average_outline_stress
         σ[fiber] += added_stress
         status[fiber] = PAST_BORDER
     end

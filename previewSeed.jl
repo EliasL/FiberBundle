@@ -13,10 +13,11 @@ function drawmatrix(A::Matrix)
         pos = pos .+ L/2
         fiber = A[ceil(Int, pos[1]), ceil(Int, pos[2])]
         if fiber == -1
-            ngon(pos, tiles.tilewidth/1.6, 6, 0, :clip)
-            background(0.2,0.2,0.2)
-        elseif fiber == -3
             box(pos, tiles.tilewidth*0.6, tiles.tileheight*0.6, :clip)
+            background(0.2,0.2,0.2)
+            
+        elseif fiber == -3
+            ngon(pos, tiles.tilewidth/1.6, 6, 0, :clip)
             background(0.2,0.2,0.2)
         else 
             #box(pos, tiles.tilewidth*0.8, tiles.tileheight*0.8, :clip)
@@ -27,11 +28,11 @@ function drawmatrix(A::Matrix)
 end
 
 global_path = "data/"
-distribution = "Uniform"
+distribution = "Uniform with Neighbourhood rules"
 L = 128
 seed = 1
 f = file()
-layout = (5,1)
+layout = (3,3)
 lx = layout[1] #layout x
 ly = layout[2] #layout y
 area = lx*ly

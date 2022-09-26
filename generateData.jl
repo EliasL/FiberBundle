@@ -16,14 +16,15 @@ end
 @everywhere include("dataManager.jl")
 @everywhere include("distributions.jl")
 
-@everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name; seed=0)
+@everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name, using_neighbourhood_rules; seed=0)
     put!(working_channel, true) # Indicate a process has started
 
     N = L*L # Number of fibers
     @assert seed != -1 ""
     Random.seed!(seed)
     x = distribution(N) # Max extension (Distribution)
-    adjacent = fillAdjacent(L) # recomputed adjacency lookup table
+    neighbours = fillAdjacent(L, NEIGHBOURS)
+    neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
 
     # These values are reset for each step
     σ  = ones(Float64, N) # Relative tension
@@ -57,7 +58,7 @@ end
         i = findNextFiber(σ, x)
         resetClusters(status, σ)
         break_fiber(i, status, σ)
-        _nr_clusters = update_σ(status,σ,adjacent, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+        _nr_clusters = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored; use_neighbourhood_rules=using_neighbourhood_rules)
 
         # Save important data from step
         most_stressed_fiber[step] = σ[i]/x[i]
@@ -88,7 +89,7 @@ end
 
 end
 
-function run_workers(L, distribution_name, distribution_function, seeds, path)
+function run_workers(L, distribution_name, distribution_function, seeds, path, using_neighbourhood_rules)
     p = Progress(length(seeds)*L^2)
     progress = RemoteChannel(()->Channel{Bool}(), 1)
     working = RemoteChannel(()->Channel{Bool}(), 1)
@@ -119,14 +120,14 @@ function run_workers(L, distribution_name, distribution_function, seeds, path)
         @async begin
             @distributed (+) for i in seeds
                 name = get_name(L, distribution_name, path, i)
-                break_bundle(L, distribution_function, progress, working, name, seed=i)
+                break_bundle(L, distribution_function, progress, working, name, using_neighbourhood_rules; seed=i)
                 i^2
             end
         end
     end
 end
 
-function generate_data(path, L, requested_seeds, distribution_name, overwrite)
+function generate_data(path, L, requested_seeds, distribution_name, overwrite, using_neighbourhood_rules)
 
     println("Processing L = $L ...")
 
@@ -141,13 +142,13 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite)
     # get distribtion function
     distribution_function(n) = zeros(n) # Default
 
-    if distribution_name == "Uniform"
+    if distribution_name == "Uniform with Neighbourhood rules"
         distribution_function = uniform
     end
 
     if length(missing_seeds) > 0
         println("Running workers...")
-        run_workers(L, distribution_name, distribution_function, missing_seeds, path)
+        run_workers(L, distribution_name, distribution_function, missing_seeds, path, using_neighbourhood_rules)
         println("Done!")
 
 
@@ -158,8 +159,9 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite)
 end
 
 
-seeds = 1:1000
-distribution_name = "Uniform"
+seeds = 1:500
+distribution_name = "Uniform with Neighbourhood rules"
+using_neighbourhood_rules = true
 overwrite = false
 global_path = "data/"
 if !isdir(global_path)
@@ -169,7 +171,7 @@ end
 mkPath(L) = global_path*distribution_name*"/"
 
 for L in [256,32, 64, 128] 
-    generate_data(mkPath(L),L, seeds, distribution_name, overwrite)
+    generate_data(mkPath(L),L, seeds, distribution_name, overwrite, using_neighbourhood_rules)
 end
 
 

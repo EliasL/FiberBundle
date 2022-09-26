@@ -3,6 +3,8 @@ using JLD2
 using MathTeXEngine
 using LaTeXStrings
 
+include("NeighbourhoodWeighting.jl")
+
 function drawmatrix(A::Matrix)
     L = size(A,1)
     tiles = Tiler(L, L, L, L, margin=0)
@@ -28,51 +30,6 @@ function drawmatrix(A::Matrix)
     end
 end
 
-function reshape_neighbours(l)
-    m = reshape(l, (3,3))
-    m[3,3] = m[2,3]
-    m[2,3] = m[1,3]
-    m[1,3] = m[3,2]
-    m[3,2] = m[2,2]
-    m[2,2] = 2
-    return m
-end
-
-function generate_neighbours()
-    nr_neighbours = 256
-    neighbours = [zeros(Int, (3, 3)) for i in 1:nr_neighbours]
-    for i in 1:nr_neighbours
-        n = reverse(parse.(Int, split(string(i-1, base=2, pad=9), "")))
-        neighbours[i] = reshape_neighbours(n)
-    end
-    return neighbours
-end
-
-
-function remove_symmetries(n)
-    n = copy(n)
-    for grid in n
-        syms = [grid, rotr90(grid), rot180(grid), rotl90(grid), reverse(grid, dims=1), reverse(grid, dims=2), rotr90(reverse(grid, dims=1)), rotr90(reverse(grid, dims=2))]
-        duplicates = findall(x->x in syms,n)[2:end]
-        deleteat!(n, duplicates)
-    end
-    return n
-end
-
-function compute_strength(m::Matrix)
-    # Here are the strength values
-    # 121
-    # 2_2
-    # 121
-    strength = sum([m[2,1], m[1,2], m[3,2], m[2,3]])*2
-    strength += sum([m[1,1], m[3,1], m[1,3], m[3,3]])
-
-    # Rotation symetry
-    if m == rot180(m)
-        strength += 0.5
-    end
-    return strength
-end
 
 allNeighbours = generate_neighbours()
 
@@ -82,20 +39,6 @@ neighbours = remove_symmetries(allNeighbours)
 # Sort by strength 
 neighbours = sort(neighbours, by=compute_strength)
 allNeighboursSorted = sort(allNeighbours, by=compute_strength)
-
-extra_strength = [
-    0,0,0,0,0, # 5
-    0,0,0,0,0, # 10
-    0,0,0,0,0, # 15
-    0,0,0,0,0, # 20
-    0,0,0,0,0, # 25
-    0,0,0,0,0, # 30
-    0,0,0,0,0, # 35
-    0,0,0,0,0, # 40
-    0,0,0,0,0, # 45
-    0,0,0,0,0, # 50
-    0,0        # 52
-]
 
 function plot_neighbours(neighbours, title, path, columns=5)
 
