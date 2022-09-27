@@ -42,18 +42,22 @@ function expand_file(name, get_name_fun::Function, overwritten_seeds::AbstractAr
 end
 
 function get_seeds_in_compact_file(file_name)
-
     if isfile(file_name)
         jldopen(file_name, "r") do file
-            return file["seeds_used"]
+            if haskey(file, "seeds_used")
+                return file["seeds_used"]
+            else
+                return []
+            end
         end
     else
         return []
     end
 end
 
-function condense_files(L, condensed_file_name, get_name_fun::Function, requested_seeds::AbstractArray; remove_files=true)
-
+function condense_files(L, distribution, path, requested_seeds::AbstractArray; remove_files=true)
+    get_name_fun = make_get_name(L, distribution, path)
+    condensed_file_name = get_name_fun()
     existing_seeds = get_seeds_in_compact_file(condensed_file_name)
     seeds = union(existing_seeds, requested_seeds)
     nr_seeds = length(seeds)
@@ -97,7 +101,8 @@ function get_missing_seeds(file_name, requested_seeds)
     end
 end
 
-function prepare_run(requested_seeds, get_name_fun::Function, overwrite=false)
+function prepare_run(L, distribution, path, requested_seeds::AbstractArray, overwrite=false)
+    get_name_fun = make_get_name(L, distribution, path)
     condensed_file_name = get_name_fun()
     # Get missing seeds
     if overwrite
@@ -124,6 +129,35 @@ function prepare_run(requested_seeds, get_name_fun::Function, overwrite=false)
     return missing_seeds
 end
 
-function clean_after_run(L, condensed_file_name, get_name_fun::Function, requested_seeds::AbstractArray)
-    condense_files(L, condensed_file_name, get_name_fun, requested_seeds, remove_files=true)
+function clean_after_run(L, distribution, path, requested_seeds::AbstractArray)
+    condense_files(L, distribution, path, requested_seeds, remove_files=true)
 end
+
+function search_for_loose_files(path)
+    files = readdir(path)
+    # Find distribution with lose files
+    # Assume there is only one distribution in the directory
+    distribution_name = ""
+    Ls = Set([])
+    seeds = Dict()
+    for f in files
+        # Distribution name must end with [a-zA-Z]
+        m = match(r"(^.+[a-zA-Z])([0-9]+)+,([0-9]+)+.jld2$", f)
+        if m !== nothing
+            distribution_name = m.captures[1]
+            L = parse(Int64, m.captures[2])
+            seed = parse(Int64, m.captures[3])
+            push!(Ls , L)
+            if haskey(seeds, L)
+                push!(seeds[L] , seed)
+            else
+                seeds[L] = [seed]
+            end
+        end
+    end
+    for L in Ls
+        clean_after_run(L, distribution_name, path, seeds[L])
+    end
+end
+
+search_for_loose_files("data/Uniform with Neighbourhood rules/")

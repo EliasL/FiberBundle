@@ -1,5 +1,7 @@
 using Distributed
 using ProgressMeter
+
+rmprocs(workers())
 threads = Threads.nthreads()
 
 print("Starting $threads workers... ")
@@ -135,9 +137,8 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite, u
         println("Creating folder... ")
         mkdir(path)
     end
-    # generate a function that takes a seed as input and generates a name
-    name_function = make_get_name(L, distribution_name, path)
-    missing_seeds = prepare_run(requested_seeds, name_function, overwrite)
+
+    missing_seeds = prepare_run(L, distribution_name, path, requested_seeds, overwrite)
 
     # get distribtion function
     distribution_function(n) = zeros(n) # Default
@@ -159,7 +160,7 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite, u
 end
 
 
-seeds = 1:500
+seeds = 1:200
 distribution_name = "Uniform with Neighbourhood rules"
 using_neighbourhood_rules = true
 overwrite = false
