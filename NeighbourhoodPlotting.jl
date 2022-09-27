@@ -61,7 +61,7 @@ function plot_neighbours(neighbours, title, path, columns=5)
     Drawing(image_size_x, image_size_y, path*title*".pdf")
     fontface("Computer Modern")
     fontsize(title_font_size)
-    text(title, image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
+    Luxor.text(title, image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
     fontsize(font_size)
 
     for j=1:ly, i=1:lx
@@ -72,7 +72,7 @@ function plot_neighbours(neighbours, title, path, columns=5)
             drawmatrix(neighbours[neighbour_index])
             id = i+(j-1)*lx
             s = compute_strength(neighbours[neighbour_index])
-            text("$id: $s", L/2, L+subtitle_space, halign=:center, valign=:bottom)
+            Luxor.text("$id: $s", L/2, L+subtitle_space, halign=:center, valign=:bottom)
         end
     end
     finish()

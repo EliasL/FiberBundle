@@ -1,7 +1,10 @@
 using Distributed
 using ProgressMeter
+using Suppressor: @suppress_err
 
-rmprocs(workers())
+# this just removes workers if there are leftovers from a crash
+@suppress_err rmprocs(workers())
+
 threads = Threads.nthreads()
 
 print("Starting $threads workers... ")
@@ -13,6 +16,8 @@ println("Done!")
     using Pkg
 end
 
+
+print("Preparing workers... ")
 
 @everywhere include("burningMan.jl")
 @everywhere include("dataManager.jl")
@@ -30,6 +35,7 @@ end
 
     # These values are reset for each step
     σ  = ones(Float64, N) # Relative tension
+    max_σ = Float64(0)
     status = fill(-1,N)
     cluster_size = zeros(Int64, N)
     cluster_outline_length = zeros(Int64, N)
@@ -39,7 +45,7 @@ end
 
     # These arrays store one value for each step
     steps = N # just for readability
-    most_stressed_fiber = zeros(Int64, steps)
+    most_stressed_fiber = zeros(Float64, steps)
     nr_clusters = zeros(Int64, steps)
     largest_cluster = zeros(Int64, steps)
     largest_perimiter = zeros(Int64, steps)
@@ -58,12 +64,13 @@ end
 
         # Simulate step
         i = findNextFiber(σ, x)
+        max_σ = σ[i]/x[i]
         resetClusters(status, σ)
         break_fiber(i, status, σ)
         _nr_clusters = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored; use_neighbourhood_rules=using_neighbourhood_rules)
 
         # Save important data from step
-        most_stressed_fiber[step] = σ[i]/x[i]
+        most_stressed_fiber[step] = max_σ
         nr_clusters[step] = _nr_clusters
         largest_cluster[step] = maximum(cluster_size)
         largest_perimiter[step] = maximum(cluster_outline_length)
@@ -90,6 +97,9 @@ end
     put!(working_channel, false) # trigger a progress bar update
 
 end
+
+println("Done!")
+
 
 function run_workers(L, distribution_name, distribution_function, seeds, path, using_neighbourhood_rules)
     p = Progress(length(seeds)*L^2)
@@ -154,16 +164,16 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite, u
 
 
         println("Calculating averages ...")
-        clean_after_run(L, name_function(), name_function, requested_seeds)
+        clean_after_run(L, distribution_name, path, requested_seeds)
         println("Done!")
     end
 end
 
 
-seeds = 1:200
-distribution_name = "Uniform with Neighbourhood rules"
+seeds = 1:15
 using_neighbourhood_rules = true
-overwrite = false
+distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
+overwrite = true
 global_path = "data/"
 if !isdir(global_path)
     println("Creating folder...")
@@ -171,7 +181,8 @@ if !isdir(global_path)
 end
 mkPath(L) = global_path*distribution_name*"/"
 
-for L in [256,32, 64, 128] 
+for L in [32, 64, 128]
+    println("Distribution: $distribution_name")
     generate_data(mkPath(L),L, seeds, distribution_name, overwrite, using_neighbourhood_rules)
 end
 

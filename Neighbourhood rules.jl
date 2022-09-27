@@ -8,7 +8,13 @@ full_name(global_path, L, distribution) = global_path*distribution*"/"*distribut
 
 global_path = "data/"
 distributions = ["Uniform with Neighbourhood rules", "Uniform"]
-desired_data = ["average_nr_clusters", "average_largest_cluster", "average_largest_perimiter", "nr_seeds_used"]
+desired_data = [
+    "average_nr_clusters",
+    "average_largest_cluster",
+    "average_largest_perimiter",
+    "average_most_stressed_fiber",
+    "nr_seeds_used",
+]
 
 function file(global_path, L, distribution)
     # We only extract the data we want
@@ -21,7 +27,7 @@ function file(global_path, L, distribution)
     return fileDict
 end
 
-L = 256
+L = 128
 N = L.*L
 k_N = [1:n for n in N]./N
 lables = permutedims([d for d in distributions])
@@ -36,14 +42,18 @@ largest_cluster_plot = plot(k_N, [f["average_largest_cluster"] for f in files], 
                     xlabel=L"k/N", ylabel=L"S_{\mathrm{max}}/N", title="Size of largest cluster", legend=false)
 
 largest_perimiter_plot = plot(k_N, [f["average_largest_perimiter"] for f in files], label = lables,
-                    xlabel=L"k/N", ylabel=L"H_{\mathrm{max}}/N", title="Length of the longest perimeter", legend=:outerright)
+                    xlabel=L"k/N", ylabel=L"H_{\mathrm{max}}/N", title="Length of the longest perimeter", legend=false)
+
+most_stressed_fiber_plot = plot(k_N, [f["average_most_stressed_fiber"] for f in files], label = lables,
+                    xlabel=L"k/N", ylabel=L"σ", title="Stress of most stressed fiber", legend=false)
+
+legend_plot = plot([0 0], axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
 
 
 l = @layout [
-    a{0.5w} b{0.5w}
-    c{0.5h} 
+    A B; E; C D
 ]
-plot(nr_clusters_plot, largest_cluster_plot, largest_perimiter_plot, layout=l,
+plot(nr_clusters_plot, largest_cluster_plot, legend_plot, largest_perimiter_plot, most_stressed_fiber_plot, layout=l,
     plot_title="Neighbourhood rules, $seeds samples, L=$L", plot_titlevspan=0.1)
 savefig("plots/Uniform with Neighbourhood rules.pdf")
 println("Saved plot!")

@@ -82,6 +82,9 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
             end
         end
         for key in averaged_keys
+            if key=="most_stressed_fiber"
+                println(averaged_keys[key])
+            end
             file["average_$key"] = averages[key]
         end
         file["seeds_used"] = seeds
@@ -102,6 +105,10 @@ function get_missing_seeds(file_name, requested_seeds)
 end
 
 function prepare_run(L, distribution, path, requested_seeds::AbstractArray, overwrite=false)
+
+    search_for_loose_files(path)
+
+
     get_name_fun = make_get_name(L, distribution, path)
     condensed_file_name = get_name_fun()
     # Get missing seeds
@@ -134,6 +141,7 @@ function clean_after_run(L, distribution, path, requested_seeds::AbstractArray)
 end
 
 function search_for_loose_files(path)
+    print("Searching for loose files...")
     files = readdir(path)
     # Find distribution with lose files
     # Assume there is only one distribution in the directory
@@ -155,9 +163,11 @@ function search_for_loose_files(path)
             end
         end
     end
+    if length(Ls)>0
+        print("\nFound loose files, cleaning up... ")
+    end
     for L in Ls
         clean_after_run(L, distribution_name, path, seeds[L])
     end
+    println("Done!")
 end
-
-search_for_loose_files("data/Uniform with Neighbourhood rules/")
