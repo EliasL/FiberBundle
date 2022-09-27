@@ -70,7 +70,7 @@ print("Preparing workers... ")
         _nr_clusters = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored; use_neighbourhood_rules=using_neighbourhood_rules)
 
         # Save important data from step
-        most_stressed_fiber[step] = max_σ
+        most_stressed_fiber[step] = 1/max_σ
         nr_clusters[step] = _nr_clusters
         largest_cluster[step] = maximum(cluster_size)
         largest_perimiter[step] = maximum(cluster_outline_length)
@@ -89,7 +89,7 @@ print("Preparing workers... ")
     jldopen(file_name, "w") do file
         file["sample_states"] = status_storage
         file["sample_states_steps"] = steps_to_store./N
-        file["most_stressed_fiber"] = most_stressed_fiber./N
+        file["most_stressed_fiber"] = most_stressed_fiber
         file["nr_clusters"] = nr_clusters./N
         file["largest_cluster"] = largest_cluster./N
         file["largest_perimiter"] = largest_perimiter./N
@@ -153,8 +153,10 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite, u
     # get distribtion function
     distribution_function(n) = zeros(n) # Default
 
-    if distribution_name == "Uniform with Neighbourhood rules"
+    if  occursin("Uniform", distribution_name)
         distribution_function = uniform
+    else
+        error("No distribution found!")
     end
 
     if length(missing_seeds) > 0
@@ -170,8 +172,8 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite, u
 end
 
 
-seeds = 1:15
-using_neighbourhood_rules = true
+seeds = 1:1000
+using_neighbourhood_rules = false
 distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
 overwrite = true
 global_path = "data/"
@@ -181,7 +183,17 @@ if !isdir(global_path)
 end
 mkPath(L) = global_path*distribution_name*"/"
 
-for L in [32, 64, 128]
+
+
+using_neighbourhood_rules = false
+distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
+for L in [128, 64, 32]
+    println("Distribution: $distribution_name")
+    generate_data(mkPath(L),L, seeds, distribution_name, overwrite, using_neighbourhood_rules)
+end
+using_neighbourhood_rules = true
+distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
+for L in [128, 64, 32]
     println("Distribution: $distribution_name")
     generate_data(mkPath(L),L, seeds, distribution_name, overwrite, using_neighbourhood_rules)
 end

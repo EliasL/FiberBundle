@@ -82,9 +82,6 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
             end
         end
         for key in averaged_keys
-            if key=="most_stressed_fiber"
-                println(averaged_keys[key])
-            end
             file["average_$key"] = averages[key]
         end
         file["seeds_used"] = seeds
