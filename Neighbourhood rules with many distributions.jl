@@ -9,7 +9,8 @@ full_name(global_path, L, distribution) = global_path*distribution*"/"*distribut
 global_path = "data/"
 
 function plot_for_t₀(t₀)
-    distributions = ["Uniform t=$t₀, L with Neighbourhood rules", "Uniform t₀=$t₀, L"]
+    distributions = ["Uniform t₀=$t₀, L with Neighbourhood rules", "Uniform t₀=$t₀, L"]
+    lables = ["Uniform "*L"t_{0}"*"=$t₀, with Neighbourhood rules", "Uniform "*L"t_{0}"*"=$t₀, L"]
     desired_data = [
         "average_nr_clusters",
         "average_largest_cluster",
@@ -32,7 +33,7 @@ function plot_for_t₀(t₀)
     L = 64
     N = L.*L
     k_N = [1:n for n in N]./N
-    lables = permutedims([d for d in distributions])
+    lables = permutedims([d for d in lables])
 
     files = [file(global_path, L, distribution) for distribution in distributions]
     seeds = files[1]["nr_seeds_used"]
@@ -56,7 +57,7 @@ function plot_for_t₀(t₀)
         A B; E; C D
     ]
     plot(nr_clusters_plot, largest_cluster_plot, legend_plot, largest_perimiter_plot, most_stressed_fiber_plot, layout=l,
-        plot_title="Neighbourhood rules t0=$t₀, $seeds samples, L=$L", plot_titlevspan=0.1)
+        plot_title="Neighbourhood rules "*L"t_{0}"*"=$t₀, $seeds samples, L=$L", plot_titlevspan=0.1)
 
     savefig("plots/Uniform with Neighbourhood rules t₀=$t₀.pdf")
 end
