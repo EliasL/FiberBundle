@@ -25,7 +25,6 @@ print("Preparing workers... ")
 
 @everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name, using_neighbourhood_rules; seed=0)
     put!(working_channel, true) # Indicate a process has started
-
     N = L*L # Number of fibers
     @assert seed != -1 ""
     Random.seed!(seed)
@@ -58,7 +57,6 @@ print("Preparing workers... ")
     # If N=100 Steps to store is now [90, 80, ... , 10]
     steps_to_store = [round(Int64,N/division * i) for i in 1:division-1]
     storage_index = 1
-
     # Do what you want
     for step in 1:N
 
@@ -172,28 +170,28 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
 end
 
 
-seeds = 1:50
+seeds = 1:15
 using_neighbourhood_rules = false
 distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
-overwrite = true
+overwrite = false
 global_path = "data/"
 if !isdir(global_path)
     println("Creating folder...")
     mkdir(global_path)
 end
-mkPath(L) = global_path*distribution_name*"/"
+mkPath(L, distribution_name) = global_path*distribution_name*"/"
 
 
-L=128
+L=64
 for t₀ in (0:9)./10
     using_neighbourhood_rules = false
-    distribution_name = "Uniform t₀=$t₀"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
+    distribution_name = "Uniform t₀=$t₀, L"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
     println("Distribution: $distribution_name")
-    generate_data(mkPath(L),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
+    generate_data(mkPath(L, distribution_name),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
     using_neighbourhood_rules = true
-    distribution_name = "Uniform t₀=$t₀"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
+    distribution_name = "Uniform t₀=$t₀, L"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
     println("Distribution: $distribution_name")
-    generate_data(mkPath(L),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
+    generate_data(mkPath(L, distribution_name),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
 end
 
 

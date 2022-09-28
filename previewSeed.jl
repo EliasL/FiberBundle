@@ -35,11 +35,11 @@ function drawmatrix(A::Matrix)
         clipreset()
     end
 end
-
+t₀ = 0.6
 global_path = "data/"
-distribution = "Uniform with Neighbourhood rules"
-L = 256
-seed = 10
+distribution = "Uniform t₀=$t₀, L with Neighbourhood rules"
+L = 64
+seed = 1
 f = file()
 layout = (3,3)
 lx = layout[1] #layout x
@@ -61,13 +61,13 @@ title_font_size = font_size * 4/3
 Drawing(image_size_x, image_size_y, "plots/$distribution sample view.pdf")
 fontface("Computer Modern")
 fontsize(title_font_size)
-text(latexstring("$distribution distribution, \$ L=$L\$"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
+Luxor.text(latexstring("$distribution distribution, \$ L=$L\$"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
 fontsize(font_size)
 for j=1:ly, i=1:lx
     origin((L+spacing_x)*(i-1), (L+spacing_y)*(j-1) + title_space)
     drawmatrix(grids[i,j])
     kN = states[i+(j-1)*lx]
-    text(latexstring("k/N = 0.$kN"), L/2, L+subtitle_space, halign=:center, valign=:bottom)
+    Luxor.text(latexstring("k/N = 0.$kN"), L/2, L+subtitle_space, halign=:center, valign=:bottom)
 end
 
 finish()
