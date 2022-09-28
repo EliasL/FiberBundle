@@ -19,7 +19,6 @@ desired_data = [
 function file(global_path, L, distribution)
     # We only extract the data we want
     fileDict = Dict()
-    println(distribution)
     jldopen(full_name(global_path, L, distribution), "r") do f
         for data_key in desired_data
             fileDict[data_key] = f[data_key]
@@ -29,7 +28,7 @@ function file(global_path, L, distribution)
     return fileDict
 end
 
-L = 32
+L = 128
 N = L.*L
 k_N = [1:n for n in N]./N
 lables = permutedims([d for d in distributions])
