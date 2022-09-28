@@ -139,7 +139,7 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, u
     end
 end
 
-function generate_data(path, L, requested_seeds, distribution_name, overwrite, using_neighbourhood_rules)
+function generate_data(path, L, requested_seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
 
     println("Processing L = $L ...")
 
@@ -154,7 +154,7 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite, u
     distribution_function(n) = zeros(n) # Default
 
     if  occursin("Uniform", distribution_name)
-        distribution_function = uniform
+        distribution_function = get_uniform_distribution(t₀)
     else
         error("No distribution found!")
     end
@@ -172,7 +172,7 @@ function generate_data(path, L, requested_seeds, distribution_name, overwrite, u
 end
 
 
-seeds = 1:1000
+seeds = 1:50
 using_neighbourhood_rules = false
 distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
 overwrite = true
@@ -184,18 +184,16 @@ end
 mkPath(L) = global_path*distribution_name*"/"
 
 
-
-using_neighbourhood_rules = false
-distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
-for L in [128, 64, 32]
+L=128
+for t₀ in (0:9)./10
+    using_neighbourhood_rules = false
+    distribution_name = "Uniform t₀=$t₀"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
     println("Distribution: $distribution_name")
-    generate_data(mkPath(L),L, seeds, distribution_name, overwrite, using_neighbourhood_rules)
-end
-using_neighbourhood_rules = true
-distribution_name = "Uniform"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
-for L in [128, 64, 32]
+    generate_data(mkPath(L),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
+    using_neighbourhood_rules = true
+    distribution_name = "Uniform t₀=$t₀"* (using_neighbourhood_rules ? " with Neighbourhood rules" : "")
     println("Distribution: $distribution_name")
-    generate_data(mkPath(L),L, seeds, distribution_name, overwrite, using_neighbourhood_rules)
+    generate_data(mkPath(L),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
 end
 
 

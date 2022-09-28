@@ -23,7 +23,6 @@ function file(global_path, L, distribution)
         for data_key in desired_data
             fileDict[data_key] = f[data_key]
         end
-        println(f["average_most_stressed_fiber"])
     end
     return fileDict
 end
