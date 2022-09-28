@@ -9,7 +9,7 @@ full_name(global_path, L, distribution) = global_path*distribution*"/"*distribut
 global_path = "data/"
 
 function plot_for_t₀(t₀)
-    distributions = ["Uniform t₀=$t₀, L with Neighbourhood rules", "Uniform t₀=$t₀, L"]
+    distributions = ["Uniform t=$t₀, L with Neighbourhood rules", "Uniform t₀=$t₀, L"]
     desired_data = [
         "average_nr_clusters",
         "average_largest_cluster",
