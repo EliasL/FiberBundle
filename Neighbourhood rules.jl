@@ -6,7 +6,7 @@ include("ploting_settings.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
-global_path = "data/"
+global_path = "data/Graphs"
 distributions = ["Uniform with Neighbourhood rules", "Uniform"]
 desired_data = [
     "average_nr_clusters",

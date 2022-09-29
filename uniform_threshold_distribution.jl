@@ -6,14 +6,14 @@ include("ploting_settings.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
-global_path = "data/"
-distribution = "Uniform"
+global_path = "data/Graphs"
+distribution = "t=0.0 Uniform"
 
 function file()
     return load(full_name(global_path, L, distribution))
 end
 
-L = [32, 64, 128, 256]
+L = [32, 64, 128]
 N = L.*L
 k_N = [1:n for n in N]./N
 lables = permutedims([latexstring("\$L={$(l)}\$") for l in L])

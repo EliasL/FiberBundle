@@ -47,6 +47,9 @@ NEIGHBOURHOOD(i, L) = [
     i+1+L, # Down Right
 ]
 
+@fastmath begin
+@inbounds begin
+
 function fillAdjacent(L::Int64, adjacent_indexes::Function=NEIGHBOURS)
     N = L*L
     nr_adjacent = length(adjacent_indexes(1,L))
@@ -295,6 +298,9 @@ function update_cluster_outline_stress(c::Int64,
     end
 end
 
+end# Inbounds end
+
+
 function get_id_of_neighbourhoods_of_outline(
     status::Vector{Int64},
     cluster_outline::Vector{Int64},
@@ -332,3 +338,7 @@ function update_cluster_otline_stress_with_neighbourhood_rules(c::Int64,
         status[fiber] = PAST_BORDER
     end
 end
+
+
+
+end# Fastmath end

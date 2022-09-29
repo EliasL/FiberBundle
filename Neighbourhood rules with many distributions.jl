@@ -6,11 +6,11 @@ include("ploting_settings.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
-global_path = "data/"
+global_path = "data/Graphs"
 
-function plot_for_t₀(t₀)
-    distributions = ["Uniform t₀=$t₀, L with Neighbourhood rules", "Uniform t₀=$t₀, L"]
-    lables = ["Uniform "*L"t_{0}"*"=$t₀, with Neighbourhood rules", "Uniform "*L"t_{0}"*"=$t₀, L"]
+function plot_for_t(t)
+    distributions = ["t=$t Uniform CNR", "t=$t Uniform"]
+    lables = ["Uniform "*L"t_{0}"*"=$t CNR", "Uniform "*L"t_{0}"*"=$t"]
     desired_data = [
         "average_nr_clusters",
         "average_largest_cluster",
@@ -30,7 +30,7 @@ function plot_for_t₀(t₀)
         return fileDict
     end
 
-    L = 64
+    L = 128
     N = L.*L
     k_N = [1:n for n in N]./N
     lables = permutedims([d for d in lables])
@@ -57,10 +57,10 @@ function plot_for_t₀(t₀)
         A B; E; C D
     ]
     plot(nr_clusters_plot, largest_cluster_plot, legend_plot, largest_perimiter_plot, most_stressed_fiber_plot, layout=l,
-        plot_title="Neighbourhood rules "*L"t_{0}"*"=$t₀, $seeds samples, L=$L", plot_titlevspan=0.1)
+        plot_title="Neighbourhood rules "*L"t_{0}"*"=$t, $seeds samples, L=$L", plot_titlevspan=0.1)
 
-    savefig("plots/Uniform with Neighbourhood rules t₀=$t₀.pdf")
+    savefig("plots/Uniform with Neighbourhood rules t₀=$t.pdf")
 end
 
-plots = [plot_for_t₀(t) for t in (0:9) ./ 10]
+plots = [plot_for_t(t) for t in (0:9) ./ 10]
 println("Saved plot!")

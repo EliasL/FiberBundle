@@ -172,7 +172,7 @@ end
 
 seeds = 1:500
 using_neighbourhood_rules = false
-overwrite = false
+overwrite = true
 global_path = "data/"
 if !isdir(global_path)
     println("Creating folder...")
@@ -181,18 +181,15 @@ end
 mkPath(distribution_name) = global_path*distribution_name*"/"
 
 
-L=128
-for t in (0:9)./10
-    using_neighbourhood_rules = false
-    distribution_name = "t=$t Uniform"* (using_neighbourhood_rules ? " CNR" : "")
-    println("Distribution: $distribution_name")
-    generate_data(mkPath(distribution_name),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
-    using_neighbourhood_rules = true
-    distribution_name = "t=$t Uniform"* (using_neighbourhood_rules ? " CNR" : "")
-    println("Distribution: $distribution_name")
-    generate_data(mkPath(distribution_name),L, seeds, distribution_name, t₀, overwrite, using_neighbourhood_rules)
+for L in [32, 64]
+    for t in (0:0)./10
+        for using_neighbourhood_rules in [false]
+            distribution_name = "t=$t Uniform"* (using_neighbourhood_rules ? " CNR" : "")
+            println("Distribution: $distribution_name")
+            generate_data(mkPath(distribution_name),L, seeds, distribution_name, t, overwrite, using_neighbourhood_rules)
+        end
+    end
 end
-
 
 
 println("Removing workers")
