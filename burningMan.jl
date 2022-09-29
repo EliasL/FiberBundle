@@ -47,9 +47,6 @@ NEIGHBOURHOOD(i, L) = [
     i+1+L, # Down Right
 ]
 
-@fastmath begin
-@inbounds begin
-
 function fillAdjacent(L::Int64, adjacent_indexes::Function=NEIGHBOURS)
     N = L*L
     nr_adjacent = length(adjacent_indexes(1,L))
@@ -125,7 +122,7 @@ function resetClusters(status::Vector{Int64}, σ::Vector{Float64})
     # After having explored and assigned numbers to 
     # all the fibers indicating their state, we now 
     # want to reset them to either be BROKEN or ALIVE
-    for i in eachindex(status)
+    @inbounds @simd for i in eachindex(status)
         s = status[i]
 
         # The statuses of the fibers will indicate
@@ -161,12 +158,14 @@ function findNextFiber(σ, x)
     # find what fiber will break first, we need to take into
     # account how much tension the fiber can handle. We do this
     # by dividing by x.
-    return argmax(σ ./ x)
+    return @fastmath argmax(σ ./ x)
 end
 
 function break_fiber(i::Int64, status::Vector{Int64}, σ::Vector{Float64})
-    status[i] = BROKEN
-    σ[i] = 0
+    @inbounds begin
+        status[i] = BROKEN
+        σ[i] = 0
+    end
 end
 
 function update_σ(status::Vector{Int64}, σ::Vector{Float64},
@@ -185,7 +184,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
 
 
     # For every fiber in the plane
-    for i in eachindex(status)
+    @fastmath @inbounds for i in eachindex(status)
         # If it is broken and unexplored
         if status[i] == BROKEN
             # We have found a new cluster!
@@ -216,26 +215,27 @@ function explore_cluster_at(i::Int64, c::Int64,
     unexplored::Vector{Int64})
     # We explore the cluster of broken fibers and
     # map the border of the cluster
+    @fastmath @inbounds begin
+        # Number of fibers in current cluster that has been explored
+        nr_explored::Int64 = 0
+        # Number of unexplored fibers that we know of.
+        nr_unexplored::Int64 = 1 # Starts at one because of i
+        # These are the actual unexplored. We just overwrite new values
+        unexplored[1] = i
+        # This value will be continuesly updated as we explore the cluster
+        cluster_size[c] = 1
+        # This value will be continuesly updated as we explore the cluster
+        cluster_outline_length[c] = 0
 
-    # Number of fibers in current cluster that has been explored
-    nr_explored::Int64 = 0
-    # Number of unexplored fibers that we know of.
-    nr_unexplored::Int64 = 1 # Starts at one because of i
-    # These are the actual unexplored. We just overwrite new values
-    unexplored[1] = i
-    # This value will be continuesly updated as we explore the cluster
-    cluster_size[c] = 1
-    # This value will be continuesly updated as we explore the cluster
-    cluster_outline_length[c] = 0
-
-    # While there are still unexplored fibers in the cluster
-    while nr_unexplored > nr_explored
-        # Preemptively count this fiber as explored (because 1 indexing)
-        nr_explored += 1
-        # Get the next unexplored fiber
-        current_fiber = unexplored[nr_explored]
-        # Go through all neighbours of the fiber
-        nr_unexplored = check_neighbours(current_fiber,nr_unexplored, c, status, neighbours, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+        # While there are still unexplored fibers in the cluster
+        while nr_unexplored > nr_explored
+            # Preemptively count this fiber as explored (because 1 indexing)
+            nr_explored += 1
+            # Get the next unexplored fiber
+            current_fiber = unexplored[nr_explored]
+            # Go through all neighbours of the fiber
+            nr_unexplored = check_neighbours(current_fiber,nr_unexplored, c, status, neighbours, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+        end
     end
 end
 
@@ -251,7 +251,7 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
     # part of the cluster, or if they are alive, in which case
     # we need to add them to the border of the cluster.
 
-    for neighbour_fiber in neighbours[current_fiber, :]
+    @fastmath @inbounds @simd for neighbour_fiber in neighbours[current_fiber, :]
         # Status of neighbour fiber
         s::Int64 = status[neighbour_fiber]
         # If this adjecent fiber is is BROKEN,
@@ -277,9 +277,11 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
 end
 
 function add_unexplored(i::Int64, unexplored::Vector{Int64}, nr_unexplored::Int64)
-    nr_unexplored += 1
-    unexplored[nr_unexplored] = i
-    return nr_unexplored
+    @fastmath @inbounds begin 
+        nr_unexplored += 1
+        unexplored[nr_unexplored] = i
+        return nr_unexplored
+    end
 end
 
 function update_cluster_outline_stress(c::Int64,
@@ -289,7 +291,7 @@ function update_cluster_outline_stress(c::Int64,
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64})
 
-    for i in 1:cluster_outline_length[c]
+    @fastmath @inbounds @simd for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]
         added_stress = cluster_size[c]/cluster_outline_length[c]
 
@@ -297,9 +299,6 @@ function update_cluster_outline_stress(c::Int64,
         status[fiber] = PAST_BORDER
     end
 end
-
-end# Inbounds end
-
 
 function get_id_of_neighbourhoods_of_outline(
     status::Vector{Int64},
@@ -338,7 +337,3 @@ function update_cluster_otline_stress_with_neighbourhood_rules(c::Int64,
         status[fiber] = PAST_BORDER
     end
 end
-
-
-
-end# Fastmath end
