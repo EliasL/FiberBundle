@@ -6,11 +6,11 @@ include("ploting_settings.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
-global_path = "data/Graphs"
+global_path = "data/"
 
 function plot_for_t(t)
-    distributions = ["t=$t Uniform CNR", "t=$t Uniform"]
-    lables = ["Uniform "*L"t_{0}"*"=$t CNR", "Uniform "*L"t_{0}"*"=$t"]
+    distributions = ["t=$t Uniform SNR", "t=$t Uniform CNR", "t=$t Uniform"]
+    lables = ["Uniform "*L"t_{0}"*"=$t SNR", "Uniform "*L"t_{0}"*"=$t CNR", "Uniform "*L"t_{0}"*"=$t"]
     desired_data = [
         "average_nr_clusters",
         "average_largest_cluster",
@@ -50,7 +50,7 @@ function plot_for_t(t)
     most_stressed_fiber_plot = plot(k_N, [f["average_most_stressed_fiber"] for f in files], label = lables,
                         xlabel=L"k/N", ylabel=L"σ", title="Stress of most stressed fiber", legend=false)
 
-    legend_plot = plot([0 0], axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
+    legend_plot = plot([0 0 0], axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
 
 
     l = @layout [
@@ -59,7 +59,7 @@ function plot_for_t(t)
     plot(nr_clusters_plot, largest_cluster_plot, legend_plot, largest_perimiter_plot, most_stressed_fiber_plot, layout=l,
         plot_title="Neighbourhood rules "*L"t_{0}"*"=$t, $seeds samples, L=$L", plot_titlevspan=0.1)
 
-    savefig("plots/Uniform with Neighbourhood rules t₀=$t.pdf")
+    savefig("plots/Graphs/Uniform with Neighbourhood rules t₀=$t.pdf")
 end
 
 plots = [plot_for_t(t) for t in (0:9) ./ 10]

@@ -36,8 +36,8 @@ function drawmatrix(A::Matrix)
 end
 
 function draw_seeds(t)
-    global_path = "data/Visualizations"
-    distribution = "t=$t Uniform CNR"
+    global_path = "data/"
+    distribution = "t=$t Uniform"
     L = 128
     seed = 2
 
@@ -60,7 +60,7 @@ function draw_seeds(t)
     font_size = 4*L/32
     title_font_size = font_size * 4/3
 
-    Drawing(image_size_x, image_size_y, "plots/$distribution sample view.pdf")
+    Drawing(image_size_x, image_size_y, "plots/Visualizations/$distribution sample view.pdf")
     fontface("Computer Modern")
     fontsize(title_font_size)
     Luxor.text(latexstring("$distribution distribution, \$ L=$L\$"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)

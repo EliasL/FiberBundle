@@ -175,7 +175,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64};
-    use_neighbourhood_rules::Bool=false)
+    neighbourhood_rules::String="None")
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -196,8 +196,10 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_outline, cluster_outline_length, unexplored)
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
-            if use_neighbourhood_rules
-                update_cluster_otline_stress_with_neighbourhood_rules(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
+            if neighbourhood_rules == "CNR"
+                update_cluster_otline_stress_with_complex_neighbourhood_rules(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
+            elseif neighbourhood_rules == "SNR"
+                update_cluster_otline_stress_with_simple_neighbourhood_rules(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
             else
                 update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length)
             end
@@ -300,6 +302,42 @@ function update_cluster_outline_stress(c::Int64,
     end
 end
 
+function alive_fibers_in_neighbourhood(m::Array{Int64})
+    alive_fibers = 0
+    @fastmath @inbounds @simd for f in m
+        if f<0
+            alive_fibers +=1
+        end
+    end
+    return alive_fibers
+end
+
+function update_cluster_otline_stress_with_simple_neighbourhood_rules(c::Int64,
+    status::Vector{Int64},
+    σ::Vector{Float64},
+    cluster_size::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    cluster_outline_length::Vector{Int64},
+    neighbourhoods::Array{Int64, 2})
+
+    # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
+    α = 2 #I don't know what this one qualitatively does
+    alive_fibers = map(o -> alive_fibers_in_neighbourhood(status[neighbourhoods[o, :]]), cluster_outline[1:cluster_outline_length[c]])
+    C = 1 / sum(Float64.(alive_fibers) .^(-α+1)) #Normalization constant
+    g = C .* Float64.(alive_fibers).^(-α)
+
+
+    @fastmath @simd for i in 1:cluster_outline_length[c] #TODO can add inbounds once tested
+        fiber = cluster_outline[i]
+        added_stress = cluster_size[c]*alive_fibers[i]*g[i]
+
+        σ[fiber] += added_stress
+        status[fiber] = PAST_BORDER
+    end
+
+end
+
+
 function get_id_of_neighbourhoods_of_outline(
     status::Vector{Int64},
     cluster_outline::Vector{Int64},
@@ -307,7 +345,7 @@ function get_id_of_neighbourhoods_of_outline(
     return map(o -> neighbourhoodToInt(status[neighbourhoods[o, :]]), cluster_outline)
 end
 
-function update_cluster_otline_stress_with_neighbourhood_rules(c::Int64,
+function update_cluster_otline_stress_with_complex_neighbourhood_rules(c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
     cluster_size::Vector{Int64},

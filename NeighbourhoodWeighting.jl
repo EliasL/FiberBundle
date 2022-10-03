@@ -48,9 +48,9 @@ function compute_strength(m::Matrix)
     return strength
 end
 
-function neighbourhoodToInt(m::AbstractArray{Int64})
+function neighbourhoodToInt(m::Array{Int64})
     id = 1# Not zero because of zero indexing in julia
-    for (i, alive) in enumerate(m)
+    @fastmath @inbounds for (i, alive) in enumerate(m)
         if alive<0
             if i > 5
                 id +=2^(i-2)
@@ -61,6 +61,21 @@ function neighbourhoodToInt(m::AbstractArray{Int64})
     end
     return id
 end
+
+function neighbourhoodToInt(m::Matrix{Int64})
+    id = 1# Not zero because of zero indexing in julia
+    @fastmath @inbounds for (i, alive) in enumerate(m)
+        if alive<0
+            if i > 5
+                id +=2^(i-2)
+            elseif i < 5
+                id +=2^(i-1)
+            end
+        end
+    end
+    return id
+end
+
 
 neighbourhoodStrengths = zeros(Float64, 256)
 for m in generate_neighbours().*-1
