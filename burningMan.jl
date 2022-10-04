@@ -3,7 +3,7 @@ using Random
 using ProgressMeter
 using SparseArrays
 
-include("NeighbourhoodWeighting.jl")
+include("support/neighbourhoodWeighting.jl")
 
 """
 Simulate breakage of an LxL fiber matrix

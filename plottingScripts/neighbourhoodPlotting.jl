@@ -3,7 +3,7 @@ using JLD2
 using MathTeXEngine
 using LaTeXStrings
 
-include("NeighbourhoodWeighting.jl")
+include("../support/neighbourhoodWeighting.jl")
 
 function drawmatrix(A::Matrix)
     L = size(A,1)

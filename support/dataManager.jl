@@ -1,11 +1,11 @@
 using JLD2
 
-keys = ["nr_clusters", "largest_cluster", "largest_perimiter", "most_stressed_fiber", "sample_states"]
+data_keys = ["nr_clusters", "largest_cluster", "largest_perimiter", "most_stressed_fiber", "sample_states"]
 
 nr_averaged_keys = 4
-averaged_keys = keys[1:nr_averaged_keys]
-# These keys will not be averaged
-seed_specific_keys = keys[nr_averaged_keys+1:end]
+averaged_keys = data_keys[1:nr_averaged_keys]
+# These data_keys will not be averaged
+seed_specific_keys = data_keys[nr_averaged_keys+1:end]
 
 function get_name(L, distribution, path, seed::Int=-1)
     @assert seed>=-1 "We don't want to use negative seeds since -1 is special here"
@@ -20,8 +20,10 @@ function make_get_name(L, distribution, path)
     return f(seed=-1) = get_name(L, distribution, path, seed)
 end
 
-function expand_file(name, get_name_fun::Function, overwritten_seeds::AbstractArray{Int64})
-    jldopen(name, "r") do file
+function expand_file(L, distribution, path, overwritten_seeds::AbstractArray=Vector{Int64}([]))
+    get_name_fun = make_get_name(L, distribution, path)
+    condensed_file_name = get_name_fun()
+    jldopen(condensed_file_name, "r") do file
         seeds = file["seeds_used"]
         for seed::Int64 in seeds
             if seed in overwritten_seeds
@@ -31,7 +33,7 @@ function expand_file(name, get_name_fun::Function, overwritten_seeds::AbstractAr
             end
             # Write out the file
             jldopen(get_name_fun(seed), "w") do s_file
-                for key in keys
+                for key in data_keys
                     if haskey(file, "$key/$seed")
                         s_file[key] = file["$key/$seed"]
                     end
@@ -70,9 +72,12 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
         for seed in seeds
             seed_file_name = get_name_fun(seed)
             jldopen(seed_file_name, "r") do s_file
-                for key in keys
+                for key in data_keys
                     if key in averaged_keys
                         averages[key] += s_file[key] ./ nr_seeds
+                    end
+                    if key == "sample_states" && seed > 10
+                        continue
                     end
                     file["$key/$seed"] = s_file[key]
                 end
@@ -126,7 +131,7 @@ function prepare_run(L, distribution, path, requested_seeds::AbstractArray, over
         if length(missing_seeds) == 0
             println("All seeds already exist")
         else
-            expand_file(condensed_file_name, get_name_fun, missing_seeds)
+            expand_file(L, distribution, path, missing_seeds)
         end
     end
 
@@ -168,3 +173,10 @@ function search_for_loose_files(path)
     end
     println("Done!")
 end
+
+function remove_key(key, L, distribution, path)
+    seeds = get_seeds_in_compact_file(get_name(L, distribution, path))
+    expand_file(L, distribution, path)    
+    filter!(e->e≠key,data_keys)
+    condense_files(L, distribution, path, seeds)
+end 

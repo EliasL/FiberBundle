@@ -2,15 +2,15 @@ using Plots
 using JLD2
 using LaTeXStrings
 
-include("ploting_settings.jl")
+include("../support/ploting_settings.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
 global_path = "data/"
 
 function plot_for_t(t)
-    distributions = ["t=$t Uniform SNR", "t=$t Uniform CNR", "t=$t Uniform"]
-    lables = ["Uniform "*L"t_{0}"*"=$t SNR", "Uniform "*L"t_{0}"*"=$t CNR", "Uniform "*L"t_{0}"*"=$t"]
+    distributions = [ "t=$t Uniform", "t=$t Uniform SNR", "t=$t Uniform CNR"]
+    lables = ["Uniform "*L"t_{0}"*"=$t", "Uniform "*L"t_{0}"*"=$t SNR", "Uniform "*L"t_{0}"*"=$t CNR"]
     desired_data = [
         "average_nr_clusters",
         "average_largest_cluster",
@@ -34,6 +34,7 @@ function plot_for_t(t)
     N = L.*L
     k_N = [1:n for n in N]./N
     lables = permutedims([d for d in lables])
+    legend_lables = permutedims(zeros(Int64, length(distributions)))
 
     files = [file(global_path, L, distribution) for distribution in distributions]
     seeds = files[1]["nr_seeds_used"]
@@ -50,7 +51,7 @@ function plot_for_t(t)
     most_stressed_fiber_plot = plot(k_N, [f["average_most_stressed_fiber"] for f in files], label = lables,
                         xlabel=L"k/N", ylabel=L"σ", title="Stress of most stressed fiber", legend=false)
 
-    legend_plot = plot([0 0 0], axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
+    legend_plot = plot(legend_lables, axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
 
 
     l = @layout [

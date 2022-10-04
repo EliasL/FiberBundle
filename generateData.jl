@@ -20,8 +20,8 @@ end
 print("Preparing workers... ")
 
 @everywhere include("burningMan.jl")
-@everywhere include("dataManager.jl")
-@everywhere include("distributions.jl")
+@everywhere include("support/dataManager.jl")
+@everywhere include("support/distributions.jl")
 
 @everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name, neighbourhood_rules; seed=0)
     put!(working_channel, true) # Indicate a process has started
@@ -74,7 +74,7 @@ print("Preparing workers... ")
         largest_perimiter[step] = maximum(cluster_outline_length)
 
         # Save step for visualization
-        if step == steps_to_store[storage_index]
+        if step == steps_to_store[storage_index] && seed <= 11 #Only save samples from 10 first seeds
             status_storage[storage_index, :] = status
             if storage_index < length(steps_to_store)
                 storage_index += 1  
@@ -85,7 +85,9 @@ print("Preparing workers... ")
     end 
     
     jldopen(file_name, "w") do file
-        file["sample_states"] = status_storage
+        if seed <= 11
+            file["sample_states"] = status_storage
+        end
         file["sample_states_steps"] = steps_to_store./N
         file["most_stressed_fiber"] = most_stressed_fiber
         file["nr_clusters"] = nr_clusters./N
@@ -170,7 +172,7 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
 end
 
 
-seeds = 1:500
+seeds = 1:11
 using_neighbourhood_rules = false
 max_t = 9
 overwrite = false
@@ -185,7 +187,7 @@ mkPath(distribution_name) = global_path*distribution_name*"/"
 for L in [128]
     for t in (0:max_t)./10
         for neighbourhood_rules in ["", "CNR", "SNR"]
-            distribution_name = "t=$t Uniform"* (neighbourhood_rules=="" ? "" : " "*neighbourhood_rules)
+            distribution_name = "t=$t Uniform" * (neighbourhood_rules=="" ? "" : " " * neighbourhood_rules)
             println("Distribution: $distribution_name")
             generate_data(mkPath(distribution_name),L, seeds, distribution_name, t, overwrite, neighbourhood_rules)
         end

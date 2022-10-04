@@ -2,7 +2,7 @@ using Plots
 using JLD2
 using LaTeXStrings
 
-include("ploting_settings.jl")
+include("../support/ploting_settings.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
@@ -31,6 +31,7 @@ L = 128
 N = L.*L
 k_N = [1:n for n in N]./N
 lables = permutedims([d for d in distributions])
+legend_lables = permutedims(zeros(Int64, length(distributions)))
 
 files = [file(global_path, L, distribution) for distribution in distributions]
 seeds = files[1]["nr_seeds_used"]
@@ -47,7 +48,7 @@ largest_perimiter_plot = plot(k_N, [f["average_largest_perimiter"] for f in file
 most_stressed_fiber_plot = plot(k_N, [f["average_most_stressed_fiber"] for f in files], label = lables,
                     xlabel=L"k/N", ylabel=L"σ", title="Stress of most stressed fiber", legend=false)
 
-legend_plot = plot([0 0], axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
+legend_plot = plot(legend_lables, axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
 
 
 l = @layout [
@@ -55,5 +56,5 @@ l = @layout [
 ]
 plot(nr_clusters_plot, largest_cluster_plot, legend_plot, largest_perimiter_plot, most_stressed_fiber_plot, layout=l,
     plot_title="Neighbourhood rules, $seeds samples, L=$L", plot_titlevspan=0.1)
-savefig("plots/Uniform with Neighbourhood rules.pdf")
+savefig("plots/Graphs/Uniform with Neighbourhood rules.pdf")
 println("Saved plot!")
