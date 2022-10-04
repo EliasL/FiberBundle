@@ -175,7 +175,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64};
-    neighbourhood_rules::String="None")
+    neighbourhood_rule::String="None")
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -196,10 +196,10 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_outline, cluster_outline_length, unexplored)
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
-            if neighbourhood_rules == "CNR"
-                update_cluster_otline_stress_with_complex_neighbourhood_rules(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
-            elseif neighbourhood_rules == "SNR"
-                update_cluster_otline_stress_with_simple_neighbourhood_rules(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
+            if neighbourhood_rule == "CNR"
+                update_cluster_otline_stress_with_complex_neighbourhood_rule(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
+            elseif neighbourhood_rule == "SNR"
+                update_cluster_otline_stress_with_simple_neighbourhood_rule(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
             else
                 update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length)
             end
@@ -312,7 +312,7 @@ function alive_fibers_in_neighbourhood(m::Array{Int64})
     return alive_fibers
 end
 
-function update_cluster_otline_stress_with_simple_neighbourhood_rules(c::Int64,
+function update_cluster_otline_stress_with_simple_neighbourhood_rule(c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
     cluster_size::Vector{Int64},
@@ -345,7 +345,7 @@ function get_id_of_neighbourhoods_of_outline(
     return map(o -> neighbourhoodToInt(status[neighbourhoods[o, :]]), cluster_outline)
 end
 
-function update_cluster_otline_stress_with_complex_neighbourhood_rules(c::Int64,
+function update_cluster_otline_stress_with_complex_neighbourhood_rule(c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
     cluster_size::Vector{Int64},

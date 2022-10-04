@@ -149,7 +149,7 @@ function neighbourhood_strength_test(nr)
             i = findNextFiber(σ, x)
             resetClusters(status, σ)
             break_fiber(i, status, σ)
-            update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rules=nr)
+            update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=nr)
             @assert sum(σ) ≈ N "No conservation of tension"
         end
     end
