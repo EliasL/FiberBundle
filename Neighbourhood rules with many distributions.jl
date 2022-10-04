@@ -57,7 +57,7 @@ function plot_for_t(t)
         A B; E; C D
     ]
     plot(nr_clusters_plot, largest_cluster_plot, legend_plot, largest_perimiter_plot, most_stressed_fiber_plot, layout=l,
-        plot_title="Neighbourhood rules "*L"t_0="*"$t, $seeds s., L="*"$L", plot_titlevspan=0.1)
+        plot_title=latexstring("Neighbourhood rules \$t_0=$t, L=$L, $seeds\$ s."), plot_titlevspan=0.1)
 
     savefig("plots/Graphs/Uniform with Neighbourhood rules t₀=$t.pdf")
 end
