@@ -170,7 +170,7 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
 end
 
 
-seeds = 1:15
+seeds = 1:500
 using_neighbourhood_rules = false
 max_t = 9
 overwrite = false
@@ -184,7 +184,7 @@ mkPath(distribution_name) = global_path*distribution_name*"/"
 
 for L in [128]
     for t in (0:max_t)./10
-        for neighbourhood_rules in ["SNR"]#["", "CNR", "SNR"]
+        for neighbourhood_rules in ["", "CNR", "SNR"]
             distribution_name = "t=$t Uniform"* (neighbourhood_rules=="" ? "" : " "*neighbourhood_rules)
             println("Distribution: $distribution_name")
             generate_data(mkPath(distribution_name),L, seeds, distribution_name, t, overwrite, neighbourhood_rules)
