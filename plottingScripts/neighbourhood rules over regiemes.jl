@@ -9,7 +9,6 @@ full_name(global_path, L, distribution) = global_path*distribution*"/"*distribut
 global_path = "data/"
 
 distributions(t) = [ "t=$t Uniform", "t=$t Uniform SNR", "t=$t Uniform CNR"]
-lables = ["something else"]
 desired_data = [
     "average_nr_clusters",
     "average_largest_cluster",
@@ -32,34 +31,30 @@ end
 L = 128
 N = L.*L
 k_N = [1:n for n in N]./N
-lables = permutedims([d for d in lables])
-legend_lables = permutedims(zeros(Int64, length(distributions)))
 
-files = [[file(global_path, L, distribution) for distribution in distributions(t)] for t in (1:9) ./ 10]
+t = 1:9
+lables = permutedims(["Uniform", "Uniform SNR", "Uniform CNR"])
+files = [[file(global_path, L, distribution) for distribution in distributions(t_)] for t_ in t ./10]
 seeds = files[1][1]["nr_seeds_used"]
 #Files [t] [distribution] [value]
 
-nr_clusters_plot = plot(k_N, [f["average_nr_clusters"] for f in files], label = lables,
-                    xlabel=L"k/N", ylabel=L"\#/N", title="Relative number of clusters", legend=false)
-
-largest_cluster_plot = plot(k_N, [f["average_largest_cluster"] for f in files], label = lables,
-                    xlabel=L"k/N", ylabel=L"S_{\mathrm{max}}/N", title="Size of largest cluster", legend=false)
-
-largest_perimiter_plot = plot(k_N, [f["average_largest_perimiter"] for f in files], label = lables,
-                    xlabel=L"k/N", ylabel=L"H_{\mathrm{max}}/N", title="Length of the longest perimeter", legend=false)
-
-most_stressed_fiber_plot = plot(k_N, [f["average_most_stressed_fiber"] for f in files], label = lables,
-                    xlabel=L"k/N", ylabel=L"σ", title="Stress of most stressed fiber", legend=false)
-
-legend_plot = plot(legend_lables, axis=nothing, showaxis = false, grid = false, label=lables, legend=:inside)
+k_where_nr_clusters_is_max = [[argmax(files[t_][i]["average_nr_clusters"]) / N for t_ in t] for i in 1:length(distributions(1))]
+max_number_of_clusters = [[1/(maximum(files[t_][i]["average_nr_clusters"])*N) for t_ in t] for i in 1:length(distributions(1))]
+lagrest clusetr size
+largest perimeiter
+sigma
+time of sigma_c
 
 
-l = @layout [
-    A B; E; C D
-]
-plot(nr_clusters_plot, largest_cluster_plot, legend_plot, largest_perimiter_plot, most_stressed_fiber_plot, layout=l,
-    plot_title=latexstring("Neighbourhood rules \$t_0=$t, L=$L, $seeds\$ s."), plot_titlevspan=0.1)
+nr_clusters_plot = plot(t ./ 10, max_number_of_clusters , label = lables, legend=:topleft,
+                    xlabel=L"t_0", ylabel=L"1/N^{\mathrm{max}}_c", title="Maximum of number of clusters")
 
-savefig("plots/Graphs/Uniform with Neighbourhood rules t₀=$t.pdf")
+largest_cluster_plot = plot(t  ./ 10, k_where_nr_clusters_is_max, label = lables,
+                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"N^{\mathrm{max}}_c)", title=L"k/N"*" where maximum was reached")
+
+plot(nr_clusters_plot, largest_cluster_plot, 
+    plot_title=latexstring("Cluster size over regiemes, \$L=$L\$, $seeds samples"), plot_titlevspan=0.1)
+
+savefig("plots/Graphs/Uniform with Neighbourhood rules over different regiemes.pdf")
 
 println("Saved plot!")
