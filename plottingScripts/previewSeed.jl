@@ -2,12 +2,15 @@ using Luxor
 using JLD2
 using MathTeXEngine
 using LaTeXStrings
+using Plots
+using Random
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
 function drawmatrix(A::Matrix)
     L = size(A,1)
     tiles = Tiler(L, L, L, L, margin=0)
+    cur_colors = palette(:glasbey_category10_n256)
     for (pos, n) in tiles
         pos = pos .+ L/2
         fiber = A[ceil(Int, pos[1]), ceil(Int, pos[2])]
@@ -16,28 +19,20 @@ function drawmatrix(A::Matrix)
             background(0.2,0.2,0.2)
             
         elseif fiber == -3
-            ngon(pos, tiles.tilewidth/1.6, 6, 0, :clip)
+            #ngon(pos, tiles.tilewidth/1.6, 6, 0, :clip)
+            box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
             background(0.2,0.2,0.2)
-        elseif fiber == 1
-            box(pos, tiles.tilewidth*0.6, tiles.tileheight*0.6, :clip)
-            background(0.5,0.0,0.0)
-        elseif fiber == 2
-            box(pos, tiles.tilewidth*0.6, tiles.tileheight*0.6, :clip)
-            background(0.0,0.5,0.0)
-        elseif fiber == 3
-            box(pos, tiles.tilewidth*0.6, tiles.tileheight*0.6, :clip)
-            background(0.0,0.0,0.5)
-        else 
-            #box(pos, tiles.tilewidth*0.8, tiles.tileheight*0.8, :clip)
-            #background(0.15,0.15,0.15)
+        else
+            box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
+            background(cur_colors[mod1(fiber, 256)].r, cur_colors[mod1(fiber, 256)].g, cur_colors[mod1(fiber, 256)].b)
+
         end
         clipreset()
     end
 end
 
-function draw_seeds(t)
+function draw_seeds(distribution)
     global_path = "data/"
-    distribution = "t=$t Uniform"
     L = 128
     seed = 2
 
@@ -75,6 +70,9 @@ function draw_seeds(t)
     finish()
 end
 
-for t in (0:9) ./ 10
-    draw_seeds(t)
+for NR in ["UNR", "SNR", "CNR"]
+    d(t) = "t=$t Uniform $NR"
+    for t in (0:9) ./ 10
+        draw_seeds(d(t))
+    end
 end
