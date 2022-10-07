@@ -1,3 +1,4 @@
 {
-    "julia.NumThreads": 15
+    "julia.NumThreads": 15,
+    "julia.environmentPath": "/Users/elias/.julia/environments/__pluto_boot_v2_1.7.1"
 }
