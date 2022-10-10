@@ -11,9 +11,8 @@ print("Starting $threads workers... ")
 addprocs(threads)
 println("Done!")
 @everywhere begin
-    using CodecBzip2
     using JLD2
-    using Pkg
+    using Pkg #TODO try to remove this one
 end
 
 
@@ -37,6 +36,7 @@ print("Preparing workers... ")
     max_σ = Float64(0)
     status = fill(-1,N)
     cluster_size = zeros(Int64, N)
+    cluster_dimensions = zeros(Int64, 8) #Or 4? max_x, min_x, max_y, min_y
     cluster_outline_length = zeros(Int64, N)
     # These values are reset for each cluster
     cluster_outline = zeros(Int64, N)
@@ -54,10 +54,16 @@ print("Preparing workers... ")
     # ie, 9 images
     division = 10
     status_storage = zeros(Int64, division-1, N)
+    tension_storage = zeros(Int64, division-1, N)
+    spanning_cluster_storage = zeros(Int64, N)
     # If N=100 Steps to store is now [90, 80, ... , 10]
     steps_to_store = [round(Int64,N/division * i) for i in 1:division-1]
     storage_index = 1
-    # Do what you want
+
+    # Spanning cluster storage
+    # Spanning cluster 
+
+    # Break the bundle
     for step in 1:N
 
         # Simulate step
@@ -65,7 +71,7 @@ print("Preparing workers... ")
         max_σ = σ[i]/x[i]
         resetClusters(status, σ)
         break_fiber(i, status, σ)
-        _nr_clusters = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
+        _nr_clusters, spanning_cluster = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
 
         # Save important data from step
         most_stressed_fiber[step] = 1/max_σ
@@ -74,19 +80,26 @@ print("Preparing workers... ")
         largest_perimiter[step] = maximum(cluster_outline_length)
 
         # Save step for visualization
-        if step == steps_to_store[storage_index] && seed <= 11 #Only save samples from 10 first seeds
-            status_storage[storage_index, :] = status
-            if storage_index < length(steps_to_store)
-                storage_index += 1  
+        if seed <= 10 #Only save samples from 10 first seeds
+            if step == steps_to_store[storage_index]
+                status_storage[storage_index, :] = status
+                tension_storage[storage_index, :] = σ ./ x
+                if storage_index < length(steps_to_store)
+                    storage_index += 1  
+                end
+            end
+            if spanning_cluster
+                spanning_cluster_storage = status
             end
         end
-
         put!(progress_channel, true) # trigger a progress bar update
     end 
     
     jldopen(file_name, "w") do file
-        if seed <= 11
+        if seed <= 10
             file["sample_states"] = status_storage
+            file["tenstion"] = tension_storage
+            file["spanning cluster"] = spanning_cluster_storage
         end
         file["sample_states_steps"] = steps_to_store./N
         file["most_stressed_fiber"] = most_stressed_fiber
@@ -141,8 +154,6 @@ end
 
 function generate_data(path, L, requested_seeds, distribution_name, t₀, overwrite, neighbourhood_rule)
 
-    println("Processing L = $L ...")
-
     if !isdir(path)
         println("Creating folder... ")
         mkdir(path)
@@ -160,14 +171,14 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
     end
 
     if length(missing_seeds) > 0
-        println("Running workers...")
+        println("Running workers...                            ")
         run_workers(L, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule)
         println("Done!")
 
 
-        println("Calculating averages ...")
+        print("Calculating averages... ")
         clean_after_run(L, distribution_name, path, requested_seeds)
-        println("Done!")
+        print("Done!\r")
     end
 end
 
@@ -185,13 +196,12 @@ function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; over
         for t in regimes
             for neighbourhood_rule in neighbourhood_rules
                 distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
-                println("Distribution: $distribution_name")
+                println("Distribution: $distribution_name, L: $L          ")
                 generate_data(mkPath(distribution_name),L, seeds, distribution_name, t, overwrite, neighbourhood_rule)
             end
         end
     end
+
+    println("Removing workers")
+    rmprocs(workers())
 end
-
-
-println("Removing workers")
-rmprocs(workers())

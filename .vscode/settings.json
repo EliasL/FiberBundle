@@ -1,3 +1,4 @@
 {
-    "julia.NumThreads": 15
+    "julia.NumThreads": 30,
+    "julia.executablePath" : "/share/apps/eb/cascadelake/software/Julia/1.7.2-linux-x86_64/bin/julia"
 }

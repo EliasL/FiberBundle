@@ -1,9 +1,9 @@
 
 include("dataGenerator.jl")
 
-seeds = 1:11
+seeds = 0:30
 L = [128]
-t = (1:9) ./ 10
+t = (0:9) ./ 10
 NR = ["UNR", "CNR", "SNR"]
 
-itterate_settings(L, t, NR, seeds; overwrite=false)
+itterate_settings(L, t, NR, seeds; overwrite=true)

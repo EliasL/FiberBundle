@@ -7,17 +7,19 @@ averaged_keys = data_keys[1:nr_averaged_keys]
 # These data_keys will not be averaged
 seed_specific_keys = data_keys[nr_averaged_keys+1:end]
 
-function get_name(L, distribution, path, seed::Int=-1)
+function get_name(L, distribution, path, seed::Int=-1, average=false)
     @assert seed>=-1 "We don't want to use negative seeds since -1 is special here"
-    if seed == -1
+    if average
         return path*distribution*"$L.jld2"
+    elseif seed == -1
+        return path*distribution*"$(L)_bulk.jld2"
     else
-        return path*distribution*"$L,$seed.jld2"
+        return path*distribution*"$L,$(seed)_bulk.jld2"
     end
 end
 
 function make_get_name(L, distribution, path)
-    return f(seed=-1) = get_name(L, distribution, path, seed)
+    return f(seed=-1; average=false) = get_name(L, distribution, path, seed, average)
 end
 
 function expand_file(L, distribution, path, overwritten_seeds::AbstractArray=Vector{Int64}([]))
@@ -60,6 +62,7 @@ end
 function condense_files(L, distribution, path, requested_seeds::AbstractArray; remove_files=true)
     get_name_fun = make_get_name(L, distribution, path)
     condensed_file_name = get_name_fun()
+    averaged_file_name = get_name_fun(average=true)
     existing_seeds = get_seeds_in_compact_file(condensed_file_name)
     seeds = union(existing_seeds, requested_seeds)
     nr_seeds = length(seeds)
@@ -68,7 +71,8 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
     for key in averaged_keys
         averages[key] = zeros(L*L)
     end
-    jldopen(condensed_file_name, "w") do file
+    jldopen(condensed_file_name, "w") do condensed_file
+    jldopen(averaged_file_name, "w") do averaged_file
         for seed in seeds
             seed_file_name = get_name_fun(seed)
             jldopen(seed_file_name, "r") do s_file
@@ -79,7 +83,7 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
                     if key == "sample_states" && seed > 10
                         continue
                     end
-                    file["$key/$seed"] = s_file[key]
+                    condensed_file["$key/$seed"] = s_file[key]
                 end
             end
             if remove_files
@@ -87,11 +91,14 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
             end
         end
         for key in averaged_keys
-            file["average_$key"] = averages[key]
+            averaged_file["average_$key"] = averages[key]
         end
-        file["seeds_used"] = seeds
-        file["nr_seeds_used"] = length(seeds)
-    end
+        averaged_file["seeds_used"] = seeds
+        averaged_file["nr_seeds_used"] = length(seeds)
+        condensed_file["seeds_used"] = seeds
+        condensed_file["nr_seeds_used"] = length(seeds)
+    end # Averaged file
+    end # Condensed file
 end
 
 function get_missing_seeds(file_name, requested_seeds)
@@ -143,7 +150,7 @@ function clean_after_run(L, distribution, path, requested_seeds::AbstractArray)
 end
 
 function search_for_loose_files(path)
-    print("Searching for loose files...")
+    print("Searching for loose files... ")
     files = readdir(path)
     # Find distribution with lose files
     # Assume there is only one distribution in the directory
@@ -171,7 +178,7 @@ function search_for_loose_files(path)
     for L in Ls
         clean_after_run(L, distribution_name, path, seeds[L])
     end
-    println("Done!")
+    print("Done!\r")
 end
 
 function remove_key(key, L, distribution, path)
