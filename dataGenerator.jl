@@ -54,7 +54,7 @@ print("Preparing workers... ")
     # ie, 9 images
     division = 10
     status_storage = zeros(Int64, division-1, N)
-    tension_storage = zeros(Int64, division-1, N)
+    tension_storage = zeros(Float64, division-1, N)
     spanning_cluster_storage = zeros(Int64, N)
     # If N=100 Steps to store is now [90, 80, ... , 10]
     steps_to_store = [round(Int64,N/division * i) for i in 1:division-1]
@@ -111,6 +111,7 @@ print("Preparing workers... ")
 
 end
 
+# Done preparing workers!
 println("Done!")
 
 
