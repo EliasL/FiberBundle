@@ -1,1 +1,3 @@
 *_bulk.jld2
+.vscode/* 
+*.gz

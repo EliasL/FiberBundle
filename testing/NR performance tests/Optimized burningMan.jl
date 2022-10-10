@@ -2,7 +2,8 @@ using BenchmarkTools
 using Random
 using ProgressMeter
 using SparseArrays
-using Profile 
+using Profile
+using PProf
 
 include("../../support/neighbourhoodWeighting.jl")
 
@@ -488,4 +489,5 @@ end
 #println("SNR")
 #@btime main(NR) setup=(NR="SNR")
 println("CNR")
-@profile main("CNR") 
+@profile @btime main("CNR") 
+pprof(;webport=58699)
