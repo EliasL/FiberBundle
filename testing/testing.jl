@@ -20,6 +20,7 @@ function basic_test()
     neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
     status = fill(-1, N)
     cluster_size = zeros(Int64, N)
+    cluster_dimensions = zeros(Int64, N)
     cluster_outline = zeros(Int64, N)
     cluster_outline_length = zeros(Int64, N)
     unexplored = zeros(Int64, N)
@@ -30,7 +31,7 @@ function basic_test()
     resetClusters(status, σ)
     break_fiber(i, status, σ)
     @assert status[i]==BROKEN "The first fiber should be broken"
-    update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+    update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
     @assert neighbours[i, :] == [3,2,4,7] "Incorrect neighbours"
     @assert neighbours[9, :] == [8,7,3,6] "Incorrect neighbours"
     @assert all(status[neighbours[1,:]] .== PAST_BORDER) "These should be past borders"
@@ -42,7 +43,7 @@ function basic_test()
     @assert i==2 "The second fiber should break"
     resetClusters(status, σ)
     break_fiber(i, status, σ)
-    update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+    update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
     @assert all(status[[1,2]] .== 1) "Both should belong to the same cluster"
     @assert sum(σ) ≈ N "No conservation of tension"
 
@@ -51,7 +52,7 @@ function basic_test()
         i = findNextFiber(σ, x)
         resetClusters(status, σ)
         break_fiber(i, status, σ)
-        update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+        update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
         @assert sum(σ) ≈ N "No conservation of tension"
     end
 end
@@ -86,6 +87,7 @@ function cluster_test()
         neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
         status = fill(-1, N)
         cluster_size = zeros(Int64, N)
+        cluster_dimensions = zeros(Int64, N)
         cluster_outline = zeros(Int64, N)
         cluster_outline_length = zeros(Int64, N)
         unexplored = zeros(Int64, N)
@@ -93,7 +95,7 @@ function cluster_test()
         for i in broken
             break_fiber(i, status, σ)
         end
-        update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored)
+        update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
         @assert sum(σ) ≈ N "No conservation of tension"
 
         @assert clusterSize == cluster_size[1] "Cluster size missmatch"
@@ -141,6 +143,7 @@ function neighbourhood_strength_test(nr)
         neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
         status = fill(-1, N)
         cluster_size = zeros(Int64, N)
+        cluster_dimensions = zeros(Int64, N)
         cluster_outline = zeros(Int64, N)
         cluster_outline_length = zeros(Int64, N)
         unexplored = zeros(Int64, N)
@@ -149,7 +152,7 @@ function neighbourhood_strength_test(nr)
             i = findNextFiber(σ, x)
             resetClusters(status, σ)
             break_fiber(i, status, σ)
-            update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=nr)
+            update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=nr)
             @assert sum(σ) ≈ N "No conservation of tension"
         end
     end
@@ -162,7 +165,7 @@ function test()
     println("Cluster test complete")
     neighbourhood_id_test()
     println("Neighbourhood id test complete")
-    for nr in ["CNR", "SNR"]
+    for nr in ["UNR", "CNR", "SNR"]
         neighbourhood_strength_test(nr)
     end
     println("Neighbourhood strength test complete")

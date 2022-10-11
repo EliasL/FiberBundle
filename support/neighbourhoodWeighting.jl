@@ -9,12 +9,12 @@ function reshape_neighbours(l)
     m[1,3] = m[3,2]
     m[3,2] = m[2,2]
     m[2,2] = 2
-    return m
+    return vec(m)
 end
 
 function generate_neighbours()
     nr_neighbours = 256
-    neighbours = [zeros(Int, (3, 3)) for i in 1:nr_neighbours]
+    neighbours = [zeros(Int, 9) for i in 1:nr_neighbours]
     for i in 1:nr_neighbours
         n = reverse(parse.(Int, split(string(i-1, base=2, pad=9), "")))
         neighbours[i] = reshape_neighbours(n)
@@ -33,7 +33,8 @@ function remove_symmetries(n)
     return n
 end
 
-function compute_strength(m::Matrix)
+function compute_strength(m::Vector{Int64})
+    m = reshape(m, (3,3))
     # Here are the strength values
     # 121
     # 2_2
@@ -48,38 +49,29 @@ function compute_strength(m::Matrix)
     return strength
 end
 
-function neighbourhoodToInt(m::Array{Int64})
-    id = 1# Not zero because of zero indexing in julia
-    @fastmath @inbounds for (i, alive) in enumerate(m)
-        if alive<0
-            if i > 5
-                id +=2^(i-2)
-            elseif i < 5
-                id +=2^(i-1)
-            end
-        end
+#https://discourse.julialang.org/t/parse-an-array-of-bits-bitarray-to-an-integer/42361/24
+function arr_to_int(a, val = 0)
+    v = 128
+    # Check for negative numbers. Negative status means alive
+    for i in [a[1]<0, a[2]<0, a[3]<0,
+              a[4]<0,         a[6]<0,
+              a[7]<0, a[8]<0, a[9]<0]
+        val += v*i
+        v >>= 1
     end
-    return id
+    return val
 end
 
-function neighbourhoodToInt(m::Matrix{Int64})
-    id = 1# Not zero because of zero indexing in julia
-    @fastmath @inbounds for (i, alive) in enumerate(m)
-        if alive<0
-            if i > 5
-                id +=2^(i-2)
-            elseif i < 5
-                id +=2^(i-1)
-            end
-        end
-    end
-    return id
+function neighbourhoodToInt(a::Vector{Int64})
+    # Add one because of 1 indexing
+    return arr_to_int(a, 1)
 end
-
 
 neighbourhoodStrengths = zeros(Float64, 256)
 for m in generate_neighbours().*-1
     i = neighbourhoodToInt(m)
     s = compute_strength(m)
+    @assert neighbourhoodStrengths[i] == 0 "This value is already set! neighbourhoodToInt does not work!"
     neighbourhoodStrengths[i] = s
 end
+

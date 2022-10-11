@@ -281,7 +281,6 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
             cluster_size[c] += 1
             # and increase the cluster dimensions depending on what direction we explored In
             if i == 1 # Up
-                clust
             elseif i == 2 # Down
             elseif i == 3 # Right
             else # Left
@@ -345,13 +344,18 @@ function update_cluster_otline_stress_with_simple_neighbourhood_rule(c::Int64,
     # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
     α = 2 # High alpha means that having neighbours is more important
     alive_fibers = map(o -> alive_fibers_in_neighbourhood(status[neighbourhoods[o, :]]), cluster_outline[1:cluster_outline_length[c]])
-    C = 1 / sum(Float64.(alive_fibers) .^(-α+1)) #Normalization constant
-    g = C .* Float64.(alive_fibers).^(-α)
+    #C = 1 / sum(Float64.(alive_fibers) .^(-α+1)) #Normalization constant
+    #g = C .* Float64.(alive_fibers).^(-α)
+
+
+    total_alive_fibers = sum(alive_fibers)
+    average_outline_stress = total_alive_fibers/cluster_outline_length[c]
+
 
 
     @fastmath @simd for i in 1:cluster_outline_length[c] #TODO can add inbounds once tested
         fiber = cluster_outline[i]
-        added_stress = cluster_size[c]*alive_fibers[i]*g[i]
+        added_stress =  cluster_size[c] / cluster_outline_length[c] * alive_fibers[i] / average_outline_stress
 
         σ[fiber] += added_stress
         status[fiber] = -3 #PAST_BORDER
@@ -385,14 +389,21 @@ function update_cluster_otline_stress_with_complex_neighbourhood_rule(c::Int64,
     # it means that the difference between the neighbourhood configurations
     # is less significant. As initial_stress -> inf, the model will approach
     # the LLS
-    initial_stress = 12
-    outline_stress = initial_stress .- outline_strengths
-    total_outline_stress = sum(outline_stress)
-    average_outline_stress = total_outline_stress/cluster_outline_length[c]
+    #initial_stress = 12
+    #outline_stress = initial_stress .- outline_strengths
+    #total_outline_stress = sum(outline_stress)
+    #average_outline_stress = total_outline_stress/cluster_outline_length[c]
+    #constant = cluster_size[c] / cluster_outline_length[c] / average_outline_stress
 
-    for i in 1:cluster_outline_length[c]
+
+
+    α = 2 # High alpha means that having neighbours is more important
+    C = 1 / sum(Float64.(outline_strengths) .^(-α+1)) #Normalization constant
+    g = C .* Float64.(outline_strengths).^(-α)
+
+    @simd for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]
-        added_stress = cluster_size[c] / cluster_outline_length[c] * outline_stress[i] / average_outline_stress
+        added_stress = cluster_size[c]*outline_strengths[i]*g[i]
         σ[fiber] += added_stress
         status[fiber] = -3 #PAST_BORDER
     end
