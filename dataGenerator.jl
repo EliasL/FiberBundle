@@ -36,7 +36,9 @@ print("Preparing workers... ")
     max_σ = Float64(0)
     status = fill(-1,N)
     cluster_size = zeros(Int64, N)
-    cluster_dimensions = zeros(Int64, 8) #Or 4? max_x, min_x, max_y, min_y
+    cluster_dimensions = zeros(Int64, 4) #Or 4? max_x, min_x, max_y, min_y
+    rel_pos_x = zeros(Int64, N)
+    rel_pos_y = zeros(Int64, N)
     cluster_outline_length = zeros(Int64, N)
     # These values are reset for each cluster
     cluster_outline = zeros(Int64, N)
@@ -71,7 +73,7 @@ print("Preparing workers... ")
         max_σ = σ[i]/x[i]
         resetClusters(status, σ)
         break_fiber(i, status, σ)
-        _nr_clusters, spanning_cluster = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
+        _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
 
         # Save important data from step
         most_stressed_fiber[step] = 1/max_σ
@@ -88,7 +90,7 @@ print("Preparing workers... ")
                     storage_index += 1  
                 end
             end
-            if spanning_cluster
+            if spanning_cluster != 1
                 spanning_cluster_storage = status
             end
         end
@@ -146,7 +148,7 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
         @async begin
             @distributed (+) for i in seeds
                 name = get_name(L, distribution_name, path, i)
-                break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=i)
+                @time break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=i)
                 i^2
             end
         end

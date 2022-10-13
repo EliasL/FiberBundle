@@ -2,7 +2,7 @@
 include("dataGenerator.jl")
 
 seeds = 0:30
-L = [128]
+L = [64]
 t = (0:9) ./ 10
 NR = ["UNR", "CNR", "SNR"]
 

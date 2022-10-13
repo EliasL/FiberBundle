@@ -173,6 +173,8 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     neighbourhoods::Array{Int64, 2},
     cluster_size::Vector{Int64},
     cluster_dimensions::Vector{Int64},
+    rel_pos_x::Vector{Int64},
+    rel_pos_y::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64};
@@ -195,7 +197,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # assign fiber i to this new cluster
             status[i] = c
             # explore the new cluster
-            spanning_cluster = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
+            spanning_cluster = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
             update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule)
@@ -210,6 +212,8 @@ function explore_cluster_at(i::Int64, c::Int64,
     neighbours::Array{Int64, 2},
     cluster_size::Vector{Int64},
     cluster_dimensions::Vector{Int64},
+    rel_pos_x::Vector{Int64},
+    rel_pos_y::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64})
@@ -230,8 +234,6 @@ function explore_cluster_at(i::Int64, c::Int64,
         # Cluster dimensions
         # [max_x, min_x, max_y, min_y]
         fill!(cluster_dimensions, 0) # Reset cluster dimensions
-        rel_pos_x = zeros(Int64, length(status))
-        rel_pos_y = zeros(Int64, length(status))
 
         # While there are still unexplored fibers in the cluster
         while nr_unexplored > nr_explored
