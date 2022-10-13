@@ -153,7 +153,7 @@ function neighbourhood_strength_test(nr)
             resetClusters(status, σ)
             break_fiber(i, status, σ)
             update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=nr)
-            @assert sum(σ) ≈ N "No conservation of tension"
+            @assert sum(σ) ≈ N "No conservation of tension.\n$(sum(σ)) ≠ $N "
         end
     end
 end
@@ -166,6 +166,7 @@ function test()
     neighbourhood_id_test()
     println("Neighbourhood id test complete")
     for nr in ["UNR", "CNR", "SNR"]
+        print(nr*"\r")
         neighbourhood_strength_test(nr)
     end
     println("Neighbourhood strength test complete")

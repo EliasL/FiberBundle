@@ -176,7 +176,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64};
-    neighbourhood_rule::String="None")
+    neighbourhood_rule::String="UNR")
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -198,13 +198,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             spanning_cluster = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
-            if neighbourhood_rule == "CNR"
-                update_cluster_otline_stress_with_complex_neighbourhood_rule(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
-            elseif neighbourhood_rule == "SNR"
-                update_cluster_otline_stress_with_simple_neighbourhood_rule(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
-            else
-                update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length)
-            end
+            update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule)
         end
     end
     return c, spanning_cluster
@@ -253,6 +247,10 @@ function explore_cluster_at(i::Int64, c::Int64,
         end
 
     end
+end
+
+function spanning(cluster_dimensions::Vector{Int64})
+    return false
 end
 
 function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
@@ -307,24 +305,23 @@ function add_unexplored(i::Int64, unexplored::Vector{Int64}, nr_unexplored::Int6
     end
 end
 
-function update_cluster_outline_stress(c::Int64,
+function apply_to_neighbourhood(f::Function,
     status::Vector{Int64},
-    σ::Vector{Float64},
-    cluster_size::Vector{Int64},
     cluster_outline::Vector{Int64},
-    cluster_outline_length::Vector{Int64})
-
-    @fastmath @inbounds @simd for i in 1:cluster_outline_length[c]
-        fiber = cluster_outline[i]
-        added_stress = cluster_size[c]/cluster_outline_length[c]
-
-        σ[fiber] += added_stress
-        status[fiber] = -3 #PAST_BORDER
+    neighbourhoods::Array{Int64, 2})
+    # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
+    # put it into the function f
+    value::Vector{Int64} = zeros(Int64, length(cluster_outline))
+    @fastmath @inbounds @simd for i in 1:length(cluster_outline)
+        outline_fiber = cluster_outline[i]
+        value[i] = f(status[neighbourhoods[outline_fiber, :]])
     end
+    return value
 end
 
-function alive_fibers_in_neighbourhood(m::Array{Int64})
-    alive_fibers = 0
+function alive_fibers_in_neighbourhood(m::Vector{Int64})
+    # Take a 3x3 matrix around a fiber and count how many are alive
+    alive_fibers = 0 # We count the center fiber as well because the math doesn't like 0
     @fastmath @inbounds @simd for f in m
         if f<0
             alive_fibers +=1
@@ -333,77 +330,66 @@ function alive_fibers_in_neighbourhood(m::Array{Int64})
     return alive_fibers
 end
 
-function update_cluster_otline_stress_with_simple_neighbourhood_rule(c::Int64,
+function update_cluster_outline_stress(c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
     cluster_size::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
-    neighbourhoods::Array{Int64, 2})
+    neighbourhoods::Array{Int64, 2},
+    neighbourhood_rule::String)
+    # Apply the appropreate amount of stress to the fibers
+    if neighbourhood_rule == "UNR"
+        # With the Uniform neighbourhood rule, we can apply a simple stress
+        apply_simple_stress(c, status, σ, cluster_size, cluster_outline, cluster_outline_length)
+        return
+    else
+        # But with more complex rules, we need to do it in two steps
+        # First a calculation to find the fiber strengths (As a function of their neighbourhood), and then apply the stress
+        fiber_strengths = ones(Float64)
+        if neighbourhood_rule == "CNR"
+            outline_neihbourhoods = apply_to_neighbourhood(neighbourhoodToInt, status, cluster_outline[1:cluster_outline_length[c]], neighbourhoods)
+            fiber_strengths = neighbourhoodStrengths[outline_neihbourhoods]
+        elseif neighbourhood_rule == "SNR"
+            fiber_strengths = apply_to_neighbourhood(alive_fibers_in_neighbourhood, status, cluster_outline[1:cluster_outline_length[c]], neighbourhoods)
+        else
+            error("Unknown neighbourhood rule")
+        end
 
-    # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
-    α = 2 # High alpha means that having neighbours is more important
-    alive_fibers = map(o -> alive_fibers_in_neighbourhood(status[neighbourhoods[o, :]]), cluster_outline[1:cluster_outline_length[c]])
-    #C = 1 / sum(Float64.(alive_fibers) .^(-α+1)) #Normalization constant
-    #g = C .* Float64.(alive_fibers).^(-α)
+        apply_stress(c, status, σ, cluster_size, cluster_outline, cluster_outline_length, fiber_strengths)
+    end
+end
 
-
-    total_alive_fibers = sum(alive_fibers)
-    average_outline_stress = total_alive_fibers/cluster_outline_length[c]
-
-
-
-    @fastmath @simd for i in 1:cluster_outline_length[c] #TODO can add inbounds once tested
+function apply_simple_stress(c::Int64,
+    status::Vector{Int64},
+    σ::Vector{Float64},
+    cluster_size::Vector{Int64},
+    cluster_outline::Vector{Int64},
+    cluster_outline_length::Vector{Int64}
+    )
+    added_stress = cluster_size[c]/cluster_outline_length[c]
+    @inbounds @simd for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]
-        added_stress =  cluster_size[c] / cluster_outline_length[c] * alive_fibers[i] / average_outline_stress
-
         σ[fiber] += added_stress
         status[fiber] = -3 #PAST_BORDER
     end
-
 end
 
-
-function get_id_of_neighbourhoods_of_outline(
-    status::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    neighbourhoods::Array{Int64, 2})
-    return map(o -> neighbourhoodToInt(status[neighbourhoods[o, :]]), cluster_outline)
-end
-
-function update_cluster_otline_stress_with_complex_neighbourhood_rule(c::Int64,
+function apply_stress(c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
     cluster_size::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
-    neighbourhoods::Array{Int64, 2})
-
-    # Identifies the id of the neighbourhood of each outline fiber
-    outline_neihbourhoods = get_id_of_neighbourhoods_of_outline(status, cluster_outline[1:cluster_outline_length[c]], neighbourhoods)
-    outline_strengths = neighbourhoodStrengths[outline_neihbourhoods]
-
-    # initial_stress is an interesting parameter. If max strength is 11,
-    # then fibers whos neighbourhood has a missing corner will experience
-    # no stress at all. If the initial_stress is larger, for example 100,
-    # it means that the difference between the neighbourhood configurations
-    # is less significant. As initial_stress -> inf, the model will approach
-    # the LLS
-    #initial_stress = 12
-    #outline_stress = initial_stress .- outline_strengths
-    #total_outline_stress = sum(outline_stress)
-    #average_outline_stress = total_outline_stress/cluster_outline_length[c]
-    #constant = cluster_size[c] / cluster_outline_length[c] / average_outline_stress
-
-
-
-    α = 2 # High alpha means that having neighbours is more important
-    C = 1 / sum(Float64.(outline_strengths) .^(-α+1)) #Normalization constant
-    g = C .* Float64.(outline_strengths).^(-α)
-
-    @simd for i in 1:cluster_outline_length[c]
+    fiber_strengths::Vector{Float64}
+    )
+    # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
+    α = 2.0 # High alpha means that having neighbours is more important
+    C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
+    g = C .* fiber_strengths .^(-α) # Normalization factor
+    for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]
-        added_stress = cluster_size[c]*outline_strengths[i]*g[i]
+        added_stress =  cluster_size[c]*fiber_strengths[i]*g[i]
         σ[fiber] += added_stress
         status[fiber] = -3 #PAST_BORDER
     end
