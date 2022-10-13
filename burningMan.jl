@@ -20,10 +20,10 @@ BROKEN = 0#::Int64 = 0 # A broken fiber that has not been explored
 #x#
  #
 NEIGHBOURS(i, L) = [
+    i+L, # Right
+    i-L,  # Left
     i-1, # Up
     i+1, # Down
-    i+L, # Right
-    i-L  # Left
 ]
 
 ###
@@ -40,7 +40,6 @@ NEIGHBOURHOOD(i, L) = [
     i-L,   # Left
     i+1-L, # Down Left
     i-1,   # Up
-    i,     # Itself
     i+1,   # Down
     i-1+L, # Up Right
     i+L,   # Right
@@ -58,10 +57,11 @@ function fillAdjacent(L::Int64, adjacent_indexes::Function=NEIGHBOURS)
 end
 
 function findAdjacent(i::Int64, L::Int64, adjacent::Vector{Int64})
+    # Finds adjacent fibers in periodic boundry contidions
     # The structure of the matrix will be
-    # 1 4 7
-    # 2 5 8
-    # 3 6 9
+    # 1 4 6
+    # 2   7
+    # 3 5 8
     # If the checks are confusing, use the gid above to
     # see what happens.
     # mod1(7,3) = mod1(1,3) = 1
@@ -71,40 +71,40 @@ function findAdjacent(i::Int64, L::Int64, adjacent::Vector{Int64})
     a = adjacent
 
     if length(a) == 4
-        # Up check
-        if mod1(i, L) == 1
-            a[1] += L
-        end
-        # Down check
-        if mod1(i, L) == L
-            a[2] -= L
-        end
         # Right check
         if i>N-L
-            a[3] -= N
+            a[1] -= N
         end
         # Left check
         if i<=L
-            a[4] += N
+            a[2] += N
         end
-    elseif length(a) == 9
+        # Up check
+        if mod1(i, L) == 1
+            a[3] += L
+        end
+        # Down check
+        if mod1(i, L) == L
+            a[4] -= L
+        end
+    elseif length(a) == 8
         # Up check
         if mod1(i, L) == 1
             a[1] += L
             a[4] += L
-            a[7] += L
+            a[6] += L
         end
         # Down check
         if mod1(i, L) == L
             a[3] -= L
-            a[6] -= L
-            a[9] -= L
+            a[5] -= L
+            a[8] -= L
         end
         # Right check
         if i>N-L
+            a[6] -= N
             a[7] -= N
             a[8] -= N
-            a[9] -= N
         end
         # Left check
         if i<=L
@@ -182,8 +182,8 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
 
     # Cluster id
     c::Int64 = 0
-
-    spanning_cluster::Bool = false
+    # The id of a spanning cluster. If there are none, it is -1
+    spanning_cluster::Int64 = -1
 
     # For every fiber in the plane
     @fastmath @inbounds for i in eachindex(status)
@@ -201,7 +201,8 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule)
         end
     end
-    return c, spanning_cluster
+    spanning_cluster_size = spanning_cluster==-1 ? -1 : cluster_size[spanning_cluster]
+    return c, spanning_cluster, spanning_cluster_size
 end
 
 function explore_cluster_at(i::Int64, c::Int64,
@@ -228,7 +229,9 @@ function explore_cluster_at(i::Int64, c::Int64,
 
         # Cluster dimensions
         # [max_x, min_x, max_y, min_y]
-        cluster_dimensions = [0,0,0,0]
+        fill!(cluster_dimensions, 0) # Reset cluster dimensions
+        rel_pos_x = zeros(Int64, length(status))
+        rel_pos_y = zeros(Int64, length(status))
 
         # While there are still unexplored fibers in the cluster
         while nr_unexplored > nr_explored
@@ -237,20 +240,28 @@ function explore_cluster_at(i::Int64, c::Int64,
             # Get the next unexplored fiber
             current_fiber = unexplored[nr_explored]
             # Go through all neighbours of the fiber
-            nr_unexplored = check_neighbours(current_fiber,nr_unexplored, c, status, neighbours, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
+            nr_unexplored = check_neighbours(current_fiber, nr_unexplored, c, status, neighbours, cluster_size,
+                                             cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline,
+                                             cluster_outline_length, unexplored)
         end
 
-        if spanning(cluster_dimensions)
-            return true
+        L::Int64 = isqrt(length(status)) 
+        if spanning(L, cluster_dimensions)
+            return c
         else 
-            return false
+            return -1
         end
 
     end
 end
 
-function spanning(cluster_dimensions::Vector{Int64})
-    return false
+function spanning(L::Int64, cluster_dimensions::Vector{Int64})
+    # Cluster dimensions
+    # [max_x, min_x, max_y, min_y]
+    # L-1 because the relative coordinates in the cluster start at 0,0
+    # NB! Once the cluster is spanning, the dimension is no longer reliable because of
+    # periodicity.
+    return cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1
 end
 
 function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
@@ -258,6 +269,8 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
     neighbours::Array{Int64, 2},
     cluster_size::Vector{Int64},
     cluster_dimensions::Vector{Int64},
+    rel_pos_x::Vector{Int64},
+    rel_pos_y::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64})
@@ -278,11 +291,7 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
             # increase the cluster size
             cluster_size[c] += 1
             # and increase the cluster dimensions depending on what direction we explored In
-            if i == 1 # Up
-            elseif i == 2 # Down
-            elseif i == 3 # Right
-            else # Left
-            end
+            store_possition(current_fiber, neighbour_fiber, i, cluster_dimensions, rel_pos_x, rel_pos_y)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
         elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
@@ -295,6 +304,22 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
         end
     end
     return nr_unexplored
+end
+
+function store_possition(current_fiber::Int64, neighbour_fiber::Int64, 
+    direction::Int64, 
+    cluster_dimensions::Vector{Int64},
+    rel_pos_x::Vector{Int64},
+    rel_pos_y::Vector{Int64})
+    # cluster_dimensions = [max_x, min_x, max_y, min_y]
+    movement = [1,-1,1,-1] # direction
+
+    pos = direction<3 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
+
+    pos[neighbour_fiber] = pos[current_fiber] + movement[direction]
+    if abs(pos[neighbour_fiber]) > abs(cluster_dimensions[direction])
+        cluster_dimensions[direction] = pos[neighbour_fiber]
+    end
 end
 
 function add_unexplored(i::Int64, unexplored::Vector{Int64}, nr_unexplored::Int64)
@@ -321,7 +346,7 @@ end
 
 function alive_fibers_in_neighbourhood(m::Vector{Int64})
     # Take a 3x3 matrix around a fiber and count how many are alive
-    alive_fibers = 0 # We count the center fiber as well because the math doesn't like 0
+    alive_fibers = 1 # We count the center fiber as well because the math doesn't like 0
     @fastmath @inbounds @simd for f in m
         if f<0
             alive_fibers +=1
@@ -387,7 +412,7 @@ function apply_stress(c::Int64,
     α = 2.0 # High alpha means that having neighbours is more important
     C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
     g = C .* fiber_strengths .^(-α) # Normalization factor
-    for i in 1:cluster_outline_length[c]
+    @simd for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]
         added_stress =  cluster_size[c]*fiber_strengths[i]*g[i]
         σ[fiber] += added_stress

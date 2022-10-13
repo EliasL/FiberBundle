@@ -12,25 +12,32 @@ function reshape_neighbours(l)
     return vec(m)
 end
 
-function generate_neighbours()
+function generate_neighbours(;return_matrix = false)
+    if return_matrix
+        l = 8
+    else
+        l = 9
+    end
     nr_neighbours = 256
-    neighbours = [zeros(Int, 9) for i in 1:nr_neighbours]
+    neighbours = [zeros(Int, l) for i in 1:nr_neighbours]
     for i in 1:nr_neighbours
-        n = reverse(parse.(Int, split(string(i-1, base=2, pad=9), "")))
-        neighbours[i] = reshape_neighbours(n)
+        neighbours[i] = reverse(parse.(Int, split(string(i-1, base=2, pad=9), "")))
+        if return_matrix
+            neighbours[i] = reshape_neighbours(neighbours[i])
+        end
     end
     return neighbours
 end
 
 
 function remove_symmetries(n)
-    n = copy(n)
+    n = [reshape(v, (3,3)) for v in n]
     for grid in n
         syms = [grid, rotr90(grid), rot180(grid), rotl90(grid), reverse(grid, dims=1), reverse(grid, dims=2), rotr90(reverse(grid, dims=1)), rotr90(reverse(grid, dims=2))]
         duplicates = findall(x->x in syms,n)[2:end]
         deleteat!(n, duplicates)
     end
-    return n
+    return vec.(n)
 end
 
 function compute_strength(m::Vector{Int64})
@@ -54,8 +61,8 @@ function arr_to_int(a, val = 0)
     v = 128
     # Check for negative numbers. Negative status means alive
     for i in [a[1]<0, a[2]<0, a[3]<0,
-              a[4]<0,         a[6]<0,
-              a[7]<0, a[8]<0, a[9]<0]
+              a[4]<0,         a[5]<0,
+              a[6]<0, a[7]<0, a[8]<0]
         val += v*i
         v >>= 1
     end

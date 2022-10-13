@@ -5,7 +5,8 @@ using LaTeXStrings
 
 include("../support/neighbourhoodWeighting.jl")
 
-function drawmatrix(A::Matrix)
+function drawmatrix(A::AbstractArray)
+    A = reshape(A, (3,3))
     L = size(A,1)
     tiles = Tiler(L, L, L, L, margin=0)
     
@@ -31,8 +32,7 @@ function drawmatrix(A::Matrix)
 end
 
 
-allNeighbours = generate_neighbours()
-
+allNeighbours = generate_neighbours(return_matrix=true)
 # Remove symmetries
 neighbours = remove_symmetries(allNeighbours)
 

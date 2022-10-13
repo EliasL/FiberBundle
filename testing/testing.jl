@@ -20,7 +20,7 @@ function basic_test()
     neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
     status = fill(-1, N)
     cluster_size = zeros(Int64, N)
-    cluster_dimensions = zeros(Int64, N)
+    cluster_dimensions = zeros(Int64, 4)
     cluster_outline = zeros(Int64, N)
     cluster_outline_length = zeros(Int64, N)
     unexplored = zeros(Int64, N)
@@ -32,8 +32,8 @@ function basic_test()
     break_fiber(i, status, σ)
     @assert status[i]==BROKEN "The first fiber should be broken"
     update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
-    @assert neighbours[i, :] == [3,2,4,7] "Incorrect neighbours"
-    @assert neighbours[9, :] == [8,7,3,6] "Incorrect neighbours"
+    @assert neighbours[i, :] == [4,7,3,2] "Incorrect neighbours: $(neighbours[i, :])"
+    @assert neighbours[9, :] == [3,6,8,7] "Incorrect neighbours: $(neighbours[9, :])"
     @assert all(status[neighbours[1,:]] .== PAST_BORDER) "These should be past borders"
     @assert all(σ[neighbours[1,:]] .== 1.25) "The tension is incorrect"
     @assert sum(σ) ≈ N "No conservation of tension"
@@ -87,7 +87,7 @@ function cluster_test()
         neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
         status = fill(-1, N)
         cluster_size = zeros(Int64, N)
-        cluster_dimensions = zeros(Int64, N)
+        cluster_dimensions = zeros(Int64, 4)
         cluster_outline = zeros(Int64, N)
         cluster_outline_length = zeros(Int64, N)
         unexplored = zeros(Int64, N)
@@ -137,13 +137,13 @@ function neighbourhood_strength_test(nr)
     for _ in 1:5
         L = 4
         N = L*L # Number of fibers
-        x = ones(N) # Max extension 
+        x = rand(N) # Max extension 
         σ  = ones(Float64, N) # Relative tension
         neighbours = fillAdjacent(L, NEIGHBOURS)
         neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
         status = fill(-1, N)
         cluster_size = zeros(Int64, N)
-        cluster_dimensions = zeros(Int64, N)
+        cluster_dimensions = zeros(Int64, 4)
         cluster_outline = zeros(Int64, N)
         cluster_outline_length = zeros(Int64, N)
         unexplored = zeros(Int64, N)
@@ -155,6 +155,60 @@ function neighbourhood_strength_test(nr)
             update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=nr)
             @assert sum(σ) ≈ N "No conservation of tension.\n$(sum(σ)) ≠ $N "
         end
+    end
+end
+
+function test_store_possition()
+    current_fiber::Int64 = 1
+    neighbour_fiber::Int64 = 4
+    direction::Int64 = 2
+    cluster_dimensions::Vector{Int64} = [2,-4,1,-1]
+    rel_pos_x::Vector{Int64} = [-4,2,0,0]
+    rel_pos_y::Vector{Int64} = [1,-1,0,0]
+
+    store_possition(current_fiber, neighbour_fiber, direction, cluster_dimensions, rel_pos_x, rel_pos_y)
+
+    @assert rel_pos_x[neighbour_fiber] == -5 "Movement not working"
+    @assert cluster_dimensions[2] == -5 "Cluster dimensions not working: $cluster_dimensions"
+end
+
+function spanning_cluster_test()
+
+    for run_nr in 1:5
+        L = 4
+        N = L*L # Number of fibers
+        if run_nr == 1
+            x = ones(N)
+        else
+            x = rand(N) # Max extension 
+        end
+        σ  = ones(Float64, N) # Relative tension
+        neighbours = fillAdjacent(L, NEIGHBOURS)
+        neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
+        status = fill(-1, N)
+        cluster_size = zeros(Int64, N)
+        cluster_dimensions = zeros(Int64, 4)
+        cluster_outline = zeros(Int64, N)
+        cluster_outline_length = zeros(Int64, N)
+        unexplored = zeros(Int64, N)
+        spanning_cluster_size = 0
+
+        for k in 1:N
+            i = findNextFiber(σ, x)
+            resetClusters(status, σ)
+            break_fiber(i, status, σ)
+            c, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, cluster_outline, cluster_outline_length, unexplored)
+            if spanning_cluster != -1
+                @assert cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1 "Not spanning!"
+                @assert spanning_cluster_size >= L "Impossibly small cluster"
+                if run_nr == 1
+                    @assert spanning_cluster_size == k "It should be equal to number of broken fibers"
+                end
+
+            end
+        end
+        @assert cluster_dimensions[1] - cluster_dimensions[2] == cluster_dimensions[3] - cluster_dimensions[4] == L-1 "Not correct dimensions! $cluster_dimensions"
+        @assert spanning_cluster_size == N "Not correct cluster size:  $spanning_cluster_size ≠ $N "
     end
 end
 
@@ -170,6 +224,9 @@ function test()
         neighbourhood_strength_test(nr)
     end
     println("Neighbourhood strength test complete")
+    test_store_possition()
+    spanning_cluster_test()
+    println("Cluster dimensions tests complete")
     println("All tests completed!")
 end
 
