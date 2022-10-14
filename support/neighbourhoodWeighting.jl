@@ -46,12 +46,12 @@ function compute_strength(m::Vector{Int64})
     # 121
     # 2_2
     # 121
-    strength = abs.(sum([m[2,1], m[1,2], m[3,2], m[2,3]]))*2
-    strength += abs.(sum([m[1,1], m[3,1], m[1,3], m[3,3]]))
+    strength = abs.(sum([m[2,1], m[1,2], m[3,2], m[2,3]]))*4
+    strength += abs.(sum([m[1,1], m[3,1], m[1,3], m[3,3]]))*2
 
     # Rotation symetry
     if m == rot180(m)
-        strength += 0.5
+        strength += 1
     end
     return strength
 end
@@ -74,7 +74,7 @@ function neighbourhoodToInt(a::Vector{Int64})
     return arr_to_int(a, 1)
 end
 
-neighbourhoodStrengths = zeros(Float64, 256)
+neighbourhoodStrengths = zeros(Int64, 256)
 for m in generate_neighbours().*-1
     i = neighbourhoodToInt(m)
     s = compute_strength(m)
