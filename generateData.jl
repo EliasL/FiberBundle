@@ -12,7 +12,7 @@ println("Done!")
 include("dataGenerator.jl")
 
 seeds = 0:500
-L = [64]
+L = [128, 64, 256]
 t = vcat((0:8) ./ 20, (5:9) ./ 10)
 NR = ["UNR", "CNR", "SNR"]
 
