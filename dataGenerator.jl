@@ -1,9 +1,9 @@
 using Distributed
 using ProgressMeter
+using Dates
 
 @everywhere begin
     using JLD2
-    using Pkg #TODO try to remove this one
 end
 
 
@@ -215,8 +215,8 @@ function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrit
             generate_data(mkPath(distribution_name),L, test_seeds, distribution_name, t, overwrite, neighbourhood_rule)
         end
     end
-    time_estimate = test_time * length(regimes) * seeds/test_seeds
-    formated_time = Dates.canonicalize(Dates.CompoundPeriod(Dates.Second(time_estimate)))
+    time_estimate = test_time * length(regimes) * length(seeds)/length(test_seeds)
+    formated_time = Dates.canonicalize(Dates.CompoundPeriod(Dates.Second(floor(Int64, time_estimate))))
     println("This will probably take: $formated_time")
 end
 
