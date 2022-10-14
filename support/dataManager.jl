@@ -1,8 +1,21 @@
 using JLD2
 
-data_keys = ["nr_clusters", "largest_cluster", "largest_perimiter", "most_stressed_fiber", "sample_states"]
+data_keys = ["nr_clusters", 
+             "largest_cluster",
+             "largest_perimiter",
+             "most_stressed_fiber",
+             "spanning_cluster_size",
+             "spanning_cluster_perimiter",
+             "spanning_cluster_step",
+             # These are not averaged
+             "sample_states",
+             "tension",
+             "spanning_cluster",]
 
-nr_averaged_keys = 4
+# Put the keys you don't want averaged in here, and make sure they are at the back of the data_keys list
+not_averaged_keys = ["sample_states","tension","spanning_cluster",] #TODO separate into to lists
+nr_not_averaged_keys = length(not_averaged_keys)
+nr_averaged_keys = length(data_keys) - nr_not_averaged_keys
 averaged_keys = data_keys[1:nr_averaged_keys]
 # These data_keys will not be averaged
 seed_specific_keys = data_keys[nr_averaged_keys+1:end]
@@ -68,9 +81,6 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
     nr_seeds = length(seeds)
 
     averages = Dict()
-    for key in averaged_keys
-        averages[key] = zeros(L*L)
-    end
     jldopen(condensed_file_name, "w") do condensed_file
     jldopen(averaged_file_name, "w") do averaged_file
         for seed in seeds
@@ -78,9 +88,17 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
             jldopen(seed_file_name, "r") do s_file
                 for key in data_keys
                     if key in averaged_keys
+                        # If the key doesn't exist, make it and set it to zero
+                        if !haskey(averages, key)
+                            if length(s_file[key]) == 1
+                                averages[key] = 0
+                            else
+                                averages[key] = zeros(length(s_file[key]))
+                            end
+                        end
                         averages[key] += s_file[key] ./ nr_seeds
                     end
-                    if key == "sample_states" && seed > 10
+                    if key in not_averaged_keys && seed > 10
                         continue
                     end
                     condensed_file["$key/$seed"] = s_file[key]
@@ -179,6 +197,20 @@ function search_for_loose_files(path)
         clean_after_run(L, distribution_name, path, seeds[L])
     end
     print("Done!\r")
+end
+
+function search_for_t(path)
+
+    files = readdir(path)
+    t = Set([])
+    for f in files
+        # t must be on the form "t=number.number " ie. t=0.0 or t=12.34
+        m = match(r"t=(([0-9]+)\.([0-9]+)) ", f)
+        if m !== nothing
+            push!(t, parse(Float64, m.captures[1]))
+        end
+    end
+    return sort(collect(t))
 end
 
 function remove_key(key, L, distribution, path)

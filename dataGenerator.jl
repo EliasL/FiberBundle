@@ -1,15 +1,6 @@
 using Distributed
 using ProgressMeter
-using Suppressor: @suppress_err
 
-# this just removes workers if there are leftovers from a crash
-@suppress_err rmprocs(workers())
-
-threads = Threads.nthreads()
-
-print("Starting $threads workers... ")
-addprocs(threads)
-println("Done!")
 @everywhere begin
     using JLD2
     using Pkg #TODO try to remove this one
@@ -30,7 +21,7 @@ print("Preparing workers... ")
     x = distribution(N) # Max extension (Distribution)
     neighbours = fillAdjacent(L, NEIGHBOURS)
     neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
-
+    neighbourhood_values = zeros(Int64, N)
     # These values are reset for each step
     σ  = ones(Float64, N) # Relative tension
     max_σ = Float64(0)
@@ -55,16 +46,21 @@ print("Preparing workers... ")
     # I'm thinking at 10%, 20%, ... 90% done would work
     # ie, 9 images
     division = 10
-    status_storage = zeros(Int64, division-1, N)
-    tension_storage = zeros(Float64, division-1, N)
+    if seed <= 10 #Only save samples from 10 first seeds
+        status_storage = zeros(Int64, division-1, N)
+        tension_storage = zeros(Float64, division-1, N)
+    end
     spanning_cluster_storage = zeros(Int64, N)
+    spanning_cluster_size_storage = 0
+    spanning_cluster_perimiter_storage = 0
+    spanning_cluster_has_not_been_found = true
+    spanning_cluster_step = 0
     # If N=100 Steps to store is now [90, 80, ... , 10]
     steps_to_store = [round(Int64,N/division * i) for i in 1:division-1]
     storage_index = 1
 
     # Spanning cluster storage
     # Spanning cluster 
-
     # Break the bundle
     for step in 1:N
 
@@ -73,7 +69,7 @@ print("Preparing workers... ")
         max_σ = σ[i]/x[i]
         resetClusters(status, σ)
         break_fiber(i, status, σ)
-        _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
+        _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
 
         # Save important data from step
         most_stressed_fiber[step] = 1/max_σ
@@ -90,19 +86,28 @@ print("Preparing workers... ")
                     storage_index += 1  
                 end
             end
-            if spanning_cluster != 1
-                spanning_cluster_storage = status
-            end
+        end
+        if spanning_cluster != -1 && spanning_cluster_has_not_been_found
+            spanning_cluster_storage = status
+            spanning_cluster_size_storage = spanning_cluster_size
+            spanning_cluster_perimiter_storage = cluster_outline_length[spanning_cluster]
+            spanning_cluster_step = step
+            spanning_cluster_has_not_been_found = false
         end
         put!(progress_channel, true) # trigger a progress bar update
     end 
     
+    @assert spanning_cluster_has_not_been_found == false "There should be a spanning cluster"
+
     jldopen(file_name, "w") do file
         if seed <= 10
             file["sample_states"] = status_storage
-            file["tenstion"] = tension_storage
-            file["spanning cluster"] = spanning_cluster_storage
+            file["tension"] = tension_storage
+            file["spanning_cluster"] = spanning_cluster_storage
         end
+        file["spanning_cluster_size"] = spanning_cluster_size_storage
+        file["spanning_cluster_perimiter"] = spanning_cluster_perimiter_storage
+        file["spanning_cluster_step"] = spanning_cluster_step
         file["sample_states_steps"] = steps_to_store./N
         file["most_stressed_fiber"] = most_stressed_fiber
         file["nr_clusters"] = nr_clusters./N
@@ -124,6 +129,7 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
     active_workers = Threads.Atomic{Int}(0)
     completed_runs = Threads.Atomic{Int}(0)
 
+
     @sync begin # start two tasks which will be synced in the very end
         # the first task updates the progress bar
         @async while take!(progress)
@@ -144,11 +150,15 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
             end
         end
 
+        # Test
+        #name = get_name(L, distribution_name, path, 1)
+        #break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=1)
+
         # the second task does the computation
         @async begin
             @distributed (+) for i in seeds
                 name = get_name(L, distribution_name, path, i)
-                @time break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=i)
+                break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=i)
                 i^2
             end
         end
@@ -204,7 +214,4 @@ function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; over
             end
         end
     end
-
-    println("Removing workers")
-    rmprocs(workers())
 end

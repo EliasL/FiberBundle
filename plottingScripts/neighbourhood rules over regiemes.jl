@@ -1,20 +1,25 @@
 using Plots
 using JLD2
 using LaTeXStrings
+using Measures
 
 include("../support/ploting_settings.jl")
+include("../support/dataManager.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 
 global_path = "data/"
 
-distributions(t) = [ "t=$t Uniform", "t=$t Uniform SNR", "t=$t Uniform CNR"]
+distributions(t) = [ "t=$t Uniform UNR", "t=$t Uniform SNR", "t=$t Uniform CNR"]
 desired_data = [
     "average_nr_clusters",
     "average_largest_cluster",
     "average_largest_perimiter",
     "average_most_stressed_fiber",
     "nr_seeds_used",
+    "average_spanning_cluster_size",
+    "average_spanning_cluster_perimiter",
+    "average_spanning_cluster_step",
 ]
 
 function file(global_path, L, distribution)
@@ -28,60 +33,81 @@ function file(global_path, L, distribution)
     return fileDict
 end
 
-L = 128
+L = 64
 N = L.*L
 k_N = [1:n for n in N]./N
 
-t = 1:9
+t = search_for_t(global_path)
 lables = permutedims(["UNR", "SNR", "CNR"])
-files = [[file(global_path, L, distribution) for distribution in distributions(t_)] for t_ in t ./10]
+files = [[file(global_path, L, distribution) for distribution in distributions(t_)] for t_ in t]
 seeds = files[1][1]["nr_seeds_used"]
 #Files [t] [distribution] [value]
 
-max_number_of_clusters = [[1/(maximum(files[t_][i]["average_nr_clusters"])*N) for t_ in t] for i in 1:length(distributions(1))]
-k_where_nr_clusters_is_max = [[argmax(files[t_][i]["average_nr_clusters"]) / N for t_ in t] for i in 1:length(distributions(1))]
-sigma_c = [[maximum(files[t_][i]["average_most_stressed_fiber"]) for t_ in t][1:4] for i in 1:length(distributions(1))]
-k_where_sigma_c_is_max = [[argmax(files[t_][i]["average_most_stressed_fiber"]) / N for t_ in t][1:4] for i in 1:length(distributions(1))]
-largest_cluster_size = [[files[t_][i]["average_largest_cluster"][floor(Int64, N/3)] for t_ in t] for i in 1:length(distributions(1))]
-largest_perimeter = [[files[t_][i]["average_largest_perimiter"][floor(Int64, N/3)] for t_ in t] for i in 1:length(distributions(1))]
+function get_data_from_files(key, f::Function = x -> x; t_index=:, d_index=:)
+    try
+        return [[f(files[j][i][key][d_index]) for j in 1:length(t)][t_index] for i in 1:length(distributions(1))]
+    catch
+        return [[f(files[j][i][key]) for j in 1:length(t)][t_index] for i in 1:length(distributions(1))]
+    end
+end
 
+max_number_of_clusters = get_data_from_files("average_nr_clusters", x -> 1/(maximum(x)*N))
+k_where_nr_clusters_is_max = get_data_from_files("average_nr_clusters", x -> argmax(x)/N)
+sigma_c = get_data_from_files("average_most_stressed_fiber", maximum, t_index=1:5)
+k_where_sigma_c_is_max = get_data_from_files("average_most_stressed_fiber", x -> argmax(x)/N, t_index = 1:5)
+largest_cluster_size = get_data_from_files("average_largest_cluster", d_index = floor(Int64, N/3))
+largest_perimeter = get_data_from_files("average_largest_perimiter", d_index = floor(Int64, N/3))
+spanning_cluster_size = get_data_from_files("average_spanning_cluster_size", x -> x / N)
+spanning_perimeter = get_data_from_files("average_spanning_cluster_perimiter", x -> x / N)
 
 default(markersize=3)
 
-max_number_of_clusters_plot = plot(t ./ 10, max_number_of_clusters , label = lables, legend=:topleft, marker=:circle,
+max_number_of_clusters_plot = plot(t, max_number_of_clusters , label = lables, legend=:topleft, marker=:circle,
                     xlabel=L"t_0", ylabel=L"1/N^{\mathrm{max}}_c", title="Maximum of number of clusters")
 
-k_where_nr_clusters_is_max_plot = plot(t  ./ 10, k_where_nr_clusters_is_max, label = lables, marker=:circle,
+k_where_nr_clusters_is_max_plot = plot(t, k_where_nr_clusters_is_max, label = lables, marker=:circle,
                     xlabel=L"t_0", ylabel=L"k/N"*" at "*L"N^{\mathrm{max}}_c)", title=L"k/N"*" where maximum was reached")
-                    
-sigma_c_plot = plot(t[1:4]  ./ 10, sigma_c, label = lables, legend=:topleft, marker=:circle,
+              
+sigma_c_plot = plot(t[1:5], sigma_c, label = lables, legend=:topleft, marker=:circle,
                     xlabel=L"t_0", ylabel=L"σ_c", title="Maximum of "*L"σ_c")
 
 #k_where_sigma_c_is_max_plot = plot(t[1:4]  ./ 10, k_where_sigma_c_is_max, label = lables,
 #                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"σ_c", title=L"k/N"*" where maximum was reached")
 
 
-cluster_over_perimiter_size_plot = plot(largest_perimeter, largest_cluster_size, label = lables, legend=:bottomright, marker=:circle, yaxis=:log, xaxis=:log, 
-                    xlabel=L"H_{\mathrm{max}}/N", ylabel=L"S_{\mathrm{max}}/N", title="Cluster over perimiter size at "*L"k/N=\frac{1}{3}")
+cluster_over_perimiter_size_plot = plot(spanning_perimeter, spanning_cluster_size, label = lables, legend=:bottomright,
+                    marker=:circle, yaxis=:log, xaxis=:log, 
+                    xlabel=L"H_{\mathrm{max}}/N", ylabel=L"S_{\mathrm{max}}/N", title="Spanning cluster over perimiter")
+
+s = 3
 n = 2
 cur_colors = theme_palette(:auto)
-scatter!(largest_perimeter[1][1:n], largest_cluster_size[1][1:n], color=cur_colors[1], series_annotations = text.(L"t_0=".*latexstring.(t[1:n] ./10).*" ", :right, :bottom, 7), primary=false)
-scatter!(largest_perimeter[2][1:n], largest_cluster_size[2][1:n], color=cur_colors[2], series_annotations = text.(" "*L"t_0=".*latexstring.(t[1:n] ./10).*" ", :left, :bottom, 7), primary=false)
-scatter!(largest_perimeter[3][1:n], largest_cluster_size[3][1:n], color=cur_colors[3], series_annotations = text.(" "*L"t_0=".*latexstring.(t[1:n] ./10).*" ", :right, :top, 7), primary=false)
+#scatter!(spanning_perimeter[1][s:s+n], spanning_cluster_size[1][s:s+n], color=cur_colors[1], series_annotations = text.(L"t_0=".*latexstring.(t[s:s+n] ./10).*" ", :right, :bottom, 7), primary=false)
+scatter!(spanning_perimeter[2][s:s+n], spanning_cluster_size[2][s:s+n], color=cur_colors[2],
+    series_annotations = text.("  "*L"t_0=".*latexstring.(t[s:s+n]).*"   ", :left, :bottom, 7), primary=false)
+scatter!(spanning_perimeter[3][s+1:s+n], spanning_cluster_size[3][s+1:s+n], color=cur_colors[3],
+    series_annotations = text.(" "*L"t_0=".*latexstring.(t[s+1:s+n]).*"    ", :right, 7), primary=false)
 
 
-lagrest_clusetr_size_plot = plot(t  ./ 10, largest_cluster_size, label = lables, legend=:bottomright, marker=:circle,
+lagrest_clusetr_size_plot = plot(t, largest_cluster_size, label = lables, legend=:bottomright, marker=:circle,
                     xlabel=L"t_0", ylabel=L"S_{\mathrm{max}}/N", title="Largest cluster size at "*L"k/N=\frac{1}{3}")
 
-largest_perimeiter_plot = plot(t  ./ 10, largest_perimeter, label = lables, legend=:right, marker=:circle,
+largest_perimeiter_plot = plot(t, largest_perimeter, label = lables, legend=:right, marker=:circle,
                     xlabel=L"t_0", ylabel=L"H_{\mathrm{max}}/N", title="Largest perimiter size at "*L"k/N=\frac{1}{3}")
+
+spanning_cluster_size_plot = plot(t, spanning_cluster_size, label = lables, legend=:right, marker=:circle,
+                    xlabel=L"t_0", ylabel=L"S_{\mathrm{span}}/N", title="Spanning cluster size")
+
+spanning_perimeter_plot = plot(t, spanning_perimeter, label = lables, legend=:right, marker=:circle,
+                    xlabel=L"t_0", ylabel=L"H_{\mathrm{span}}/N", title="Spanning perimiter size")
 
 
 l = @layout [
-    A B; C D; E F
+    A B; C D; E F ; G H
 ]
-plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, cluster_over_perimiter_size_plot, lagrest_clusetr_size_plot, largest_perimeiter_plot,
-    size=(800, 800), layout = l, plot_title=latexstring("Uniform distribution with NHR over regiemes, \$L=$L\$, $seeds samples"), plot_titlevspan=0.1)
+plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, lagrest_clusetr_size_plot, largest_perimeiter_plot,
+    size=(800, 1000), layout = l, left_margin=5mm,
+    plot_title=latexstring("Uniform distribution with NHR over regiemes, \$L=$L\$, $seeds samples"), plot_titlevspan=0.1)
 
 savefig("plots/Graphs/Uniform with Neighbourhood rules over different regiemes.pdf")
 

@@ -1,9 +1,24 @@
+using Distributed
+using Suppressor: @suppress_err
+
+# this just removes workers if there are leftovers from a crash
+@suppress_err rmprocs(workers())
+
+threads = Threads.nthreads()
+print("Starting $threads workers... ")
+addprocs(threads)
+println("Done!")
 
 include("dataGenerator.jl")
 
-seeds = 0:30
+seeds = 0:50
 L = [64]
-t = (0:9) ./ 10
+t = vcat((0:8) ./ 20, (5:9) ./ 10)
 NR = ["UNR", "CNR", "SNR"]
 
 itterate_settings(L, t, NR, seeds; overwrite=true)
+
+
+
+println("Removing workers")
+rmprocs(workers())
