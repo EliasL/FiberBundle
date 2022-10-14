@@ -11,14 +11,12 @@ println("Done!")
 
 include("dataGenerator.jl")
 
-seeds = 0:50
+seeds = 0:500
 L = [64]
 t = vcat((0:8) ./ 20, (5:9) ./ 10)
 NR = ["UNR", "CNR", "SNR"]
 
-itterate_settings(L, t, NR, seeds; overwrite=true)
-
-
+itterate_settings(L, t, NR, seeds; overwrite=true, estimate_time=true)
 
 println("Removing workers")
 rmprocs(workers())

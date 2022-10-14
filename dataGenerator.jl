@@ -195,15 +195,44 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
     end
 end
 
-
-
-function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
+function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
 
     if !isdir(path)
         println("Creating folder...")
         mkdir(path)
     end
     mkPath(distribution_name) = path*distribution_name*"/"
+
+    L = maximum(dimensions)
+    t = regimes[1]
+    test_seeds = 1:Threads.nthreads()
+    
+    test_time = @elapsed begin
+        
+        for neighbourhood_rule in neighbourhood_rules
+            distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
+            println("Distribution: $distribution_name, L: $L          ")
+            generate_data(mkPath(distribution_name),L, test_seeds, distribution_name, t, overwrite, neighbourhood_rule)
+        end
+    end
+    time_estimate = test_time * length(regimes) * seeds/test_seeds
+    formated_time = Dates.canonicalize(Dates.CompoundPeriod(Dates.Second(time_estimate)))
+    println("This will probably take: $formated_time")
+end
+
+
+function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", estimate_time=true)
+
+    if !isdir(path)
+        println("Creating folder...")
+        mkdir(path)
+    end
+    mkPath(distribution_name) = path*distribution_name*"/"
+
+    if estimate_time
+        println("Estimating time of run")
+        time_estimate(dimensions, regimes, neighbourhood_rules, seeds, overwrite=overwrite, path=path)
+    end
 
     for L in dimensions
         for t in regimes
