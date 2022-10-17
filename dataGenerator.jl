@@ -50,6 +50,7 @@ print("Preparing workers... ")
         tension_storage = zeros(Float64, division-1, N)
     end
     spanning_cluster_state_storage = zeros(Int64, N)
+    not_spanning_cluster_state_storage = zeros(Int64, N)
     spanning_cluster_tension_storage = zeros(Int64, N)
     spanning_cluster_size_storage = 0
     spanning_cluster_perimiter_storage = 0
@@ -94,7 +95,10 @@ print("Preparing workers... ")
             spanning_cluster_perimiter_storage = cluster_outline_length[spanning_cluster]
             spanning_cluster_step = step
             spanning_cluster_has_not_been_found = false
+        elseif spanning_cluster_has_not_been_found
+            not_spanning_cluster_state_storage = copy(status)
         end
+
         put!(progress_channel, true) # trigger a progress bar update
     end 
     
@@ -105,6 +109,7 @@ print("Preparing workers... ")
             file["sample_states"] = status_storage
             file["tension"] = tension_storage
             file["spanning_cluster_state"] = spanning_cluster_state_storage
+            file["not_spanning_cluster_state"] = not_spanning_cluster_state_storage
             file["spanning_cluster_tension"] = spanning_cluster_tension_storage
         end
         file["spanning_cluster_size"] = spanning_cluster_size_storage

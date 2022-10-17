@@ -202,7 +202,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             status[i] = c
             # explore the new cluster
             spanning_cluster_check = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
-            if spanning_cluster_check != -1 && spanning_cluster != -1
+            if spanning_cluster_check != -1 && spanning_cluster == -1
                 spanning_cluster = spanning_cluster_check
             end
             # We should now have updated cluster_outline,
@@ -270,6 +270,7 @@ function spanning(L::Int64, cluster_dimensions::Vector{Int64})
     # L-1 because the relative coordinates in the cluster start at 0,0
     # NB! Once the cluster is spanning, the dimension is no longer reliable because of
     # periodicity.
+    println(cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1)
     return cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1
 end
 
@@ -323,7 +324,7 @@ function store_possition(current_fiber::Int64, neighbour_fiber::Int64,
     rel_pos_x::Vector{Int64},
     rel_pos_y::Vector{Int64})
     # cluster_dimensions = [max_x, min_x, max_y, min_y]
-
+    println(direction)
     pos = direction<=2 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
     pos[neighbour_fiber] = pos[current_fiber] + movement[direction]
     if pos[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]

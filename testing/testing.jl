@@ -230,13 +230,51 @@ end
         @assert cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1 "Not spanning!"
         @assert spanning_cluster_size >= L "Impossibly small cluster"
     end
+end
 
+function line_spanning_cluster_test()
+
+    L = 4
+    N = L*L # Number of fibers
+    x = rand(N) # Max extension 
+    σ  = ones(Float64, N) # Relative tension
+    neighbours = fillAdjacent(L, NEIGHBOURS)
+    neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
+    neighbourhood_values = zeros(Int64, N)
+    status = vec([
+            -3  -3  -3  -3;
+             0   0   0   -3;
+            -3  -3  -3  -3;
+            -3  -3  -3  -3
+            ])
+    cluster_size = zeros(Int64, N)
+    cluster_dimensions = zeros(Int64, 4)
+    rel_pos_x = zeros(Int64, N)
+    rel_pos_y = zeros(Int64, N)
+    cluster_outline = zeros(Int64, N)
+    cluster_outline_length = zeros(Int64, N)
+    unexplored = zeros(Int64, N)
+    spanning_cluster_size = 0
+
+    c, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
+    @assert spanning_cluster == -1
+    resetClusters(status, σ)
+    i = 14
+    break_fiber(i, status, σ)
+    c, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
+    display(reshape(status, (4,4)))
+    println(cluster_dimensions)
+    @assert spanning_cluster == 1 "spanning:  $spanning_cluster"
+    if spanning_cluster != -1
+        @assert cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1 "Not spanning!"
+        @assert spanning_cluster_size >= L "Impossibly small cluster"
+    end
 end
 
 function random_spanning_cluster_test()
 
-    for run_nr in 1:10
-        L = 64
+    for run_nr in 1:5
+        L = 32
         N = L*L # Number of fibers
         if run_nr == 1
             x = ones(N)
@@ -269,6 +307,7 @@ function random_spanning_cluster_test()
                 if run_nr == 1
                     @assert spanning_cluster_size == k "It should be equal to number of broken fibers"
                 end
+                
             end
         end
         @assert cluster_dimensions[1] - cluster_dimensions[2] == cluster_dimensions[3] - cluster_dimensions[4] == L-1 "Not correct dimensions! $cluster_dimensions"
@@ -290,9 +329,11 @@ function test()
     println("Neighbourhood strength test complete")
     test_store_possition()
     spanning_cluster_test()
+    line_spanning_cluster_test()
     random_spanning_cluster_test()
     println("Cluster dimensions tests complete")
     println("All tests completed!")
 end
 
-test()
+#test()
+line_spanning_cluster_test()

@@ -14,6 +14,7 @@ seed_specific_keys = [
                     "sample_states",
                     "tension",
                     "spanning_cluster_state",
+                    "not_spanning_cluster_state",
                     "spanning_cluster_tension",
                     ]
 data_keys = vcat(averaged_data_keys, seed_specific_keys)

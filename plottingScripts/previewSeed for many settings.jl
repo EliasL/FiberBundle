@@ -56,7 +56,7 @@ function draw_seeds()
     NRS = ["UNR", "SNR", "CNR"]
     distribution(t, NR) = "t=$t Uniform $NR"
 
-    L = 64
+    L = 32
     seed = 2
     ps = 10 #Pixel size
 
@@ -67,7 +67,7 @@ function draw_seeds()
     layout = (length(NRS),length(t_settings))
     lx = layout[1] #layout x
     ly = layout[2] #layout y
-    key = color_stress ? "spanning_cluster_tension" : "spanning_cluster_state"
+    key = color_stress ? "spanning_cluster_tension" : "not_spanning_cluster_state"
     #println(f(0.0, NR))
     grids = reshape([reshape(f(t, NR)["$key/$seed"], (L, L)) for NR=NRS, t=t_settings], (lx,ly))
     grid_names = reshape([latexstring("$NR, \$t=$t\$, $(f(t, NR)["spanning_cluster_step/$seed"]/(L*L))") for NR=NRS, t=t_settings], (lx,ly))
