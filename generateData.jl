@@ -6,19 +6,19 @@ using Suppressor: @suppress_err
 
 threads = Threads.nthreads()
 print("Starting $threads workers... ")
-addprocs(threads)
+addprocs(threads; exeflags="--project=$(Base.active_project())")
 println("Done!")
 
 include("dataGenerator.jl")
 
-seeds = 0:1000
-L = [64, 128]
-t = vcat((0:8) ./ 20, (5:9) ./ 10)
+seeds = 0:10-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
+L = [64]
+t = vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20, [9.25, 9.75])
 NR = ["UNR", "CNR", "SNR"]
 
 #time_estimate(L, t, NR, seeds, rough_estimate=true)
 
-itterate_settings(L, t, NR, seeds; overwrite=false, estimate_time=false)
+itterate_settings(L, t, NR, seeds; overwrite=true, estimate_time=false)
 
 println("Removing workers")
 rmprocs(workers())

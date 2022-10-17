@@ -1,24 +1,22 @@
 using JLD2
+using CodecLz4
 
-data_keys = ["nr_clusters", 
-             "largest_cluster",
-             "largest_perimiter",
-             "most_stressed_fiber",
-             "spanning_cluster_size",
-             "spanning_cluster_perimiter",
-             "spanning_cluster_step",
-             # These are not averaged
-             "sample_states",
-             "tension",
-             "spanning_cluster",]
-
-# Put the keys you don't want averaged in here, and make sure they are at the back of the data_keys list
-not_averaged_keys = ["sample_states","tension","spanning_cluster",] #TODO separate into to lists
-nr_not_averaged_keys = length(not_averaged_keys)
-nr_averaged_keys = length(data_keys) - nr_not_averaged_keys
-averaged_keys = data_keys[1:nr_averaged_keys]
-# These data_keys will not be averaged
-seed_specific_keys = data_keys[nr_averaged_keys+1:end]
+averaged_data_keys = [
+                    "nr_clusters", 
+                    "largest_cluster",
+                    "largest_perimiter",
+                    "most_stressed_fiber",
+                    "spanning_cluster_size",
+                    "spanning_cluster_perimiter",
+                    "spanning_cluster_step",
+                    ]
+seed_specific_keys = [
+                    "sample_states",
+                    "tension",
+                    "spanning_cluster_state",
+                    "spanning_cluster_tension",
+                    ]
+data_keys = vcat(averaged_data_keys, seed_specific_keys)
 
 function get_name(L, distribution, path, seed::Int=-1, average=false)
     @assert seed>=-1 "We don't want to use negative seeds since -1 is special here"
@@ -39,6 +37,7 @@ function expand_file(L, distribution, path, overwritten_seeds::AbstractArray=Vec
     get_name_fun = make_get_name(L, distribution, path)
     condensed_file_name = get_name_fun()
     jldopen(condensed_file_name, "r") do file
+
         seeds = file["seeds_used"]
         for seed::Int64 in seeds
             if seed in overwritten_seeds
@@ -77,17 +76,24 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
     condensed_file_name = get_name_fun()
     averaged_file_name = get_name_fun(average=true)
     existing_seeds = get_seeds_in_compact_file(condensed_file_name)
+    if length(existing_seeds) > 0
+        expand_file(L, distribution, path)
+    end
     seeds = union(existing_seeds, requested_seeds)
     nr_seeds = length(seeds)
 
     averages = Dict()
-    jldopen(condensed_file_name, "w") do condensed_file
-    jldopen(averaged_file_name, "w") do averaged_file
-        for seed in seeds
-            seed_file_name = get_name_fun(seed)
-            jldopen(seed_file_name, "r") do s_file
-                for key in data_keys
-                    if key in averaged_keys
+    #try
+        jldopen(condensed_file_name*".temp", "w", compress = LZ4FrameCompressor()) do condensed_file
+        jldopen(averaged_file_name*".temp", "w") do averaged_file
+            averaged_file["seeds_used"] = seeds
+            averaged_file["nr_seeds_used"] = length(seeds)
+            condensed_file["seeds_used"] = seeds
+            condensed_file["nr_seeds_used"] = length(seeds)
+            for seed in seeds
+                seed_file_name = get_name_fun(seed)
+                jldopen(seed_file_name, "r") do s_file
+                    for key in averaged_data_keys
                         # If the key doesn't exist, make it and set it to zero
                         if !haskey(averages, key)
                             if length(s_file[key]) == 1
@@ -97,26 +103,36 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
                             end
                         end
                         averages[key] += s_file[key] ./ nr_seeds
+                        condensed_file["$key/$seed"] = s_file[key]
                     end
-                    if key in not_averaged_keys && seed > 10
-                        continue
+                    if seed <= 10
+                        for key in seed_specific_keys
+                            condensed_file["$key/$seed"] = s_file[key]
+                        end
                     end
-                    condensed_file["$key/$seed"] = s_file[key]
                 end
             end
-            if remove_files
-                rm(seed_file_name)
+            for key in averaged_data_keys
+                averaged_file["average_$key"] = averages[key]
+            end
+        end # Averaged file
+        end # Condensed file
+        if remove_files
+            for seed in seeds
+                rm(get_name_fun(seed))
             end
         end
-        for key in averaged_keys
-            averaged_file["average_$key"] = averages[key]
-        end
-        averaged_file["seeds_used"] = seeds
-        averaged_file["nr_seeds_used"] = length(seeds)
-        condensed_file["seeds_used"] = seeds
-        condensed_file["nr_seeds_used"] = length(seeds)
-    end # Averaged file
-    end # Condensed file
+        mv(condensed_file_name*".temp", condensed_file_name, force=true)
+        mv(averaged_file_name*".temp", averaged_file_name, force=true)
+    #catch e
+    #    rm(condensed_file_name*".temp")
+    #    rm(averaged_file_name*".temp")
+    #    println("File condensing failed!")
+    #    if e != "FileNot found"
+    #        throw(e)
+    #    end
+    #    println(e)
+    #end
 end
 
 function get_missing_seeds(file_name, requested_seeds)
@@ -177,7 +193,7 @@ function search_for_loose_files(path)
     seeds = Dict()
     for f in files
         # Distribution name must end with [a-zA-Z]
-        m = match(r"(^.+[a-zA-Z])([0-9]+)+,([0-9]+)+.jld2$", f)
+        m = match(r"(^.+[a-zA-Z])([0-9]+)+,([0-9]+)+_bulk.jld2$", f)
         if m !== nothing
             distribution_name = m.captures[1]
             L = parse(Int64, m.captures[2])

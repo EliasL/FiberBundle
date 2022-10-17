@@ -33,7 +33,7 @@ function file(global_path, L, distribution)
     return fileDict
 end
 
-L = 64
+L = 128
 N = L.*L
 k_N = [1:n for n in N]./N
 
@@ -79,7 +79,7 @@ cluster_over_perimiter_size_plot = plot(spanning_perimeter, spanning_cluster_siz
                     marker=:circle, yaxis=:log, xaxis=:log, 
                     xlabel=L"H_{\mathrm{max}}/N", ylabel=L"S_{\mathrm{max}}/N", title="Spanning cluster over perimiter")
 
-s = 3
+s = 7
 n = 2
 cur_colors = theme_palette(:auto)
 #scatter!(spanning_perimeter[1][s:s+n], spanning_cluster_size[1][s:s+n], color=cur_colors[1], series_annotations = text.(L"t_0=".*latexstring.(t[s:s+n] ./10).*" ", :right, :bottom, 7), primary=false)

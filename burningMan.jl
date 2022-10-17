@@ -188,6 +188,9 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     # The id of a spanning cluster. If there are none, it is -1
     spanning_cluster::Int64 = -1
 
+    fill!(rel_pos_x, 0)
+    fill!(rel_pos_y, 0)
+
     # For every fiber in the plane
     for i in eachindex(status)
         # If it is broken and unexplored
@@ -198,7 +201,10 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # assign fiber i to this new cluster
             status[i] = c
             # explore the new cluster
-            spanning_cluster = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
+            spanning_cluster_check = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
+            if spanning_cluster_check != -1 && spanning_cluster != -1
+                spanning_cluster = spanning_cluster_check
+            end
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
             update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule, neighbourhood_values)
@@ -234,6 +240,7 @@ function explore_cluster_at(i::Int64, c::Int64,
     # Cluster dimensions
     # [max_x, min_x, max_y, min_y]
     fill!(cluster_dimensions, 0) # Reset cluster dimensions
+
 
     # While there are still unexplored fibers in the cluster
     while nr_unexplored > nr_explored
@@ -317,10 +324,10 @@ function store_possition(current_fiber::Int64, neighbour_fiber::Int64,
     rel_pos_y::Vector{Int64})
     # cluster_dimensions = [max_x, min_x, max_y, min_y]
 
-    pos = direction<3 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
-
+    pos = direction<=2 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
     pos[neighbour_fiber] = pos[current_fiber] + movement[direction]
-    if abs(pos[neighbour_fiber]) > abs(cluster_dimensions[direction])
+    if pos[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]
+
         cluster_dimensions[direction] = pos[neighbour_fiber]
     end
 end
@@ -340,12 +347,12 @@ function apply_to_neighbourhood(f::Function,
     # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
     # put it into the function f
     for i in 1:cluster_outline_length
-        values[i] = f(get_neighbourhoods(i, status, cluster_outline, neighbourhoods))
+        values[i] = f(get_neighbourhood(i, status, cluster_outline, neighbourhoods))
     end
     return values
 end
 
-function get_neighbourhoods(i::Int64,
+function get_neighbourhood(i::Int64,
     status::Vector{Int64},
     cluster_outline::Vector{Int64},
     neighbourhoods::Array{Int64, 2})

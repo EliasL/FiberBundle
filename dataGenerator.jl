@@ -2,9 +2,7 @@ using Distributed
 using ProgressMeter
 using Dates
 
-@everywhere begin
-    using JLD2
-end
+@everywhere using JLD2, CodecLz4
 
 
 print("Preparing workers... ")
@@ -28,6 +26,7 @@ print("Preparing workers... ")
     status = fill(-1,N)
     cluster_size = zeros(Int64, N)
     cluster_dimensions = zeros(Int64, 4) #Or 4? max_x, min_x, max_y, min_y
+    # Relative possition of every fiber with respect to it's cluster
     rel_pos_x = zeros(Int64, N)
     rel_pos_y = zeros(Int64, N)
     cluster_outline_length = zeros(Int64, N)
@@ -50,7 +49,8 @@ print("Preparing workers... ")
         status_storage = zeros(Int64, division-1, N)
         tension_storage = zeros(Float64, division-1, N)
     end
-    spanning_cluster_storage = zeros(Int64, N)
+    spanning_cluster_state_storage = zeros(Int64, N)
+    spanning_cluster_tension_storage = zeros(Int64, N)
     spanning_cluster_size_storage = 0
     spanning_cluster_perimiter_storage = 0
     spanning_cluster_has_not_been_found = true
@@ -88,7 +88,8 @@ print("Preparing workers... ")
             end
         end
         if spanning_cluster != -1 && spanning_cluster_has_not_been_found
-            spanning_cluster_storage = status
+            spanning_cluster_state_storage = copy(status)
+            spanning_cluster_tension_storage = σ ./ x
             spanning_cluster_size_storage = spanning_cluster_size
             spanning_cluster_perimiter_storage = cluster_outline_length[spanning_cluster]
             spanning_cluster_step = step
@@ -103,7 +104,8 @@ print("Preparing workers... ")
         if seed <= 10
             file["sample_states"] = status_storage
             file["tension"] = tension_storage
-            file["spanning_cluster"] = spanning_cluster_storage
+            file["spanning_cluster_state"] = spanning_cluster_state_storage
+            file["spanning_cluster_tension"] = spanning_cluster_tension_storage
         end
         file["spanning_cluster_size"] = spanning_cluster_size_storage
         file["spanning_cluster_perimiter"] = spanning_cluster_perimiter_storage
