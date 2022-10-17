@@ -195,7 +195,7 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
     end
 end
 
-function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
+function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrite=true, path="data/", rough_estimate=true)
 
     if !isdir(path)
         println("Creating folder...")
@@ -208,20 +208,20 @@ function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrit
     test_seeds = 1:Threads.nthreads()
     
     test_time = @elapsed begin
-        
-        for neighbourhood_rule in neighbourhood_rules
+        NRs = rough_estimate ? [neighbourhood_rules[1]] : neighbourhood_rules
+        for neighbourhood_rule in NRs
             distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
             println("Distribution: $distribution_name, L: $L          ")
             generate_data(mkPath(distribution_name),L, test_seeds, distribution_name, t, overwrite, neighbourhood_rule)
         end
     end
-    time_estimate = test_time * length(regimes) * length(seeds)/length(test_seeds)
+    time_estimate = test_time * length(regimes) * length(seeds)/length(test_seeds) * (rough_estimate ? length(neighbourhood_rules) : 1)
     formated_time = Dates.canonicalize(Dates.CompoundPeriod(Dates.Second(floor(Int64, time_estimate))))
     println("This will probably take: $formated_time")
 end
 
 
-function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", estimate_time=true)
+function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", estimate_time=true, rough_estimate=true)
 
     if !isdir(path)
         println("Creating folder...")
@@ -231,7 +231,7 @@ function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; over
 
     if estimate_time
         println("Estimating time of run")
-        time_estimate(dimensions, regimes, neighbourhood_rules, seeds, overwrite=overwrite, path=path)
+        time_estimate(dimensions, regimes, neighbourhood_rules, seeds, overwrite=true, path=path, rough_estimate=rough_estimate)
     end
 
     for L in dimensions
