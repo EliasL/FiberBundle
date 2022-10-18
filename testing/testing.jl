@@ -211,7 +211,6 @@ function spanning_cluster_test()
     neighbourhood_values = zeros(Int64, N)
     status = [0, -1, -1, -1, 0, -1, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, -1, 0, 0, 0, 0, -1, -1, -1, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, 0, 0, -1, -1, 0, 0, 0, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0, 0, 0, -1, -1, -1, 0, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, -1, 0, -1, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, -1, 0, 0, 0, 0]
     
-    display(heatmap(reshape(status, (L,L))))
     cluster_size = zeros(Int64, N)
     cluster_dimensions = zeros(Int64, 4)
     rel_pos_x = zeros(Int64, N)
@@ -222,9 +221,7 @@ function spanning_cluster_test()
     spanning_cluster_size = 0
     c, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
 
-    display(heatmap(reshape(status, (L,L))))
     if spanning_cluster != -1
-        println("Spanning!")
         @assert spanning_cluster_size >= L "Impossibly small cluster"
         
     end 
@@ -254,13 +251,10 @@ function random_spanning_cluster_test()
             i = findNextFiber(σ, x)
             resetClusters(status, σ)
             break_fiber(i, status, σ)
-            println("K=$k, New bundle! _____________________")
             c, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
 
             if spanning_cluster != -1
-                display(heatmap(reshape(status, (L,L))))
                 break
-                println("Spanning!")
                 @assert spanning_cluster_size >= L "Impossibly small cluster"
                 
             end 
@@ -289,6 +283,6 @@ function test()
     println("All tests completed!")
 end
 
-#test()
+test()
 #spanning_cluster_test()
-random_spanning_cluster_test()
+#random_spanning_cluster_test()

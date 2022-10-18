@@ -11,7 +11,7 @@ print("Preparing workers... ")
 @everywhere include("support/dataManager.jl")
 @everywhere include("support/distributions.jl")
 
-@everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name, neighbourhood_rule; seed=0)
+@everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name, neighbourhood_rule; seed=0, save_data=true)
     put!(working_channel, true) # Indicate a process has started
     N = L*L # Number of fibers
     @assert seed != -1 ""
@@ -50,7 +50,6 @@ print("Preparing workers... ")
         tension_storage = zeros(Float64, division-1, N)
     end
     spanning_cluster_state_storage = zeros(Int64, N)
-    not_spanning_cluster_state_storage = zeros(Int64, N)
     spanning_cluster_tension_storage = zeros(Int64, N)
     spanning_cluster_size_storage = 0
     spanning_cluster_perimiter_storage = 0
@@ -64,20 +63,17 @@ print("Preparing workers... ")
     # Spanning cluster 
     # Break the bundle
     for step in 1:N
-
         # Simulate step
         i = findNextFiber(σ, x)
         max_σ = σ[i]/x[i]
         resetClusters(status, σ)
         break_fiber(i, status, σ)
         _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
-
         # Save important data from step
         most_stressed_fiber[step] = 1/max_σ
         nr_clusters[step] = _nr_clusters
         largest_cluster[step] = maximum(cluster_size)
         largest_perimiter[step] = maximum(cluster_outline_length)
-
         # Save step for visualization
         if seed <= 10 #Only save samples from 10 first seeds
             if step == steps_to_store[storage_index]
@@ -95,31 +91,27 @@ print("Preparing workers... ")
             spanning_cluster_perimiter_storage = cluster_outline_length[spanning_cluster]
             spanning_cluster_step = step
             spanning_cluster_has_not_been_found = false
-        elseif spanning_cluster_has_not_been_found
-            not_spanning_cluster_state_storage = copy(status)
         end
-
         put!(progress_channel, true) # trigger a progress bar update
-    end 
-    
-    @assert spanning_cluster_has_not_been_found == false "There should be a spanning cluster"
+    end
 
-    jldopen(file_name, "w") do file
-        if seed <= 10
-            file["sample_states"] = status_storage
-            file["tension"] = tension_storage
-            file["spanning_cluster_state"] = spanning_cluster_state_storage
-            file["not_spanning_cluster_state"] = not_spanning_cluster_state_storage
-            file["spanning_cluster_tension"] = spanning_cluster_tension_storage
+    if save_data
+        jldopen(file_name, "w") do file
+            if seed <= 10
+                file["sample_states"] = status_storage
+                file["tension"] = tension_storage
+                file["spanning_cluster_state"] = spanning_cluster_state_storage
+                file["spanning_cluster_tension"] = spanning_cluster_tension_storage
+            end
+            file["spanning_cluster_size"] = spanning_cluster_size_storage
+            file["spanning_cluster_perimiter"] = spanning_cluster_perimiter_storage
+            file["spanning_cluster_step"] = spanning_cluster_step
+            file["sample_states_steps"] = steps_to_store./N
+            file["most_stressed_fiber"] = most_stressed_fiber
+            file["nr_clusters"] = nr_clusters./N
+            file["largest_cluster"] = largest_cluster./N
+            file["largest_perimiter"] = largest_perimiter./N
         end
-        file["spanning_cluster_size"] = spanning_cluster_size_storage
-        file["spanning_cluster_perimiter"] = spanning_cluster_perimiter_storage
-        file["spanning_cluster_step"] = spanning_cluster_step
-        file["sample_states_steps"] = steps_to_store./N
-        file["most_stressed_fiber"] = most_stressed_fiber
-        file["nr_clusters"] = nr_clusters./N
-        file["largest_cluster"] = largest_cluster./N
-        file["largest_perimiter"] = largest_perimiter./N
     end
     put!(working_channel, false) # trigger a progress bar update
 
@@ -129,8 +121,8 @@ end
 println("Done!")
 
 
-function run_workers(L, distribution_name, distribution_function, seeds, path, neighbourhood_rule)
-    p = Progress(length(seeds)*L^2)
+function run_workers(L, distribution_name, distribution_function, seeds, path, neighbourhood_rule; show_progress=true, save_data=true)
+    p = Progress(length(seeds)*L^2, enabled=show_progress)
     progress = RemoteChannel(()->Channel{Bool}(), 1)
     working = RemoteChannel(()->Channel{Bool}(), 1)
     active_workers = Threads.Atomic{Int}(0)
@@ -139,8 +131,12 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
 
     @sync begin # start two tasks which will be synced in the very end
         # the first task updates the progress bar
-        @async while take!(progress)
+        @async begin
+            while take!(progress)
+                ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+            end
             ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+            ProgressMeter.update!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
         end
 
         @async while true
@@ -165,14 +161,29 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
         @async begin
             @distributed (+) for i in seeds
                 name = get_name(L, distribution_name, path, i)
-                break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=i)
+                break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=i, save_data=save_data)
                 i^2
             end
         end
     end
 end
 
-function generate_data(path, L, requested_seeds, distribution_name, t₀, overwrite, neighbourhood_rule)
+function generate_data(path, L, requested_seeds, distribution_name, t₀, overwrite, neighbourhood_rule; show_progress=true, save_data=true)
+    # get distribtion function
+    distribution_function(n) = nothing
+
+    if  occursin("Uniform", distribution_name)
+        distribution_function = get_uniform_distribution(t₀)
+    else
+        error("No distribution found!")
+    end
+
+    # If we don't want to save the data, we just do this
+    if !save_data
+        run_workers(L, distribution_name, distribution_function, requested_seeds, path, neighbourhood_rule, show_progress=show_progress, save_data=save_data)
+        return
+    end
+    # else
 
     if !isdir(path)
         println("Creating folder... ")
@@ -181,18 +192,9 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
 
     missing_seeds = prepare_run(L, distribution_name, path, requested_seeds, overwrite)
 
-    # get distribtion function
-    distribution_function(n) = zeros(n) # Default
-
-    if  occursin("Uniform", distribution_name)
-        distribution_function = get_uniform_distribution(t₀)
-    else
-        error("No distribution found!")
-    end
-
     if length(missing_seeds) > 0
         println("Running workers...                            ")
-        run_workers(L, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule)
+        run_workers(L, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule, show_progress=show_progress, save_data=save_data)
         println("Done!")
 
 
@@ -215,12 +217,18 @@ function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrit
     L = maximum(dimensions)
     t = regimes[1]
     test_seeds = 1:Threads.nthreads()
+    NRs = rough_estimate ? [neighbourhood_rules[1]] : neighbourhood_rules
+
+    # Precompile functions
+    for neighbourhood_rule in NRs
+        distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
+        generate_data(mkPath(distribution_name), 3, test_seeds, distribution_name, t, overwrite, neighbourhood_rule; show_progress=false, save_data=false)
+    end
     
+    println("Estimating time...")
     test_time = @elapsed begin
-        NRs = rough_estimate ? [neighbourhood_rules[1]] : neighbourhood_rules
         for neighbourhood_rule in NRs
             distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
-            println("Distribution: $distribution_name, L: $L          ")
             generate_data(mkPath(distribution_name),L, test_seeds, distribution_name, t, overwrite, neighbourhood_rule)
         end
     end

@@ -77,8 +77,8 @@ end
 neighbourhoodStrengths = zeros(Int64, 256)
 for m in generate_neighbours().*-1
     i = neighbourhoodToInt(m)
-    s = compute_strength(m)
+    str = compute_strength(m)
     @assert neighbourhoodStrengths[i] == 0 "This value is already set! neighbourhoodToInt does not work!"
-    neighbourhoodStrengths[i] = s
+    neighbourhoodStrengths[i] = str
 end
 

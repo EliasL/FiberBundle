@@ -190,7 +190,6 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
 
     fill!(rel_pos_x, 0)
     fill!(rel_pos_y, 0)
-
     # For every fiber in the plane
     for i in eachindex(status)
         # If it is broken and unexplored
@@ -240,8 +239,6 @@ function explore_cluster_at(i::Int64, c::Int64,
     # Cluster dimensions
     # [max_x, min_x, max_y, min_y]
     fill!(cluster_dimensions, 0) # Reset cluster dimensions
-
-
     # While there are still unexplored fibers in the cluster
     while nr_unexplored > nr_explored
         # Preemptively count this fiber as explored (because 1 indexing)
@@ -253,7 +250,6 @@ function explore_cluster_at(i::Int64, c::Int64,
                                             cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline,
                                             cluster_outline_length, unexplored)
     end
-
     L::Int64 = isqrt(length(status)) 
     if spanning(L, cluster_dimensions)
         return c
@@ -287,7 +283,6 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
     # We want to see if the neighbours are broken, making them
     # part of the cluster, or if they are alive, in which case
     # we need to add them to the border of the cluster.
-
     for (i, neighbour_fiber) in enumerate(view(neighbours, current_fiber, :))
         # Status of neighbour fiber
         s::Int64 = status[neighbour_fiber]
@@ -333,8 +328,8 @@ function store_possition(current_fiber::Int64, neighbour_fiber::Int64,
     xOrY[neighbour_fiber] += movement[direction]
 
     # If this is a new max, then we save it
-    if pos[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]
-        cluster_dimensions[direction] = pos[neighbour_fiber]
+    if xOrY[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]
+        cluster_dimensions[direction] = xOrY[neighbour_fiber]
     end
 end
 
