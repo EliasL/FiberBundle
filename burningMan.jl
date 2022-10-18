@@ -270,7 +270,6 @@ function spanning(L::Int64, cluster_dimensions::Vector{Int64})
     # L-1 because the relative coordinates in the cluster start at 0,0
     # NB! Once the cluster is spanning, the dimension is no longer reliable because of
     # periodicity.
-    println(cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1)
     return cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1
 end
 
@@ -324,11 +323,17 @@ function store_possition(current_fiber::Int64, neighbour_fiber::Int64,
     rel_pos_x::Vector{Int64},
     rel_pos_y::Vector{Int64})
     # cluster_dimensions = [max_x, min_x, max_y, min_y]
-    println(direction)
-    pos = direction<=2 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
-    pos[neighbour_fiber] = pos[current_fiber] + movement[direction]
-    if pos[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]
 
+    # Copy over the possition to the neighbour
+    rel_pos_x[neighbour_fiber] = rel_pos_x[current_fiber]
+    rel_pos_y[neighbour_fiber] = rel_pos_y[current_fiber]
+
+    #Then add the movement to the neighbour
+    pos = direction<=2 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
+    pos[neighbour_fiber] += movement[direction]
+
+    # If this is a new max, then we save it
+    if pos[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]
         cluster_dimensions[direction] = pos[neighbour_fiber]
     end
 end

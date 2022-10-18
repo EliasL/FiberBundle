@@ -57,20 +57,21 @@ function draw_seeds()
     distribution(t, NR) = "t=$t Uniform $NR"
 
     L = 32
-    seed = 2
+    seed = 1
     ps = 10 #Pixel size
 
     color_stress = false
     f(t, NR) = load(full_name(global_path, L, distribution(t, NR)))
 
-    t_settings = [0.0, 0.4, 0.7, 0.8, 0.85, 0.9, 9.75]
+    t_settings = [0.0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.7]
     layout = (length(NRS),length(t_settings))
     lx = layout[1] #layout x
     ly = layout[2] #layout y
-    key = color_stress ? "spanning_cluster_tension" : "not_spanning_cluster_state"
+    key = color_stress ? "spanning_cluster_tension" : "spanning_cluster_state"
     #println(f(0.0, NR))
     grids = reshape([reshape(f(t, NR)["$key/$seed"], (L, L)) for NR=NRS, t=t_settings], (lx,ly))
-    grid_names = reshape([latexstring("$NR, \$t=$t\$, $(f(t, NR)["spanning_cluster_step/$seed"]/(L*L))") for NR=NRS, t=t_settings], (lx,ly))
+    kn(t, NR) = round(f(t, NR)["spanning_cluster_step/$seed"]/(L*L), digits=2)
+    grid_names = reshape([latexstring("$NR, \$t=$t\$, $(kn(t, NR))") for NR=NRS, t=t_settings], (lx,ly))
     pixel_L = L*ps
     title_space = ceil(Int, pixel_L/2)
     subtitle_space = ceil(Int, pixel_L/5)
