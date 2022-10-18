@@ -33,7 +33,7 @@ function file(global_path, L, distribution)
     return fileDict
 end
 
-L = 128
+L = 64
 N = L.*L
 k_N = [1:n for n in N]./N
 
@@ -66,27 +66,27 @@ max_number_of_clusters_plot = plot(t, max_number_of_clusters , label = lables, l
                     xlabel=L"t_0", ylabel=L"1/N^{\mathrm{max}}_c", title="Maximum of number of clusters")
 
 k_where_nr_clusters_is_max_plot = plot(t, k_where_nr_clusters_is_max, label = lables, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"N^{\mathrm{max}}_c)", title=L"k/N"*" where maximum was reached")
+                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"N^{\mathrm{max}}_c", title=L"k/N"*" where maximum was reached")
               
-sigma_c_plot = plot(t[1:5], sigma_c, label = lables, legend=:topleft, marker=:circle,
+sigma_c_plot = plot(t[1:5], sigma_c, label = lables, legend=:bottomright, marker=:circle,
                     xlabel=L"t_0", ylabel=L"σ_c", title="Maximum of "*L"σ_c")
 
 #k_where_sigma_c_is_max_plot = plot(t[1:4]  ./ 10, k_where_sigma_c_is_max, label = lables,
 #                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"σ_c", title=L"k/N"*" where maximum was reached")
 
 
-cluster_over_perimiter_size_plot = plot(spanning_perimeter, spanning_cluster_size, label = lables, legend=:bottomright,
+cluster_over_perimiter_size_plot = plot(spanning_perimeter, spanning_cluster_size, label = lables, legend=:topright,
                     marker=:circle, yaxis=:log, xaxis=:log, 
                     xlabel=L"H_{\mathrm{max}}/N", ylabel=L"S_{\mathrm{max}}/N", title="Spanning cluster over perimiter")
 
-s = 7
-n = 2
+r1 = [1,3,6,9]
+r2 = [1,3,6,9]
 cur_colors = theme_palette(:auto)
 #scatter!(spanning_perimeter[1][s:s+n], spanning_cluster_size[1][s:s+n], color=cur_colors[1], series_annotations = text.(L"t_0=".*latexstring.(t[s:s+n] ./10).*" ", :right, :bottom, 7), primary=false)
-scatter!(spanning_perimeter[2][s:s+n], spanning_cluster_size[2][s:s+n], color=cur_colors[2],
-    series_annotations = text.("  "*L"t_0=".*latexstring.(t[s:s+n]).*"   ", :left, :bottom, 7), primary=false)
-scatter!(spanning_perimeter[3][s+1:s+n], spanning_cluster_size[3][s+1:s+n], color=cur_colors[3],
-    series_annotations = text.(" "*L"t_0=".*latexstring.(t[s+1:s+n]).*"    ", :right, 7), primary=false)
+scatter!(spanning_perimeter[2][r1], spanning_cluster_size[2][r1], color=cur_colors[2],
+    series_annotations = Plots.text.(""*L"t_0=".*latexstring.(t[r1]), :left, :bottom, 7), primary=false)
+scatter!(spanning_perimeter[3][r2], spanning_cluster_size[3][r2], color=cur_colors[3],
+    series_annotations = Plots.text.(" "*L"t_0=".*latexstring.(t[r2]).*"    ", :left, :top, 7, rotation=-30), primary=false)
 
 
 lagrest_clusetr_size_plot = plot(t, largest_cluster_size, label = lables, legend=:bottomright, marker=:circle,
@@ -95,7 +95,7 @@ lagrest_clusetr_size_plot = plot(t, largest_cluster_size, label = lables, legend
 largest_perimeiter_plot = plot(t, largest_perimeter, label = lables, legend=:right, marker=:circle,
                     xlabel=L"t_0", ylabel=L"H_{\mathrm{max}}/N", title="Largest perimiter size at "*L"k/N=\frac{1}{3}")
 
-spanning_cluster_size_plot = plot(t, spanning_cluster_size, label = lables, legend=:right, marker=:circle,
+spanning_cluster_size_plot = plot(t, spanning_cluster_size, label = lables, legend=:topleft, marker=:circle,
                     xlabel=L"t_0", ylabel=L"S_{\mathrm{span}}/N", title="Spanning cluster size")
 
 spanning_perimeter_plot = plot(t, spanning_perimeter, label = lables, legend=:right, marker=:circle,
@@ -106,7 +106,7 @@ l = @layout [
     A B; C D; E F ; G H
 ]
 plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, lagrest_clusetr_size_plot, largest_perimeiter_plot,
-    size=(800, 1000), layout = l, left_margin=5mm,
+    size=(800, 1000), layout = l, left_margin=5Plots.mm,
     plot_title=latexstring("Uniform distribution with NHR over regiemes, \$L=$L\$, $seeds samples"), plot_titlevspan=0.1)
 
 savefig("plots/Graphs/Uniform with Neighbourhood rules over different regiemes.pdf")

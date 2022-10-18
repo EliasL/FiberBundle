@@ -22,9 +22,10 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
         pos = pos .+ L*pixel_size/2
         fiber = A[tiles.currentcol, tiles.currentrow]
         if color_stress
-            box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
+            box(pos, tiles.tilewidth, tiles.tileheight, :clip)
             if fiber == 1
-                background(0.54, 0.73, 0.83)
+                star(pos, tiles.tilewidth*0.5, 4, 0.2, pi/4, action=:clip)
+                background(0.2,0.2,0.2)
             else
                 background(stress_colors[fiber].r, stress_colors[fiber].g, stress_colors[fiber].b)
             end
@@ -35,10 +36,10 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
                 
             elseif fiber == -3
                 #ngon(pos, tiles.tilewidth/1.6, 6, 0, :clip)
-                box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
+                box(pos, tiles.tilewidth, tiles.tileheight, :clip)
                 background(0.2,0.2,0.2)
             else
-                box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
+                box(pos, tiles.tilewidth, tiles.tileheight, :clip)
                 background(cur_colors[mod1(fiber, 256)].r, cur_colors[mod1(fiber, 256)].g, cur_colors[mod1(fiber, 256)].b)
 
             end
@@ -56,14 +57,14 @@ function draw_seeds()
     NRS = ["UNR", "SNR", "CNR"]
     distribution(t, NR) = "t=$t Uniform $NR"
 
-    L = 32
-    seed = 1
+    L = 64
+    seed = 9
     ps = 10 #Pixel size
 
-    color_stress = false
+    color_stress = true
     f(t, NR) = load(full_name(global_path, L, distribution(t, NR)))
 
-    t_settings = [0.0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.7]
+    t_settings = [0.0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.7, 0.8, 0.9, 0.925, 0.95, 0.975]
     layout = (length(NRS),length(t_settings))
     lx = layout[1] #layout x
     ly = layout[2] #layout y

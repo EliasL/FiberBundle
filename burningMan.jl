@@ -329,8 +329,8 @@ function store_possition(current_fiber::Int64, neighbour_fiber::Int64,
     rel_pos_y[neighbour_fiber] = rel_pos_y[current_fiber]
 
     #Then add the movement to the neighbour
-    pos = direction<=2 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
-    pos[neighbour_fiber] += movement[direction]
+    xOrY = direction<=2 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
+    xOrY[neighbour_fiber] += movement[direction]
 
     # If this is a new max, then we save it
     if pos[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]

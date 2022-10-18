@@ -23,9 +23,10 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
         pos = pos .+ L*pixel_size/2
         fiber = A[tiles.currentcol, tiles.currentrow]
         if color_stress
-            box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
+            box(pos, tiles.tilewidth, tiles.tileheight, :clip)
             if fiber == 1
-                background(0.54, 0.73, 0.83)
+                star(pos, tiles.tilewidth*0.5, 4, 0.2, pi/4, action=:clip)
+                background(0.2,0.2,0.2)
             else
                 background(stress_colors[fiber].r, stress_colors[fiber].g, stress_colors[fiber].b)
             end
@@ -37,10 +38,10 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
                 
             elseif fiber == -3
                 #ngon(pos, tiles.tilewidth/1.6, 6, 0, :clip)
-                box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
+                box(pos, tiles.tilewidth, tiles.tileheight, :clip)
                 background(0.2,0.2,0.2)
             else
-                box(pos, tiles.tilewidth*1.1, tiles.tileheight*1.1, :clip)
+                box(pos, tiles.tilewidth, tiles.tileheight, :clip)
                 background(cur_colors[mod1(fiber, 256)].r, cur_colors[mod1(fiber, 256)].g, cur_colors[mod1(fiber, 256)].b)
 
             end
@@ -51,7 +52,7 @@ end
 
 function draw_seeds(distribution)
     L = 64
-    seed = 2
+    seed = 7
     ps = 10 #Pixel size
 
     color_stress = false

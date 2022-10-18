@@ -204,6 +204,8 @@ end
 
 function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrite=true, path="data/", rough_estimate=true)
 
+    # This does not yet account for existing seeds TODO
+
     if !isdir(path)
         println("Creating folder...")
         mkdir(path)
