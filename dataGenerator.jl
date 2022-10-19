@@ -145,9 +145,10 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
                 percent_done = p/finish*100
                 if percent_done > print_step
                     print_step += 1
-                    println("$print_step%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[]).")
+                    println("$(print_step-1)%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[]).")
                 end
             end
+            println("100%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[]).")
             #ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
             #ProgressMeter.finish!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
         end
