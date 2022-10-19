@@ -33,7 +33,7 @@ function file(global_path, L, distribution)
     return fileDict
 end
 
-L = 64
+L = 128
 N = L.*L
 k_N = [1:n for n in N]./N
 
