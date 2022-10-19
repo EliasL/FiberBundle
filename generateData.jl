@@ -12,7 +12,7 @@ println("Done!")
 include("dataGenerator.jl")
 
 seeds = 0:50-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
-L = [64, 128]
+L = [32]
 t = vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20, [0.925, 0.975])
 #t = vcat((0:8) ./ 20, (5:9) ./ 10)
 NR = ["UNR", "CNR", "SNR"]

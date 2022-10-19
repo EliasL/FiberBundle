@@ -122,7 +122,14 @@ println("Done!")
 
 
 function run_workers(L, distribution_name, distribution_function, seeds, path, neighbourhood_rule; show_progress=true, save_data=true)
+    
+
     p = Progress(length(seeds)*L^2, enabled=show_progress)
+    
+    p = 0
+    print_step = 0
+    finish = length(seeds)*L^2
+
     progress = RemoteChannel(()->Channel{Bool}(), 1)
     working = RemoteChannel(()->Channel{Bool}(), 1)
     active_workers = Threads.Atomic{Int}(0)
@@ -133,10 +140,16 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
         # the first task updates the progress bar
         @async begin
             while take!(progress)
-                ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+                #ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+                p += 1
+                percent_done = p/finish*100
+                if percent_done > print_step
+                    print_step += 1
+                    println("$print_step%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[]).")
+                end
             end
-            ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
-            ProgressMeter.update!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+            #ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+            #ProgressMeter.finish!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
         end
 
         @async while true

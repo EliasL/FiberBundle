@@ -8,10 +8,11 @@
 #SBATCH --time=0-1:00:00
 
 ml eb
-ml av
+#ml av
 ml Julia/1.7.2-linux-x86_64
 julia generateData.jl
 
+git add --all
 git commit -am "job done"
 git push
 
