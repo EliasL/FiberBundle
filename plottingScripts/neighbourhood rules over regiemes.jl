@@ -53,8 +53,8 @@ end
 
 max_number_of_clusters = get_data_from_files("average_nr_clusters", x -> 1/(maximum(x)*N))
 k_where_nr_clusters_is_max = get_data_from_files("average_nr_clusters", x -> argmax(x)/N)
-sigma_c = get_data_from_files("average_most_stressed_fiber", maximum, t_index=1:8)
-k_where_sigma_c_is_max = get_data_from_files("average_most_stressed_fiber", x -> argmax(x)/N, t_index = 1:8)
+sigma_c = get_data_from_files("average_most_stressed_fiber", maximum)
+k_where_sigma_c_is_max = get_data_from_files("average_most_stressed_fiber", x -> argmax(x)/N)
 largest_cluster_size = get_data_from_files("average_largest_cluster", d_index = floor(Int64, N/3))
 largest_perimeter = get_data_from_files("average_largest_perimiter", d_index = floor(Int64, N/3))
 spanning_cluster_size = get_data_from_files("average_spanning_cluster_size", x -> x / N)
@@ -63,13 +63,13 @@ spanning_perimeter = get_data_from_files("average_spanning_cluster_perimiter", x
 default(markersize=3)
 
 max_number_of_clusters_plot = plot(t, max_number_of_clusters , label = lables, legend=:topleft, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"1/N^{\mathrm{max}}_c", title="Maximum of number of clusters")
+                    xlabel=L"t_0", ylabel=L"1/N^{\mathrm{max}}_c", title="A: Maximum of number of clusters")
 
 k_where_nr_clusters_is_max_plot = plot(t, k_where_nr_clusters_is_max, label = lables, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"N^{\mathrm{max}}_c", title=L"k/N"*" where maximum was reached")
+                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"N^{\mathrm{max}}_c", title=L"B: k/N"*" where maximum was reached")
               
-sigma_c_plot = plot(t[1:8], sigma_c, label = lables, legend=:topleft, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"σ_c", title="Maximum of "*L"σ_c")
+sigma_c_plot = plot(t, sigma_c, label = lables, legend=:topleft, marker=:circle,
+                    xlabel=L"t_0", ylabel=L"σ_c", title="C: Maximum of "*L"σ_c")
 
 #k_where_sigma_c_is_max_plot = plot(t[1:4]  ./ 10, k_where_sigma_c_is_max, label = lables,
 #                    xlabel=L"t_0", ylabel=L"k/N"*" at "*L"σ_c", title=L"k/N"*" where maximum was reached")
@@ -77,9 +77,9 @@ sigma_c_plot = plot(t[1:8], sigma_c, label = lables, legend=:topleft, marker=:ci
 
 cluster_over_perimiter_size_plot = plot(spanning_perimeter, spanning_cluster_size, label = lables, legend=:topright,
                     marker=:circle, yaxis=:log, xaxis=:log, 
-                    xlabel=L"H_{\mathrm{max}}/N", ylabel=L"S_{\mathrm{max}}/N", title="Spanning cluster over perimiter")
+                    xlabel=L"H_{\mathrm{max}}/N", ylabel=L"S_{\mathrm{max}}/N", title="A: Spanning cluster over perimiter")
 
-r1 = [1,3,5,9]
+r1 = [1,5,9]
 r2 = [1,3,5, 11]
 cur_colors = theme_palette(:auto)
 #scatter!(spanning_perimeter[1][s:s+n], spanning_cluster_size[1][s:s+n], color=cur_colors[1], series_annotations = text.(L"t_0=".*latexstring.(t[s:s+n] ./10).*" ", :right, :bottom, 7), primary=false)
@@ -90,16 +90,16 @@ scatter!(spanning_perimeter[3][r2], spanning_cluster_size[3][r2], color=cur_colo
 
 
 lagrest_clusetr_size_plot = plot(t, largest_cluster_size, label = lables, legend=:bottomright, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"S_{\mathrm{max}}/N", title="Largest cluster size at "*L"k/N=1/3")
+                    xlabel=L"t_0", ylabel=L"S_{\mathrm{max}}/N", title="D: Largest cluster size at "*L"k/N=1/3")
 
 largest_perimeiter_plot = plot(t, largest_perimeter, label = lables, legend=:right, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"H_{\mathrm{max}}/N", title="Largest perimiter size at "*L"k/N=1/3")
+                    xlabel=L"t_0", ylabel=L"H_{\mathrm{max}}/N", title="D: Largest perimiter size at "*L"k/N=1/3")
 
 spanning_cluster_size_plot = plot(t, spanning_cluster_size, label = lables, legend=:topleft, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"S_{\mathrm{span}}/N", title="Spanning cluster size")
+                    xlabel=L"t_0", ylabel=L"S_{\mathrm{span}}/N", title="B: Spanning cluster size")
 
 spanning_perimeter_plot = plot(t, spanning_perimeter, label = lables, legend=:right, marker=:circle,
-                    xlabel=L"t_0", ylabel=L"H_{\mathrm{span}}/N", title="Spanning perimiter size")
+                    xlabel=L"t_0", ylabel=L"H_{\mathrm{span}}/N", title="C: Spanning perimiter size")
 
 function plot_all()
     l = @layout [
@@ -119,11 +119,24 @@ function plot_similar()
         A B; C D;
     ]
     plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, lagrest_clusetr_size_plot,
-        size=(800, 400), layout = l, left_margin=3Plots.mm, bottom_margin=4Plots.mm, right_margin=2Plots.mm)
+        size=(800, 400), layout = l, left_margin=3Plots.mm, bottom_margin=4Plots.mm, right_margin=8Plots.mm)
 
     savefig("plots/Graphs/NR_similarities.pdf")
 
     println("Saved plot!")
 end
 
+function plot_differences()
+    l = @layout [
+        A B; C D;
+    ]
+    plot(cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, largest_perimeiter_plot,
+    size=(800, 400), layout = l, left_margin=3Plots.mm, bottom_margin=4Plots.mm, right_margin=13Plots.mm)
+
+    savefig("plots/Graphs/NR_differences.pdf")
+
+    println("Saved plot!")
+end
+
 plot_similar()
+plot_differences()
