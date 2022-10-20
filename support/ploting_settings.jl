@@ -1,4 +1,6 @@
 using Plots
 
 plot_font = "Computer Modern"
-default(fontfamily=plot_font, grid=true, titlefontsize=10, msw=0)
+Plots.resetfontsizes()
+default(fontfamily=plot_font, grid=true, legendfontsize=7, titlefontsize=10, msw=0)
+Plots.scalefontsizes(1.4)
