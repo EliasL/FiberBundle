@@ -116,10 +116,10 @@ end
 
 function plot_similar()
     l = @layout [
-        A B; C D;
+        A; B; C; D;
     ]
     plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, lagrest_clusetr_size_plot,
-        size=(800, 400), layout = l, left_margin=3Plots.mm, bottom_margin=4Plots.mm, right_margin=8Plots.mm)
+        size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_similarities.pdf")
 
@@ -128,10 +128,10 @@ end
 
 function plot_differences()
     l = @layout [
-        A B; C D;
+        A; B; C; D;
     ]
     plot(cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, largest_perimeiter_plot,
-    size=(800, 400), layout = l, left_margin=3Plots.mm, bottom_margin=4Plots.mm, right_margin=13Plots.mm)
+    size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_differences.pdf")
 
