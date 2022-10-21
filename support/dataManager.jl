@@ -1,5 +1,7 @@
 using JLD2
 using CodecLz4
+using Logging
+include("logingLevels.jl")
 
 averaged_data_keys = [
                     "nr_clusters", 
@@ -164,13 +166,13 @@ function prepare_run(L, distribution, path, requested_seeds::AbstractArray, over
     # Print some info
     nr_found_files = length(requested_seeds) - length(missing_seeds)
     if nr_found_files>0 && nr_found_files!=length(requested_seeds)
-        println("$nr_found_files files were found and skipped.")
+        @logmsg settingLog "$nr_found_files files were found and skipped."
     end
 
     # Here we expand the existing datafile 
     if isfile(condensed_file_name)
         if length(missing_seeds) == 0
-            println("All seeds already exist")
+            @logmsg settingLog "All seeds already exist"
         else
             expand_file(L, distribution, path, missing_seeds)
         end
@@ -184,7 +186,7 @@ function clean_after_run(L, distribution, path, requested_seeds::AbstractArray)
 end
 
 function search_for_loose_files(path)
-    print("Searching for loose files... ")
+    @logmsg settingLog "Searching for loose files... "
     files = readdir(path)
     # Find distribution with lose files
     # Assume there is only one distribution in the directory
@@ -207,12 +209,12 @@ function search_for_loose_files(path)
         end
     end
     if length(Ls)>0
-        print("\nFound loose files, cleaning up... ")
+        @logmsg settingLog "Found loose files, cleaning up... "
     end
     for L in Ls
         clean_after_run(L, distribution_name, path, seeds[L])
     end
-    print("Done!\r")
+    @logmsg settingLog "Done!"
 end
 
 function search_for_t(path)

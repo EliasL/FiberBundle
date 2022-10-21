@@ -1,12 +1,13 @@
 using Distributed
 using ProgressMeter
 using Dates
+using Logging
 
-@everywhere using JLD2, CodecLz4
+include("support/logingLevels.jl")
 
+@logmsg nodeLog "Preparing workers..."
 
-print("Preparing workers... ")
-
+@everywhere using JLD2, CodecLz4, Logging
 @everywhere include("burningMan.jl")
 @everywhere include("support/dataManager.jl")
 @everywhere include("support/distributions.jl")
@@ -62,11 +63,14 @@ print("Preparing workers... ")
     # Spanning cluster storage
     # Spanning cluster 
     # Break the bundle
+
+    @logmsg threadLog "Starting seed $seed..."
     for step in 1:N
         # Simulate step
         i = findNextFiber(σ, x)
         max_σ = σ[i]/x[i]
         resetClusters(status, σ)
+        @logmsg singleBreakLog "Breaking fiber nr $step"
         break_fiber(i, status, σ)
         _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
         # Save important data from step
@@ -94,7 +98,7 @@ print("Preparing workers... ")
         end
         put!(progress_channel, true) # trigger a progress bar update
     end
-
+    @logmsg threadLog "Saving data..."
     if save_data
         jldopen(file_name, "w") do file
             if seed <= 10
@@ -118,12 +122,13 @@ print("Preparing workers... ")
 end
 
 # Done preparing workers!
-println("Done!")
+@logmsg nodeLog "Done!"
 
 
-function run_workers(L, distribution_name, distribution_function, seeds, path, neighbourhood_rule; show_progress=true, save_data=true)
+function run_workers(L, distribution_name, distribution_function, seeds, path, neighbourhood_rule; save_data=true)
     
-
+    # Check if the current logger level is set to log on the thread level
+    show_progress = Logging.min_enabled_level(global_logger()) == threadLog
     p = Progress(length(seeds)*L^2, enabled=show_progress)
     
     p = 0
@@ -145,10 +150,10 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
                 percent_done = p/finish*100
                 if percent_done > print_step
                     print_step += 1
-                    println("$(print_step-1)%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[]).")
+                    @logmsg settingLog "$(print_step-1)%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
                 end
             end
-            println("100%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[]).")
+            @logmsg settingLog "100%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
             #ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
             #ProgressMeter.finish!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
         end
@@ -182,7 +187,7 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
     end
 end
 
-function generate_data(path, L, requested_seeds, distribution_name, t₀, overwrite, neighbourhood_rule; show_progress=true, save_data=true)
+function generate_data(path, L, requested_seeds, distribution_name, t₀, overwrite, neighbourhood_rule; save_data=true)
     # get distribtion function
     distribution_function(n) = nothing
 
@@ -194,27 +199,27 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
 
     # If we don't want to save the data, we just do this
     if !save_data
-        run_workers(L, distribution_name, distribution_function, requested_seeds, path, neighbourhood_rule, show_progress=show_progress, save_data=save_data)
+        run_workers(L, distribution_name, distribution_function, requested_seeds, path, neighbourhood_rule, save_data=save_data)
         return
     end
     # else
 
     if !isdir(path)
-        println("Creating folder... ")
+        @logmsg settingLog "Creating folder... "
         mkdir(path)
     end
 
     missing_seeds = prepare_run(L, distribution_name, path, requested_seeds, overwrite)
 
     if length(missing_seeds) > 0
-        println("Running workers...                            ")
-        run_workers(L, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule, show_progress=show_progress, save_data=save_data)
-        println("Done!")
+        @logmsg settingLog "Running workers..."
+        run_workers(L, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule, save_data=save_data)
+        @logmsg settingLog "Done!"
 
 
-        print("Calculating averages... ")
+        @logmsg settingLog "Calculating averages... "
         clean_after_run(L, distribution_name, path, requested_seeds)
-        print("Done!\r")
+        @logmsg settingLog "Done!"
     end
 end
 
@@ -223,7 +228,7 @@ function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrit
     # This does not yet account for existing seeds TODO
 
     if !isdir(path)
-        println("Creating folder...")
+        @info "Creating folder..."
         mkdir(path)
     end
     mkPath(distribution_name) = path*distribution_name*"/"
@@ -239,7 +244,7 @@ function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrit
         generate_data(mkPath(distribution_name), 3, test_seeds, distribution_name, t, overwrite, neighbourhood_rule; show_progress=false, save_data=false)
     end
     
-    println("Estimating time...")
+    @info "Estimating time..."
     test_time = @elapsed begin
         for neighbourhood_rule in NRs
             distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
@@ -248,28 +253,23 @@ function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrit
     end
     time_estimate = test_time * length(regimes) * length(seeds)/length(test_seeds) * (rough_estimate ? length(neighbourhood_rules) : 1)
     formated_time = Dates.canonicalize(Dates.CompoundPeriod(Dates.Second(floor(Int64, time_estimate))))
-    println("This will probably take: $formated_time")
+    @info "This will probably take: $formated_time"
 end
 
 
-function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", estimate_time=true, rough_estimate=true)
+function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
 
     if !isdir(path)
-        println("Creating folder...")
+        @logmsg nodeLog "Creating folder..."
         mkdir(path)
     end
     mkPath(distribution_name) = path*distribution_name*"/"
-
-    if estimate_time
-        println("Estimating time of run")
-        time_estimate(dimensions, regimes, neighbourhood_rules, seeds, overwrite=true, path=path, rough_estimate=rough_estimate)
-    end
 
     for L in dimensions
         for t in regimes
             for neighbourhood_rule in neighbourhood_rules
                 distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
-                println("Distribution: $distribution_name, L: $L          ")
+                @logmsg settingLog "Distribution: $distribution_name, L: $L"
                 generate_data(mkPath(distribution_name),L, seeds, distribution_name, t, overwrite, neighbourhood_rule)
             end
         end

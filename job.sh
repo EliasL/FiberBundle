@@ -10,7 +10,7 @@
 ml eb
 #ml av
 ml Julia/1.7.2-linux-x86_64
-julia --threads 30 generateData.jl
+mpiexecjl -n 4 julia --threads 30 generateData.jl
 
 #git add --all
 #git commit -am "job done"
