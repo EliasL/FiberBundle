@@ -1,6 +1,5 @@
 using Distributed
 using ProgressMeter
-using Dates
 using Logging
 
 include("support/logingLevels.jl")
@@ -72,7 +71,10 @@ include("support/logingLevels.jl")
         resetClusters(status, σ)
         @logmsg singleBreakLog "Breaking fiber nr $step"
         break_fiber(i, status, σ)
+        @logmsg singleBreakLog "Updating cluster"
         _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
+        
+        @logmsg singleBreakLog "Save data"
         # Save important data from step
         most_stressed_fiber[step] = 1/max_σ
         nr_clusters[step] = _nr_clusters
@@ -96,7 +98,9 @@ include("support/logingLevels.jl")
             spanning_cluster_step = step
             spanning_cluster_has_not_been_found = false
         end
+        @debug "adding progress"
         put!(progress_channel, true) # trigger a progress bar update
+        @debug "step is done"
     end
     @logmsg threadLog "Saving data..."
     if save_data
@@ -140,7 +144,7 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
     active_workers = Threads.Atomic{Int}(0)
     completed_runs = Threads.Atomic{Int}(0)
 
-
+    @logmsg settingLog "Starting workers... $L, $distribution_name, $neighbourhood_rule"
     @sync begin # start two tasks which will be synced in the very end
         # the first task updates the progress bar
         @async begin
@@ -194,7 +198,7 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
     if  occursin("Uniform", distribution_name)
         distribution_function = get_uniform_distribution(t₀)
     else
-        error("No distribution found!")
+        error("No distribution found! Got: $distribution_name")
     end
 
     # If we don't want to save the data, we just do this
@@ -223,40 +227,6 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
     end
 end
 
-function time_estimate(dimensions, regimes, neighbourhood_rules, seeds; overwrite=true, path="data/", rough_estimate=true)
-
-    # This does not yet account for existing seeds TODO
-
-    if !isdir(path)
-        @info "Creating folder..."
-        mkdir(path)
-    end
-    mkPath(distribution_name) = path*distribution_name*"/"
-
-    L = maximum(dimensions)
-    t = regimes[1]
-    test_seeds = 1:Threads.nthreads()
-    NRs = rough_estimate ? [neighbourhood_rules[1]] : neighbourhood_rules
-
-    # Precompile functions
-    for neighbourhood_rule in NRs
-        distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
-        generate_data(mkPath(distribution_name), 3, test_seeds, distribution_name, t, overwrite, neighbourhood_rule; show_progress=false, save_data=false)
-    end
-    
-    @info "Estimating time..."
-    test_time = @elapsed begin
-        for neighbourhood_rule in NRs
-            distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
-            generate_data(mkPath(distribution_name),L, test_seeds, distribution_name, t, overwrite, neighbourhood_rule)
-        end
-    end
-    time_estimate = test_time * length(regimes) * length(seeds)/length(test_seeds) * (rough_estimate ? length(neighbourhood_rules) : 1)
-    formated_time = Dates.canonicalize(Dates.CompoundPeriod(Dates.Second(floor(Int64, time_estimate))))
-    @info "This will probably take: $formated_time"
-end
-
-
 function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
 
     if !isdir(path)
@@ -268,7 +238,7 @@ function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; over
     for L in dimensions
         for t in regimes
             for neighbourhood_rule in neighbourhood_rules
-                distribution_name = "t=$t Uniform" * (neighbourhood_rule=="" ? "" : " " * neighbourhood_rule)
+                distribution_name = get_uniform_distribution_name(t, neighbourhood_rule)
                 @logmsg settingLog "Distribution: $distribution_name, L: $L"
                 generate_data(mkPath(distribution_name),L, seeds, distribution_name, t, overwrite, neighbourhood_rule)
             end

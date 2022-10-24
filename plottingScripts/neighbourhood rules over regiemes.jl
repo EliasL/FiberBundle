@@ -11,6 +11,7 @@ full_name(global_path, L, distribution) = global_path*distribution*"/"*distribut
 global_path = "data/"
 
 distributions(t) = [ "t=$t Uniform UNR", "t=$t Uniform SNR", "t=$t Uniform CNR"]
+nr_dist = length(distributions(1))
 desired_data = [
     "average_nr_clusters",
     "average_largest_cluster",
@@ -45,9 +46,9 @@ seeds = files[1][1]["nr_seeds_used"]
 
 function get_data_from_files(key, f::Function = x -> x; t_index=:, d_index=:)
     try
-        return [[f(files[j][i][key][d_index]) for j in 1:length(t)][t_index] for i in 1:length(distributions(1))]
+        return [[f(files[j][i][key][d_index]) for j in 1:length(t)][t_index] for i in 1:nr_dist]
     catch
-        return [[f(files[j][i][key]) for j in 1:length(t)][t_index] for i in 1:length(distributions(1))]
+        return [[f(files[j][i][key]) for j in 1:length(t)][t_index] for i in 1:nr_dist]
     end
 end
 
@@ -123,8 +124,6 @@ function plot_similar()
         size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_similarities.pdf")
-
-    println("Saved plot!")
 end
 
 function plot_differences()
@@ -135,9 +134,25 @@ function plot_differences()
     size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_differences.pdf")
-
-    println("Saved plot!")
 end
+
+function calculate_dimension()
+    # L = M^(d_f/d)
+    # d_f = d * ln(L)/ln(M)
+    d = 2
+    return [[d .* log.(spanning_perimeter[nr][t].*N) ./ log.(spanning_cluster_size[nr][t].*N) for t in 1:length(t)] for nr in 1:nr_dist]
+end
+
+function plot_dimension()
+    df = calculate_dimension()
+    plot(t, df, label = lables, legend=:right, marker=:circle, ylims=(0, Inf),
+    xlabel=L"t_0", ylabel=L"d_f", title="Cluster dimension")
+
+    savefig("plots/Graphs/Cluster dimension.pdf")
+end
+
 
 plot_similar()
 plot_differences()
+plot_dimension()
+println("Saved plots!")

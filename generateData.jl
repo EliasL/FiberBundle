@@ -7,7 +7,6 @@ comm = MPI.COMM_WORLD
 
 include("support/logingLevels.jl")
 # Sett logging level
-
 logger = SimpleLogger(stdout, nodeLog)
 global_logger(logger)
 
@@ -46,7 +45,7 @@ addprocs(threads; exeflags="--project=$(Base.active_project())")
 include("dataGenerator.jl")
 
 @logmsg nodeLog "Start run"
-itterate_settings(L, t, NR, seeds; overwrite=true)
+#itterate_settings(L, t, NR, seeds; overwrite=true)
 @logmsg nodeLog "Done"
 @logmsg nodeLog "Removing workers"
 rmprocs(workers())

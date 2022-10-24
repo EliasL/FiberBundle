@@ -192,6 +192,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     fill!(rel_pos_y, 0)
     # For every fiber in the plane
     for i in eachindex(status)
+        @logmsg σUpdateLog "Breaking fiber $i"
         # If it is broken and unexplored
         if status[i] == 0#BROKEN
             # We have found a new cluster!
@@ -200,12 +201,15 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # assign fiber i to this new cluster
             status[i] = c
             # explore the new cluster
+            @logmsg σUpdateLog "Exploring cluster"
             spanning_cluster_check = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
             if spanning_cluster_check != -1 && spanning_cluster == -1
                 spanning_cluster = spanning_cluster_check
             end
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
+            
+            @logmsg σUpdateLog "Updating stress"
             update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule, neighbourhood_values)
         end
     end
@@ -241,6 +245,8 @@ function explore_cluster_at(i::Int64, c::Int64,
     fill!(cluster_dimensions, 0) # Reset cluster dimensions
     # While there are still unexplored fibers in the cluster
     while nr_unexplored > nr_explored
+
+        @logmsg clusterLog "Explored $nr_unexplored / $nr_explored"
         # Preemptively count this fiber as explored (because 1 indexing)
         nr_explored += 1
         # Get the next unexplored fiber
@@ -395,6 +401,7 @@ function update_cluster_outline_stress(c::Int64,
         elseif neighbourhood_rule == "SNR"
             apply_to_neighbourhood(alive_fibers_in_neighbourhood, status, cluster_outline,  cluster_outline_length[c], neighbourhood_values, neighbourhoods)
         else
+            @debug "Unknown neighbourhood rule: $neighbourhood_rule"
             error("Unknown neighbourhood rule")
         end
 

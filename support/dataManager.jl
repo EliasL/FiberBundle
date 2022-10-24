@@ -20,6 +20,10 @@ seed_specific_keys = [
                     ]
 data_keys = vcat(averaged_data_keys, seed_specific_keys)
 
+function get_uniform_distribution_name(t, nr)
+    return "t=$t Uniform $nr"
+end
+
 function get_name(L, distribution, path, seed::Int=-1, average=false)
     @assert seed>=-1 "We don't want to use negative seeds since -1 is special here"
     if average
@@ -116,6 +120,7 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
             end
             for key in averaged_data_keys
                 averaged_file["average_$key"] = averages[key]
+                #TODO add uncertainty
             end
         end # Averaged file
         end # Condensed file
@@ -137,10 +142,14 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
     #end
 end
 
-function get_missing_seeds(file_name, requested_seeds)
+function get_missing_seeds(L, distribution, path, requested_seeds)
 
-    if isfile(file_name)
-        jldopen(file_name, "r") do existing_data
+
+    get_name_fun = make_get_name(L, distribution, path)
+    condensed_file_name = get_name_fun()
+
+    if isfile(condensed_file_name)
+        jldopen(condensed_file_name, "r") do existing_data
             existing_seeds = existing_data["seeds_used"]
             return Vector{Int64}(setdiff(requested_seeds, existing_seeds))
         end
@@ -160,7 +169,7 @@ function prepare_run(L, distribution, path, requested_seeds::AbstractArray, over
     if overwrite
         missing_seeds = requested_seeds
     else
-        missing_seeds = get_missing_seeds(condensed_file_name, requested_seeds)
+        missing_seeds = get_missing_seeds(L, distribution, path, requested_seeds)
     end
 
     # Print some info

@@ -6,4 +6,5 @@ settingLog = Logging.LogLevel(nodeLog.level -1) # Logging inside a setting
 threadLog = Logging.LogLevel(settingLog.level -1) # Logging inside a thread
 seedLog = Logging.LogLevel(threadLog.level -1)
 singleBreakLog = Logging.LogLevel(seedLog.level -1)
-clusterLog = Logging.LogLevel(singleBreakLog.level -1)
+σUpdateLog = Logging.LogLevel(singleBreakLog.level -1)
+clusterLog = Logging.LogLevel(σUpdateLog.level -1)
