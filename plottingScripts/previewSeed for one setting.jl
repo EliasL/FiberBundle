@@ -56,7 +56,7 @@ function draw_seeds(distribution)
     ps = 10 #Pixel size
 
     color_stress = false
-    file_name = full_name(global_path, L, distribution)
+    file_name =  "data/Uniform/a=$distribution dist=Uniform L=64 nr=CNR t=0.0/a=$distribution dist=Uniform L=64 nr=CNR t=0.0_bulk.jld2"#full_name(global_path, L, distribution)
     f = load(file_name)
     layout = (3,3)
     lx = layout[1] #layout x
@@ -77,6 +77,7 @@ function draw_seeds(distribution)
     title_font_size = font_size * 4/3
 
     Drawing(image_size_x, image_size_y, "plots/Visualizations/Progressions/$distribution sample view.png")
+    background(1,1,1) #White background
     fontface("Computer Modern")
     fontsize(title_font_size)
     Luxor.text(latexstring("$distribution distribution, \$ L=$L\$"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
@@ -102,3 +103,5 @@ for NR in NRS
         ProgressMeter.next!(p)
     end
 end
+
+draw_seeds("30.0")

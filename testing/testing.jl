@@ -179,6 +179,7 @@ function neighbourhood_strength_test_with_alpha(nr)
         N = L*L # Number of fibers
         x = rand(N) # Max extension 
         α = 1+rand()*10
+        println(α)
         σ  = ones(Float64, N) # Relative tension
         neighbours = fillAdjacent(L, NEIGHBOURS)
         neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
@@ -308,7 +309,8 @@ function test()
     println("Neighbourhood id test complete")
     for nr in ["UNR", "CNR", "SNR"]
         print(nr*"\r")
-        neighbourhood_strength_test(nr)
+        #neighbourhood_strength_test(nr)
+        neighbourhood_strength_test_with_alpha(nr)
     end
     println("Neighbourhood strength test complete")
     test_store_possition()
@@ -320,4 +322,5 @@ end
 
 test()
 #spanning_cluster_test()
+neighbourhood_strength_test_with_alpha("CNR")
 #random_spanning_cluster_test()

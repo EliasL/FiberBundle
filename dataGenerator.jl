@@ -229,6 +229,7 @@ end
 
 function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
+
         settings = make_settings("Uniform", L, t, nr, a, path)
         @logmsg settingLog "Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite)

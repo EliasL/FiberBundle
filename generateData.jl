@@ -15,12 +15,12 @@ global_logger(logger)
 
 
 
-seeds = 0:20-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
-L = [64]
+seeds = 0:500-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
+L = [128]
 t = [0.0]#vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20, [0.925, 0.975])
-α = [1, 1.5, 2, 2.5, 3, 5, 9, 15]
+α = [1, 1.5, 2, 2.5, 3, 5, 9, 15, 30]
 #t = vcat((0:8) ./ 20, (5:9) ./ 10)
-NR = ["UNR"]#, "CNR", "SNR"]
+NR = ["CNR", "SNR"]
 
 #time_estimate(L, t, NR, seeds, rough_estimate=true)
 
@@ -44,7 +44,7 @@ addprocs(threads; exeflags="--project=$(Base.active_project())")
 include("dataGenerator.jl")
 
 @logmsg nodeLog "Start run"
-@time itterate_settings(L, α, t, NR, seeds; overwrite=true)
+@time itterate_settings(L, α, t, NR, seeds; overwrite=false)
 @logmsg nodeLog "Done"
 @logmsg nodeLog "Removing workers"
 rmprocs(workers())
