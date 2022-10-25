@@ -20,6 +20,23 @@ seed_specific_keys = [
                     ]
 data_keys = vcat(averaged_data_keys, seed_specific_keys)
 
+
+function make_settings(dist, L, t, nr, α, path)
+    settings = Dict(
+        "dist" => dist,
+        "L" => L,
+        "t" => t,
+        "nr" => nr,
+        "α" => α,
+    )
+    settings["name"] = get_uniform_distribution_name(settings)
+    settings["path"] = path*dist*"/"*settings["name"]*"/"
+
+    if !isdir(settings["path"])
+        mkpath(settings["path"])
+    end
+end
+
 function get_uniform_distribution_name(settings)
     name = "Uniform"
     excluded = ["name", "path"]
@@ -37,11 +54,11 @@ function get_file_name(settings, seed::Int=-1, average=false)
     @assert seed>=-1 "We don't want to use negative seeds since -1 is special here"
     s = settings
     if average
-        return "$(s["path"])$(s["name"])$(s["L"]).jld2"
+        return "$(s["path"])$(s["name"]).jld2"
     elseif seed == -1
-        return "$(s["path"])$(s["name"])$(s["L"])_bulk.jld2"
+        return "$(s["path"])$(s["name"])_bulk.jld2"
     else
-        return "$(s["path"])$(s["name"])$(s["L"]),$(seed)_bulk.jld2"
+        return "$(s["path"])$(s["name"]) s=$(seed)_bulk.jld2"
     end
 end
 
@@ -259,3 +276,56 @@ function remove_key(key, settings)
     filter!(e->e≠key,data_keys)
     condense_files(settings, seeds)
 end 
+
+function rename()
+
+    @logmsg settingLog "Searching for loose files... "
+    files = readdir("data")
+    # Find distribution with lose files
+    # Assume there is only one distribution in the directory
+    for f in files
+        t_unifor_nr = split(split(f, " ")
+        t= parse(Float64, t_unifor_nr[1], "=")[2])
+        nr = t_unifor_nr[3]
+        
+        for ff in readdir("data/$f")
+            sett
+            L_bulk = split(ff, nr)[2]
+            L = split(L_bulk, "_")
+            bulk = length(L) == length(L_bulk)
+
+
+            settings = make_settings("Uniform", L, t, nr, 2, "data/")
+
+            mv(ff, get_file_name(settings, average=!bulk))
+            rm(ff)
+        end
+        rm(f)
+    end
+
+    distribution_name = ""
+    Ls = Set([])
+    seeds = Dict()
+    for f in files
+        # Distribution name must end with [a-zA-Z]
+        m = match(r"(^.+[a-zA-Z])([0-9]+)+,([0-9]+)+_bulk.jld2$", f)
+        if m !== nothing
+            distribution_name = m.captures[1]
+            L = parse(Int64, m.captures[2])
+            seed = parse(Int64, m.captures[3])
+            push!(Ls , L)
+            if haskey(seeds, L)
+                push!(seeds[L] , seed)
+            else
+                seeds[L] = [seed]
+            end
+        end
+    end
+    if length(Ls)>0
+        @logmsg settingLog "Found loose files, cleaning up... "
+    end
+    for L in Ls
+        clean_after_run(L, distribution_name, path, seeds[L])
+    end
+    @logmsg settingLog "Done!"
+end

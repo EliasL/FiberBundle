@@ -26,9 +26,6 @@ NR = ["UNR"]#, "CNR", "SNR"]
 
 
 
-
-
-
 print("Hello world, I am rank $(MPI.Comm_rank(comm)) of $(MPI.Comm_size(comm))\n")
 if MPI.Comm_rank(comm) == 0
     @logmsg rootLog "I am groot"

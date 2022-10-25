@@ -207,12 +207,6 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true)
         run_workers(settings, distribution_function, requested_seeds, save_data=save_data)
         return
     end
-    # else
-
-    if !isdir(settings["path"])
-        @logmsg settingLog "Creating folder... "
-        mkdir(settings["path"])
-    end
 
     missing_seeds = prepare_run(L, α, distribution_name, path, requested_seeds, overwrite)
 
@@ -229,23 +223,8 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true)
 end
 
 function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
-
-    if !isdir(path)
-        @logmsg nodeLog "Creating folder..."
-        mkdir(path)
-    end
-
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
-
-        settings = Dict(
-            "L" => L,
-            "t" => t,
-            "nr" => nr,
-            "α" => a,
-        )
-        settings["name"] = get_uniform_distribution_name(settings)
-        settings["path"] = path*settings["name"]*"/"
-
+        settings = make_settings(L, t, nr, a, path)
         @logmsg settingLog "Distribution: $(settings["name"]), L: $L"
         generate_data(settings, seeds, overwrite)
     end
