@@ -129,9 +129,10 @@ end
 @logmsg nodeLog "Done!"
 
 
-function run_workers(L, distribution_name, distribution_function, seeds, path, neighbourhood_rule; save_data=true)
+function run_workers(settings, distribution_function, seeds; save_data=true)
     
     # Check if the current logger level is set to log on the thread level
+    L = settings["L"]
     show_progress = Logging.min_enabled_level(global_logger()) == threadLog
     p = Progress(length(seeds)*L^2, enabled=show_progress)
     
@@ -144,7 +145,7 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
     active_workers = Threads.Atomic{Int}(0)
     completed_runs = Threads.Atomic{Int}(0)
 
-    @logmsg settingLog "Starting workers... $L, $distribution_name, $neighbourhood_rule"
+    @logmsg settingLog "Starting workers... $(settings["L"]), $(settings["name"]), $(settings["nr"])"
     @sync begin # start two tasks which will be synced in the very end
         # the first task updates the progress bar
         @async begin
@@ -183,41 +184,41 @@ function run_workers(L, distribution_name, distribution_function, seeds, path, n
         # the second task does the computation
         @async begin
             @distributed (+) for i in seeds
-                name = get_name(L, distribution_name, path, i)
-                break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=i, save_data=save_data)
+                name = get_name(settings, i)
+                break_bundle(settings["L"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data)
                 i^2
             end
         end
     end
 end
 
-function generate_data(path, L, requested_seeds, distribution_name, t₀, overwrite, neighbourhood_rule; save_data=true)
+function generate_data(settings, requested_seeds, overwrite; save_data=true)
     # get distribtion function
     distribution_function(n) = nothing
 
-    if  occursin("Uniform", distribution_name)
-        distribution_function = get_uniform_distribution(t₀)
+    if  occursin("Uniform", settings["name"])
+        distribution_function = get_uniform_distribution(settings["t"])
     else
         error("No distribution found! Got: $distribution_name")
     end
 
     # If we don't want to save the data, we just do this
     if !save_data
-        run_workers(L, distribution_name, distribution_function, requested_seeds, path, neighbourhood_rule, save_data=save_data)
+        run_workers(settings, distribution_function, requested_seeds, save_data=save_data)
         return
     end
     # else
 
-    if !isdir(path)
+    if !isdir(settings["path"])
         @logmsg settingLog "Creating folder... "
-        mkdir(path)
+        mkdir(settings["path"])
     end
 
-    missing_seeds = prepare_run(L, distribution_name, path, requested_seeds, overwrite)
+    missing_seeds = prepare_run(L, α, distribution_name, path, requested_seeds, overwrite)
 
     if length(missing_seeds) > 0
         @logmsg settingLog "Running workers..."
-        run_workers(L, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule, save_data=save_data)
+        run_workers(L, α, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule, save_data=save_data)
         @logmsg settingLog "Done!"
 
 
@@ -227,21 +228,25 @@ function generate_data(path, L, requested_seeds, distribution_name, t₀, overwr
     end
 end
 
-function itterate_settings(dimensions, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
+function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
 
     if !isdir(path)
         @logmsg nodeLog "Creating folder..."
         mkdir(path)
     end
-    mkPath(distribution_name) = path*distribution_name*"/"
 
-    for L in dimensions
-        for t in regimes
-            for neighbourhood_rule in neighbourhood_rules
-                distribution_name = get_uniform_distribution_name(t, neighbourhood_rule)
-                @logmsg settingLog "Distribution: $distribution_name, L: $L"
-                generate_data(mkPath(distribution_name),L, seeds, distribution_name, t, overwrite, neighbourhood_rule)
-            end
-        end
+    for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
+
+        settings = Dict(
+            "L" => L,
+            "t" => t,
+            "nr" => nr,
+            "α" => a,
+        )
+        settings["name"] = get_uniform_distribution_name(settings)
+        settings["path"] = path*settings["name"]*"/"
+
+        @logmsg settingLog "Distribution: $(settings["name"]), L: $L"
+        generate_data(settings, seeds, overwrite)
     end
 end

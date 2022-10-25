@@ -16,7 +16,8 @@ global_logger(logger)
 
 seeds = 0:200-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
 L = [64]
-t = [0.1, 0.2]#vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20, [0.925, 0.975])
+t = [0.0]#vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20, [0.925, 0.975])
+α = [1, 1.5, 2, 2.5, 3, 5, 9, 15]
 #t = vcat((0:8) ./ 20, (5:9) ./ 10)
 NR = ["UNR"]#, "CNR", "SNR"]
 
@@ -31,7 +32,6 @@ NR = ["UNR"]#, "CNR", "SNR"]
 print("Hello world, I am rank $(MPI.Comm_rank(comm)) of $(MPI.Comm_size(comm))\n")
 if MPI.Comm_rank(comm) == 0
     @logmsg rootLog "I am groot"
-    @logmsg rootLog "L=64 40 seeds 8 julia thread, 4 job threads"
 end
 
 
@@ -46,7 +46,7 @@ addprocs(threads; exeflags="--project=$(Base.active_project())")
 include("dataGenerator.jl")
 
 @logmsg nodeLog "Start run"
-@time itterate_settings(L, t, NR, seeds; overwrite=true)
+@time itterate_settings(L, α, t, NR, seeds; overwrite=true)
 @logmsg nodeLog "Done"
 @logmsg nodeLog "Removing workers"
 rmprocs(workers())

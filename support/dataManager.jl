@@ -20,27 +20,37 @@ seed_specific_keys = [
                     ]
 data_keys = vcat(averaged_data_keys, seed_specific_keys)
 
-function get_uniform_distribution_name(t, nr)
-    return "t=$t Uniform $nr"
+function get_uniform_distribution_name(settings)
+    name = "Uniform"
+    excluded = ["name", "path"]
+    for (setting, value) in settings
+        if setting in excluded
+            continue
+        else
+            name *= " $setting=$value"
+        end
+    end
+    return name
 end
 
-function get_name(L, distribution, path, seed::Int=-1, average=false)
+function get_file_name(settings, seed::Int=-1, average=false)
     @assert seed>=-1 "We don't want to use negative seeds since -1 is special here"
+    s = settings
     if average
-        return path*distribution*"$L.jld2"
+        return "$(s["path"])$(s["name"])$(s["L"]).jld2"
     elseif seed == -1
-        return path*distribution*"$(L)_bulk.jld2"
+        return "$(s["path"])$(s["name"])$(s["L"])_bulk.jld2"
     else
-        return path*distribution*"$L,$(seed)_bulk.jld2"
+        return "$(s["path"])$(s["name"])$(s["L"]),$(seed)_bulk.jld2"
     end
 end
 
-function make_get_name(L, distribution, path)
-    return f(seed=-1; average=false) = get_name(L, distribution, path, seed, average)
+function make_get_name(settings)
+    return f(seed=-1; average=false) = get_file_name(settings, seed, average)
 end
 
-function expand_file(L, distribution, path, overwritten_seeds::AbstractArray=Vector{Int64}([]))
-    get_name_fun = make_get_name(L, distribution, path)
+function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]))
+    get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     jldopen(condensed_file_name, "r") do file
 
@@ -77,13 +87,13 @@ function get_seeds_in_compact_file(file_name)
     end
 end
 
-function condense_files(L, distribution, path, requested_seeds::AbstractArray; remove_files=true)
-    get_name_fun = make_get_name(L, distribution, path)
+function condense_files(settings, requested_seeds::AbstractArray; remove_files=true)
+    get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     averaged_file_name = get_name_fun(average=true)
     existing_seeds = get_seeds_in_compact_file(condensed_file_name)
     if length(existing_seeds) > 0
-        expand_file(L, distribution, path)
+        expand_file(settings)
     end
     seeds = union(existing_seeds, requested_seeds)
     nr_seeds = length(seeds)
@@ -142,10 +152,10 @@ function condense_files(L, distribution, path, requested_seeds::AbstractArray; r
     #end
 end
 
-function get_missing_seeds(L, distribution, path, requested_seeds)
+function get_missing_seeds(settings, requested_seeds)
 
 
-    get_name_fun = make_get_name(L, distribution, path)
+    get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
 
     if isfile(condensed_file_name)
@@ -158,18 +168,18 @@ function get_missing_seeds(L, distribution, path, requested_seeds)
     end
 end
 
-function prepare_run(L, distribution, path, requested_seeds::AbstractArray, overwrite=false)
+function prepare_run(settings, requested_seeds::AbstractArray, overwrite=false)
 
     search_for_loose_files(path)
 
 
-    get_name_fun = make_get_name(L, distribution, path)
+    get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     # Get missing seeds
     if overwrite
         missing_seeds = requested_seeds
     else
-        missing_seeds = get_missing_seeds(L, distribution, path, requested_seeds)
+        missing_seeds = get_missing_seeds(settings, requested_seeds)
     end
 
     # Print some info
@@ -183,18 +193,21 @@ function prepare_run(L, distribution, path, requested_seeds::AbstractArray, over
         if length(missing_seeds) == 0
             @logmsg settingLog "All seeds already exist"
         else
-            expand_file(L, distribution, path, missing_seeds)
+            expand_file(settings, missing_seeds)
         end
     end
 
     return missing_seeds
 end
 
-function clean_after_run(L, distribution, path, requested_seeds::AbstractArray)
-    condense_files(L, distribution, path, requested_seeds, remove_files=true)
+function clean_after_run(settings, requested_seeds::AbstractArray)
+    condense_files(settings, requested_seeds, remove_files=true)
 end
 
 function search_for_loose_files(path)
+    #TODO
+    error("Not fixed yet")
+    return
     @logmsg settingLog "Searching for loose files... "
     files = readdir(path)
     # Find distribution with lose files
@@ -240,9 +253,9 @@ function search_for_t(path)
     return sort(collect(t))
 end
 
-function remove_key(key, L, distribution, path)
-    seeds = get_seeds_in_compact_file(get_name(L, distribution, path))
-    expand_file(L, distribution, path)    
+function remove_key(key, settings)
+    seeds = get_seeds_in_compact_file(get_name(settings))
+    expand_file(settings)    
     filter!(e->e≠key,data_keys)
-    condense_files(L, distribution, path, seeds)
+    condense_files(settings, seeds)
 end 
