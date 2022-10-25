@@ -50,21 +50,19 @@ end
 
 
 
-function draw_seeds()
+function draw_seeds(L, color_stress)
 
     global_path = "data/"
     ts = search_for_t(global_path)
     NRS = ["UNR", "SNR", "CNR"]
     distribution(t, NR) = "t=$t Uniform $NR"
 
-    L = 64
     seed = 9
     ps = 10 #Pixel size
 
-    color_stress = true
     f(t, NR) = load(full_name(global_path, L, distribution(t, NR)))
 
-    t_settings = [0.0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.7, 0.8, 0.9, 0.925, 0.95, 0.975]
+    t_settings = [0.0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.7, 0.8, 0.9]
     layout = (length(NRS),length(t_settings))
     lx = layout[1] #layout x
     ly = layout[2] #layout y
@@ -72,7 +70,7 @@ function draw_seeds()
     #println(f(0.0, NR))
     grids = reshape([reshape(f(t, NR)["$key/$seed"], (L, L)) for NR=NRS, t=t_settings], (lx,ly))
     kn(t, NR) = round(f(t, NR)["spanning_cluster_step/$seed"]/(L*L), digits=2)
-    grid_names = reshape([latexstring("$NR, \$t=$t\$, $(kn(t, NR))") for NR=NRS, t=t_settings], (lx,ly))
+    grid_names = reshape([latexstring("$NR, \$t=$t\$") for NR=NRS, t=t_settings], (lx,ly))
     pixel_L = L*ps
     title_space = ceil(Int, pixel_L/2)
     subtitle_space = ceil(Int, pixel_L/5)
@@ -83,7 +81,9 @@ function draw_seeds()
     font_size = 4*pixel_L/32
     title_font_size = font_size * 4/3
 
-    Drawing(image_size_x, image_size_y, "plots/Visualizations/Spanning/Spanning clusters L=$L.png")
+    stress =  color_stress ? " stress" : ""
+    Drawing(image_size_x, image_size_y, "plots/Visualizations/Spanning/Spanning clusters L=$L$stress.png")
+    background(1,1,1) #White background
     fontface("Computer Modern")
     fontsize(title_font_size)
     Luxor.text(latexstring("Spanning clusters, \$ L=$L\$"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
@@ -97,4 +97,7 @@ function draw_seeds()
     finish()
 end
 
-draw_seeds()
+draw_seeds(32, true)
+draw_seeds(32, false)
+draw_seeds(64, true)
+draw_seeds(64, false)

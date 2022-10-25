@@ -145,14 +145,17 @@ end
 
 function plot_dimension()
     df = calculate_dimension()
-    plot(t, df, label = lables, legend=:right, marker=:circle, ylims=(0, Inf),
-    xlabel=L"t_0", ylabel=L"d_f", title="Cluster dimension")
+    plot(t, df, label = lables, legend=:right, marker=:circle, ylims=(-Inf, 2),
+    xlabel=L"t_0", ylabel=L"d_f", title="Cluster dimension", size=(400, 200))
 
     savefig("plots/Graphs/Cluster dimension.pdf")
 end
 
+plot_dimension()
 
+Plots.resetfontsizes()
+default(legendfontsize=8, titlefontsize=10)
+Plots.scalefontsizes(1.0)
 plot_similar()
 plot_differences()
-plot_dimension()
 println("Saved plots!")
