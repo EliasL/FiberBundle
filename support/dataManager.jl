@@ -290,16 +290,15 @@ function rename(path)
         f_path = path*f*"/"        
         for ff in readdir("$f_path")
             ff_path = f_path*ff
-            if occursin(" a=2 d", ff)
-                mv(ff_path, replace(ff_path, "a=2" => "a=2.0"))
+            if occursin(" a=2.0 d", ff)
+                mv(ff_path, f_path*replace(ff, " a=2.0 d" => "a=2.0 d"))
             end
         end
         
-        if occursin(" a=2 d")
-            " a=2 dist=Uniform L=128 nr=UNR t=0.35"
-            mv(ff_path, replace(ff_path, "a=2" => "a=2.0"))
+        if occursin(" a=2.0 d", f)
+            mv(f_path, replace(f_path, " a=2.0 d" => "a=2.0 d"))
         end
         
     end
 end
-#rename("data/")
+rename("data/Uniform/")
