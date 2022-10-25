@@ -164,7 +164,42 @@ function neighbourhood_strength_test(nr)
             i = findNextFiber(σ, x)
             resetClusters(status, σ)
             break_fiber(i, status, σ)
-            update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
+            update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size,
+                     cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length,
+                     unexplored; neighbourhood_rule=nr,α=2.0)
+            @assert sum(σ) ≈ N "No conservation of tension.\n$(sum(σ)) ≠ $N "
+        end
+    end
+end
+
+function neighbourhood_strength_test_with_alpha(nr)
+
+    for _ in 1:5
+        L = 4
+        N = L*L # Number of fibers
+        x = rand(N) # Max extension 
+        α = 1+rand()*10
+        σ  = ones(Float64, N) # Relative tension
+        neighbours = fillAdjacent(L, NEIGHBOURS)
+        neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
+        neighbourhood_values = zeros(Int64, N)
+        status = fill(-1, N)
+        cluster_size = zeros(Int64, N)
+        cluster_dimensions = zeros(Int64, 4)
+        rel_pos_x = zeros(Int64, N)
+        rel_pos_y = zeros(Int64, N)
+        cluster_outline = zeros(Int64, N)
+        cluster_outline_length = zeros(Int64, N)
+        unexplored = zeros(Int64, N)
+
+        for _ in 1:N-1
+            i = findNextFiber(σ, x)
+            resetClusters(status, σ)
+            break_fiber(i, status, σ)
+            
+            update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size,
+                     cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length,
+                     unexplored; neighbourhood_rule=nr,α=α)
             @assert sum(σ) ≈ N "No conservation of tension.\n$(sum(σ)) ≠ $N "
         end
     end

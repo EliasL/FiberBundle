@@ -11,7 +11,8 @@ include("support/logingLevels.jl")
 @everywhere include("support/dataManager.jl")
 @everywhere include("support/distributions.jl")
 
-@everywhere function break_bundle(L, distribution::Function, progress_channel, working_channel, file_name, neighbourhood_rule; seed=0, save_data=true)
+@everywhere function break_bundle(L, α, distribution::Function, progress_channel, working_channel,
+                                  file_name, neighbourhood_rule; seed=0, save_data=true)
     put!(working_channel, true) # Indicate a process has started
     N = L*L # Number of fibers
     @assert seed != -1 ""
@@ -72,7 +73,11 @@ include("support/logingLevels.jl")
         @logmsg singleBreakLog "Breaking fiber nr $step"
         break_fiber(i, status, σ)
         @logmsg singleBreakLog "Updating cluster"
-        _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods, neighbourhood_values, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored; neighbourhood_rule=neighbourhood_rule)
+        _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods,
+                                                                         neighbourhood_values, cluster_size,
+                                                                         cluster_dimensions, rel_pos_x, rel_pos_y,
+                                                                         cluster_outline, cluster_outline_length,
+                                                                         unexplored; neighbourhood_rule=neighbourhood_rule, α=α)
         
         @logmsg singleBreakLog "Save data"
         # Save important data from step
@@ -145,7 +150,7 @@ function run_workers(settings, distribution_function, seeds; save_data=true)
     active_workers = Threads.Atomic{Int}(0)
     completed_runs = Threads.Atomic{Int}(0)
 
-    @logmsg settingLog "Starting workers... $(settings["L"]), $(settings["name"]), $(settings["nr"])"
+    @logmsg settingLog "Starting work on $(settings["name"])"
     @sync begin # start two tasks which will be synced in the very end
         # the first task updates the progress bar
         @async begin
@@ -184,9 +189,9 @@ function run_workers(settings, distribution_function, seeds; save_data=true)
         # the second task does the computation
         @async begin
             @distributed (+) for i in seeds
-                name = get_name(settings, i)
-                break_bundle(settings["L"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data)
-                i^2
+                name = get_file_name(settings, i)
+                break_bundle(settings["L"], settings["a"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data)
+                i^2 #I have no idea what this does
             end
         end
     end
@@ -208,24 +213,24 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true)
         return
     end
 
-    missing_seeds = prepare_run(L, α, distribution_name, path, requested_seeds, overwrite)
+    missing_seeds = prepare_run(settings, requested_seeds, overwrite)
 
     if length(missing_seeds) > 0
         @logmsg settingLog "Running workers..."
-        run_workers(L, α, distribution_name, distribution_function, missing_seeds, path, neighbourhood_rule, save_data=save_data)
+        run_workers(settings, distribution_function, missing_seeds, save_data=save_data)
         @logmsg settingLog "Done!"
 
 
         @logmsg settingLog "Calculating averages... "
-        clean_after_run(L, distribution_name, path, requested_seeds)
+        clean_after_run(settings, requested_seeds)
         @logmsg settingLog "Done!"
     end
 end
 
 function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
-        settings = make_settings(L, t, nr, a, path)
-        @logmsg settingLog "Distribution: $(settings["name"]), L: $L"
+        settings = make_settings("Uniform", L, t, nr, a, path)
+        @logmsg settingLog "Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite)
     end
 end

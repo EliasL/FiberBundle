@@ -46,10 +46,10 @@ function get_setting_name(settings)
         if setting in excluded
             continue
         else
-            name *= " $setting=$value"
+            name *= "$setting=$value "
         end
     end
-    return name
+    return chop(name)
 end
 
 function get_file_name(settings, seed::Int=-1, average=false)
@@ -189,7 +189,8 @@ end
 
 function prepare_run(settings, requested_seeds::AbstractArray, overwrite=false)
 
-    search_for_loose_files(path)
+    # Fix this if it is needed
+    #search_for_loose_files(path)
 
 
     get_name_fun = make_get_name(settings)
@@ -286,25 +287,19 @@ function rename(path)
     # Find distribution with lose files
     # Assume there is only one distribution in the directory
     for f in files
-        f_path = path*f*"/"
-        if f[2] != '='
-            #Skip files not beginning with t=
-            continue
-        end
-        t_unifor_nr = split(f, " ")
-        t= parse(Float64, split(t_unifor_nr[1], "=")[2])
-        nr = t_unifor_nr[3]
-        
-        for ff in readdir("$path$f")
-            L_bulk = split(ff, nr)[2]
-            L = split(split(L_bulk, "_")[1], ".")[1]
-            bulk = occursin("_bulk", L_bulk)
-
-            settings = make_settings("Uniform", L, t, nr, 2, path)
+        f_path = path*f*"/"        
+        for ff in readdir("$f_path")
             ff_path = f_path*ff
-            mv(ff_path, get_file_name(settings, -1, !bulk))
+            if occursin(" a=2 d", ff)
+                mv(ff_path, replace(ff_path, "a=2" => "a=2.0"))
+            end
         end
-        rm(f_path)
+        
+        if occursin(" a=2 d")
+            " a=2 dist=Uniform L=128 nr=UNR t=0.35"
+            mv(ff_path, replace(ff_path, "a=2" => "a=2.0"))
+        end
+        
     end
 end
-rename("data/")
+#rename("data/")

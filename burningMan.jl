@@ -179,7 +179,8 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64};
-    neighbourhood_rule::String="UNR")
+    neighbourhood_rule::String="UNR",
+    α::Float64=2.0,)
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -210,7 +211,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # and with that we can update sigma for one cluster
             
             @logmsg σUpdateLog "Updating stress"
-            update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule, neighbourhood_values)
+            update_cluster_outline_stress(α, c, status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule, neighbourhood_values)
         end
     end
     spanning_cluster_size = spanning_cluster==-1 ? -1 : cluster_size[spanning_cluster]
@@ -377,7 +378,7 @@ function alive_fibers_in_neighbourhood(m::Vector{Int64})
     return alive_fibers
 end
 
-function update_cluster_outline_stress(c::Int64,
+function update_cluster_outline_stress(α::Float64, c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
     cluster_size::Vector{Int64},
@@ -405,7 +406,7 @@ function update_cluster_outline_stress(c::Int64,
             error("Unknown neighbourhood rule")
         end
 
-        apply_stress(c, status, σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhood_values)
+        apply_stress(α, c, status, σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhood_values)
     end
 end
 
@@ -424,7 +425,7 @@ function apply_simple_stress(c::Int64,
     end
 end
 
-function apply_stress(c::Int64,
+function apply_stress(α::Float64, c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
     cluster_size::Vector{Int64},
@@ -434,7 +435,7 @@ function apply_stress(c::Int64,
     )
     fiber_strengths = fiber_strengths[1:cluster_outline_length[c]]
     # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
-    α = 2.0 # High alpha means that having neighbours is more important
+    # High alpha means that having neighbours is more important
     C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
     g = C .* fiber_strengths .^(-α) # Normalization factor
     for i in 1:cluster_outline_length[c]
