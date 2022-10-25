@@ -27,20 +27,22 @@ function make_settings(dist, L, t, nr, α, path)
         "L" => L,
         "t" => t,
         "nr" => nr,
-        "α" => α,
+        "a" => α,
     )
-    settings["name"] = get_uniform_distribution_name(settings)
+    settings["name"] = get_setting_name(settings)
     settings["path"] = path*dist*"/"*settings["name"]*"/"
 
     if !isdir(settings["path"])
         mkpath(settings["path"])
     end
+    return settings
 end
 
-function get_uniform_distribution_name(settings)
-    name = "Uniform"
+function get_setting_name(settings)
+    name = ""
     excluded = ["name", "path"]
-    for (setting, value) in settings
+    # We want to sort so that the naming is consistant
+    for (setting, value) in sort(collect(settings), by=x->lowercase(x[1]))
         if setting in excluded
             continue
         else
@@ -277,55 +279,32 @@ function remove_key(key, settings)
     condense_files(settings, seeds)
 end 
 
-function rename()
+function rename(path)
 
     @logmsg settingLog "Searching for loose files... "
-    files = readdir("data")
+    files = readdir(path)
     # Find distribution with lose files
     # Assume there is only one distribution in the directory
     for f in files
-        t_unifor_nr = split(split(f, " ")
-        t= parse(Float64, t_unifor_nr[1], "=")[2])
+        f_path = path*f*"/"
+        if f[2] != '='
+            #Skip files not beginning with t=
+            continue
+        end
+        t_unifor_nr = split(f, " ")
+        t= parse(Float64, split(t_unifor_nr[1], "=")[2])
         nr = t_unifor_nr[3]
         
-        for ff in readdir("data/$f")
-            sett
+        for ff in readdir("$path$f")
             L_bulk = split(ff, nr)[2]
-            L = split(L_bulk, "_")
-            bulk = length(L) == length(L_bulk)
+            L = split(split(L_bulk, "_")[1], ".")[1]
+            bulk = occursin("_bulk", L_bulk)
 
-
-            settings = make_settings("Uniform", L, t, nr, 2, "data/")
-
-            mv(ff, get_file_name(settings, average=!bulk))
-            rm(ff)
+            settings = make_settings("Uniform", L, t, nr, 2, path)
+            ff_path = f_path*ff
+            mv(ff_path, get_file_name(settings, -1, !bulk))
         end
-        rm(f)
+        rm(f_path)
     end
-
-    distribution_name = ""
-    Ls = Set([])
-    seeds = Dict()
-    for f in files
-        # Distribution name must end with [a-zA-Z]
-        m = match(r"(^.+[a-zA-Z])([0-9]+)+,([0-9]+)+_bulk.jld2$", f)
-        if m !== nothing
-            distribution_name = m.captures[1]
-            L = parse(Int64, m.captures[2])
-            seed = parse(Int64, m.captures[3])
-            push!(Ls , L)
-            if haskey(seeds, L)
-                push!(seeds[L] , seed)
-            else
-                seeds[L] = [seed]
-            end
-        end
-    end
-    if length(Ls)>0
-        @logmsg settingLog "Found loose files, cleaning up... "
-    end
-    for L in Ls
-        clean_after_run(L, distribution_name, path, seeds[L])
-    end
-    @logmsg settingLog "Done!"
 end
+rename("data/")
