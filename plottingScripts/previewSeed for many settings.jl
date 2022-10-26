@@ -4,13 +4,13 @@ using MathTeXEngine
 using LaTeXStrings
 using Plots
 using Random
+using DataStructures
 
 include("../support/dataManager.jl")
 
-full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*"_bulk.jld2"
-
 function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
     L = size(A,1)
+    A = shift_matrix(A)
     tiles = Tiler(L*pixel_size, L*pixel_size, L, L, margin=0)
     cur_colors = palette(:glasbey_category10_n256)
     nr_colors = 256
@@ -49,28 +49,61 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
 end
 
 
+function shift_matrix(m)
+    # Shift_matrix tries to shift the matrix so that a cluster does#
+    # not cross the periodic boarder. In other words, as few broken fibers along
+    # the boarder as possible
+    L = size(m,1)
+
+    #Find the largest cluster 
+    count = counter(filter(f -> f>0, m))
+    largest_cluster = collect(keys(count))[argmax(collect(values(count)))]
+    part_of_largest_cluster = reshape( m .== largest_cluster, (L,L))
+
+    # Now we check which row and which column has the fewest broken fibers
+    # row and col might be swapped here. Haven't chekced.
+    min_row = argmin([sum(view(part_of_largest_cluster, :, i)) for i in 1:L])
+    min_col = argmin([sum(view(part_of_largest_cluster, i, :)) for i in 1:L])
+    println(min_row)
+    println(min_col)
+    return circshift(m, (min_row, min_col))
+end
+
+
+function load_file(α, NR, settings)
+    if NR=="UNR"
+        α=0.0
+    end
+    settings = filter(s -> s["a"]==α && s["nr"]==NR, settings)
+    @assert length(settings) < 2 "There are multiple possibilities"
+    @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR"
+    setting = settings[1]
+    return load(get_file_name(setting))
+end
 
 function draw_seeds(L, color_stress)
 
-    global_path = "data/"
-    ts = search_for_t(global_path)
-    NRS = ["UNR", "SNR", "CNR"]
-    distribution(t, NR) = "t=$t Uniform $NR"
+    path = "data/"
+    dist = "Uniform"
+    settings = search_for_settings(path, dist)
+    # We now have all the settings, but we only want to use some of them
+    settings =  filter(
+        s -> s["t"] == 0 &&
+             s["L"] == L,
+             settings
+    )
 
     seed = 9
     ps = 10 #Pixel size
 
-    f(t, NR) = load(full_name(global_path, L, distribution(t, NR)))
-
-    t_settings = [0.0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.7, 0.8, 0.9]
-    layout = (length(NRS),length(t_settings))
-    lx = layout[1] #layout x
-    ly = layout[2] #layout y
+    # This function specifies an α and nr and reutrns the file with this setting
+    NRS = ["UNR", "SNR", "CNR"]
+    α_settings = [1.0, 1.5, 2.0, 3.0, 5.0, 9.0, 15.0]
+    lx, ly = (length(NRS),length(α_settings))
     key = color_stress ? "spanning_cluster_tension" : "spanning_cluster_state"
-    #println(f(0.0, NR))
-    grids = reshape([reshape(f(t, NR)["$key/$seed"], (L, L)) for NR=NRS, t=t_settings], (lx,ly))
-    kn(t, NR) = round(f(t, NR)["spanning_cluster_step/$seed"]/(L*L), digits=2)
-    grid_names = reshape([latexstring("$NR, \$t=$t\$") for NR=NRS, t=t_settings], (lx,ly))
+
+    grids = reshape([reshape(load_file(α, NR, settings)["$key/$seed"], (L, L)) for NR=NRS, α=α_settings], (lx,ly))
+    grid_names = reshape([latexstring("$NR, \$a=$α\$") for NR=NRS, α=α_settings], (lx,ly))
     pixel_L = L*ps
     title_space = ceil(Int, pixel_L/2)
     subtitle_space = ceil(Int, pixel_L/5)

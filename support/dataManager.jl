@@ -29,13 +29,17 @@ function make_settings(dist, L, t, nr, α, path)
         "nr" => nr,
         "a" => α,
     )
-    settings["name"] = get_setting_name(settings)
-    settings["path"] = path*dist*"/"*settings["name"]*"/"
+    add_name_and_path_to_setting!(path, dist, settings)
 
     if !isdir(settings["path"])
         mkpath(settings["path"])
     end
     return settings
+end
+
+function add_name_and_path_to_setting!(path, dist, settings) 
+    settings["name"] = get_setting_name(settings)
+    settings["path"] = path*dist*"/"*settings["name"]*"/"
 end
 
 function get_setting_name(settings)
@@ -259,18 +263,29 @@ function search_for_loose_files(path)
     @logmsg settingLog "Done!"
 end
 
-function search_for_t(path)
+function search_for_settings(path, dist)
 
-    files = readdir(path)
-    t = Set([])
+    files = readdir(path*dist)
+    settings = []
     for f in files
-        # t must be on the form "t=number.number " ie. t=0.0 or t=12.34
-        m = match(r"t=(([0-9]+)\.([0-9]+)) ", f)
-        if m !== nothing
-            push!(t, parse(Float64, m.captures[1]))
+        params = split(f, " ")
+        setting = Dict()
+
+        for (key, value) in split.(params, "=")
+            v_float = tryparse(Float64, value)
+            v_int = tryparse(Int64, value)
+            if v_int !== nothing
+                setting[key] = v_int
+            elseif v_float !== nothing
+                setting[key] = v_float
+            else
+                setting[key] = value
+            end
         end
+        add_name_and_path_to_setting!(path, dist, setting)
+        push!(settings, setting)
     end
-    return sort(collect(t))
+    return settings
 end
 
 function remove_key(key, settings)
@@ -290,13 +305,13 @@ function rename(path)
         f_path = path*f*"/"        
         for ff in readdir("$f_path")
             ff_path = f_path*ff
-            if occursin(" a=2.0 d", ff)
-                mv(ff_path, f_path*replace(ff, " a=2.0 d" => "a=2.0 d"))
+            if occursin("a=2.0", ff) && occursin("nr=UNR", ff)
+                mv(ff_path, f_path*replace(ff, "a=2.0" => "a=0.0"))
             end
         end
         
-        if occursin(" a=2.0 d", f)
-            mv(f_path, replace(f_path, " a=2.0 d" => "a=2.0 d"))
+        if occursin("a=2.0", f) && occursin("nr=UNR", f)
+            mv(f_path, replace(f_path, "a=2.0" => "a=0.0"))
         end
         
     end
