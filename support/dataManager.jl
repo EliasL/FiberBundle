@@ -4,6 +4,7 @@ using Logging
 include("logingLevels.jl")
 
 averaged_data_keys = [
+                    "simulation_time",
                     "nr_clusters", 
                     "largest_cluster",
                     "largest_perimiter",
@@ -286,6 +287,27 @@ function search_for_settings(path, dist)
         push!(settings, setting)
     end
     return settings
+end
+
+global_settings = nothing
+function load_file(L, α, t, NR, dist="Uniform", data_path="data/")
+    # We include this check so that we don't have to search for settings
+    # every time we want to load a file
+    if global_settings === nothing
+        global global_settings = search_for_settings(data_path, dist)
+    end
+
+    if NR=="UNR"
+        α=0.0
+    end
+    settings = filter(s -> s["L"] == L
+                        && s["a"]==α 
+                        && s["t"]==t
+                        && s["nr"]==NR, global_settings)
+    @assert length(settings) < 2 "There are multiple possibilities"
+    @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR"
+    setting = settings[1]
+    return load(get_file_name(setting))
 end
 
 function remove_key(key, settings)

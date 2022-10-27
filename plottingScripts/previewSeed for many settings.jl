@@ -67,44 +67,31 @@ function get_ideal_shift(m)
 end
 
 
-function load_file(α, NR, settings)
-    if NR=="UNR"
-        α=0.0
-    end
-    settings = filter(s -> s["a"]==α && s["nr"]==NR, settings)
-    @assert length(settings) < 2 "There are multiple possibilities"
-    @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR"
-    setting = settings[1]
-    return load(get_file_name(setting))
-end
-
-function draw_seeds(L)
+function draw_seeds(L; α_settings=2.0, t_settings=0.0)
 
     path = "data/"
     dist = "Uniform"
-    settings = search_for_settings(path, dist)
-    # We now have all the settings, but we only want to use some of them
-    settings =  filter(
-        s -> s["t"] == 0 &&
-             s["L"] == L,
-             settings
-    )
-
     seed = 9
     ps = 10 #Pixel size
 
     # This function specifies an α and nr and reutrns the file with this setting
     NRS = ["UNR", "SNR", "CNR"]
-    α_settings = [1.0, 1.5, 2.0, 3.0, 5.0, 9.0, 15.0]
-    lx, ly = (length(NRS),length(α_settings))
+    @assert α_settings isa Number || t_settings isa Number "This function is designed to itterate over t OR α"
+    iterate_over_t = t_settings isa AbstractArray
+
+    ly, lx = (length(NRS), maximum([length(α_settings), length(t_settings)]))
     # This will store the best shift of the matrix to center the largest cluster
     ideal_shifts = []
 
 
     # we first draw the cluster image since we need those to calculate the ideal shifts
     for key in ["spanning_cluster_state", "spanning_cluster_tension"]
-        grids = reshape([reshape(load_file(α, NR, settings)["$key/$seed"], (L, L)) for NR=NRS, α=α_settings], (lx,ly))
-        grid_names = reshape([latexstring("$NR, \$a=$α\$") for NR=NRS, α=α_settings], (lx,ly))
+        grids = reshape([reshape(load_file(L, α, t, NR)["$key/$seed"], (L, L)) for α=α_settings, t=t_settings, NR=NRS], (lx,ly))
+        if iterate_over_t
+            grid_names = reshape([latexstring("$NR, \$t=$t\$") for t=t_settings, NR=NRS], (lx,ly))
+        else
+            grid_names = reshape([latexstring("$NR, \$a=$α\$") for  α=α_settings, NR=NRS], (lx,ly))
+        end
         pixel_L = L*ps
         title_space = ceil(Int, pixel_L/2)
         subtitle_space = ceil(Int, pixel_L/5)
@@ -117,7 +104,7 @@ function draw_seeds(L)
 
         
         stress =  key=="spanning_cluster_tension" 
-        Drawing(image_size_x, image_size_y, "plots/Visualizations/Spanning/Spanning clusters L=$L"*"$(stress ? " stress" : "").png")
+        Drawing(image_size_x, image_size_y, "plots/Visualizations/Spanning/Spanning clusters over $(iterate_over_t ? "t" : "a") L=$L"*"$(stress ? " stress" : "").png")
         background(1,1,1) #White background
         fontface("Computer Modern")
         fontsize(title_font_size)
@@ -145,5 +132,11 @@ function draw_seeds(L)
 
 end
 
-draw_seeds(32)
-draw_seeds(64)
+
+α_settings = [1.0, 1.5, 2.0, 3.0, 5.0, 9.0, 15.0]
+
+t_settings = [0.0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95]
+draw_seeds(32; α_settings=2, t_settings=t_settings)
+draw_seeds(32; α_settings=α_settings, t_settings=0.0)
+#draw_seeds(64; α_settings=2, t_settings=t_settings)
+#draw_seeds(64; α_settings=α_settings, t_settings=0.0)

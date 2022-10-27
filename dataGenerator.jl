@@ -65,7 +65,7 @@ include("support/logingLevels.jl")
     # Break the bundle
 
     @logmsg threadLog "Starting seed $seed..."
-    for step in 1:N
+    simulation_time = @elapsed for step in 1:N
         # Simulate step
         i = findNextFiber(σ, x)
         max_σ = σ[i]/x[i]
@@ -116,6 +116,7 @@ include("support/logingLevels.jl")
                 file["spanning_cluster_state"] = spanning_cluster_state_storage
                 file["spanning_cluster_tension"] = spanning_cluster_tension_storage
             end
+            file["simulation_time"] = simulation_time
             file["spanning_cluster_size"] = spanning_cluster_size_storage
             file["spanning_cluster_perimiter"] = spanning_cluster_perimiter_storage
             file["spanning_cluster_step"] = spanning_cluster_step

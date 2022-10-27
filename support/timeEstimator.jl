@@ -28,13 +28,13 @@ function run_setting(L, NR)
     generate_data("", L, 1, "Uniform", 0.0, false, NR; save_data=false)
 end
 
-function time_estimate(dimensions, regimes, NRs, seeds, path)
+function time_estimate(dimensions, α, regimes, NRs, seeds, path)
 
     seconds_estimated = 0
 
     time_estimates = jldopen("data/time_estimates.jlds2", "r")
 
-    for L=dimensions, t=regimes, nr = NRs
+    for L=dimensions, t=regimes, nr=NRs, a=α
         distribution_name = get_uniform_distribution_name(t, nr)
         missing_seeds = get_missing_seeds(L, distribution_name, path, seeds)
         seconds_estimated += length(missing_seeds) * time_estimates["$nr$L"]
