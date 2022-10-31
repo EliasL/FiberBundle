@@ -355,22 +355,24 @@ function apply_to_neighbourhood(f::Function,
     # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
     # put it into the function f
     for i in 1:cluster_outline_length
-        @time get_neighbourhood(i, status, cluster_outline, neighbourhoods)
-        values[i] = f(get_neighbourhood(i, status, cluster_outline, neighbourhoods))
+        @time get_neighbourhood(i, status, cluster_outline, neighbourhoods, test)
+        values[i] = f(get_neighbourhood(i, status, cluster_outline, neighbourhoods, test))
     end
     return values
 end
+
+test = zeros(Int64, 8)
+
 function get_neighbourhood(i::Int64,
     status::Vector{Int64},
     cluster_outline::Vector{Int64},
-    neighbourhoods::Array{Int64, 2})
+    neighbourhoods::Array{Int64, 2}, t::Vector{Int64})
 
-    test = zeros(Int64, 8)
-    for j in eachindex(test)
-        test[j] = status[neighbourhoods[cluster_outline[i], j]]
+    for j in eachindex(t)
+        t[j] = status[neighbourhoods[cluster_outline[i], j]]
     end
     #t = status[view(neighbourhoods, cluster_outline[i], :)]
-    return test
+    return t
 end
 
 
@@ -452,3 +454,24 @@ function apply_stress(α::Float64, c::Int64,
         status[fiber] = -3 #PAST_BORDER
     end
 end
+
+
+function test_something()
+    N=16
+    status = 1:16
+    neighbourhoods = fillAdjacent(4, NEIGHBOURHOOD)
+    a = zeros(Int64, 8)
+
+    b = zeros(Int64, 8)
+
+    @time begin
+        for i in eachindex(a)
+            a[i] = status[neighbourhoods[1, i]]
+        end
+    end
+    @time b = status[view(neighbourhoods, 1, :)]
+
+    @assert a==b
+end
+
+test_something()
