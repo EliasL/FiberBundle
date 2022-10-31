@@ -132,22 +132,34 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
             condensed_file["nr_seeds_used"] = length(seeds)
             for seed in seeds
                 seed_file_name = get_name_fun(seed)
-                jldopen(seed_file_name, "r") do s_file
+                jldopen(seed_file_name, "r+") do s_file
                     for key in averaged_data_keys
+                        if !haskey(s_file, key)
+                            value = 0
+                            @warn "$key not found in $(seed_file_name)!"
+                        else
+                            value = s_file[key]
+                        end
                         # If the key doesn't exist, make it and set it to zero
                         if !haskey(averages, key)
-                            if length(s_file[key]) == 1
+                            if length(value) == 1
                                 averages[key] = 0
                             else
-                                averages[key] = zeros(length(s_file[key]))
+                                averages[key] = zeros(length(value))
                             end
                         end
-                        averages[key] += s_file[key] ./ nr_seeds
-                        condensed_file["$key/$seed"] = s_file[key]
+                        averages[key] += value ./ nr_seeds
+                        condensed_file["$key/$seed"] = value
                     end
                     if seed <= 10
                         for key in seed_specific_keys
-                            condensed_file["$key/$seed"] = s_file[key]
+                            if !haskey(s_file, key)
+                                value = 0
+                                @warn "$key not found in $(seed_file_name)!"
+                            else
+                                value = s_file[key]
+                            end
+                            condensed_file["$key/$seed"] = value
                         end
                     end
                 end
@@ -290,7 +302,12 @@ function search_for_settings(path, dist)
 end
 
 global_settings = nothing
-function load_file(L, α, t, NR, dist="Uniform", data_path="data/")
+function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=true)
+    setting = make_settings(dist, L, t, NR, α, data_path)
+    return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
+end
+
+function load_file(L, α, t, NR, dist="Uniform", data_path="data/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
     if global_settings === nothing
@@ -307,15 +324,41 @@ function load_file(L, α, t, NR, dist="Uniform", data_path="data/")
     @assert length(settings) < 2 "There are multiple possibilities"
     @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR"
     setting = settings[1]
-    return load(get_file_name(setting))
+    return load(get_file_name(setting, seed, average))
 end
 
 function remove_key(key, settings)
+    #Does this even do anything?
     seeds = get_seeds_in_compact_file(get_name(settings))
     expand_file(settings)    
     filter!(e->e≠key,data_keys)
     condense_files(settings, seeds)
-end 
+end
+
+function add_key(key, value)
+    # doesn't work
+    settings = search_for_settings("data/", "Uniform")
+    for average=[true, false], s = settings
+        name = get_file_name(s, -1, average)
+        println(name)
+        
+        f = load(name)
+        if average
+            if !haskey(f, "average_$key")
+                f["average_$key"] = value
+                JLD2.save(name, f)
+            end
+        else
+            for s in f["seeds_used"]
+                if !haskey(f, "$key/$s")
+                    f["$key/$s"] = value
+                    JLD2.save(name, f)
+                end
+            end
+        end
+    end
+end
+
 
 function rename(path)
 
@@ -339,3 +382,4 @@ function rename(path)
     end
 end
 #rename("data/Uniform/")
+#add_key("simulation_time", 0)

@@ -6,14 +6,16 @@ include("support/logingLevels.jl")
 
 @logmsg nodeLog "Preparing workers..."
 
-@everywhere using JLD2, CodecLz4, Logging
-@everywhere include("burningMan.jl")
-@everywhere include("support/dataManager.jl")
-@everywhere include("support/distributions.jl")
+using JLD2, CodecLz4, Logging
+include("burningMan.jl")
+include("support/dataManager.jl")
+include("support/distributions.jl")
 
-@everywhere function break_bundle(L, α, distribution::Function, progress_channel, working_channel,
-                                  file_name, neighbourhood_rule; seed=0, save_data=true)
-    put!(working_channel, true) # Indicate a process has started
+function break_bundle(L, α, distribution::Function, progress_channel, working_channel,
+                                  file_name, neighbourhood_rule; seed=0, save_data=true, use_threads=true)
+    if use_threads
+        put!(working_channel, true) # Indicate a process has started
+    end
     N = L*L # Number of fibers
     @assert seed != -1 ""
     Random.seed!(seed)
@@ -103,9 +105,11 @@ include("support/logingLevels.jl")
             spanning_cluster_step = step
             spanning_cluster_has_not_been_found = false
         end
-        @debug "adding progress"
-        put!(progress_channel, true) # trigger a progress bar update
-        @debug "step is done"
+        if use_threads
+            @debug "adding progress"
+            put!(progress_channel, true) # trigger a progress bar update
+            @debug "step is done"
+        end
     end
     @logmsg threadLog "Saving data..."
     if save_data
@@ -127,15 +131,16 @@ include("support/logingLevels.jl")
             file["largest_perimiter"] = largest_perimiter./N
         end
     end
-    put!(working_channel, false) # trigger a progress bar update
-
+    if use_threads
+        put!(working_channel, false) # trigger a progress bar update
+    end
 end
 
 # Done preparing workers!
 @logmsg nodeLog "Done!"
 
 
-function run_workers(settings, distribution_function, seeds; save_data=true)
+function run_workers(settings, distribution_function, seeds; save_data=true, use_threads=true)
     
     # Check if the current logger level is set to log on the thread level
     L = settings["L"]
@@ -152,55 +157,63 @@ function run_workers(settings, distribution_function, seeds; save_data=true)
     completed_runs = Threads.Atomic{Int}(0)
 
     @logmsg settingLog "Starting work on $(settings["name"])"
-    @sync begin # start two tasks which will be synced in the very end
-        # the first task updates the progress bar
-        @async begin
-            while take!(progress)
+
+    if use_threads
+        @sync begin # start two tasks which will be synced in the very end
+            # the first task updates the progress bar
+            @async begin
+                while take!(progress)
+                    #ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+                    p += 1
+                    percent_done = p/finish*100
+                    if percent_done > print_step
+                        print_step += 1
+                        @logmsg settingLog "$(print_step-1)%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
+                    end
+                end
+                @logmsg settingLog "100%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
                 #ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
-                p += 1
-                percent_done = p/finish*100
-                if percent_done > print_step
-                    print_step += 1
-                    @logmsg settingLog "$(print_step-1)%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
+                #ProgressMeter.finish!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
+            end
+
+            @async while true
+                started = take!(working)
+                if started
+                    active_workers[] += 1
+                else 
+                    active_workers[] -=1 
+                    completed_runs[] += 1
+                    if length(seeds) == completed_runs[]
+                        put!(progress, false) # this tells the printing task to finish
+                        break
+                    end
                 end
             end
-            @logmsg settingLog "100%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
-            #ProgressMeter.next!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
-            #ProgressMeter.finish!(p; showvalues = [("Active workers", active_workers[]), ("Completed tasks", completed_runs[])])
-        end
 
-        @async while true
-            started = take!(working)
-            if started
-                active_workers[] += 1
-            else 
-                active_workers[] -=1 
-                completed_runs[] += 1
-                if length(seeds) == completed_runs[]
-                    put!(progress, false) # this tells the printing task to finish
-                    break
+            # Test
+            #name = get_name(L, distribution_name, path, 1)
+            #break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=1)
+
+            # the second task does the computation
+            @async begin
+                @distributed (+) for i in seeds
+                    name = get_file_name(settings, i)
+                    break_bundle(settings["L"], settings["a"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data)
+                    i^2 #I have no idea what this does
                 end
             end
         end
-
-        # Test
-        #name = get_name(L, distribution_name, path, 1)
-        #break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=1)
-
-        # the second task does the computation
-        @async begin
-            @distributed (+) for i in seeds
-                name = get_file_name(settings, i)
-                break_bundle(settings["L"], settings["a"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data)
-                i^2 #I have no idea what this does
-            end
+    else
+        @showprogress for i in seeds
+            name = get_file_name(settings, i)
+            break_bundle(settings["L"], settings["a"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data, use_threads=use_threads)
         end
     end
 end
 
-function generate_data(settings, requested_seeds, overwrite; save_data=true)
+function generate_data(settings, requested_seeds, overwrite; save_data=true, use_threads=true)
     # get distribtion function
-    distribution_function(n) = nothing
+    distribution_function = nothing
 
     if  occursin("Uniform", settings["name"])
         distribution_function = get_uniform_distribution(settings["t"])
@@ -210,7 +223,7 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true)
 
     # If we don't want to save the data, we just do this
     if !save_data
-        run_workers(settings, distribution_function, requested_seeds, save_data=save_data)
+        run_workers(settings, distribution_function, requested_seeds, save_data=save_data, use_threads=use_threads)
         return
     end
 
@@ -218,7 +231,7 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true)
 
     if length(missing_seeds) > 0
         @logmsg settingLog "Running workers..."
-        run_workers(settings, distribution_function, missing_seeds, save_data=save_data)
+        run_workers(settings, distribution_function, missing_seeds, save_data=save_data, use_threads=use_threads)
         @logmsg settingLog "Done!"
 
 
@@ -228,7 +241,7 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true)
     end
 end
 
-function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/")
+function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", use_threads=true)
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
 
         # There is no point in itterating over alphas when using UNR
@@ -238,6 +251,6 @@ function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; 
 
         settings = make_settings("Uniform", L, t, nr, a, path)
         @logmsg settingLog "Starting $(settings["name"])"
-        generate_data(settings, seeds, overwrite)
+        generate_data(settings, seeds, overwrite; use_threads=use_threads)
     end
 end

@@ -1,0 +1,133 @@
+Hello world, I am rank 2 of 4
+Hello world, I am rank 1 of 4
+Hello world, I am rank 0 of 4
+Hello world, I am rank 3 of 4
+┌ Info: I am groot
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:32
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 1 workers... 
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:40
+┌ LogLevel(-1): Starting 1 workers... 
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:40
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 1 workers... 
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:40
+┌ LogLevel(-1): Starting 1 workers... 
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:40
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:42
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:42
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:42
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:42
+┌ LogLevel(-1): Preparing workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:7
+┌ LogLevel(-1): Preparing workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:7
+┌ LogLevel(-1): Preparing workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:7
+┌ LogLevel(-1): Preparing workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:7
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:135
+┌ LogLevel(-1): Start run
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:46
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:135
+┌ LogLevel(-1): Start run
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:46
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:135
+┌ LogLevel(-1): Start run
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:46
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:135
+┌ LogLevel(-1): Start run
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:46
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:240
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:220
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:240
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:220
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:240
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:220
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:154
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:240
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:220
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:154
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:154
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:154
+┌ LogLevel(-2): 0%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:164
+┌ LogLevel(-2): 0%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:164
+┌ LogLevel(-2): 0%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:164
+┌ LogLevel(-2): 0%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:164
+srun: Job step aborted: Waiting up to 62 seconds for job step to finish.
+slurmstepd-compute-1: error: *** STEP 614096.0 ON compute-1 CANCELLED AT 2022-10-31T09:06:51 DUE TO TIME LIMIT ***
+slurmstepd-compute-1: error: *** JOB 614096 ON compute-1 CANCELLED AT 2022-10-31T09:06:51 DUE TO TIME LIMIT ***
+
+signal (15): Terminated
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:47
+
+signal (15): Terminated
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:47
+
+signal (15): Terminated
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:47
+
+signal (15): Terminated
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:47
+epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+srun: got SIGCONT
+
+signal (15): Terminated
+in expression starting at none:4
+srun: forcing job termination
+epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   PID 530918 RUNNING AT compute-3
+=   EXIT CODE: 15
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+===================================================================================
+[proxy:0:0@compute-1] HYD_pmcd_pmip_control_cmd_cb (pm/pmiserv/pmip_cb.c:899): assert (!closed) failed
+[proxy:0:0@compute-1] HYDT_dmxu_poll_wait_for_event (tools/demux/demux_poll.c:76): callback returned error status
+[proxy:0:0@compute-1] main (pm/pmiserv/pmip.c:169): demux engine error waiting for event
+[proxy:0:1@compute-2] HYD_pmcd_pmip_control_cmd_cb (pm/pmiserv/pmip_cb.c:899): assert (!closed) failed
+[proxy:0:1@compute-2] HYDT_dmxu_poll_wait_for_event (tools/demux/demux_poll.c:76): callback returned error status
+[proxy:0:1@compute-2] main (pm/pmiserv/pmip.c:169): demux engine error waiting for event
+srun: error: compute-1: task 0: Exited with exit code 7
+srun: error: compute-2: task 1: Exited with exit code 7
+YOUR APPLICATION TERMINATED WITH THE EXIT STRING: Terminated (signal 15)
+This typically refers to a problem with your application.
+Please see the FAQ page for debugging suggestions
+uv__io_poll at /workspace/srcdir/libuv/src/unix/epoll.c:240
+uv_run at /workspace/srcdir/libuv/src/unix/core.c:383
+jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:481

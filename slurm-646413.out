@@ -1,0 +1,7 @@
+slurmstepd-compute-15: error: *** JOB 646413 ON compute-15 CANCELLED AT 2022-10-30T23:16:17 DUE TO TIME LIMIT ***
+
+signal (15): Terminated
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:47
+
+signal (6): Aborted
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:47

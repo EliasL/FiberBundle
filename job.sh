@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#SBATCH -J alphaItteration
+#SBATCH -J 100L512
 #SBATCH -p porelab
 #SBATCH -N 1
 #SBATCH -n 64
 #SBATCH --exclusive=user
-#SBATCH --time=0-15:00:00
+#SBATCH --time=2-00:00:00
 
 ml eb
 #ml av
