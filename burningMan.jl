@@ -151,7 +151,7 @@ function resetClusters(status::Vector{Int64}, σ::Vector{Float64})
     end
 end
 
-function findNextFiber(σ, x)
+function findNextFiber(σ::Vector{Float64}, x::Vector{Float64})
     # σ is the relative tension of the fiber if x had been 1
     # If σ of a fiber is 2, this just means that it is under
     # twice as much tension as a fiber of σ=1. But in order to
@@ -193,7 +193,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     fill!(rel_pos_y, 0)
     # For every fiber in the plane
     for i in eachindex(status)
-        @logmsg σUpdateLog "Breaking fiber $i"
+        #@logmsg σUpdateLog "Breaking fiber $i"
         # If it is broken and unexplored
         if status[i] == 0#BROKEN
             # We have found a new cluster!
@@ -202,7 +202,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # assign fiber i to this new cluster
             status[i] = c
             # explore the new cluster
-            @logmsg σUpdateLog "Exploring cluster"
+            #@logmsg σUpdateLog "Exploring cluster"
             spanning_cluster_check = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
             if spanning_cluster_check != -1 && spanning_cluster == -1
                 spanning_cluster = spanning_cluster_check
@@ -210,7 +210,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
             
-            @logmsg σUpdateLog "Updating stress"
+            #@logmsg σUpdateLog "Updating stress"
             update_cluster_outline_stress(α, c, status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule, neighbourhood_values)
         end
     end
@@ -247,7 +247,7 @@ function explore_cluster_at(i::Int64, c::Int64,
     # While there are still unexplored fibers in the cluster
     while nr_unexplored > nr_explored
 
-        @logmsg clusterLog "Explored $nr_unexplored / $nr_explored"
+        #@logmsg clusterLog "Explored $nr_unexplored / $nr_explored"
         # Preemptively count this fiber as explored (because 1 indexing)
         nr_explored += 1
         # Get the next unexplored fiber
@@ -355,17 +355,24 @@ function apply_to_neighbourhood(f::Function,
     # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
     # put it into the function f
     for i in 1:cluster_outline_length
+        @time get_neighbourhood(i, status, cluster_outline, neighbourhoods)
         values[i] = f(get_neighbourhood(i, status, cluster_outline, neighbourhoods))
     end
     return values
 end
-
 function get_neighbourhood(i::Int64,
     status::Vector{Int64},
     cluster_outline::Vector{Int64},
     neighbourhoods::Array{Int64, 2})
-    return status[view(neighbourhoods, cluster_outline[i], :)]
+
+    test = zeros(Int64, 8)
+    for j in eachindex(test)
+        test[j] = status[neighbourhoods[cluster_outline[i], j]]
+    end
+    #t = status[view(neighbourhoods, cluster_outline[i], :)]
+    return test
 end
+
 
 function alive_fibers_in_neighbourhood(m::Vector{Int64})
     # Take a 3x3 matrix around a fiber and count how many are alive
@@ -402,7 +409,7 @@ function update_cluster_outline_stress(α::Float64, c::Int64,
         elseif neighbourhood_rule == "SNR"
             apply_to_neighbourhood(alive_fibers_in_neighbourhood, status, cluster_outline,  cluster_outline_length[c], neighbourhood_values, neighbourhoods)
         else
-            @debug "Unknown neighbourhood rule: $neighbourhood_rule"
+            #@debug "Unknown neighbourhood rule: $neighbourhood_rule"
             error("Unknown neighbourhood rule")
         end
 

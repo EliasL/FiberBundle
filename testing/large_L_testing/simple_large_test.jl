@@ -25,8 +25,10 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
     Random.seed!(seed)
     x = distribution(N) # Max extension (Distribution)
     neighbours = fillAdjacent(L, NEIGHBOURS)
-    neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
+    neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)#
     neighbourhood_values = zeros(Int64, N)
+
+    work_values = zeros(Float64, N)
     # These values are reset for each step
     σ  = ones(Float64, N) # Relative tension
     max_σ = Float64(0)
@@ -71,7 +73,7 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
     # Break the bundle
 
     @logmsg threadLog "Starting seed $seed..."
-    simulation_time = @elapsed @showprogress for step in 1:N
+    for step in 1:N
         # Simulate step
         i = findNextFiber(σ, x)
         max_σ = σ[i]/x[i]
@@ -109,40 +111,12 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
             spanning_cluster_step = step
             spanning_cluster_has_not_been_found = false
         end
-        if use_threads
-            @debug "adding progress"
-            put!(progress_channel, true) # trigger a progress bar update
-            @debug "step is done"
-        end
-    end
-    @logmsg threadLog "Saving data..."
-    if save_data
-        jldopen(file_name, "w") do file
-            if seed <= 10
-                file["sample_states"] = status_storage
-                file["tension"] = tension_storage
-                file["spanning_cluster_state"] = spanning_cluster_state_storage
-                file["spanning_cluster_tension"] = spanning_cluster_tension_storage
-            end
-            file["simulation_time"] = simulation_time
-            file["spanning_cluster_size"] = spanning_cluster_size_storage
-            file["spanning_cluster_perimiter"] = spanning_cluster_perimiter_storage
-            file["spanning_cluster_step"] = spanning_cluster_step
-            file["sample_states_steps"] = steps_to_store./N
-            file["most_stressed_fiber"] = most_stressed_fiber
-            file["nr_clusters"] = nr_clusters./N
-            file["largest_cluster"] = largest_cluster./N
-            file["largest_perimiter"] = largest_perimiter./N
-        end
-    end
-    if use_threads
-        put!(working_channel, false) # trigger a progress bar update
     end
 end
 
 
 
-L=64
+L=8
 α=2.0
 t=0.0
 dist="Uniform"
@@ -156,8 +130,3 @@ file_name = get_file_name(make_settings(dist, L, t, nr, α, path), seed)
 
 @time break_bundle(L, α, distribution, progress_channel, working_channel,
     file_name, nr; seed=0, save_data=true, use_threads=false)
-
-
-
-@profile main("SNR") 
-pprof(;webport=58699)
