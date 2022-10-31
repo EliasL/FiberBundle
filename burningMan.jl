@@ -355,13 +355,12 @@ function apply_to_neighbourhood(f::Function,
     # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
     # put it into the function f
     for i in 1:cluster_outline_length
-        @time get_neighbourhood(i, status, cluster_outline, neighbourhoods, test)
-        values[i] = f(get_neighbourhood(i, status, cluster_outline, neighbourhoods, test))
+        values[i] = f(get_neighbourhood(i, status, cluster_outline, neighbourhoods, temp_neighbours))
     end
     return values
 end
 
-test = zeros(Int64, 8)
+const temp_neighbours = zeros(Int64, 8)
 
 function get_neighbourhood(i::Int64,
     status::Vector{Int64},
@@ -434,6 +433,10 @@ function apply_simple_stress(c::Int64,
     end
 end
 
+const fiber_strengths = zeros(Float64, 64)
+const fiber_strengths = zeros(Float64, 64)
+const fiber_strengths = zeros(Float64, 64)
+
 function apply_stress(α::Float64, c::Int64,
     status::Vector{Int64},
     σ::Vector{Float64},
@@ -442,11 +445,12 @@ function apply_stress(α::Float64, c::Int64,
     cluster_outline_length::Vector{Int64},
     fiber_strengths::Vector{Int64}
     )
-    fiber_strengths = fiber_strengths[1:cluster_outline_length[c]]
+    println("start")
+    @time fiber_strengths = fiber_strengths[1:cluster_outline_length[c]]
     # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
     # High alpha means that having neighbours is more important
-    C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
-    g = C .* fiber_strengths .^(-α) # Normalization factor
+    @time C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
+    @time g = C .* fiber_strengths .^(-α) # Normalization factor
     for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]
         added_stress =  cluster_size[c]*fiber_strengths[i]*g[i]
@@ -474,4 +478,4 @@ function test_something()
     @assert a==b
 end
 
-test_something()
+#test_something()
