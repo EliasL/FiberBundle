@@ -8,10 +8,12 @@ include("support/neighbourhoodWeighting.jl")
 """
 Simulate breakage of an LxL fiber matrix
 """
-# Fiber bundle data
-Base.@kwdef struct FBD{l, n, F<:AbstractFloat, I<:Integer}        
+# Fiber bundle
+Base.@kwdef struct FB{l, n, F<:AbstractFloat, I<:Integer}        
     L::I = l
     N::I = n
+    α::F = 2
+    nr::String = "UNR"
     x::SVector{n,F} = SVector{n}(zeros(F, n))
     neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(zeros(I, n, 4))
     neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(zeros(I, n, 8))
@@ -22,6 +24,8 @@ Base.@kwdef struct FBD{l, n, F<:AbstractFloat, I<:Integer}
     tension::SVector{n,F} = SVector{n}(zeros(F, n))
     max_σ::F = 0.0
     status::SVector{n,I} = SVector{n}(zeros(I, n))
+    c::I
+    spanning_cluster_id::I
     cluster_size::SVector{n,I} = SVector{n}(zeros(I, n))
     cluster_dimensions::SVector{n,I} = SVector{n}(zeros(I, n))
     # Relative possition of every fiber with respect to it's cluster
@@ -166,13 +170,27 @@ function findAdjacent(i::Int64, L::Int64, adjacent::Vector{Int64})
     return a 
 end
 
+function resetBundle!(b::FB)
+    #NB This does not completely reset the cluster, only
+    # values that should be reset every step
+    
+    #Reset cluster id/number 
+    b.c = 0
+    # The id of a spanning cluster. If there are none, it is -1
+    b.spanning_cluster_id = -1
 
-function resetClusters(status::Vector{Int64}, σ::Vector{Float64})
+    resetClusters!(b)
+
+    reset_relative_possition!(b)
+end
+
+function resetClusters!(b::FB)
     # After having explored and assigned numbers to 
     # all the fibers indicating their state, we now 
     # want to reset them to either be BROKEN or ALIVE
-    for i in eachindex(status)
-        s = status[i]
+
+    for i in eachindex(b.status)
+        s = b.status[i]
 
         # The statuses of the fibers will indicate
         # what cluster they belong to. If this fiber
@@ -181,17 +199,17 @@ function resetClusters(status::Vector{Int64}, σ::Vector{Float64})
         if s > 0#BROKEN
             # In this case, we know that it is broken
             # and should be reset
-            status[i] = 0#BROKEN
+            b.status[i] = 0#BROKEN
 
         elseif s < 0#BROKEN
             # This means that this fiber was set as either
             # ALIVE, CURRENT_BORDER or PAST_BORDER.
             # Now we reset it to being just ALIVE
-            status[i] = -1 #ALIVE
+            b.status[i] = -1 #ALIVE
             # We have already added stress to the boarder, so now
             # AFTER having chosen the next fiber to break, we remove
             # this tension and calculate it again
-            σ[i] = 1
+            b.σ[i] = 1
         
         # else
         # The fiber is BROKEN and should stay BROKEN, 
@@ -200,90 +218,75 @@ function resetClusters(status::Vector{Int64}, σ::Vector{Float64})
     end
 end
 
-function findNextFiber(tension::Vector{Float64}, σ::Vector{Float64}, x::Vector{Float64})
-    # σ is the relative tension of the fiber if x had been 1
+function update_tension!(b::FB)# σ is the relative tension of the fiber if x had been 1
     # If σ of a fiber is 2, this just means that it is under
     # twice as much tension as a fiber of σ=1. But in order to
     # find what fiber will break first, we need to take into
     # account how much tension the fiber can handle. We do this
     # by dividing by x.
-    
-    #return argmax(σ ./ x)
-    for i in eachindex(σ)
-        tension[i] = σ[i] / x[i]
-    end
-    return argmax(tension)
-end
-
-function break_fiber(i::Int64, status::Vector{Int64}, σ::Vector{Float64})
-    begin
-        status[i] = 0#BROKEN
-        σ[i] = 0
+    for i in eachindex(b.σ)
+        b.tension[i] = b.σ[i] / b.x[i]
     end
 end
 
+function findNextFiber!(b::FB)
+    update_tension!(b)
+    return argmax(b.tension)
+end
 
+function break_fiber!(i::Int, b::FB)
+    b.status[i] = 0#BROKEN
+    b.σ[i] = 0
+end
 
-function update_σ(status::Vector{Int64}, σ::Vector{Float64},
-    neighbours::Array{Int64, 2},
-    neighbourhoods::Array{Int64, 2},
-    neighbourhood_values::Vector{Int64},
-    cluster_size::Vector{Int64},
-    cluster_dimensions::Vector{Int64},
-    rel_pos_x::Vector{Int64},
-    rel_pos_y::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    cluster_outline_length::Vector{Int64},
-    unexplored::Vector{Int64};
-    neighbourhood_rule::String="UNR",
-    α::Float64=2.0,)
+function reset_relative_possition!(b::FB)
+    # Note about the relative possition:
+    # If a fiber boarders two clusters, it will have the relative
+    # possition of the cluster explored last.
+    fill!(b.rel_pos_x, 0)
+    fill!(b.rel_pos_y, 0)
+end
+
+function update_σ!(b::FB)
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
-    # Cluster id
-    c::Int64 = 0
-    # The id of a spanning cluster. If there are none, it is -1
-    spanning_cluster::Int64 = -1
 
-    fill!(rel_pos_x, 0)
-    fill!(rel_pos_y, 0)
     # For every fiber in the plane
-    for i in eachindex(status)
+    for i in eachindex(b.status)
         #@logmsg σUpdateLog "Breaking fiber $i"
         # If it is broken and unexplored
-        if status[i] == 0#BROKEN
+        if b.status[i] == 0#BROKEN
             # We have found a new cluster!
             # increase number of clusters
-            c += 1
+            b.c += 1
             # assign fiber i to this new cluster
-            status[i] = c
+            b.status[i] = b.c
             # explore the new cluster
             #@logmsg σUpdateLog "Exploring cluster"
-            spanning_cluster_check = explore_cluster_at(i, c, status, neighbours, cluster_size, cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline, cluster_outline_length, unexplored)
-            if spanning_cluster_check != -1 && spanning_cluster == -1
-                spanning_cluster = spanning_cluster_check
+            found_spanning_cluster = explore_cluster_at!(i, b)
+            if found_spanning_cluster && b.spanning_cluster_id == -1
+                b.spanning_cluster_id = b.c
             end
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
             
             #@logmsg σUpdateLog "Updating stress"
-            update_cluster_outline_stress(α, c, status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods, neighbourhood_rule, neighbourhood_values)
+            update_cluster_outline_stress(b::FB)
         end
     end
     spanning_cluster_size = spanning_cluster==-1 ? -1 : cluster_size[spanning_cluster]
     return c, spanning_cluster, spanning_cluster_size
 end
 
-function explore_cluster_at(i::Int64, c::Int64,
-    status::Vector{Int64},
-    neighbours::Array{Int64, 2},
-    cluster_size::Vector{Int64},
-    cluster_dimensions::Vector{Int64},
-    rel_pos_x::Vector{Int64},
-    rel_pos_y::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    cluster_outline_length::Vector{Int64},
-    unexplored::Vector{Int64})
+function reset_cluster_dimensions!(b::FB)
+
+    # Cluster dimensions
+    # [max_x, min_x, max_y, min_y]
+    fill!(b.cluster_dimensions, 0) # Reset cluster dimensions
+end
+
+function explore_cluster_at!(i::Int64, b::FB)
     # We explore the cluster of broken fibers and
     # map the border of the cluster
     # Number of fibers in current cluster that has been explored
@@ -291,15 +294,14 @@ function explore_cluster_at(i::Int64, c::Int64,
     # Number of unexplored fibers that we know of.
     nr_unexplored::Int64 = 1 # Starts at one because of i
     # These are the actual unexplored. We just overwrite new values
-    unexplored[1] = i
+    b.unexplored[1] = i
     # This value will be continuesly updated as we explore the cluster
-    cluster_size[c] = 1
+    b.cluster_size[b.c] = 1
     # This value will be continuesly updated as we explore the cluster
-    cluster_outline_length[c] = 0
+    b.cluster_outline_length[b.c] = 0
 
-    # Cluster dimensions
-    # [max_x, min_x, max_y, min_y]
-    fill!(cluster_dimensions, 0) # Reset cluster dimensions
+    reset_cluster_dimensions!(b)
+
     # While there are still unexplored fibers in the cluster
     while nr_unexplored > nr_explored
 
@@ -309,56 +311,46 @@ function explore_cluster_at(i::Int64, c::Int64,
         # Get the next unexplored fiber
         current_fiber = unexplored[nr_explored]
         # Go through all neighbours of the fiber
-        nr_unexplored = check_neighbours(current_fiber, nr_unexplored, c, status, neighbours, cluster_size,
-                                            cluster_dimensions, rel_pos_x, rel_pos_y, cluster_outline,
-                                            cluster_outline_length, unexplored)
+        nr_unexplored = check_neighbours!(current_fiber, nr_unexplored, b)
     end
-    L::Int64 = isqrt(length(status)) 
-    if spanning(L, cluster_dimensions)
-        return c
+    
+    if spanning(b)
+        return true
     else 
-        return -1
+        return false
     end
 
 
 end
 
-function spanning(L::Int64, cluster_dimensions::Vector{Int64})
+function spanning(b::FB)
     # Cluster dimensions
     # [max_x, min_x, max_y, min_y]
     # L-1 because the relative coordinates in the cluster start at 0,0
     # NB! Once the cluster is spanning, the dimension is no longer reliable because of
     # periodicity.
-    return cluster_dimensions[1] - cluster_dimensions[2] >= L-1 || cluster_dimensions[3] - cluster_dimensions[4] >= L-1
+    return b.cluster_dimensions[1] - b.cluster_dimensions[2] >= b.L-1 ||
+           b.cluster_dimensions[3] - b.cluster_dimensions[4] >= b.L-1
 end
 
-function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
-    status::Vector{Int64},
-    neighbours::Array{Int64, 2},
-    cluster_size::Vector{Int64},
-    cluster_dimensions::Vector{Int64},
-    rel_pos_x::Vector{Int64},
-    rel_pos_y::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    cluster_outline_length::Vector{Int64},
-    unexplored::Vector{Int64})
+function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
     # Here we check the neighbour fibers of a given fiber
     # We want to see if the neighbours are broken, making them
     # part of the cluster, or if they are alive, in which case
     # we need to add them to the border of the cluster.
-    for (i, neighbour_fiber) in enumerate(view(neighbours, current_fiber, :))
+    for (i, neighbour_fiber) in enumerate(view(b.neighbours, current_fiber, :))
         # Status of neighbour fiber
-        s::Int64 = status[neighbour_fiber]
+        s::Int64 = b.status[neighbour_fiber]
         # If this adjecent fiber is is BROKEN,
         if s == 0#BROKEN
             # We then have to add this to the list of unexplored 
-            nr_unexplored = add_unexplored(neighbour_fiber, unexplored, nr_unexplored)
+            nr_unexplored = add_unexplored(neighbour_fiber, b.unexplored, nr_unexplored)
             # We set this fiber to be part of the current cluster
-            status[neighbour_fiber] = c
+            b.status[neighbour_fiber] = b.c
             # increase the cluster size
-            cluster_size[c] += 1
+            b.cluster_size[b.c] += 1
             # and increase the cluster dimensions depending on what direction we explored In
-            store_possition(current_fiber, neighbour_fiber, i, cluster_dimensions, rel_pos_x, rel_pos_y)
+            store_possition!(current_fiber, neighbour_fiber, i, b)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
         elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
@@ -377,22 +369,20 @@ const movement = [1,-1,1,-1] # direction
 
 function store_possition(current_fiber::Int64, neighbour_fiber::Int64, 
     direction::Int64, 
-    cluster_dimensions::Vector{Int64},
-    rel_pos_x::Vector{Int64},
-    rel_pos_y::Vector{Int64})
+    b::FB)
     # cluster_dimensions = [max_x, min_x, max_y, min_y]
 
     # Copy over the possition to the neighbour
-    rel_pos_x[neighbour_fiber] = rel_pos_x[current_fiber]
-    rel_pos_y[neighbour_fiber] = rel_pos_y[current_fiber]
+    b.rel_pos_x[neighbour_fiber] = b.rel_pos_x[current_fiber]
+    b.rel_pos_y[neighbour_fiber] = b.rel_pos_y[current_fiber]
 
     #Then add the movement to the neighbour
-    xOrY = direction<=2 ? rel_pos_x : rel_pos_y # If direction is 1 or 2, it is the x direction we use
+    xOrY = direction<=2 ? b.rel_pos_x : b.rel_pos_y # If direction is 1 or 2, it is the x direction we use
     xOrY[neighbour_fiber] += movement[direction]
 
     # If this is a new max, then we save it
     if xOrY[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]
-        cluster_dimensions[direction] = xOrY[neighbour_fiber]
+        b.cluster_dimensions[direction] = xOrY[neighbour_fiber]
     end
 end
 
@@ -538,5 +528,5 @@ end
 
 #test_something()
 
-x = FBD{2, 4, Float64, Int64}()
+x = FB{2, 4, Float64, Int64}()
 x = FBS{2, 4}()
