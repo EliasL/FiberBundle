@@ -28,7 +28,6 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
     neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)#
     neighbourhood_values = zeros(Int64, N)
 
-    work_values = zeros(Float64, N)
     # These values are reset for each step
     σ  = ones(Float64, N) # Relative tension
     tension = zeros(Float64, N)
@@ -117,7 +116,7 @@ end
 
 
 
-L=256
+L=64
 α=2.0
 t=0.0
 dist="Uniform"
@@ -129,5 +128,5 @@ progress_channel=nothing
 working_channel=nothing
 file_name = get_file_name(make_settings(dist, L, t, nr, α, path), seed)
 
-@time break_bundle(L, α, distribution, progress_channel, working_channel,
+@btime break_bundle(L, α, distribution, progress_channel, working_channel,
     file_name, nr; seed=0, save_data=true, use_threads=false)

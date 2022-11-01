@@ -1,13 +1,62 @@
 using BenchmarkTools
 using Random
 using ProgressMeter
-using SparseArrays
+using StaticArrays
 
 include("support/neighbourhoodWeighting.jl")
 
 """
 Simulate breakage of an LxL fiber matrix
 """
+# Fiber bundle data
+Base.@kwdef struct FBD{l, n, F<:AbstractFloat, I<:Integer}        
+    L::I = l
+    N::I = n
+    x::SVector{n,F} = SVector{n}(zeros(F, n))
+    neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(zeros(I, n, 4))
+    neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(zeros(I, n, 8))
+    neighbourhood_values::SVector{n,I} = SVector{n}(zeros(I, n))
+
+    # These values are reset for each step
+    σ::SVector{n,F} = SVector{n}(zeros(F, n)) # Relative tension
+    tension::SVector{n,F} = SVector{n}(zeros(F, n))
+    max_σ::F = 0.0
+    status::SVector{n,I} = SVector{n}(zeros(I, n))
+    cluster_size::SVector{n,I} = SVector{n}(zeros(I, n))
+    cluster_dimensions::SVector{n,I} = SVector{n}(zeros(I, n))
+    # Relative possition of every fiber with respect to it's cluster
+    rel_pos_x::SVector{n,I} = SVector{n}(zeros(I, n))
+    rel_pos_y::SVector{n,I} = SVector{n}(zeros(I, n))
+    cluster_outline_length::SVector{n,I} = SVector{n}(zeros(I, n))
+    # These values are reset for each cluster
+    cluster_outline::SVector{n,I} = SVector{n}(zeros(I, n))
+    unexplored::SVector{n,I} = SVector{n}(zeros(I, n))
+
+    # These arrays store one value for each step
+    most_stressed_fiber::SVector{n,F} = SVector{n}(zeros(F, n))
+    nr_clusters::SVector{n,I} = SVector{n}(zeros(I, n))
+    largest_cluster::SVector{n,I} = SVector{n}(zeros(I, n))
+    largest_perimiter::SVector{n,I} = SVector{n}(zeros(I, n))
+end
+
+# Fiber bundle storage
+Base.@kwdef struct FBS{division, n, }
+    # We want to store some samples of the processed
+    # I'm thinking at 10%, 20%, ... 90% done would work
+    # ie, 9 images
+    status_storage = zeros(Int64, division-1, n)
+    tension_storage = zeros(Float64, division-1, n)
+
+    spanning_cluster_state_storage = zeros(Int64, n)
+    spanning_cluster_tension_storage = zeros(Int64, n)
+    spanning_cluster_size_storage = 0
+    spanning_cluster_perimiter_storage = 0
+    spanning_cluster_has_not_been_found = true
+    spanning_cluster_step = 0
+    # If N=100 Steps to store is now [90, 80, ... , 10]
+    steps_to_store = [round(Int64,n/division * i) for i in 1:division-1]
+    storage_index = 1
+end
 
 # Define constants
 ALIVE = -1 #::Int64 = -1 # A fiber that has not yet been broken
@@ -172,6 +221,8 @@ function break_fiber(i::Int64, status::Vector{Int64}, σ::Vector{Float64})
         σ[i] = 0
     end
 end
+
+
 
 function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     neighbours::Array{Int64, 2},
@@ -486,3 +537,6 @@ function test_something()
 end
 
 #test_something()
+
+x = FBD{2, 4, Float64, Int64}()
+x = FBS{2, 4}()
