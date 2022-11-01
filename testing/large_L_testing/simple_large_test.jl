@@ -31,6 +31,7 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
     work_values = zeros(Float64, N)
     # These values are reset for each step
     σ  = ones(Float64, N) # Relative tension
+    tension = zeros(Float64, N)
     max_σ = Float64(0)
     status = fill(-1,N)
     cluster_size = zeros(Int64, N)
@@ -75,8 +76,8 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
     @logmsg threadLog "Starting seed $seed..."
     for step in 1:N
         # Simulate step
-        i = findNextFiber(σ, x)
-        max_σ = σ[i]/x[i]
+        i = findNextFiber(tension, σ, x)
+        max_σ = tension[i]
         resetClusters(status, σ)
         @logmsg singleBreakLog "Breaking fiber nr $step"
         break_fiber(i, status, σ)
@@ -97,7 +98,7 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
         if seed <= 10 #Only save samples from 10 first seeds
             if step == steps_to_store[storage_index]
                 status_storage[storage_index, :] = status
-                tension_storage[storage_index, :] = σ ./ x
+                tension_storage[storage_index, :] = tension
                 if storage_index < length(steps_to_store)
                     storage_index += 1  
                 end
@@ -105,7 +106,7 @@ function break_bundle(L, α, distribution::Function, progress_channel, working_c
         end
         if spanning_cluster != -1 && spanning_cluster_has_not_been_found
             spanning_cluster_state_storage = copy(status)
-            spanning_cluster_tension_storage = σ ./ x
+            spanning_cluster_tension_storage = tension
             spanning_cluster_size_storage = spanning_cluster_size
             spanning_cluster_perimiter_storage = cluster_outline_length[spanning_cluster]
             spanning_cluster_step = step
@@ -116,7 +117,7 @@ end
 
 
 
-L=8
+L=256
 α=2.0
 t=0.0
 dist="Uniform"

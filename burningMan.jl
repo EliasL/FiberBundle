@@ -151,14 +151,22 @@ function resetClusters(status::Vector{Int64}, σ::Vector{Float64})
     end
 end
 
-function findNextFiber(σ::Vector{Float64}, x::Vector{Float64})
+function findNextFiber(tension::Vector{Float64}, σ::Vector{Float64}, x::Vector{Float64})
     # σ is the relative tension of the fiber if x had been 1
     # If σ of a fiber is 2, this just means that it is under
     # twice as much tension as a fiber of σ=1. But in order to
     # find what fiber will break first, we need to take into
     # account how much tension the fiber can handle. We do this
     # by dividing by x.
-    return argmax(σ ./ x)
+    
+    #return argmax(σ ./ x)
+    
+    #Manual definition of argmax to avoid allocation
+
+    for i in eachindex(σ)
+        tension[i] = σ[i] / x[i]
+    end
+    return argmax(tension)
 end
 
 function break_fiber(i::Int64, status::Vector{Int64}, σ::Vector{Float64})
@@ -433,9 +441,7 @@ function apply_simple_stress(c::Int64,
     end
 end
 
-const fiber_strengths = zeros(Float64, 64)
-const fiber_strengths = zeros(Float64, 64)
-const fiber_strengths = zeros(Float64, 64)
+const fiber_strengths = zeros(Int64, 64)
 
 function apply_stress(α::Float64, c::Int64,
     status::Vector{Int64},
@@ -443,17 +449,21 @@ function apply_stress(α::Float64, c::Int64,
     cluster_size::Vector{Int64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
-    fiber_strengths::Vector{Int64}
+    fiber_strengths::Vector{Int64},
     )
-    println("start")
-    @time fiber_strengths = fiber_strengths[1:cluster_outline_length[c]]
     # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
     # High alpha means that having neighbours is more important
-    @time C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
-    @time g = C .* fiber_strengths .^(-α) # Normalization factor
+    C=0.0
+    for i in 1:cluster_outline_length[c]
+        C += fiber_strengths[i] ^(-α+1)
+    end
+    C = 1/C # A normalization constant
+    #@time fiber_strengths = fiber_strengths[1:cluster_outline_length[c]]
+    #@time C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
     for i in 1:cluster_outline_length[c]
         fiber = cluster_outline[i]
-        added_stress =  cluster_size[c]*fiber_strengths[i]*g[i]
+        g = C * fiber_strengths[i] ^(-α)
+        added_stress =  cluster_size[c]*fiber_strengths[i]*g
         σ[fiber] += added_stress
         status[fiber] = -3 #PAST_BORDER
     end
