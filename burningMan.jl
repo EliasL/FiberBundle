@@ -160,9 +160,6 @@ function findNextFiber(tension::Vector{Float64}, σ::Vector{Float64}, x::Vector{
     # by dividing by x.
     
     #return argmax(σ ./ x)
-    
-    #Manual definition of argmax to avoid allocation
-
     for i in eachindex(σ)
         tension[i] = σ[i] / x[i]
     end
