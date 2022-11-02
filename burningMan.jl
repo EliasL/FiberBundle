@@ -4,62 +4,85 @@ using ProgressMeter
 using StaticArrays
 
 include("support/neighbourhoodWeighting.jl")
+include("support/distributions.jl")
 
 """
 Simulate breakage of an LxL fiber matrix
 """
+
 # Fiber bundle
-Base.@kwdef struct FB{l, n, F<:AbstractFloat, I<:Integer}        
+
+Base.@kwdef struct FB{l, n, F<:AbstractFloat, I<:Integer}
     L::I = l
     N::I = n
     α::F = 2
     nr::String = "UNR"
-    x::SVector{n,F} = SVector{n}(zeros(F, n))
-    neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(zeros(I, n, 4))
-    neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(zeros(I, n, 8))
-    neighbourhood_values::SVector{n,I} = SVector{n}(zeros(I, n))
+    x::MVector{n,F} = MVector{n}(zeros(F, n))
+    neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(fillAdjacent(l, NEIGHBOURS))
+    neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(fillAdjacent(l, NEIGHBOURHOOD))
+    current_neighbourhood::MVector{8, I} = MVector{8}(zeros(I, 8))
+    neighbourhood_values::MVector{n,I} = MVector{n}(zeros(I, n))
 
     # These values are reset for each step
-    σ::SVector{n,F} = SVector{n}(zeros(F, n)) # Relative tension
-    tension::SVector{n,F} = SVector{n}(zeros(F, n))
+    σ::MVector{n,F} = MVector{n}(zeros(F, n)) # Relative tension
+    tension::MVector{n,F} = MVector{n}(zeros(F, n))
     max_σ::F = 0.0
-    status::SVector{n,I} = SVector{n}(zeros(I, n))
-    c::I
-    spanning_cluster_id::I
-    cluster_size::SVector{n,I} = SVector{n}(zeros(I, n))
-    cluster_dimensions::SVector{n,I} = SVector{n}(zeros(I, n))
+    status::MVector{n,I} = MVector{n}(zeros(I, n))
+    c::I=0
+    spanning_cluster_id::I=-1
+    cluster_size::MVector{n,I} = MVector{n}(zeros(I, n))
+    cluster_dimensions::MVector{n,I} = MVector{n}(zeros(I, n))
     # Relative possition of every fiber with respect to it's cluster
-    rel_pos_x::SVector{n,I} = SVector{n}(zeros(I, n))
-    rel_pos_y::SVector{n,I} = SVector{n}(zeros(I, n))
-    cluster_outline_length::SVector{n,I} = SVector{n}(zeros(I, n))
+    rel_pos_x::MVector{n,I} = MVector{n}(zeros(I, n))
+    rel_pos_y::MVector{n,I} = MVector{n}(zeros(I, n))
+    movement::SVector{4,I} = SVector{4}([1,-1,1,-1])
+    cluster_outline_length::MVector{n,I} = MVector{n}(zeros(I, n))
     # These values are reset for each cluster
-    cluster_outline::SVector{n,I} = SVector{n}(zeros(I, n))
-    unexplored::SVector{n,I} = SVector{n}(zeros(I, n))
-
-    # These arrays store one value for each step
-    most_stressed_fiber::SVector{n,F} = SVector{n}(zeros(F, n))
-    nr_clusters::SVector{n,I} = SVector{n}(zeros(I, n))
-    largest_cluster::SVector{n,I} = SVector{n}(zeros(I, n))
-    largest_perimiter::SVector{n,I} = SVector{n}(zeros(I, n))
+    cluster_outline::MVector{n,I} = MVector{n}(zeros(I, n))
+    unexplored::MVector{n,I} = MVector{n}(zeros(I, n))
 end
 
 # Fiber bundle storage
-Base.@kwdef struct FBS{division, n, }
+Base.@kwdef struct FBS{division, n, F<:AbstractFloat, I<:Integer}
+    # These arrays store one value for each step
+    most_stressed_fiber::MVector{n,F} = MVector{n}(zeros(F, n))
+    nr_clusters::MVector{n,I} = MVector{n}(zeros(I, n))
+    largest_cluster::MVector{n,I} = MVector{n}(zeros(I, n))
+    largest_perimiter::MVector{n,I} = MVector{n}(zeros(I, n))
+
     # We want to store some samples of the processed
     # I'm thinking at 10%, 20%, ... 90% done would work
     # ie, 9 images
-    status_storage = zeros(Int64, division-1, n)
-    tension_storage = zeros(Float64, division-1, n)
+    status_storage = zeros(I, division-1, n)
+    tension_storage = zeros(F, division-1, n)
 
-    spanning_cluster_state_storage = zeros(Int64, n)
-    spanning_cluster_tension_storage = zeros(Int64, n)
+    spanning_cluster_state_storage = zeros(I, n)
+    spanning_cluster_tension_storage = zeros(I, n)
     spanning_cluster_size_storage = 0
     spanning_cluster_perimiter_storage = 0
     spanning_cluster_has_not_been_found = true
     spanning_cluster_step = 0
     # If N=100 Steps to store is now [90, 80, ... , 10]
-    steps_to_store = [round(Int64,n/division * i) for i in 1:division-1]
+    steps_to_store = [round(I,n/division * i) for i in 1:division-1]
     storage_index = 1
+end
+
+function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
+    N=L*L
+    x = nothing
+    if dist == "Uniform"
+        distribution_function = get_uniform_distribution(t)
+        x = distribution_function(N)
+    else
+        error("No distribution found! Got: $distribution_name")
+    end
+
+    fb = FB{L, N, Float64, Int64}(α=α, nr=nr, x=x)
+    if without_storage
+        return fb
+    else
+        return fb, FBS{10, N, Float64, Int64}()
+    end
 end
 
 # Define constants
@@ -362,7 +385,6 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
     return nr_unexplored
 end
 
-const movement = [1,-1,1,-1] # direction
 
 function store_possition(current_fiber::Int64, neighbour_fiber::Int64, 
     direction::Int64, 
@@ -375,10 +397,10 @@ function store_possition(current_fiber::Int64, neighbour_fiber::Int64,
 
     #Then add the movement to the neighbour
     xOrY = direction<=2 ? b.rel_pos_x : b.rel_pos_y # If direction is 1 or 2, it is the x direction we use
-    xOrY[neighbour_fiber] += movement[direction]
+    xOrY[neighbour_fiber] += b.movement[direction]
 
     # If this is a new max, then we save it
-    if xOrY[neighbour_fiber]*movement[direction] > cluster_dimensions[direction]*movement[direction]
+    if xOrY[neighbour_fiber]*b.movement[direction] > cluster_dimensions[direction]*b.movement[direction]
         b.cluster_dimensions[direction] = xOrY[neighbour_fiber]
     end
 end
@@ -389,33 +411,26 @@ function add_unexplored(i::Int64, unexplored::Vector{Int64}, nr_unexplored::Int6
     return nr_unexplored
 end
 
-function apply_to_neighbourhood(f!::Function, b::FB)
+function apply_to_neighbourhood(f::Function, b::FB)
     # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
     # put it into the function f
 
     # At the time this function is run, b.c is the current cluster
     for i in 1:b.cluster_outline_length[b.c]
-        b.neighbourhood_values[i] = f!(get_neighbourhood(i, b))
+        update_current_neighbourhood!(i, b)
+        b.neighbourhood_values[i] = f(b.current_neighbourhood)
     end
 end
 
-const temp_neighbours = zeros(Int64, 8)
-
-function get_neighbourhood(i::Int64,
-    status::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    neighbourhoods::Array{Int64, 2}, t::Vector{Int64})
-
-    for j in eachindex(t)
-        t[j] = status[neighbourhoods[cluster_outline[i], j]]
+function update_current_neighbourhood!(i::Int64, b::FB)
+    for j in 1:8
+        b.current_neighbourhood[j] = status[neighbourhoods[cluster_outline[i], j]]
     end
-    #t = status[view(neighbourhoods, cluster_outline[i], :)]
-    return t
 end
 
 
-function alive_fibers_in_neighbourhood(m::Vector{Int64})
-    # Take a 3x3 matrix around a fiber and count how many are alive
+function alive_fibers_in_neighbourhood(n::Vector{Int64})
+    # Take a neighbourhood and count the number of alive fibers
     alive_fibers = 1 # We count the center fiber as well because the math doesn't like 0
     for f in m
         if f<0
@@ -429,88 +444,51 @@ function update_cluster_outline_stress!(b::FB)
     # Apply the appropreate amount of stress to the fibers
     if neighbourhood_rule == "UNR"
         # With the Uniform neighbourhood rule, we can apply a simple stress
-        apply_simple_stress(c, status, σ, cluster_size, cluster_outline, cluster_outline_length)
+        apply_simple_stress(b)
         return
     else
         # But with more complex rules, we need to do it in two steps
         # First a calculation to find the fiber strengths (As a function of their neighbourhood), and then apply the stress
         if neighbourhood_rule == "CNR"
-            apply_to_neighbourhood(neighbourhoodToInt, status, cluster_outline, cluster_outline_length[c], neighbourhood_values, neighbourhoods)
-            neighbourhood_values = neighbourhoodStrengths[neighbourhood_values[1:cluster_outline_length[c]]]
+            apply_to_neighbourhood(neighbourhoodToInt, b)
+            b.neighbourhood_values = neighbourhoodStrengths[b.neighbourhood_values[1:cluster_outline_length[c]]]
         elseif neighbourhood_rule == "SNR"
-            apply_to_neighbourhood(alive_fibers_in_neighbourhood, status, cluster_outline,  cluster_outline_length[c], neighbourhood_values, neighbourhoods)
+            apply_to_neighbourhood(alive_fibers_in_neighbourhood, b)
         else
             #@debug "Unknown neighbourhood rule: $neighbourhood_rule"
             error("Unknown neighbourhood rule")
         end
 
-        apply_stress(α, c, status, σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhood_values)
+        apply_stress(b)
     end
 end
 
-function apply_simple_stress(c::Int64,
-    status::Vector{Int64},
-    σ::Vector{Float64},
-    cluster_size::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    cluster_outline_length::Vector{Int64}
-    )
-    added_stress = cluster_size[c]/cluster_outline_length[c]
-    for i in 1:cluster_outline_length[c]
-        fiber = cluster_outline[i]
-        σ[fiber] += added_stress
-        status[fiber] = -3 #PAST_BORDER
+function apply_simple_stress(b::FB)
+    added_stress = b.cluster_size[b.c]/cluster_outline_length[b.c]
+    for i in 1:b.cluster_outline_length[b.c]
+        fiber = b.cluster_outline[i]
+        b.σ[fiber] += added_stress
+        b.status[fiber] = -3 #PAST_BORDER
     end
 end
 
-const fiber_strengths = zeros(Int64, 64)
 
-function apply_stress(α::Float64, c::Int64,
-    status::Vector{Int64},
-    σ::Vector{Float64},
-    cluster_size::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    cluster_outline_length::Vector{Int64},
-    fiber_strengths::Vector{Int64},
-    )
+function apply_stress(b::FB)
     # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
     # High alpha means that having neighbours is more important
     C=0.0
-    for i in 1:cluster_outline_length[c]
-        C += fiber_strengths[i] ^(-α+1)
+    for i in 1:b.cluster_outline_length[b.c]
+        C += b.neighbourhood_values[i] ^(-b.α+1)
     end
     C = 1/C # A normalization constant
-    #@time fiber_strengths = fiber_strengths[1:cluster_outline_length[c]]
-    #@time C = 1 / sum(fiber_strengths .^(-α+1)) # Normalization constant
-    for i in 1:cluster_outline_length[c]
-        fiber = cluster_outline[i]
-        g = C * fiber_strengths[i] ^(-α)
-        added_stress =  cluster_size[c]*fiber_strengths[i]*g
-        σ[fiber] += added_stress
-        status[fiber] = -3 #PAST_BORDER
+    for i in 1:b.cluster_outline_length[b.c]
+        fiber = b.cluster_outline[i]
+        g = C * b.neighbourhood_values[i] ^(-b.α)
+        added_stress =  b.cluster_size[b.c]*b.neighbourhood_values[i]*g
+        b.σ[fiber] += added_stress
+        b.status[fiber] = -3 #PAST_BORDER
     end
 end
 
 
-function test_something()
-    N=16
-    status = 1:16
-    neighbourhoods = fillAdjacent(4, NEIGHBOURHOOD)
-    a = zeros(Int64, 8)
-
-    b = zeros(Int64, 8)
-
-    @time begin
-        for i in eachindex(a)
-            a[i] = status[neighbourhoods[1, i]]
-        end
-    end
-    @time b = status[view(neighbourhoods, 1, :)]
-
-    @assert a==b
-end
-
-#test_something()
-
-x = FB{2, 4, Float64, Int64}()
-x = FBS{2, 4}()
+fb, storage = get_fb(8)

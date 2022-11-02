@@ -23,4 +23,3 @@ Base.@kwdef struct Foo3{l, n, A, F<:AbstractFloat, I<:Integer}
 
 
 x = Foo3{2,4, 3, Float64, Int64}()
-x = A(c = 4)
