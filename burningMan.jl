@@ -271,12 +271,9 @@ function update_σ!(b::FB)
             # We should now have updated cluster_outline,
             # and with that we can update sigma for one cluster
             
-            #@logmsg σUpdateLog "Updating stress"
-            update_cluster_outline_stress(b::FB)
+            update_cluster_outline_stress!(b)
         end
     end
-    spanning_cluster_size = spanning_cluster==-1 ? -1 : cluster_size[spanning_cluster]
-    return c, spanning_cluster, spanning_cluster_size
 end
 
 function reset_cluster_dimensions!(b::FB)
@@ -357,9 +354,9 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
             # We have to change to CURRENT_BORDER so that
             # we don't count it again since a fiber will often
             # be checked multiple times
-            status[neighbour_fiber] = -2 #CURRENT_BORDER
-            cluster_outline_length[c] += 1
-            cluster_outline[cluster_outline_length[c]] = neighbour_fiber
+            b.status[neighbour_fiber] = -2 #CURRENT_BORDER
+            b.cluster_outline_length[c] += 1
+            b.cluster_outline[b.cluster_outline_length[b.c]] = neighbour_fiber
         end
     end
     return nr_unexplored
@@ -392,18 +389,14 @@ function add_unexplored(i::Int64, unexplored::Vector{Int64}, nr_unexplored::Int6
     return nr_unexplored
 end
 
-function apply_to_neighbourhood(f::Function,
-    status::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    cluster_outline_length::Int64, 
-    values::Vector{Int64},
-    neighbourhoods::Array{Int64, 2})
+function apply_to_neighbourhood(f!::Function, b::FB)
     # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
     # put it into the function f
-    for i in 1:cluster_outline_length
-        values[i] = f(get_neighbourhood(i, status, cluster_outline, neighbourhoods, temp_neighbours))
+
+    # At the time this function is run, b.c is the current cluster
+    for i in 1:b.cluster_outline_length[b.c]
+        b.neighbourhood_values[i] = f!(get_neighbourhood(i, b))
     end
-    return values
 end
 
 const temp_neighbours = zeros(Int64, 8)
@@ -432,16 +425,7 @@ function alive_fibers_in_neighbourhood(m::Vector{Int64})
     return alive_fibers
 end
 
-function update_cluster_outline_stress(α::Float64, c::Int64,
-    status::Vector{Int64},
-    σ::Vector{Float64},
-    cluster_size::Vector{Int64},
-    cluster_outline::Vector{Int64},
-    cluster_outline_length::Vector{Int64},
-    neighbourhoods::Array{Int64, 2},
-    neighbourhood_rule::String,
-    neighbourhood_values::Vector{Int64},
-    )
+function update_cluster_outline_stress!(b::FB)
     # Apply the appropreate amount of stress to the fibers
     if neighbourhood_rule == "UNR"
         # With the Uniform neighbourhood rule, we can apply a simple stress
