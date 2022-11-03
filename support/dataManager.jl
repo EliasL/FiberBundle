@@ -271,7 +271,7 @@ function search_for_loose_files(path)
         @logmsg settingLog "Found loose files, cleaning up... "
     end
     for L in Ls
-        clean_after_run(L, distribution_name, path, seeds[L])
+        #clean_after_run(L, distribution_name, path, seeds[L])
     end
     @logmsg settingLog "Done!"
 end

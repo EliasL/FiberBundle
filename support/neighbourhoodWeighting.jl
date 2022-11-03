@@ -69,16 +69,19 @@ function arr_to_int(a, val = 0)
     return val
 end
 
-function neighbourhoodToInt(a::Vector{Int64})
+function neighbourhoodToStrength(a::AbstractVector{Int64})
     # Add one because of 1 indexing
-    return arr_to_int(a, 1)
+    i =  arr_to_int(a, 1)
+    return neighbourhoodStrengths[i]
 end
 
 neighbourhoodStrengths = zeros(Int64, 256)
 for m in generate_neighbours().*-1
-    i = neighbourhoodToInt(m)
+    println(m)
+    println(neighbourhoodToStrength(m))
+    i = neighbourhoodToStrength(m)
     str = compute_strength(m)
-    @assert neighbourhoodStrengths[i] == 0 "This value is already set! neighbourhoodToInt does not work!"
+    @assert neighbourhoodStrengths[i] == 0 "This value is already set! arr_to_int does not work!"
     neighbourhoodStrengths[i] = str
 end
 

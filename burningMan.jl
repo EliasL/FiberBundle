@@ -12,7 +12,8 @@ Simulate breakage of an LxL fiber matrix
 
 # Fiber bundle
 
-Base.@kwdef struct FB{l, n, F<:AbstractFloat, I<:Integer}
+#An idea is to store variables in a mutable vector so that the struct can stay static (Not mulable)
+Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
     L::I = l
     N::I = n
     α::F = 2
@@ -20,26 +21,26 @@ Base.@kwdef struct FB{l, n, F<:AbstractFloat, I<:Integer}
     x::MVector{n,F} = MVector{n}(zeros(F, n))
     neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(fillAdjacent(l, NEIGHBOURS))
     neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(fillAdjacent(l, NEIGHBOURHOOD))
+    movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
     current_neighbourhood::MVector{8, I} = MVector{8}(zeros(I, 8))
     neighbourhood_values::MVector{n,I} = MVector{n}(zeros(I, n))
 
     # These values are reset for each step
-    σ::MVector{n,F} = MVector{n}(zeros(F, n)) # Relative tension
+    σ::MVector{n,F} = MVector{n}(ones(F, n)) # Relative tension
     tension::MVector{n,F} = MVector{n}(zeros(F, n))
     max_σ::F = 0.0
-    status::MVector{n,I} = MVector{n}(zeros(I, n))
+    status::MVector{n,I} = MVector{n}(fill(I(-1), n))
     c::I=0
     spanning_cluster_id::I=-1
     cluster_size::MVector{n,I} = MVector{n}(zeros(I, n))
-    cluster_dimensions::MVector{n,I} = MVector{n}(zeros(I, n))
-    # Relative possition of every fiber with respect to it's cluster
-    rel_pos_x::MVector{n,I} = MVector{n}(zeros(I, n))
-    rel_pos_y::MVector{n,I} = MVector{n}(zeros(I, n))
-    movement::SVector{4,I} = SVector{4}([1,-1,1,-1])
     cluster_outline_length::MVector{n,I} = MVector{n}(zeros(I, n))
     # These values are reset for each cluster
     cluster_outline::MVector{n,I} = MVector{n}(zeros(I, n))
     unexplored::MVector{n,I} = MVector{n}(zeros(I, n))
+    # Relative possition of every fiber with respect to it's cluster
+    rel_pos_x::MVector{n,I} = MVector{n}(zeros(I, n))
+    rel_pos_y::MVector{n,I} = MVector{n}(zeros(I, n))
+    cluster_dimensions::MVector{4,I} = MVector{4}(zeros(I, 4))
 end
 
 # Fiber bundle storage
@@ -73,8 +74,12 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     if dist == "Uniform"
         distribution_function = get_uniform_distribution(t)
         x = distribution_function(N)
+    elseif isa(dist, Function)
+        x = dist(N)
+    elseif isa(dist, AbstractVector)
+        x = dist
     else
-        error("No distribution found! Got: $distribution_name")
+        error("No distribution found! Got: $dist")
     end
 
     fb = FB{L, N, Float64, Int64}(α=α, nr=nr, x=x)
@@ -254,7 +259,9 @@ end
 
 function findNextFiber!(b::FB)
     update_tension!(b)
-    return argmax(b.tension)
+    i = argmax(b.tension)
+    b.max_σ = b.tension[i]
+    return i
 end
 
 function break_fiber!(i::Int, b::FB)
@@ -329,7 +336,7 @@ function explore_cluster_at!(i::Int64, b::FB)
         # Preemptively count this fiber as explored (because 1 indexing)
         nr_explored += 1
         # Get the next unexplored fiber
-        current_fiber = unexplored[nr_explored]
+        current_fiber = b.unexplored[nr_explored]
         # Go through all neighbours of the fiber
         nr_unexplored = check_neighbours!(current_fiber, nr_unexplored, b)
     end
@@ -364,7 +371,7 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
         # If this adjecent fiber is is BROKEN,
         if s == 0#BROKEN
             # We then have to add this to the list of unexplored 
-            nr_unexplored = add_unexplored(neighbour_fiber, b.unexplored, nr_unexplored)
+            nr_unexplored = add_unexplored!(neighbour_fiber, nr_unexplored, b)
             # We set this fiber to be part of the current cluster
             b.status[neighbour_fiber] = b.c
             # increase the cluster size
@@ -378,7 +385,7 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
             # we don't count it again since a fiber will often
             # be checked multiple times
             b.status[neighbour_fiber] = -2 #CURRENT_BORDER
-            b.cluster_outline_length[c] += 1
+            b.cluster_outline_length[b.c] += 1
             b.cluster_outline[b.cluster_outline_length[b.c]] = neighbour_fiber
         end
     end
@@ -386,7 +393,7 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
 end
 
 
-function store_possition(current_fiber::Int64, neighbour_fiber::Int64, 
+function store_possition!(current_fiber::Int64, neighbour_fiber::Int64, 
     direction::Int64, 
     b::FB)
     # cluster_dimensions = [max_x, min_x, max_y, min_y]
@@ -400,18 +407,18 @@ function store_possition(current_fiber::Int64, neighbour_fiber::Int64,
     xOrY[neighbour_fiber] += b.movement[direction]
 
     # If this is a new max, then we save it
-    if xOrY[neighbour_fiber]*b.movement[direction] > cluster_dimensions[direction]*b.movement[direction]
+    if xOrY[neighbour_fiber]*b.movement[direction] > b.cluster_dimensions[direction]*b.movement[direction]
         b.cluster_dimensions[direction] = xOrY[neighbour_fiber]
     end
 end
 
-function add_unexplored(i::Int64, unexplored::Vector{Int64}, nr_unexplored::Int64)
+function add_unexplored!(i::Int64, nr_unexplored::Int64, b::FB)
     nr_unexplored += 1
-    unexplored[nr_unexplored] = i
+    b.unexplored[nr_unexplored] = i
     return nr_unexplored
 end
 
-function apply_to_neighbourhood(f::Function, b::FB)
+function apply_to_neighbourhood!(f::Function, b::FB)
     # For every fiber in the cluster outline, take the 3x3 matrix around the fiber and 
     # put it into the function f
 
@@ -424,15 +431,15 @@ end
 
 function update_current_neighbourhood!(i::Int64, b::FB)
     for j in 1:8
-        b.current_neighbourhood[j] = status[neighbourhoods[cluster_outline[i], j]]
+        b.current_neighbourhood[j] = b.status[b.neighbourhoods[b.cluster_outline[i], j]]
     end
 end
 
 
-function alive_fibers_in_neighbourhood(n::Vector{Int64})
+function alive_fibers_in_neighbourhood(n::AbstractVector{Int64})
     # Take a neighbourhood and count the number of alive fibers
     alive_fibers = 1 # We count the center fiber as well because the math doesn't like 0
-    for f in m
+    for f in n
         if f<0
             alive_fibers +=1
         end
@@ -442,18 +449,17 @@ end
 
 function update_cluster_outline_stress!(b::FB)
     # Apply the appropreate amount of stress to the fibers
-    if neighbourhood_rule == "UNR"
+    if b.nr == "UNR"
         # With the Uniform neighbourhood rule, we can apply a simple stress
         apply_simple_stress(b)
         return
     else
         # But with more complex rules, we need to do it in two steps
         # First a calculation to find the fiber strengths (As a function of their neighbourhood), and then apply the stress
-        if neighbourhood_rule == "CNR"
-            apply_to_neighbourhood(neighbourhoodToInt, b)
-            b.neighbourhood_values = neighbourhoodStrengths[b.neighbourhood_values[1:cluster_outline_length[c]]]
-        elseif neighbourhood_rule == "SNR"
-            apply_to_neighbourhood(alive_fibers_in_neighbourhood, b)
+        if b.nr == "CNR"
+            apply_to_neighbourhood!(neighbourhoodToStrength, b)
+        elseif b.nr == "SNR"
+            apply_to_neighbourhood!(alive_fibers_in_neighbourhood, b)
         else
             #@debug "Unknown neighbourhood rule: $neighbourhood_rule"
             error("Unknown neighbourhood rule")
@@ -464,7 +470,7 @@ function update_cluster_outline_stress!(b::FB)
 end
 
 function apply_simple_stress(b::FB)
-    added_stress = b.cluster_size[b.c]/cluster_outline_length[b.c]
+    added_stress = b.cluster_size[b.c]/b.cluster_outline_length[b.c]
     for i in 1:b.cluster_outline_length[b.c]
         fiber = b.cluster_outline[i]
         b.σ[fiber] += added_stress
@@ -490,5 +496,4 @@ function apply_stress(b::FB)
     end
 end
 
-
-fb, storage = get_fb(8)
+#fb, storage = get_fb(8)

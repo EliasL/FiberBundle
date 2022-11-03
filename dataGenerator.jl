@@ -11,124 +11,76 @@ include("burningMan.jl")
 include("support/dataManager.jl")
 include("support/distributions.jl")
 
-function break_bundle(L, α, distribution::Function, progress_channel, working_channel,
-                                  file_name, neighbourhood_rule; seed=0, save_data=true, use_threads=true)
+function break_bundle(settings, progress_channel, working_channel, seed; save_data=true, use_threads=true)
     if use_threads
         put!(working_channel, true) # Indicate a process has started
     end
+
+
+    L = settings["L"]
+    α = settings["a"]
+    t = settings["t"]
+    nr = settings["nr"]
+    dist = settings["dist"]
+    file_name = get_file_name(settings, seed)
+
     N = L*L # Number of fibers
     @assert seed != -1 ""
     Random.seed!(seed)
-    x = distribution(N) # Max extension (Distribution)
-    neighbours = fillAdjacent(L, NEIGHBOURS)
-    neighbourhoods = fillAdjacent(L, NEIGHBOURHOOD)
-    neighbourhood_values = zeros(Int64, N)
-    # These values are reset for each step
-    σ  = ones(Float64, N) # Relative tension
-    max_σ = Float64(0)
-    status = fill(-1,N)
-    cluster_size = zeros(Int64, N)
-    cluster_dimensions = zeros(Int64, 4) #Or 4? max_x, min_x, max_y, min_y
-    # Relative possition of every fiber with respect to it's cluster
-    rel_pos_x = zeros(Int64, N)
-    rel_pos_y = zeros(Int64, N)
-    cluster_outline_length = zeros(Int64, N)
-    # These values are reset for each cluster
-    cluster_outline = zeros(Int64, N)
-    unexplored = zeros(Int64, N)
+    
+    b, s = get_fb(L,α=α, t=t, nr=nr, dist=dist)
 
-    # These arrays store one value for each step
-    steps = N # just for readability
-    most_stressed_fiber = zeros(Float64, steps)
-    nr_clusters = zeros(Int64, steps)
-    largest_cluster = zeros(Int64, steps)
-    largest_perimiter = zeros(Int64, steps)
-
-    # We want to store some samples of the processed
-    # I'm thinking at 10%, 20%, ... 90% done would work
-    # ie, 9 images
-    division = 10
-    if seed <= 10 #Only save samples from 10 first seeds
-        status_storage = zeros(Int64, division-1, N)
-        tension_storage = zeros(Float64, division-1, N)
-    end
-    spanning_cluster_state_storage = zeros(Int64, N)
-    spanning_cluster_tension_storage = zeros(Int64, N)
-    spanning_cluster_size_storage = 0
-    spanning_cluster_perimiter_storage = 0
-    spanning_cluster_has_not_been_found = true
-    spanning_cluster_step = 0
-    # If N=100 Steps to store is now [90, 80, ... , 10]
-    steps_to_store = [round(Int64,N/division * i) for i in 1:division-1]
-    storage_index = 1
-
-    # Spanning cluster storage
-    # Spanning cluster 
     # Break the bundle
-
-    @logmsg threadLog "Starting seed $seed..."
     simulation_time = @elapsed for step in 1:N
         # Simulate step
-        i = findNextFiber(σ, x)
-        max_σ = σ[i]/x[i]
-        resetClusters(status, σ)
-        @logmsg singleBreakLog "Breaking fiber nr $step"
-        break_fiber(i, status, σ)
-        @logmsg singleBreakLog "Updating cluster"
-        _nr_clusters, spanning_cluster, spanning_cluster_size = update_σ(status, σ, neighbours, neighbourhoods,
-                                                                         neighbourhood_values, cluster_size,
-                                                                         cluster_dimensions, rel_pos_x, rel_pos_y,
-                                                                         cluster_outline, cluster_outline_length,
-                                                                         unexplored; neighbourhood_rule=neighbourhood_rule, α=α)
+        i = findNextFiber!(b)
+        resetBundle!(b)
+        break_fiber!(i, b)
+        update_σ!(b)
         
-        @logmsg singleBreakLog "Save data"
         # Save important data from step
-        most_stressed_fiber[step] = 1/max_σ
-        nr_clusters[step] = _nr_clusters
-        largest_cluster[step] = maximum(cluster_size)
-        largest_perimiter[step] = maximum(cluster_outline_length)
+        s.most_stressed_fiber[step] = 1/b.max_σ
+        s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
+        s.largest_cluster[step] = maximum(cluster_size)
+        s.largest_perimiter[step] = maximum(cluster_outline_length)
         # Save step for visualization
         if seed <= 10 #Only save samples from 10 first seeds
-            if step == steps_to_store[storage_index]
-                status_storage[storage_index, :] = status
-                tension_storage[storage_index, :] = σ ./ x
-                if storage_index < length(steps_to_store)
-                    storage_index += 1  
-                end
+            if step == s.steps_to_store[s.storage_index] &&
+            s.storage_index < length(s.steps_to_store)
+                s.status_storage[s.storage_index, :] = s.status
+                s.tension_storage[s.storage_index, :] = b.tension
+                s.storage_index += 1  
             end
         end
-        if spanning_cluster != -1 && spanning_cluster_has_not_been_found
-            spanning_cluster_state_storage = copy(status)
-            spanning_cluster_tension_storage = σ ./ x
-            spanning_cluster_size_storage = spanning_cluster_size
-            spanning_cluster_perimiter_storage = cluster_outline_length[spanning_cluster]
-            spanning_cluster_step = step
-            spanning_cluster_has_not_been_found = false
+        if b.spanning_cluster_id != -1 && s.spanning_cluster_has_not_been_found
+            s.spanning_cluster_state_storage = copy(status)
+            s.spanning_cluster_tension_storage = b.tension
+            s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
+            s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
+            s.spanning_cluster_step = step
+            s.spanning_cluster_has_not_been_found = false
         end
         if use_threads
-            @debug "adding progress"
             put!(progress_channel, true) # trigger a progress bar update
-            @debug "step is done"
         end
     end
-    @logmsg threadLog "Saving data..."
     if save_data
         jldopen(file_name, "w") do file
             if seed <= 10
-                file["sample_states"] = status_storage
-                file["tension"] = tension_storage
-                file["spanning_cluster_state"] = spanning_cluster_state_storage
-                file["spanning_cluster_tension"] = spanning_cluster_tension_storage
+                file["sample_states"] = s.status_storage
+                file["tension"] = s.tension_storage
+                file["spanning_cluster_state"] = s.spanning_cluster_state_storage
+                file["spanning_cluster_tension"] = s.spanning_cluster_tension_storage
             end
-            file["simulation_time"] = simulation_time
-            file["spanning_cluster_size"] = spanning_cluster_size_storage
-            file["spanning_cluster_perimiter"] = spanning_cluster_perimiter_storage
-            file["spanning_cluster_step"] = spanning_cluster_step
-            file["sample_states_steps"] = steps_to_store./N
-            file["most_stressed_fiber"] = most_stressed_fiber
-            file["nr_clusters"] = nr_clusters./N
-            file["largest_cluster"] = largest_cluster./N
-            file["largest_perimiter"] = largest_perimiter./N
+            file["simulation_time"] = s.simulation_time
+            file["spanning_cluster_size"] = s.spanning_cluster_size_storage
+            file["spanning_cluster_perimiter"] = s.spanning_cluster_perimiter_storage
+            file["spanning_cluster_step"] = s.spanning_cluster_step
+            file["sample_states_steps"] = s.steps_to_store
+            file["most_stressed_fiber"] = s.most_stressed_fiber
+            file["nr_clusters"] = s.nr_clusterss
+            file["largest_cluster"] = s.largest_cluster
+            file["largest_perimiter"] = s.largest_perimiter
         end
     end
     if use_threads
@@ -140,7 +92,7 @@ end
 @logmsg nodeLog "Done!"
 
 
-function run_workers(settings, distribution_function, seeds; save_data=true, use_threads=true)
+function run_workers(settings, seeds; save_data=true, use_threads=true)
     
     # Check if the current logger level is set to log on the thread level
     L = settings["L"]
@@ -197,33 +149,22 @@ function run_workers(settings, distribution_function, seeds; save_data=true, use
             # the second task does the computation
             @async begin
                 @distributed (+) for i in seeds
-                    name = get_file_name(settings, i)
-                    break_bundle(settings["L"], settings["a"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data)
-                    i^2 #I have no idea what this does
+                break_bundle(settings, progress, working, i; save_data=save_data)
+                i^2 #I have no idea what this does
                 end
             end
         end
     else
         @showprogress for i in seeds
-            name = get_file_name(settings, i)
-            break_bundle(settings["L"], settings["a"], distribution_function, progress, working, name, settings["nr"]; seed=i, save_data=save_data, use_threads=use_threads)
+            break_bundle(settings, progress, working, i; save_data=save_data, use_threads=false)
         end
     end
 end
 
 function generate_data(settings, requested_seeds, overwrite; save_data=true, use_threads=true)
-    # get distribtion function
-    distribution_function = nothing
-
-    if  occursin("Uniform", settings["name"])
-        distribution_function = get_uniform_distribution(settings["t"])
-    else
-        error("No distribution found! Got: $distribution_name")
-    end
-
     # If we don't want to save the data, we just do this
     if !save_data
-        run_workers(settings, distribution_function, requested_seeds, save_data=save_data, use_threads=use_threads)
+        run_workers(settings, requested_seeds, save_data=save_data, use_threads=use_threads)
         return
     end
 
@@ -231,7 +172,7 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true, use
 
     if length(missing_seeds) > 0
         @logmsg settingLog "Running workers..."
-        run_workers(settings, distribution_function, missing_seeds, save_data=save_data, use_threads=use_threads)
+        run_workers(settings, missing_seeds, save_data=save_data, use_threads=use_threads)
         @logmsg settingLog "Done!"
 
 
