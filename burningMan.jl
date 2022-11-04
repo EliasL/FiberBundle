@@ -19,8 +19,8 @@ Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
     α::F = 2
     nr::String = "UNR"
     x::MVector{n,F} = MVector{n}(zeros(F, n))
-    neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(fillAdjacent(l, NEIGHBOURS))
-    neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(fillAdjacent(l, NEIGHBOURHOOD))
+    #neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(fillAdjacent(l, NEIGHBOURS))
+    #neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(fillAdjacent(l, NEIGHBOURHOOD))
     movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
     current_neighbourhood::MVector{8, I} = MVector{8}(zeros(I, 8))
     neighbourhood_values::MVector{n,I} = MVector{n}(zeros(I, n))
@@ -44,7 +44,7 @@ Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
 end
 
 # Fiber bundle storage
-Base.@kwdef struct FBS{division, n, F<:AbstractFloat, I<:Integer}
+Base.@kwdef mutable struct FBS{division, n, F<:AbstractFloat, I<:Integer}
     # These arrays store one value for each step
     most_stressed_fiber::MVector{n,F} = MVector{n}(zeros(F, n))
     nr_clusters::MVector{n,I} = MVector{n}(zeros(I, n))
@@ -72,6 +72,7 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     N=L*L
     x = nothing
     if dist == "Uniform"
+        print("un")
         distribution_function = get_uniform_distribution(t)
         x = distribution_function(N)
     elseif isa(dist, Function)
@@ -82,10 +83,12 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
         error("No distribution found! Got: $dist")
     end
 
+    print("i")
     fb = FB{L, N, Float64, Int64}(α=α, nr=nr, x=x)
     if without_storage
         return fb
     else
+        print("form")
         return fb, FBS{10, N, Float64, Int64}()
     end
 end
@@ -496,4 +499,5 @@ function apply_stress(b::FB)
     end
 end
 
-#fb, storage = get_fb(8)
+fb, storage = get_fb(20)
+println(sizeof(fb))

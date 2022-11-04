@@ -66,7 +66,8 @@ function arr_to_int(a, val = 0)
         val += v*i
         v >>= 1
     end
-    return val
+    # Add one because of 1 indexing
+    return 1+val
 end
 
 function neighbourhoodToStrength(a::AbstractVector{Int64})
@@ -77,11 +78,11 @@ end
 
 neighbourhoodStrengths = zeros(Int64, 256)
 for m in generate_neighbours().*-1
-    println(m)
-    println(neighbourhoodToStrength(m))
-    i = neighbourhoodToStrength(m)
+    i = arr_to_int(m)
     str = compute_strength(m)
     @assert neighbourhoodStrengths[i] == 0 "This value is already set! arr_to_int does not work!"
     neighbourhoodStrengths[i] = str
 end
+@assert minimum(neighbourhoodStrengths) != 0 "All values should be set"
+@assert maximum(neighbourhoodStrengths) != 256 "Max should be 256"
 

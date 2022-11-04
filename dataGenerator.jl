@@ -41,19 +41,19 @@ function break_bundle(settings, progress_channel, working_channel, seed; save_da
         # Save important data from step
         s.most_stressed_fiber[step] = 1/b.max_σ
         s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
-        s.largest_cluster[step] = maximum(cluster_size)
-        s.largest_perimiter[step] = maximum(cluster_outline_length)
+        s.largest_cluster[step] = maximum(b.cluster_size)
+        s.largest_perimiter[step] = maximum(b.cluster_outline_length)
         # Save step for visualization
         if seed <= 10 #Only save samples from 10 first seeds
             if step == s.steps_to_store[s.storage_index] &&
             s.storage_index < length(s.steps_to_store)
-                s.status_storage[s.storage_index, :] = s.status
+                s.status_storage[s.storage_index, :] = b.status
                 s.tension_storage[s.storage_index, :] = b.tension
                 s.storage_index += 1  
             end
         end
         if b.spanning_cluster_id != -1 && s.spanning_cluster_has_not_been_found
-            s.spanning_cluster_state_storage = copy(status)
+            s.spanning_cluster_state_storage = copy(b.status)
             s.spanning_cluster_tension_storage = b.tension
             s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
             s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
@@ -64,6 +64,7 @@ function break_bundle(settings, progress_channel, working_channel, seed; save_da
             put!(progress_channel, true) # trigger a progress bar update
         end
     end
+
     if save_data
         jldopen(file_name, "w") do file
             if seed <= 10
@@ -72,13 +73,13 @@ function break_bundle(settings, progress_channel, working_channel, seed; save_da
                 file["spanning_cluster_state"] = s.spanning_cluster_state_storage
                 file["spanning_cluster_tension"] = s.spanning_cluster_tension_storage
             end
-            file["simulation_time"] = s.simulation_time
+            file["simulation_time"] = simulation_time
             file["spanning_cluster_size"] = s.spanning_cluster_size_storage
             file["spanning_cluster_perimiter"] = s.spanning_cluster_perimiter_storage
             file["spanning_cluster_step"] = s.spanning_cluster_step
             file["sample_states_steps"] = s.steps_to_store
             file["most_stressed_fiber"] = s.most_stressed_fiber
-            file["nr_clusters"] = s.nr_clusterss
+            file["nr_clusters"] = s.nr_clusters
             file["largest_cluster"] = s.largest_cluster
             file["largest_perimiter"] = s.largest_perimiter
         end
@@ -156,7 +157,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
         end
     else
         @showprogress for i in seeds
-            break_bundle(settings, progress, working, i; save_data=save_data, use_threads=false)
+            @btime break_bundle($settings, $progress, $working, $i; save_data=$save_data, use_threads=$false)
         end
     end
 end
