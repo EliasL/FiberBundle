@@ -74,7 +74,6 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     N=L*L
     x = nothing
     if dist == "Uniform"
-        print("un")
         distribution_function = get_uniform_distribution(t)
         x = distribution_function(N)
     elseif isa(dist, Function)
@@ -84,13 +83,10 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     else
         error("No distribution found! Got: $dist")
     end
-
-    print("i")
     fb = FB{L, N, Float64, Int64}(α=α, nr=nr, x=x)
     if without_storage
         return fb
     else
-        print("form")
         return fb, FBS{10, N, Float64, Int64}()
     end
 end
@@ -428,6 +424,7 @@ function apply_to_neighbourhood!(f::Function, b::FB)
     # put it into the function f
 
     # At the time this function is run, b.c is the current cluster
+    # Run over cluster outline fibers
     for i in 1:b.cluster_outline_length[b.c]
         update_current_neighbourhood!(i, b)
         b.neighbourhood_values[i] = f(b.current_neighbourhood)

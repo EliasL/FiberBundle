@@ -157,7 +157,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
         end
     else
         @showprogress for i in seeds
-            @btime break_bundle($settings, $progress, $working, $i; save_data=$save_data, use_threads=$false)
+            break_bundle(settings, progress, working, i; save_data=save_data, use_threads=false)
         end
     end
 end

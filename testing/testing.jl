@@ -8,17 +8,6 @@ include("../burningMan.jl")
 seed=0
 Random.seed!(seed) # Setting the seed
 
-function test()
-    @testset begin
-    
-        @test true
-    end
-    return 3
-end
-@testset "test" test()
-
-
-
 function basic_test()
     @testset "Basic tests" begin       
         # This test will break the fibers in this order
@@ -119,7 +108,8 @@ function neighbourhood_id_test()
             break_fiber!(i,b)
         end
         update_σ!(b)
-        apply_to_neighbourhood!(neighbourhoodToInt, b)
+
+        apply_to_neighbourhood!(arr_to_int, b)
         @test sort(b.neighbourhood_values[1:length(outline)]) == sort(correct_ids) #"Unexpected neighbourhood id\nFound    $neighbourhood_values\nExpected $correct_ids"
     end
 end
@@ -199,17 +189,17 @@ function random_spanning_cluster_test()
         end
     end
 end
-
+neighbourhood_id_test()
 @testset verbose=true "Tests" begin
     
-    @testset "Basic" basic_test()
-    @testset "Cluster" cluster_test()
-    @testset "Neighbourhood id" neighbourhood_id_test()
+    @testset "Basic" begin basic_test() end
+    @testset "Cluster" begin cluster_test() end
+    @testset "Neighbourhood id" begin neighbourhood_id_test() end
     @testset "Neighbourhood rules $nr" for nr in ["UNR", "CNR", "SNR"]
         neighbourhood_strength_test_with_alpha(nr)
     end
-    @testset "Store possition" test_store_possition()
-    @testset "Spanning cluster" spanning_cluster_test()
-    @testset "Ransom spanning cluster" random_spanning_cluster_test()
+    @testset "Store possition" begin test_store_possition() end
+    @testset "Spanning cluster" begin spanning_cluster_test() end
+    @testset "Ransom spanning cluster" begin random_spanning_cluster_test() end
 end
 print("Done")
