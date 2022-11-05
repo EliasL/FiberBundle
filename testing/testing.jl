@@ -8,6 +8,17 @@ include("../burningMan.jl")
 seed=0
 Random.seed!(seed) # Setting the seed
 
+function test()
+    @testset begin
+    
+        @test true
+    end
+    return 3
+end
+@testset "test" test()
+
+
+
 function basic_test()
     @testset "Basic tests" begin       
         # This test will break the fibers in this order

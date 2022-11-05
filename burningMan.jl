@@ -3,7 +3,7 @@ using Random
 using ProgressMeter
 using StaticArrays
 using Profile
-using PProf
+#using PProf
 
 include("support/neighbourhoodWeighting.jl")
 include("support/distributions.jl")
@@ -20,38 +20,38 @@ Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
     N::I = n
     α::F = 2
     nr::String = "UNR"
-    x::MVector{n,F} = MVector{n}(zeros(F, n))
-    #neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(fillAdjacent(l, NEIGHBOURS))
-    #neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(fillAdjacent(l, NEIGHBOURHOOD))
-    #movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
-    #current_neighbourhood::MVector{8, I} = MVector{8}(zeros(I, 8))
-    #neighbourhood_values::MVector{n,I} = MVector{n}(zeros(I, n))
+    x::Vector{F} = Vector{F}(undef, n)
+    neighbours::Matrix{I} = fillAdjacent(l, NEIGHBOURS)
+    neighbourhoods::Matrix{I} = fillAdjacent(l, NEIGHBOURHOOD)
+    movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
+    current_neighbourhood::Vector{I} = Vector{I}(undef, 8)
+    neighbourhood_values::Vector{I} = Vector{I}(undef, n)
 
     # These values are reset for each step
-    #σ::MVector{n,F} = MVector{n}(ones(F, n)) # Relative tension
-    #tension::MVector{n,F} = MVector{n}(zeros(F, n))
+    σ::Vector{F} = Vector{F}(ones(F, n)) # Relative tension
+    tension::Vector{F} = Vector{F}(undef, n)
     max_σ::F = 0.0
-    #status::MVector{n,I} = MVector{n}(fill(I(-1), n))
-    c::I=0
-    spanning_cluster_id::I=-1
-    #cluster_size::MVector{n,I} = MVector{n}(zeros(I, n))
-    #cluster_outline_length::MVector{n,I} = MVector{n}(zeros(I, n))
+    status::Vector{I} = fill(I(-1), n)
+    c::I = 0
+    spanning_cluster_id::I = -1
+    cluster_size::Vector{I} = Vector{I}(undef, n)
+    cluster_outline_length::Vector{I} = Vector{I}(undef, n)
     # These values are reset for each cluster
-    #cluster_outline::MVector{n,I} = MVector{n}(zeros(I, n))
-    #unexplored::MVector{n,I} = MVector{n}(zeros(I, n))
+    cluster_outline::Vector{I} = Vector{I}(undef, n)
+    unexplored::Vector{I} = Vector{I}(undef, n)
     # Relative possition of every fiber with respect to it's cluster
-    #rel_pos_x::MVector{n,I} = MVector{n}(zeros(I, n))
-    #rel_pos_y::MVector{n,I} = MVector{n}(zeros(I, n))
-    #cluster_dimensions::MVector{4,I} = MVector{4}(zeros(I, 4))
+    rel_pos_x::Vector{I} = Vector{I}(undef, n)
+    rel_pos_y::Vector{I} = Vector{I}(undef, n)
+    cluster_dimensions::Vector{I} = Vector{I}(undef, 4)
 end
 
 # Fiber bundle storage
 Base.@kwdef mutable struct FBS{division, n, F<:AbstractFloat, I<:Integer}
     # These arrays store one value for each step
-    most_stressed_fiber::MVector{n,F} = MVector{n}(zeros(F, n))
-    nr_clusters::MVector{n,I} = MVector{n}(zeros(I, n))
-    largest_cluster::MVector{n,I} = MVector{n}(zeros(I, n))
-    largest_perimiter::MVector{n,I} = MVector{n}(zeros(I, n))
+    most_stressed_fiber::Vector{F} = Vector{F}(undef, n)
+    nr_clusters::Vector{I} = Vector{I}(undef, n)
+    largest_cluster::Vector{I} = Vector{I}(undef, n)
+    largest_perimiter::Vector{I} = Vector{I}(undef, n)
 
     # We want to store some samples of the processed
     # I'm thinking at 10%, 20%, ... 90% done would work
@@ -502,5 +502,5 @@ function apply_stress(b::FB)
 end
 
 
-@time fb = get_fb(100, without_storage=true)
+#@time fb, storage = get_fb(100)
 #pprof(;webport=58699)
