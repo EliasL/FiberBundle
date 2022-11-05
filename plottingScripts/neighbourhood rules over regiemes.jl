@@ -2,6 +2,7 @@ using Plots
 using JLD2
 using LaTeXStrings
 using Measures
+using Profile
 
 include("../support/ploting_settings.jl")
 include("../support/dataManager.jl")

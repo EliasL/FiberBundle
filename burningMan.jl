@@ -2,6 +2,8 @@ using BenchmarkTools
 using Random
 using ProgressMeter
 using StaticArrays
+using Profile
+using PProf
 
 include("support/neighbourhoodWeighting.jl")
 include("support/distributions.jl")
@@ -21,26 +23,26 @@ Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
     x::MVector{n,F} = MVector{n}(zeros(F, n))
     #neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(fillAdjacent(l, NEIGHBOURS))
     #neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(fillAdjacent(l, NEIGHBOURHOOD))
-    movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
-    current_neighbourhood::MVector{8, I} = MVector{8}(zeros(I, 8))
-    neighbourhood_values::MVector{n,I} = MVector{n}(zeros(I, n))
+    #movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
+    #current_neighbourhood::MVector{8, I} = MVector{8}(zeros(I, 8))
+    #neighbourhood_values::MVector{n,I} = MVector{n}(zeros(I, n))
 
     # These values are reset for each step
-    σ::MVector{n,F} = MVector{n}(ones(F, n)) # Relative tension
-    tension::MVector{n,F} = MVector{n}(zeros(F, n))
+    #σ::MVector{n,F} = MVector{n}(ones(F, n)) # Relative tension
+    #tension::MVector{n,F} = MVector{n}(zeros(F, n))
     max_σ::F = 0.0
-    status::MVector{n,I} = MVector{n}(fill(I(-1), n))
+    #status::MVector{n,I} = MVector{n}(fill(I(-1), n))
     c::I=0
     spanning_cluster_id::I=-1
-    cluster_size::MVector{n,I} = MVector{n}(zeros(I, n))
-    cluster_outline_length::MVector{n,I} = MVector{n}(zeros(I, n))
+    #cluster_size::MVector{n,I} = MVector{n}(zeros(I, n))
+    #cluster_outline_length::MVector{n,I} = MVector{n}(zeros(I, n))
     # These values are reset for each cluster
-    cluster_outline::MVector{n,I} = MVector{n}(zeros(I, n))
-    unexplored::MVector{n,I} = MVector{n}(zeros(I, n))
+    #cluster_outline::MVector{n,I} = MVector{n}(zeros(I, n))
+    #unexplored::MVector{n,I} = MVector{n}(zeros(I, n))
     # Relative possition of every fiber with respect to it's cluster
-    rel_pos_x::MVector{n,I} = MVector{n}(zeros(I, n))
-    rel_pos_y::MVector{n,I} = MVector{n}(zeros(I, n))
-    cluster_dimensions::MVector{4,I} = MVector{4}(zeros(I, 4))
+    #rel_pos_x::MVector{n,I} = MVector{n}(zeros(I, n))
+    #rel_pos_y::MVector{n,I} = MVector{n}(zeros(I, n))
+    #cluster_dimensions::MVector{4,I} = MVector{4}(zeros(I, 4))
 end
 
 # Fiber bundle storage
@@ -499,5 +501,6 @@ function apply_stress(b::FB)
     end
 end
 
-fb, storage = get_fb(20)
-println(sizeof(fb))
+
+@time fb = get_fb(100, without_storage=true)
+#pprof(;webport=58699)
