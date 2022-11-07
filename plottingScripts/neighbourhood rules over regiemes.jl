@@ -2,7 +2,6 @@ using Plots
 using JLD2
 using LaTeXStrings
 using Measures
-using Profile
 
 include("../support/ploting_settings.jl")
 include("../support/dataManager.jl")
@@ -35,7 +34,7 @@ function file(global_path, L, distribution)
     return fileDict
 end
 
-L = 128
+L = 512
 N = L*L
 k_N = [1:n for n in N]./N
 

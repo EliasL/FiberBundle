@@ -14,6 +14,8 @@ averaged_data_keys = [
                     "spanning_cluster_step",
                     ]
 seed_specific_keys = [
+                    "last_step",
+                    "break_sequence",
                     "sample_states",
                     "tension",
                     "spanning_cluster_state",
@@ -97,7 +99,8 @@ function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]
     end # Close compact file
 end
 
-function get_seeds_in_compact_file(file_name)
+function get_seeds_in_file(settings, average=false)
+    file_name = get_file_name(settings, -1, average)
     if isfile(file_name)
         jldopen(file_name, "r") do file
             if haskey(file, "seeds_used")
@@ -115,7 +118,7 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     averaged_file_name = get_name_fun(average=true)
-    existing_seeds = get_seeds_in_compact_file(condensed_file_name)
+    existing_seeds = get_seeds_in_file(settings, )
     if length(existing_seeds) > 0
         expand_file(settings)
     end
@@ -307,7 +310,7 @@ function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 
-function load_file(L, α, t, NR, dist="Uniform", data_path="data/", seed=-1, average=true)
+function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
     if global_settings === nothing
@@ -322,9 +325,16 @@ function load_file(L, α, t, NR, dist="Uniform", data_path="data/", seed=-1, ave
                         && s["t"]==t
                         && s["nr"]==NR, global_settings)
     @assert length(settings) < 2 "There are multiple possibilities"
-    @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR"
+    @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR, L=$L, t=$t"
     setting = settings[1]
     return load(get_file_name(setting, seed, average))
+end
+
+function load_file(settings; seed=-1, average=true)
+    s = settings
+    path = split(s["path"], "/")[1]*"/"
+    return load_file(s["L"], s["a"], s["t"], s["nr"], s["dist"],
+                     data_path=path, seed=seed, average=average)
 end
 
 function remove_key(key, settings)
@@ -383,3 +393,33 @@ function rename(path)
 end
 #rename("data/Uniform/")
 #add_key("simulation_time", 0)
+
+function get_data_overview(path="data/", dists=["Uniform"])
+    nr = []
+    L = []
+    t = []
+    α = []
+
+    for dist in dists
+        println("Data for: $dist")
+        settings = search_for_settings(path, dist)
+        for setting in settings
+            s = get_seeds_in_file(setting)
+            L = setting["L"]
+            nr = setting["nr"]
+            t = setting["t"]
+            α = setting["a"]
+            
+            if length(s) == 0
+                println("Empty: $L, $nr, $t, $α")
+                continue
+            end
+            except = setdiff(minimum(s):maximum(s), s)
+            seed_text = "$(minimum(s)) - $(maximum(s))" * (isempty(except) ? "" : " except $(join(except, " , "))")
+
+            println("$L, $nr, $t, $α, $seed_text")
+        end
+    end
+end
+
+#get_data_overview()

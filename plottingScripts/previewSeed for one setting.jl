@@ -50,14 +50,11 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
     end
 end
 
-function draw_seeds(distribution)
-    L = 64
-    seed = 7
+function draw_seeds(setting, seed)
     ps = 10 #Pixel size
 
     color_stress = false
-    file_name =  "data/Uniform/a=$distribution dist=Uniform L=64 nr=CNR t=0.0/a=$distribution dist=Uniform L=64 nr=CNR t=0.0_bulk.jld2"#full_name(global_path, L, distribution)
-    f = load(file_name)
+    f = load_file(setting, -1, false)
     layout = (3,3)
     lx = layout[1] #layout x
     ly = layout[2] #layout y
@@ -76,11 +73,11 @@ function draw_seeds(distribution)
     font_size = 4*pixel_L/32
     title_font_size = font_size * 4/3
 
-    Drawing(image_size_x, image_size_y, "plots/Visualizations/Progressions/$distribution sample view.png")
+    Drawing(image_size_x, image_size_y, "plots/Visualizations/Progressions/$(setting["name"]) sample view.png")
     background(1,1,1) #White background
     fontface("Computer Modern")
     fontsize(title_font_size)
-    Luxor.text(latexstring("$distribution distribution, \$ L=$L\$"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
+    Luxor.text(latexstring("$(setting["name"]) distribution, \$ L=$L\$"), image_size_x/2, title_space*2/3, halign=:center, valign=:bottom)
     fontsize(font_size)
     for j=1:ly, i=1:lx
         origin((pixel_L+spacing_x)*(i-1), (pixel_L+spacing_y)*(j-1) + title_space)
@@ -92,16 +89,17 @@ function draw_seeds(distribution)
     finish()
 end
 
-NRS = ["UNR", "SNR", "CNR"]
+NRS = ["SNR"]
 global_path = "data/"
-ts = search_for_t(global_path)
+ts = [0.1]
+L=256
+α = 2.0
+seed = 1
 p = Progress(length(NRS)*length(ts))
 for NR in NRS
-    d(t) = "t=$t Uniform $NR"
     for t in ts
-        draw_seeds(d(t))
+        setting = make_settings("Uniform", L, t, NR, α, global_path)
+        draw_seeds(setting, seed)
         ProgressMeter.next!(p)
     end
 end
-
-draw_seeds("30.0")

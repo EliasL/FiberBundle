@@ -11,27 +11,22 @@ include("burningMan.jl")
 include("support/dataManager.jl")
 include("support/distributions.jl")
 
-function break_bundle(settings, progress_channel, working_channel, seed; save_data=true, use_threads=true)
+function break_bundle(settings, progress_channel, working_channel, seed;
+    save_data=true, use_threads=true, stop_after_spanning=true)
+    
     if use_threads
         put!(working_channel, true) # Indicate a process has started
     end
 
 
-    L = settings["L"]
-    α = settings["a"]
-    t = settings["t"]
-    nr = settings["nr"]
-    dist = settings["dist"]
-    file_name = get_file_name(settings, seed)
-
-    N = L*L # Number of fibers
+    file_name = get_file_name(settings, seed)       
     @assert seed != -1 ""
     Random.seed!(seed)
     
-    b, s = get_fb(L,α=α, t=t, nr=nr, dist=dist)
+    b, s = get_fb(settings)
 
     # Break the bundle
-    simulation_time = @elapsed for step in 1:N
+    @time simulation_time = @elapsed for step in 1:b.N
         # Simulate step
         i = findNextFiber!(b)
         resetBundle!(b)
@@ -59,6 +54,9 @@ function break_bundle(settings, progress_channel, working_channel, seed; save_da
             s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
             s.spanning_cluster_step = step
             s.spanning_cluster_has_not_been_found = false
+            if stop_after_spanning
+                break
+            end
         end
         if use_threads
             put!(progress_channel, true) # trigger a progress bar update
@@ -73,6 +71,7 @@ function break_bundle(settings, progress_channel, working_channel, seed; save_da
                 file["spanning_cluster_state"] = s.spanning_cluster_state_storage
                 file["spanning_cluster_tension"] = s.spanning_cluster_tension_storage
             end
+            file["last_step"] = b.current_step
             file["simulation_time"] = simulation_time
             file["spanning_cluster_size"] = s.spanning_cluster_size_storage
             file["spanning_cluster_perimiter"] = s.spanning_cluster_perimiter_storage
@@ -80,6 +79,7 @@ function break_bundle(settings, progress_channel, working_channel, seed; save_da
             file["sample_states_steps"] = s.steps_to_store
             file["most_stressed_fiber"] = s.most_stressed_fiber
             file["nr_clusters"] = s.nr_clusters
+            file["break_sequence"] = b.break_sequence
             file["largest_cluster"] = s.largest_cluster
             file["largest_perimiter"] = s.largest_perimiter
         end
@@ -154,7 +154,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
                 i^2 #I have no idea what this does
                 end
             end
-        end
+end             
     else
         @showprogress for i in seeds
             break_bundle(settings, progress, working, i; save_data=save_data, use_threads=false)
@@ -185,12 +185,10 @@ end
 
 function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", use_threads=true)
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
-
         # There is no point in itterating over alphas when using UNR
         if nr=="UNR"
             a = 0.0
         end
-
         settings = make_settings("Uniform", L, t, nr, a, path)
         @logmsg settingLog "Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite; use_threads=use_threads)

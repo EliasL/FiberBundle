@@ -11,13 +11,14 @@ global_logger(logger)
 
 
 
-seeds = 0:48-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
+seeds = 0:40-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
 L = [64]
-t = [0]#vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20)
-α = 2.0#[1, 1.5, 2, 2.5, 3, 5, 9, 15, 30]
+t = (0:9) ./ 10#vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20)
+α = [2.0]#[1, 1.5, 2, 2.5, 3, 5, 9, 15, 30]
 #t = vcat((0:8) ./ 20, (5:9) ./ 10)
-NR = ["UNR", "CNR", "SNR"]
+NR = ["UNR", "SNR"]
 use_threads = false
+overwrite = true
 #time_estimate(L, t, NR, seeds, rough_estimate=true)
 
 if use_threads
@@ -32,13 +33,14 @@ if use_threads
     @everywhere include("dataGenerator.jl")
 
     @logmsg nodeLog "Start run"
-    @time itterate_settings(L, α, t, NR, seeds; overwrite=true)
+    @logmsg nodeLog "Settings: \n $L, \n $t, \n $α"
+    @time itterate_settings(L, α, t, NR, seeds; overwrite=overwrite)
     @logmsg nodeLog "Done"
     @logmsg nodeLog "Removing workers"
     rmprocs(workers())
 else
     include("dataGenerator.jl")
     @logmsg nodeLog "Start run"
-    itterate_settings(L, α, t, NR, seeds; overwrite=true, use_threads=use_threads)
+    itterate_settings(L, α, t, NR, seeds; overwrite=overwrite, use_threads=use_threads)
 
 end

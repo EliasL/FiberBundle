@@ -5,7 +5,6 @@ using LaTeXStrings
 using Plots
 using Random
 using DataStructures
-
 include("../support/dataManager.jl")
 
 function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
@@ -14,7 +13,9 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
     cur_colors = palette(:glasbey_category10_n256)
     nr_colors = 256
     if color_stress
-        A = ceil.(Int, A./ maximum(A) .* (nr_colors-1))
+        println(bitstring.(A[30000:30010]))
+        A = log.(log.(A .+ 1 ).+1) 
+        A = ceil.(Int, A ./ maximum(A)  .* (nr_colors-1))
     end
     stress_colors = cgrad(:heat, nr_colors, categorical=true)
     for (pos, n) in tiles
@@ -71,11 +72,11 @@ function draw_seeds(L; α_settings=2.0, t_settings=0.0)
 
     path = "data/"
     dist = "Uniform"
-    seed = 9
+    seed = 1
     ps = 10 #Pixel size
 
     # This function specifies an α and nr and reutrns the file with this setting
-    NRS = ["UNR", "SNR", "CNR"]
+    NRS = ["UNR", "SNR"]
     @assert α_settings isa Number || t_settings isa Number "This function is designed to itterate over t OR α"
     iterate_over_t = t_settings isa AbstractArray
 
@@ -86,7 +87,7 @@ function draw_seeds(L; α_settings=2.0, t_settings=0.0)
 
     # we first draw the cluster image since we need those to calculate the ideal shifts
     for key in ["spanning_cluster_state", "spanning_cluster_tension"]
-        grids = reshape([reshape(load_file(L, α, t, NR)["$key/$seed"], (L, L)) for α=α_settings, t=t_settings, NR=NRS], (lx,ly))
+        grids = reshape([reshape(load_file(L, α, t, NR, average=false)["$key/$seed"], (L, L)) for α=α_settings, t=t_settings, NR=NRS], (lx,ly))
         if iterate_over_t
             grid_names = reshape([latexstring("$NR, \$t=$t\$") for t=t_settings, NR=NRS], (lx,ly))
         else
@@ -133,10 +134,10 @@ function draw_seeds(L; α_settings=2.0, t_settings=0.0)
 end
 
 
-α_settings = [1.0, 1.5, 2.0, 3.0, 5.0, 9.0, 15.0]
+α_settings = [2.0]
 
-t_settings = [0.0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95]
-draw_seeds(32; α_settings=2, t_settings=t_settings)
-draw_seeds(32; α_settings=α_settings, t_settings=0.0)
-#draw_seeds(64; α_settings=2, t_settings=t_settings)
+t_settings = [0.1, 0.2, 0.3]
+draw_seeds(256; α_settings=2.0, t_settings=t_settings)
+#draw_seeds(32; α_settings=α_settings, t_settings=0.0)
+#draw_seeds(64; α_settings=2.0, t_settings=t_settings)
 #draw_seeds(64; α_settings=α_settings, t_settings=0.0)

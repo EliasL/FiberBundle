@@ -32,6 +32,8 @@ Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
     tension::Vector{F} = Vector{F}(undef, n)
     max_σ::F = 0.0
     status::Vector{I} = fill(I(-1), n)
+    current_step::I = 0
+    break_sequence::Vector{I} = Vector{I}(undef, n)
     c::I = 0
     spanning_cluster_id::I = -1
     cluster_size::Vector{I} = Vector{I}(undef, n)
@@ -89,6 +91,15 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     else
         return fb, FBS{10, N, Float64, Int64}()
     end
+end
+
+function get_fb(settings, without_storage=false)
+    L = settings["L"]
+    α = settings["a"]
+    t = settings["t"]
+    nr = settings["nr"]
+    dist = settings["dist"]
+    return get_fb(L, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
 end
 
 # Define constants
@@ -259,8 +270,10 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
 end
 
 function findNextFiber!(b::FB)
+    b.current_step += 1
     update_tension!(b)
     i = argmax(b.tension)
+    b.break_sequence[b.current_step] = i
     b.max_σ = b.tension[i]
     return i
 end
@@ -269,6 +282,13 @@ function break_fiber!(i::Int, b::FB)
     b.status[i] = 0#BROKEN
     b.σ[i] = 0
 end
+
+function break_fiber!(I::AbstractArray{Int}, b::FB)
+    for i in I
+        break_fiber!(i, b)
+    end
+end
+
 
 function reset_relative_possition!(b::FB)
     # Note about the relative possition:
