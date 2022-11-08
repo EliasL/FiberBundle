@@ -34,7 +34,7 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     status::Vector{I} = fill(I(-1), N)
     current_step::I = 0
     break_sequence::Vector{I} = Vector{I}(undef, N)
-    c::I = 0
+    c::I = 0 # nr_clusters / current_cluster_id
     spanning_cluster_id::I = -1
     cluster_size::Vector{I} = Vector{I}(undef, N)
     cluster_outline_length::Vector{I} = Vector{I}(undef, N)
