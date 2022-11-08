@@ -92,7 +92,7 @@ end
 NRS = ["SNR"]
 global_path = "data/"
 ts = [0.1]
-L=256
+L=512
 α = 2.0
 seed = 1
 p = Progress(length(NRS)*length(ts))
