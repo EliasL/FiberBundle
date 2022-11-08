@@ -6,7 +6,6 @@ include("../plottingScripts/showBundle.jl")
 
 function find_center_of_mass(b::FB)
     update_σ!(b)
-    
 end
 
 function test()

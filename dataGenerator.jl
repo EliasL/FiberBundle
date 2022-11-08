@@ -23,43 +23,22 @@ function break_bundle(settings, progress_channel, working_channel, seed;
     @assert seed != -1 ""
     Random.seed!(seed)
     
-    b, s = get_fb(settings)
-
+    b::FB, s::FBS = get_fb(settings)
     # Break the bundle
     @time simulation_time = @elapsed for step in 1:b.N
         # Simulate step
-        i = findNextFiber!(b)
+        findNextFiber!(b)
         resetBundle!(b)
-        break_fiber!(i, b)
+        break_fiber!(b)
         update_σ!(b)
         
-        # Save important data from step
-        s.most_stressed_fiber[step] = 1/b.max_σ
-        s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
-        s.largest_cluster[step] = maximum(b.cluster_size)
-        s.largest_perimiter[step] = maximum(b.cluster_outline_length)
-        # Save step for visualization
-        if seed <= 10 #Only save samples from 10 first seeds
-            if step == s.steps_to_store[s.storage_index] &&
-            s.storage_index < length(s.steps_to_store)
-                s.status_storage[s.storage_index, :] = b.status
-                s.tension_storage[s.storage_index, :] = b.tension
-                s.storage_index += 1  
-            end
+        update_storage!(b, s, seed)
+        if stop_after_spanning && s.spanning_cluster_has_been_found
+            break
         end
-        if b.spanning_cluster_id != -1 && s.spanning_cluster_has_not_been_found
-            s.spanning_cluster_state_storage = copy(b.status)
-            s.spanning_cluster_tension_storage = b.tension
-            s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
-            s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
-            s.spanning_cluster_step = step
-            s.spanning_cluster_has_not_been_found = false
-            if stop_after_spanning
-                break
-            end
-        end
+
         if use_threads
-            put!(progress_channel, true) # trigger a progress bar update
+           put!(progress_channel, true) # trigger a progress bar update
         end
     end
 
@@ -142,11 +121,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
                     end
                 end
             end
-
-            # Test
-            #name = get_name(L, distribution_name, path, 1)
-            #break_bundle(L, distribution_function, progress, working, name, neighbourhood_rule; seed=1)
-
+        
             # the second task does the computation
             @async begin
                 @distributed (+) for i in seeds

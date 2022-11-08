@@ -135,9 +135,8 @@ end
 
 
 α_settings = [2.0]
-
 t_settings = [0.1, 0.2, 0.3]
-draw_seeds(256; α_settings=2.0, t_settings=t_settings)
+draw_seeds(256; α_settings=α_settings[1], t_settings=t_settings)
 #draw_seeds(32; α_settings=α_settings, t_settings=0.0)
 #draw_seeds(64; α_settings=2.0, t_settings=t_settings)
 #draw_seeds(64; α_settings=α_settings, t_settings=0.0)

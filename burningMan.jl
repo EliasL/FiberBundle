@@ -15,62 +15,94 @@ Simulate breakage of an LxL fiber matrix
 # Fiber bundle
 
 #An idea is to store variables in a mutable vector so that the struct can stay static (Not mulable)
-Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
-    L::I = l
-    N::I = n
+Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
+    L::I
+    N::I = L*L
     α::F = 2
     nr::String = "UNR"
-    x::Vector{F} = Vector{F}(undef, n)
-    neighbours::Matrix{I} = fillAdjacent(l, NEIGHBOURS)
-    neighbourhoods::Matrix{I} = fillAdjacent(l, NEIGHBOURHOOD)
+    x::Vector{F} = Vector{F}(undef, N)
+    neighbours::Matrix{I} = fillAdjacent(L, NEIGHBOURS)
+    neighbourhoods::Matrix{I} = fillAdjacent(L, NEIGHBOURHOOD)
     movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
     current_neighbourhood::Vector{I} = Vector{I}(undef, 8)
-    neighbourhood_values::Vector{I} = Vector{I}(undef, n)
+    neighbourhood_values::Vector{I} = Vector{I}(undef, N)
 
     # These values are reset for each step
-    σ::Vector{F} = Vector{F}(ones(F, n)) # Relative tension
-    tension::Vector{F} = Vector{F}(undef, n)
+    σ::Vector{F} = Vector{F}(ones(F, N)) # Relative tension
+    tension::Vector{F} = Vector{F}(undef, N)
     max_σ::F = 0.0
-    status::Vector{I} = fill(I(-1), n)
+    status::Vector{I} = fill(I(-1), N)
     current_step::I = 0
-    break_sequence::Vector{I} = Vector{I}(undef, n)
+    break_sequence::Vector{I} = Vector{I}(undef, N)
     c::I = 0
     spanning_cluster_id::I = -1
-    cluster_size::Vector{I} = Vector{I}(undef, n)
-    cluster_outline_length::Vector{I} = Vector{I}(undef, n)
+    cluster_size::Vector{I} = Vector{I}(undef, N)
+    cluster_outline_length::Vector{I} = Vector{I}(undef, N)
     # These values are reset for each cluster
-    cluster_outline::Vector{I} = Vector{I}(undef, n)
-    unexplored::Vector{I} = Vector{I}(undef, n)
+    cluster_outline::Vector{I} = Vector{I}(undef, N)
+    unexplored::Vector{I} = Vector{I}(undef, N)
     # Relative possition of every fiber with respect to it's cluster
-    rel_pos_x::Vector{I} = Vector{I}(undef, n)
-    rel_pos_y::Vector{I} = Vector{I}(undef, n)
+    rel_pos_x::Vector{I} = Vector{I}(undef, N)
+    rel_pos_y::Vector{I} = Vector{I}(undef, N)
     cluster_dimensions::Vector{I} = Vector{I}(undef, 4)
 end
 
 # Fiber bundle storage
-Base.@kwdef mutable struct FBS{division, n, F<:AbstractFloat, I<:Integer}
+Base.@kwdef mutable struct FBS{F<:AbstractFloat, I<:Integer}
+    division::I
+    N::I
     # These arrays store one value for each step
-    most_stressed_fiber::Vector{F} = Vector{F}(undef, n)
-    nr_clusters::Vector{I} = Vector{I}(undef, n)
-    largest_cluster::Vector{I} = Vector{I}(undef, n)
-    largest_perimiter::Vector{I} = Vector{I}(undef, n)
+    most_stressed_fiber::Vector{F} = Vector{F}(undef, N)
+    nr_clusters::Vector{I} = Vector{I}(undef, N)
+    largest_cluster::Vector{I} = Vector{I}(undef, N)
+    largest_perimiter::Vector{I} = Vector{I}(undef, N)
 
     # We want to store some samples of the processed
     # I'm thinking at 10%, 20%, ... 90% done would work
     # ie, 9 images
-    status_storage = zeros(I, division-1, n)
-    tension_storage = zeros(F, division-1, n)
+    status_storage = zeros(I, division-1, N)
+    tension_storage = zeros(F, division-1, N)
 
-    spanning_cluster_state_storage = zeros(I, n)
-    spanning_cluster_tension_storage = zeros(I, n)
+    spanning_cluster_state_storage = zeros(I, N)
+    spanning_cluster_tension_storage = zeros(I, N)
     spanning_cluster_size_storage = 0
     spanning_cluster_perimiter_storage = 0
-    spanning_cluster_has_not_been_found = true
+    spanning_cluster_has_been_found = false
     spanning_cluster_step = 0
     # If N=100 Steps to store is now [90, 80, ... , 10]
-    steps_to_store = [round(I,n/division * i) for i in 1:division-1]
+    steps_to_store = [round(I,N/division * i) for i in 1:division-1]
     storage_index = 1
 end
+
+function update_storage!(b::FB, s::FBS, seed::Int64)
+    #Save important data from step
+    step = b.current_step
+    s.most_stressed_fiber[step] = 1/b.max_σ
+    s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
+    s.largest_cluster[step] = maximum(b.cluster_size)
+    s.largest_perimiter[step] = maximum(b.cluster_outline_length)
+    #Save step for visualization
+    if seed <= 10 #Only save samples from 10 first seeds
+        if step == s.steps_to_store[s.storage_index] &&
+        s.storage_index < length(s.steps_to_store)
+            for i in b.N
+                s.status_storage[s.storage_index, i] = b.status[i]
+                s.tension_storage[s.storage_index, i] = b.tension[i]
+            end
+            s.storage_index += 1  
+        end
+    end
+
+    if b.spanning_cluster_id != -1 && !s.spanning_cluster_has_been_found
+        s.spanning_cluster_state_storage .= b.status
+        s.spanning_cluster_tension_storage = b.tension
+        s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
+        s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
+        s.spanning_cluster_step = step
+        s.spanning_cluster_has_been_found = true
+    end
+end
+
 
 function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     N=L*L
@@ -85,11 +117,11 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     else
         error("No distribution found! Got: $dist")
     end
-    fb = FB{L, N, Float64, Int64}(α=α, nr=nr, x=x)
+    fb = FB{Float64, Int64}(L=L, α=α, nr=nr, x=x)
     if without_storage
         return fb
     else
-        return fb, FBS{10, N, Float64, Int64}()
+        return fb, FBS{Float64, Int64}(division=10, N=N)
     end
 end
 
@@ -270,20 +302,20 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
 end
 
 function findNextFiber!(b::FB)
-    b.current_step += 1
-    update_tension!(b)
-    i = argmax(b.tension)
-    b.break_sequence[b.current_step] = i
-    b.max_σ = b.tension[i]
-    return i
+    begin 
+        b.current_step += 1
+        update_tension!(b)
+        b.break_sequence[b.current_step] = argmax(b.tension)
+        b.max_σ = b.tension[b.break_sequence[b.current_step]]
+    end
 end
 
-function break_fiber!(i::Int, b::FB)
-    b.status[i] = 0#BROKEN
-    b.σ[i] = 0
+function break_fiber!(b::FB)
+    b.status[b.break_sequence[b.current_step]] = 0#BROKEN
+    b.σ[b.break_sequence[b.current_step]] = 0
 end
 
-function break_fiber!(I::AbstractArray{Int}, b::FB)
+function break_fiber_list!(I::AbstractArray{Int}, b::FB)
     for i in I
         break_fiber!(i, b)
     end

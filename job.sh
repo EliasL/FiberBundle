@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J 100L512
+#SBATCH -J 40L1024
 #SBATCH -p porelab
 #SBATCH -N 1
 #SBATCH -n 64

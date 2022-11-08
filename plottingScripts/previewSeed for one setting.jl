@@ -54,7 +54,7 @@ function draw_seeds(setting, seed)
     ps = 10 #Pixel size
 
     color_stress = false
-    f = load_file(setting, -1, false)
+    f = load_file(setting, average=false)
     layout = (3,3)
     lx = layout[1] #layout x
     ly = layout[2] #layout y
