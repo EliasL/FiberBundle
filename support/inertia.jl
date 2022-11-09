@@ -3,7 +3,7 @@ include("../burningMan.jl")
 include("../plottingScripts/showBundle.jl")
 
 
-function find_center_of_mass1(b::FB, only_spanning=true)
+function find_center_of_mass(b::FB, only_spanning=true)
     # NB THIS ONLY WORKS FOR CLUSTERS THAT ARE NOT ON THE PERIODIC BORDER
     
     avg_i = zeros(Float64, b.N)
@@ -38,10 +38,11 @@ function find_center_of_mass1(b::FB, only_spanning=true)
             y = mod1(fiber,b.L)
             x = floor(Int64, fiber/b.L)
 
-            #avg_i[b.c] += b.rel_pos_y[i] + y
-            #avg_j[b.c] += b.rel_pos_x[i] + x
+            avg_i[b.c] +=  y
+            avg_j[b.c] +=  x
             
             for i in 1:b.cluster_size[b.c]
+                
                 avg_i[b.c] += b.rel_pos_y[i] + y
                 avg_j[b.c] += b.rel_pos_x[i] + x
             end
@@ -59,13 +60,15 @@ function find_center_of_mass1(b::FB, only_spanning=true)
     end
 end
 
-function find_center_of_mass(b::FB, only_spanning=true)
+function find_center_of_mass1(b::FB, only_spanning=true)
     # NB THIS ONLY WORKS FOR CLUSTERS THAT ARE NOT ON THE PERIODIC BORDER
     resetBundle!(b)
     update_σ!(b)
     nr_clusters = b.c
     avg_i = zeros(Float64, nr_clusters)
     avg_j = zeros(Float64, nr_clusters)
+    test_x = []
+    test_y = []
     weights = 1 ./ b.cluster_size
     for fiber in eachindex(b.status)
         
@@ -77,6 +80,8 @@ function find_center_of_mass(b::FB, only_spanning=true)
         # Check if the fiber is part of a cluster or not
         cluster = b.status[fiber]
         if cluster > 0 && (cluster == b.spanning_cluster_id || !only_spanning)
+            push!(test_x,x + rel_x)
+            push!(test_y,y + rel_y)
             if rel_x == 0 && rel_y == 0
                 avg_i[cluster] += mod1(fiber, b.L)
                 avg_j[cluster] += floor(Int64, fiber/b.L)
@@ -87,7 +92,7 @@ function find_center_of_mass(b::FB, only_spanning=true)
         end
     end
 
-    return avg_j, avg_i
+    return test_x, test_y#avg_j, avg_i
 end
 
 function test()

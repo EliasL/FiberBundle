@@ -20,7 +20,7 @@ function basic_test()
         @test sum(b.status) == -b.N #All fibers are alive
         i = findNextFiber!(b)
         @test i==1 #"The first fiber should break"
-        break_fiber!(i, b)
+        break_this_fiber!(i, b)
         @test b.status[i]==BROKEN #"The first fiber should be broken"
         @test sum(b.status) == (-b.N +1) # Now all but one fiber should be broken
         update_σ!(b)
@@ -34,7 +34,7 @@ function basic_test()
         i = findNextFiber!(b)
         @test i==2 #"The second fiber should break"
         resetBundle!(b)
-        break_fiber!(i, b)
+        break_this_fiber!(i, b)
         update_σ!(b)
         @test all(b.status[[1,2]] .== 1) #"Both should belong to the same cluster"
         @test sum(b.σ) ≈ b.N #"No conservation of tension"
@@ -43,7 +43,7 @@ function basic_test()
         for _ in 3:b.N-1
             i = findNextFiber!(b)
             resetBundle!(b)
-            break_fiber!(i, b)
+            break_this_fiber!(i, b)
             update_σ!(b)
             @test sum(b.σ) ≈ b.N #"No conservation of tension"
         end
@@ -77,7 +77,7 @@ function cluster_test()
         b = get_fb(L, dist=ones(L*L), without_storage=true) #set distribution to break in fixed order
 
         for i in broken
-            break_fiber!(i, b)
+            break_this_fiber!(i, b)
         end
         update_σ!(b)
         @test sum(b.σ) ≈ b.N #"No conservation of tension"
@@ -105,7 +105,7 @@ function neighbourhood_id_test()
         L, broken, outline, correct_ids = sol
         b = get_fb(L, without_storage=true)
         for i in broken
-            break_fiber!(i,b)
+            break_this_fiber!(i,b)
         end
         update_σ!(b)
 
@@ -122,7 +122,7 @@ function neighbourhood_strength_test_with_alpha(nr)
         for _ in 1:b.N-1
             i = findNextFiber!(b)
             resetBundle!(b)
-            break_fiber!(i, b)
+            break_this_fiber!(i, b)
             update_σ!(b)
             @test sum(b.σ) ≈ b.N #"No conservation of tension.\n$(sum(σ)) ≠ $N "
         end
@@ -179,7 +179,7 @@ function random_spanning_cluster_test()
         for k in 1:b.N
             i = findNextFiber!(b)
             resetBundle!(b)
-            break_fiber!(i, b)
+            break_this_fiber!(i, b)
             update_σ!(b)
 
             if b.spanning_cluster_id != -1
@@ -189,7 +189,41 @@ function random_spanning_cluster_test()
         end
     end
 end
-neighbourhood_id_test()
+
+function cm_test()
+    # 1,4,7
+    # 2,5,8
+    # 3,6,9
+    L=3
+    b = get_fb(L, without_storage=true)
+    for i in [1,2,4,5]
+        break_this_fiber!(i,b)
+    end
+    update_σ!(b)
+    println(b.rel_pos_x)
+    println(b.rel_pos_y)
+    @test b.cluster_cm_x[9] == 1
+    @test b.cluster_cm_y[9] == 1
+    @test b.cluster_cm_x[1] == 1.5
+    @test b.cluster_cm_y[1] == 1.5
+
+
+    b = get_fb(L, without_storage=true)
+    for i in [4,5,6,7,8,9]
+        break_this_fiber!(i,b)
+    end
+    update_σ!(b)
+    display(reshape(b.status, (3,3)))
+    println("hello", reshape(b.status, (3,3))[2,1])
+    println(b.rel_pos_x)
+    println(b.rel_pos_y)
+    @test b.cluster_cm_x[9] == 2
+    @test b.cluster_cm_y[9] == 1
+    @test b.cluster_cm_x[1] == 2.5
+    @test b.cluster_cm_y[1] == 2
+end
+
+cm_test()
 @testset verbose=true "Tests" begin
     
     @testset "Basic" begin basic_test() end
@@ -201,5 +235,6 @@ neighbourhood_id_test()
     @testset "Store possition" begin test_store_possition() end
     @testset "Spanning cluster" begin spanning_cluster_test() end
     @testset "Ransom spanning cluster" begin random_spanning_cluster_test() end
+    @testset "Center of mass" begin cm_test() end
 end
 print("Done")

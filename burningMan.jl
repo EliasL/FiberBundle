@@ -23,7 +23,7 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     x::Vector{F} = Vector{F}(undef, N)
     neighbours::Matrix{I} = fillAdjacent(L, NEIGHBOURS)
     neighbourhoods::Matrix{I} = fillAdjacent(L, NEIGHBOURHOOD)
-    movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
+    movement::SVector{4,I} = SVector{4}([1,-1,-1,1]) # this is dependent on the order of neighbours...
     current_neighbourhood::Vector{I} = Vector{I}(undef, 8)
     neighbourhood_values::Vector{I} = Vector{I}(undef, N)
 
@@ -40,10 +40,12 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     cluster_outline_length::Vector{I} = Vector{I}(undef, N)
     # These values are reset for each cluster
     cluster_outline::Vector{I} = Vector{I}(undef, N)
+    cluster_cm_x::Vector{F} = Vector{F}(undef, N)
+    cluster_cm_y::Vector{F} = Vector{F}(undef, N)
     unexplored::Vector{I} = Vector{I}(undef, N)
     # Relative possition of every fiber with respect to it's cluster
-    rel_pos_x::Vector{I} = Vector{I}(undef, N)
-    rel_pos_y::Vector{I} = Vector{I}(undef, N)
+    rel_pos_x::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
+    rel_pos_y::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
     cluster_dimensions::Vector{I} = Vector{I}(undef, 4)
 end
 
@@ -315,9 +317,14 @@ function break_fiber!(b::FB)
     b.σ[b.break_sequence[b.current_step]] = 0
 end
 
+function break_this_fiber!(i::Int64, b::FB)
+    b.status[i] = 0#BROKEN
+    b.σ[i] = 0
+end
+
 function break_fiber_list!(I::AbstractArray{Int}, b::FB)
     for i in I
-        break_fiber!(i, b)
+        break_this_fiber!(i, b)
     end
 end
 
@@ -366,6 +373,46 @@ function reset_cluster_dimensions!(b::FB)
     fill!(b.cluster_dimensions, 0) # Reset cluster dimensions
 end
 
+function fiber_index_to_xy(i::Int64, L::Int64)
+    y = mod1(i,L)
+    x = ceil(Int64, i/L) #ceil to use one indexing
+    return x, y
+end
+
+function save_initial_cluster_possition(i::Int64, b::FB)
+    # Calculating the cm is a bit difficult because
+    # of the periodic boundryconditions. In order to save
+    # some variables, we are going to store the initial 
+    # entry possition of the cluser in the last entry of b.cluster_cm_x/y.
+    # Since we can never have N clusters, this space is never
+    # used and we can freely use it for what we want. 
+    # Then we will use relative possitions with respect to this
+    # value in further calculations instead of potentially
+    # looping over to a periodic site.
+    x,y = fiber_index_to_xy(i, b.L)
+    b.cluster_cm_x[b.N] = x
+    b.cluster_cm_y[b.N] = y
+    b.rel_pos_x[i] = 0
+    b.rel_pos_y[i] = 0
+end
+
+function add_to_cm(i::Int64, b::FB)
+    # First get source possition
+    x = b.cluster_cm_x[b.N]
+    y = b.cluster_cm_y[b.N]
+    # Now add that together with the relative possition
+    b.cluster_cm_x[b.c] += x + b.rel_pos_x[i]
+    b.cluster_cm_y[b.c] += y + b.rel_pos_y[i]
+    println(i)
+    println("$(x + b.rel_pos_x[i]), $(y + b.rel_pos_y[i])")
+    println("$(b.cluster_cm_x[b.c]), $(b.cluster_cm_y[b.c])")
+end
+
+function normalize_cm(b::FB)
+    b.cluster_cm_x[b.c] /= b.cluster_size[b.c]
+    b.cluster_cm_y[b.c] /= b.cluster_size[b.c]
+end
+
 function explore_cluster_at!(i::Int64, b::FB)
     # We explore the cluster of broken fibers and
     # map the border of the cluster
@@ -379,7 +426,12 @@ function explore_cluster_at!(i::Int64, b::FB)
     b.cluster_size[b.c] = 1
     # This value will be continuesly updated as we explore the cluster
     b.cluster_outline_length[b.c] = 0
-
+    # We set the center of mass to be zero
+    b.cluster_cm_x[b.c] = 0
+    b.cluster_cm_y[b.c] = 0
+    # We save the initial possition
+    save_initial_cluster_possition(i, b)
+    # We reset cluster dimisions
     reset_cluster_dimensions!(b)
 
     # While there are still unexplored fibers in the cluster
@@ -390,10 +442,16 @@ function explore_cluster_at!(i::Int64, b::FB)
         nr_explored += 1
         # Get the next unexplored fiber
         current_fiber = b.unexplored[nr_explored]
+        # Add to the center of mass of the cluster
+        add_to_cm(current_fiber, b)
         # Go through all neighbours of the fiber
         nr_unexplored = check_neighbours!(current_fiber, nr_unexplored, b)
     end
     
+    # Now that we know how large the cluster is
+    # we can normalize the size of the cm
+    normalize_cm(b)
+
     if spanning(b)
         return true
     else 
