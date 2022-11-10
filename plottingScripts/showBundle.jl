@@ -33,22 +33,32 @@ function shift_spanning_cluster!(b::FB)
     b.status = reshape(m, (b.N))
 end
 
-function show_fb(b::FB)
-    show_array(b.status, b.L)
+function plot_fb(b::FB; show=true)
+    plot_array(b.status, L=b.L, show=show)
 end
 
-function show_array(a::AbstractArray, L=nothing)
+function plot_array(a::AbstractArray; L=nothing, show=true)
     if L===nothing
         L = round(Int, sqrt(length(a)))
     end
     m = reshape(a, (L, L))
-    show_matrix(m)
+    plot_matrix(m, show=show)
 end
 
-function show_matrix(m::AbstractMatrix, use_shift=false)
+function plot_matrix(m::AbstractMatrix; use_shift=false, show=true)
     if use_shift
         m = shift_spanning_cluster(m)
     end
     h = heatmap(m, c=:glasbey_category10_n256, legend=:none, showaxis = false, ticks=false)
-    plot(h)
+    p = plot(h)
+    if show
+        display(p)
+    end
+end
+
+function plot_fb_axes(b::FB, minor_axes::AbstractVector, major_axes::AbstractVector)
+    
+
+function plot_fb_cm(b::FB)
+    plot!(b.cluster_cm_x, b.cluster_cm_y, seriestype = :scatter)
 end

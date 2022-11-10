@@ -3,50 +3,49 @@ using Plots
 using Test
 
 include("../burningMan.jl")
-
+include("../plottingScripts/showBundle.jl")
 
 seed=0
 Random.seed!(seed) # Setting the seed
 
-function basic_test()
-    @testset "Basic tests" begin       
-        # This test will break the fibers in this order
-        # 1 4 7
-        # 2 5 8
-        # 3 6 9
-        L=3
-        b = get_fb(L, dist= f(N)=(1:N)./N, without_storage=true) #set distribution to break in fixed order
-        # First fiber!
-        @test sum(b.status) == -b.N #All fibers are alive
-        i = findNextFiber!(b)
-        @test i==1 #"The first fiber should break"
-        break_this_fiber!(i, b)
-        @test b.status[i]==BROKEN #"The first fiber should be broken"
-        @test sum(b.status) == (-b.N +1) # Now all but one fiber should be broken
-        update_σ!(b)
-        @test b.neighbours[i, :] == [4,7,3,2] #"Incorrect neighbours: $(neighbours[i, :])"
-        @test b.neighbours[9, :] == [3,6,8,7] #"Incorrect neighbours: $(neighbours[9, :])"
-        @test all(b.status[b.neighbours[1,:]] .== PAST_BORDER) #"These should be past borders"
-        @test all(b.σ[b.neighbours[1,:]] .== 1.25) #"The tension is incorrect"
-        @test sum(b.σ) ≈ b.N #"No conservation of tension"
-        
-        # Second fiber
-        i = findNextFiber!(b)
-        @test i==2 #"The second fiber should break"
+function basic_test() 
+    # This test will break the fibers in this order
+    # 1 4 7
+    # 2 5 8
+    # 3 6 9
+    L=3
+    b = get_fb(L, dist= f(N)=(1:N)./N, without_storage=true) #set distribution to break in fixed order
+    # First fiber!
+    @test sum(b.status) == -b.N #All fibers are alive
+    findNextFiber!(b)
+    i = b.break_sequence[b.current_step]
+    @test i==1 #"The first fiber should break"
+    break_fiber!(b)
+    @test b.status[i]==BROKEN #"The first fiber should be broken"
+    @test sum(b.status) == (-b.N +1) # Now all but one fiber should be broken
+    update_σ!(b)
+    @test b.neighbours[i, :] == [4,7,3,2] #"Incorrect neighbours: $(neighbours[i, :])"
+    @test b.neighbours[9, :] == [3,6,8,7] #"Incorrect neighbours: $(neighbours[9, :])"
+    @test all(b.status[b.neighbours[1,:]] .== PAST_BORDER) #"These should be past borders"
+    @test all(b.σ[b.neighbours[1,:]] .== 1.25) #"The tension is incorrect"
+    @test sum(b.σ) ≈ b.N #"No conservation of tension"
+    
+    # Second fiber
+    findNextFiber!(b)
+    @test b.break_sequence[b.current_step]==2 #"The second fiber should break"
+    resetBundle!(b)
+    break_fiber!(b)
+    update_σ!(b)
+    @test all(b.status[[1,2]] .== 1) #"Both should belong to the same cluster"
+    @test sum(b.σ) ≈ b.N #"No conservation of tension"
+    
+    # Break the rest for good measure
+    for _ in 3:b.N-1
+        findNextFiber!(b)
         resetBundle!(b)
-        break_this_fiber!(i, b)
+        break_fiber!(b)
         update_σ!(b)
-        @test all(b.status[[1,2]] .== 1) #"Both should belong to the same cluster"
         @test sum(b.σ) ≈ b.N #"No conservation of tension"
-        
-        # Break the rest for good measure
-        for _ in 3:b.N-1
-            i = findNextFiber!(b)
-            resetBundle!(b)
-            break_this_fiber!(i, b)
-            update_σ!(b)
-            @test sum(b.σ) ≈ b.N #"No conservation of tension"
-        end
     end
 end
 
@@ -120,9 +119,9 @@ function neighbourhood_strength_test_with_alpha(nr)
         b = get_fb(L, α= 1+rand()*10, nr=nr, without_storage=true)
 
         for _ in 1:b.N-1
-            i = findNextFiber!(b)
+            findNextFiber!(b)
             resetBundle!(b)
-            break_this_fiber!(i, b)
+            break_fiber!(b)
             update_σ!(b)
             @test sum(b.σ) ≈ b.N #"No conservation of tension.\n$(sum(σ)) ≠ $N "
         end
@@ -132,7 +131,7 @@ end
 function test_store_possition()
     current_fiber = 1
     neighbour_fiber = 4
-    # Directions = [+1x,-1x,+1y,-1y]
+    # Directions = [+1x,-1x,-1y,1y]
     direction = 1 #x+1
     b = get_fb(2, without_storage=true)
     b.cluster_dimensions= [2,-4,1,1]
@@ -150,21 +149,43 @@ function test_store_possition()
 
     direction = 3 #y+1
     store_possition!(current_fiber, neighbour_fiber, direction, b)
-    @test b.cluster_dimensions == [2,-5,2,1] #"Cluster dimensions not working2: $cluster_dimensions"
-    @test b.rel_pos_y[neighbour_fiber] == 2 #"y movement not working1: $rel_pos_y"
+    @test b.cluster_dimensions == [2,-5,0,1] #"Cluster dimensions not working2: $cluster_dimensions"
+    @test b.rel_pos_y[neighbour_fiber] == 0 #"y movement not working1: $rel_pos_y"
 
     direction = 4 #y-1
     store_possition!(current_fiber, neighbour_fiber, direction, b)
-    @test b.cluster_dimensions == [2,-5,2,0] #"Cluster dimensions not working3: $cluster_dimensions"
-    @test b.rel_pos_y[neighbour_fiber] == 0 #"y movement not working2: $rel_pos_y"
+    @test b.cluster_dimensions == [2,-5,0,2] #"Cluster dimensions not working3: $cluster_dimensions"
+    @test b.rel_pos_y[neighbour_fiber] == 2 #"y movement not working2: $rel_pos_y"
 end
 
 
 function spanning_cluster_test()
     L = 16
     b = get_fb(L, without_storage=true)
-    b.status = [0, -1, -1, -1, 0, -1, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, -1, 0, 0, 0, 0, -1, -1, -1, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, 0, 0, -1, -1, 0, 0, 0, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0, 0, 0, -1, -1, -1, 0, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, -1, 0, -1, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, -1, 0, 0, 0, 0]
+    test_s = [0, -1, -1, -1, 0, -1, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, -1, -1, 0, 0, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0, -1, -1, 0, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, -1, 0, 0, 0, 0, -1, -1, -1, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, 0, 0, -1, -1, 0, 0, 0, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0, 0, 0, -1, -1, -1, 0, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, 0, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, 0, 0, -1, 0, -1, 0, -1, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, -1, 0, 0, 0, 0]
+    b.status .= test_s
+    @test b.spanning_cluster_id == -1 #Not spanning
+    update_σ!(b)
+    @test b.spanning_cluster_id != -1 #Spanning!
+    @test b.cluster_size[b.spanning_cluster_id] == 74 #This is probably correct
+    #plot_fb(b)
     
+    L = 16
+    b = get_fb(L, without_storage=true)
+    m = reshape(test_s, (L,L))
+    m = rotl90(m)
+    b.status = reshape(m, (L*L))
+    @test b.spanning_cluster_id == -1 #Not spanning
+    update_σ!(b)
+    #plot_fb(b)
+    @test b.spanning_cluster_id != -1 #Spanning!
+    @test b.cluster_size[b.spanning_cluster_id] == 74 #This is probably correct    
+    
+    L = 16
+    b = get_fb(L, without_storage=true)
+    m = reshape(test_s, (L,L))
+    m = rot180(m)
+    b.status = reshape(m, (L*L))
     @test b.spanning_cluster_id == -1 #Not spanning
     update_σ!(b)
     @test b.spanning_cluster_id != -1 #Spanning!
@@ -177,9 +198,9 @@ function random_spanning_cluster_test()
         b=get_fb(L, without_storage=true)
 
         for k in 1:b.N
-            i = findNextFiber!(b)
+            findNextFiber!(b)
             resetBundle!(b)
-            break_this_fiber!(i, b)
+            break_fiber!(b)
             update_σ!(b)
 
             if b.spanning_cluster_id != -1
@@ -200,8 +221,6 @@ function cm_test()
         break_this_fiber!(i,b)
     end
     update_σ!(b)
-    println(b.rel_pos_x)
-    println(b.rel_pos_y)
     @test b.cluster_cm_x[9] == 1
     @test b.cluster_cm_y[9] == 1
     @test b.cluster_cm_x[1] == 1.5
@@ -213,17 +232,15 @@ function cm_test()
         break_this_fiber!(i,b)
     end
     update_σ!(b)
-    display(reshape(b.status, (3,3)))
-    println("hello", reshape(b.status, (3,3))[2,1])
-    println(b.rel_pos_x)
-    println(b.rel_pos_y)
     @test b.cluster_cm_x[9] == 2
     @test b.cluster_cm_y[9] == 1
     @test b.cluster_cm_x[1] == 2.5
-    @test b.cluster_cm_y[1] == 2
+    # This is a very important test. The cm of this cluster
+    # can actually have a y value of 1, 2 or 3. Since the boundry
+    # is periodic, it is onlt a question of reference
+    @test b.cluster_cm_y[1] in [1,2,3]
 end
 
-cm_test()
 @testset verbose=true "Tests" begin
     
     @testset "Basic" begin basic_test() end

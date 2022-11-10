@@ -66,14 +66,14 @@ Base.@kwdef mutable struct FBS{F<:AbstractFloat, I<:Integer}
     tension_storage = zeros(F, division-1, N)
 
     spanning_cluster_state_storage = zeros(I, N)
-    spanning_cluster_tension_storage = zeros(I, N)
-    spanning_cluster_size_storage = 0
-    spanning_cluster_perimiter_storage = 0
-    spanning_cluster_has_been_found = false
-    spanning_cluster_step = 0
+    spanning_cluster_tension_storage = zeros(F, N)
+    spanning_cluster_size_storage::I = 0
+    spanning_cluster_perimiter_storage::I = 0
+    spanning_cluster_has_been_found::Bool = false
+    spanning_cluster_step::I = 0
     # If N=100 Steps to store is now [90, 80, ... , 10]
-    steps_to_store = [round(I,N/division * i) for i in 1:division-1]
-    storage_index = 1
+    steps_to_store::Vector{I} = [round(I,N/division * i) for i in 1:division-1]
+    storage_index::I = 1
 end
 
 function update_storage!(b::FB, s::FBS, seed::Int64)
@@ -85,19 +85,21 @@ function update_storage!(b::FB, s::FBS, seed::Int64)
     s.largest_perimiter[step] = maximum(b.cluster_outline_length)
     #Save step for visualization
     if seed <= 10 #Only save samples from 10 first seeds
-        if step == s.steps_to_store[s.storage_index] &&
-        s.storage_index < length(s.steps_to_store)
+        if step == s.steps_to_store[s.storage_index]
             for i in b.N
                 s.status_storage[s.storage_index, i] = b.status[i]
+                s.tension_storage[s.storage_index, i] = b.status[i]
                 s.tension_storage[s.storage_index, i] = b.tension[i]
             end
-            s.storage_index += 1  
+            if s.storage_index < length(s.steps_to_store)
+                s.storage_index += 1
+            end
         end
     end
 
     if b.spanning_cluster_id != -1 && !s.spanning_cluster_has_been_found
         s.spanning_cluster_state_storage .= b.status
-        s.spanning_cluster_tension_storage = b.tension
+        s.spanning_cluster_tension_storage .= b.tension
         s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
         s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
         s.spanning_cluster_step = step
@@ -270,16 +272,16 @@ function resetClusters!(b::FB)
         # what cluster they belong to. If this fiber
         # has had a status larger than 0, it means that
         # it has belonged to a cluster. 
-        if s > 0#BROKEN
+        if s > BROKEN
             # In this case, we know that it is broken
             # and should be reset
-            b.status[i] = 0#BROKEN
+            b.status[i] = BROKEN
 
-        elseif s < 0#BROKEN
+        elseif s < BROKEN
             # This means that this fiber was set as either
             # ALIVE, CURRENT_BORDER or PAST_BORDER.
             # Now we reset it to being just ALIVE
-            b.status[i] = -1 #ALIVE
+            b.status[i] = ALIVE
             # We have already added stress to the boarder, so now
             # AFTER having chosen the next fiber to break, we remove
             # this tension and calculate it again
@@ -304,21 +306,19 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
 end
 
 function findNextFiber!(b::FB)
-    begin 
-        b.current_step += 1
-        update_tension!(b)
-        b.break_sequence[b.current_step] = argmax(b.tension)
-        b.max_σ = b.tension[b.break_sequence[b.current_step]]
-    end
+    b.current_step += 1
+    update_tension!(b)
+    b.break_sequence[b.current_step] = argmax(b.tension)
+    b.max_σ = b.tension[b.break_sequence[b.current_step]]
 end
 
 function break_fiber!(b::FB)
-    b.status[b.break_sequence[b.current_step]] = 0#BROKEN
+    b.status[b.break_sequence[b.current_step]] = BROKEN
     b.σ[b.break_sequence[b.current_step]] = 0
 end
 
 function break_this_fiber!(i::Int64, b::FB)
-    b.status[i] = 0#BROKEN
+    b.status[i] = BROKEN
     b.σ[i] = 0
 end
 
@@ -346,7 +346,7 @@ function update_σ!(b::FB)
     for i in eachindex(b.status)
         #@logmsg σUpdateLog "Breaking fiber $i"
         # If it is broken and unexplored
-        if b.status[i] == 0#BROKEN
+        if b.status[i] == BROKEN
             # We have found a new cluster!
             # increase number of clusters
             b.c += 1
@@ -403,9 +403,6 @@ function add_to_cm(i::Int64, b::FB)
     # Now add that together with the relative possition
     b.cluster_cm_x[b.c] += x + b.rel_pos_x[i]
     b.cluster_cm_y[b.c] += y + b.rel_pos_y[i]
-    println(i)
-    println("$(x + b.rel_pos_x[i]), $(y + b.rel_pos_y[i])")
-    println("$(b.cluster_cm_x[b.c]), $(b.cluster_cm_y[b.c])")
 end
 
 function normalize_cm(b::FB)
@@ -452,11 +449,7 @@ function explore_cluster_at!(i::Int64, b::FB)
     # we can normalize the size of the cm
     normalize_cm(b)
 
-    if spanning(b)
-        return true
-    else 
-        return false
-    end
+    return spanning(b)
 
 
 end
@@ -467,8 +460,8 @@ function spanning(b::FB)
     # L-1 because the relative coordinates in the cluster start at 0,0
     # NB! Once the cluster is spanning, the dimension is no longer reliable because of
     # periodicity.
-    return b.cluster_dimensions[1] - b.cluster_dimensions[2] >= b.L-1 ||
-           b.cluster_dimensions[3] - b.cluster_dimensions[4] >= b.L-1
+    return abs(b.cluster_dimensions[1] - b.cluster_dimensions[2]) >= b.L-1 ||
+           abs(b.cluster_dimensions[3] - b.cluster_dimensions[4]) >= b.L-1
 end
 
 function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
@@ -480,7 +473,7 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
         # Status of neighbour fiber
         s::Int64 = b.status[neighbour_fiber]
         # If this adjecent fiber is is BROKEN,
-        if s == 0#BROKEN
+        if s == BROKEN
             # We then have to add this to the list of unexplored 
             nr_unexplored = add_unexplored!(neighbour_fiber, nr_unexplored, b)
             # We set this fiber to be part of the current cluster
@@ -491,11 +484,11 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
             store_possition!(current_fiber, neighbour_fiber, i, b)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
-        elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
+        elseif s == ALIVE || s == PAST_BORDER
             # We have to change to CURRENT_BORDER so that
             # we don't count it again since a fiber will often
             # be checked multiple times
-            b.status[neighbour_fiber] = -2 #CURRENT_BORDER
+            b.status[neighbour_fiber] = CURRENT_BORDER
             b.cluster_outline_length[b.c] += 1
             b.cluster_outline[b.cluster_outline_length[b.c]] = neighbour_fiber
         end
@@ -586,7 +579,7 @@ function apply_simple_stress(b::FB)
     for i in 1:b.cluster_outline_length[b.c]
         fiber = b.cluster_outline[i]
         b.σ[fiber] += added_stress
-        b.status[fiber] = -3 #PAST_BORDER
+        b.status[fiber] = PAST_BORDER
     end
 end
 
@@ -604,7 +597,7 @@ function apply_stress(b::FB)
         g = C * b.neighbourhood_values[i] ^(-b.α)
         added_stress =  b.cluster_size[b.c]*b.neighbourhood_values[i]*g
         b.σ[fiber] += added_stress
-        b.status[fiber] = -3 #PAST_BORDER
+        b.status[fiber] = PAST_BORDER
     end
 end
 
