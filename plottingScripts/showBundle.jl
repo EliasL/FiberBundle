@@ -57,7 +57,11 @@ function plot_matrix(m::AbstractMatrix; use_shift=false, show=true)
 end
 
 function plot_fb_axes(b::FB, minor_axes::AbstractVector, major_axes::AbstractVector)
-    
+    for c in 1:b.c
+        x,y = b.cluster_cm_x, b.cluster_cm_y
+        minor_slope = minor_axes[c]
+        major_slope = major_axes[c]
+        fetc 
 
 function plot_fb_cm(b::FB)
     plot!(b.cluster_cm_x, b.cluster_cm_y, seriestype = :scatter)

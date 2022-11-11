@@ -12,13 +12,13 @@ global_logger(logger)
 
 
 seeds = 0:500-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
-L = [16, 32, 64, 128]
-t = (0:9) ./ 10#vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20)
+L = [128]
+t = (0:0) ./ 10#vcat((0:8) ./ 20, (5:7) ./ 10, (16:19) ./20)
 α = [2.0]#[1, 1.5, 2, 2.5, 3, 5, 9, 15, 30]
 #t = vcat((0:8) ./ 20, (5:9) ./ 10)
 NR = ["SNR", "UNR"]
 use_threads = true
-overwrite = true
+overwrite = false
 #time_estimate(L, t, NR, seeds, rough_estimate=true)
 
 if use_threads

@@ -4491,3 +4491,750 @@
 └ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
       From worker 29:	199.518141 seconds (1.91 M allocations: 74.824 MiB, 0.01% gc time)
       From worker 31:	285.984919 seconds (2.16 M allocations: 84.627 MiB, 0.01% gc time)
+      From worker 32:	265.585127 seconds (2.21 M allocations: 86.610 MiB, 0.01% gc time)
+┌ LogLevel(-2): 69%, Active workers: 15, Completed tasks: 105.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 27:	252.845017 seconds (2.09 M allocations: 81.930 MiB, 0.01% gc time)
+      From worker 10:	227.297405 seconds (2.00 M allocations: 78.222 MiB, 0.01% gc time)
+      From worker 38:	204.625838 seconds (1.96 M allocations: 75.573 MiB, 0.01% gc time)
+      From worker 14:	207.269537 seconds (1.93 M allocations: 75.393 MiB, 0.01% gc time)
+      From worker 21:	241.335022 seconds (2.19 M allocations: 85.609 MiB, 0.01% gc time)
+      From worker 2:	219.999229 seconds (2.03 M allocations: 79.546 MiB, 0.01% gc time)
+      From worker 28:	240.596563 seconds (2.09 M allocations: 81.630 MiB, 0.03% gc time)
+      From worker 22:	277.241203 seconds (2.18 M allocations: 85.256 MiB, 0.01% gc time)
+      From worker 8:	211.436467 seconds (2.05 M allocations: 80.168 MiB, 0.01% gc time)
+      From worker 26:	225.937583 seconds (2.09 M allocations: 81.880 MiB, 0.01% gc time)
+      From worker 17:	263.186857 seconds (2.22 M allocations: 86.984 MiB, 0.01% gc time)
+      From worker 23:	207.881370 seconds (2.00 M allocations: 78.202 MiB, 0.01% gc time)
+      From worker 30:	194.732600 seconds (2.24 M allocations: 87.496 MiB, 0.01% gc time)
+      From worker 15:	207.506035 seconds (2.10 M allocations: 82.350 MiB, 0.02% gc time)
+      From worker 24:	249.215236 seconds (2.29 M allocations: 89.487 MiB, 0.01% gc time)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=0_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=0_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=1_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=1_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=2_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=2_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=3_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=3_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=4_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=4_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=5_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=5_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=6_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=6_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=7_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=7_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=8_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=8_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=9_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=9_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=10_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=2.0 dist=Uniform L=256 nr=SNR t=0.9/a=2.0 dist=Uniform L=256 nr=SNR t=0.9 s=10_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:157
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=256 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=256 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 1%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 2%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 12:	 34.114239 seconds (279.08 k allocations: 10.919 MiB)
+┌ LogLevel(-2): 3%, Active workers: 40, Completed tasks: 1.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 40:	 37.338338 seconds (313.30 k allocations: 12.092 MiB, 0.02% gc time)
+      From worker 37:	 37.794448 seconds (316.88 k allocations: 12.230 MiB)
+      From worker 34:	 43.057633 seconds (363.58 k allocations: 14.032 MiB)
+      From worker 5:	 44.540644 seconds (376.71 k allocations: 14.737 MiB)
+      From worker 36:	 44.570320 seconds (376.95 k allocations: 14.549 MiB)
+      From worker 14:	 44.700378 seconds (301.83 k allocations: 11.808 MiB)
+      From worker 4:	 45.628838 seconds (376.35 k allocations: 14.724 MiB, 0.01% gc time)
+      From worker 13:	 45.930517 seconds (380.47 k allocations: 14.885 MiB, 0.01% gc time)
+┌ LogLevel(-2): 4%, Active workers: 40, Completed tasks: 9.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 41:	 53.945945 seconds (452.52 k allocations: 17.465 MiB, 0.01% gc time)
+      From worker 6:	 54.317831 seconds (438.73 k allocations: 17.164 MiB, 0.01% gc time)
+      From worker 3:	 55.316421 seconds (444.05 k allocations: 17.372 MiB)
+      From worker 17:	 56.595695 seconds (380.03 k allocations: 14.868 MiB, 0.01% gc time)
+      From worker 39:	 56.667836 seconds (404.33 k allocations: 15.605 MiB)
+      From worker 22:	 56.946551 seconds (379.76 k allocations: 14.857 MiB)
+      From worker 35:	 57.481873 seconds (474.51 k allocations: 18.314 MiB, 0.01% gc time)
+      From worker 16:	 57.631546 seconds (459.65 k allocations: 17.982 MiB)
+┌ LogLevel(-2): 5%, Active workers: 40, Completed tasks: 16.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 32:	 58.346029 seconds (384.46 k allocations: 15.041 MiB, 0.03% gc time)
+      From worker 30:	 58.632904 seconds (473.97 k allocations: 18.543 MiB)
+      From worker 29:	 59.347351 seconds (391.65 k allocations: 15.322 MiB)
+      From worker 9:	 59.696064 seconds (483.06 k allocations: 18.898 MiB, 0.01% gc time)
+      From worker 31:	 60.898264 seconds (406.05 k allocations: 15.885 MiB, 0.02% gc time)
+      From worker 38:	 62.027277 seconds (421.60 k allocations: 16.272 MiB)
+      From worker 15:	 62.390758 seconds (412.79 k allocations: 16.149 MiB, 0.02% gc time)
+      From worker 25:	 63.307323 seconds (502.57 k allocations: 19.661 MiB)
+      From worker 18:	 63.659322 seconds (518.61 k allocations: 20.289 MiB)
+      From worker 27:	 63.968400 seconds (415.85 k allocations: 16.269 MiB, 0.02% gc time)
+      From worker 24:	 65.608539 seconds (429.68 k allocations: 16.810 MiB)
+┌ LogLevel(-2): 6%, Active workers: 40, Completed tasks: 28.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 28:	 69.021587 seconds (535.76 k allocations: 22.525 MiB, 0.17% compilation time)
+      From worker 20:	 71.794920 seconds (471.09 k allocations: 18.430 MiB, 0.01% gc time)
+      From worker 19:	 73.003020 seconds (568.09 k allocations: 22.225 MiB)
+      From worker 26:	 73.968807 seconds (477.83 k allocations: 18.693 MiB, 0.02% gc time)
+      From worker 40:	 37.832297 seconds (371.60 k allocations: 14.343 MiB, 0.01% gc time)
+      From worker 23:	 77.251920 seconds (497.02 k allocations: 19.444 MiB)
+      From worker 34:	 34.545492 seconds (313.57 k allocations: 12.103 MiB)
+      From worker 11:	 77.983161 seconds (612.74 k allocations: 23.972 MiB)
+      From worker 12:	 44.739113 seconds (355.02 k allocations: 13.889 MiB)
+┌ LogLevel(-2): 7%, Active workers: 40, Completed tasks: 37.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 4:	 37.563096 seconds (347.54 k allocations: 13.596 MiB)
+      From worker 14:	 39.363154 seconds (288.21 k allocations: 11.275 MiB)
+      From worker 2:	 84.360819 seconds (531.65 k allocations: 20.799 MiB)
+      From worker 33:	 85.332690 seconds (664.18 k allocations: 25.635 MiB, 0.01% gc time)
+      From worker 13:	 40.214443 seconds (373.60 k allocations: 14.616 MiB)
+      From worker 5:	 43.201097 seconds (395.73 k allocations: 15.482 MiB)
+      From worker 9:	 30.425804 seconds (291.31 k allocations: 11.396 MiB)
+      From worker 41:	 37.203101 seconds (350.66 k allocations: 13.534 MiB)
+┌ LogLevel(-2): 8%, Active workers: 40, Completed tasks: 45.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 8:	 92.137565 seconds (579.09 k allocations: 22.655 MiB, 0.01% gc time)
+      From worker 10:	 97.783072 seconds (609.76 k allocations: 23.855 MiB, 0.01% gc time)
+      From worker 36:	 52.988242 seconds (480.04 k allocations: 18.528 MiB, 0.01% gc time)
+      From worker 6:	 44.560680 seconds (407.07 k allocations: 15.925 MiB)
+      From worker 31:	 38.810030 seconds (276.77 k allocations: 10.828 MiB)
+      From worker 21:	100.728916 seconds (622.98 k allocations: 24.372 MiB, 0.01% gc time)
+      From worker 18:	 37.415212 seconds (340.57 k allocations: 13.324 MiB, 0.02% gc time)
+┌ LogLevel(-2): 9%, Active workers: 40, Completed tasks: 52.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 22:	 49.326633 seconds (349.08 k allocations: 13.657 MiB)
+      From worker 3:	 52.732384 seconds (460.41 k allocations: 18.012 MiB, 0.01% gc time)
+      From worker 7:	108.910333 seconds (681.01 k allocations: 26.643 MiB)
+      From worker 24:	 43.501409 seconds (310.65 k allocations: 12.153 MiB)
+      From worker 37:	 71.545308 seconds (615.49 k allocations: 23.755 MiB, 0.01% gc time)
+      From worker 39:	 53.243060 seconds (379.17 k allocations: 14.634 MiB)
+      From worker 25:	 48.935067 seconds (431.72 k allocations: 16.890 MiB, 0.02% gc time)
+      From worker 40:	 37.531630 seconds (358.41 k allocations: 13.833 MiB)
+      From worker 30:	 55.117421 seconds (481.06 k allocations: 18.820 MiB)
+┌ LogLevel(-2): 10%, Active workers: 39, Completed tasks: 61.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 2:	 30.185911 seconds (227.48 k allocations: 8.900 MiB)
+      From worker 5:	 27.354428 seconds (267.42 k allocations: 10.462 MiB, 0.01% gc time)
+      From worker 15:	 59.276246 seconds (404.72 k allocations: 15.834 MiB)
+      From worker 38:	 60.778649 seconds (428.18 k allocations: 16.526 MiB)
+      From worker 29:	 63.380378 seconds (513.86 k allocations: 21.668 MiB, 0.22% compilation time)
+┌ LogLevel(-2): 11%, Active workers: 38, Completed tasks: 66.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 13:	 40.238092 seconds (378.30 k allocations: 14.800 MiB)
+      From worker 21:	 26.856700 seconds (211.38 k allocations: 8.269 MiB)
+      From worker 11:	 49.925454 seconds (460.14 k allocations: 18.002 MiB, 0.01% gc time)
+      From worker 8:	 35.950752 seconds (272.34 k allocations: 10.654 MiB)
+      From worker 16:	 70.998372 seconds (600.32 k allocations: 23.486 MiB, 0.01% gc time)
+      From worker 34:	 51.011831 seconds (390.28 k allocations: 15.063 MiB, 0.03% gc time)
+      From worker 33:	 45.747308 seconds (452.29 k allocations: 17.457 MiB, 0.01% gc time)
+      From worker 41:	 39.934346 seconds (403.33 k allocations: 15.567 MiB)
+      From worker 4:	 48.212349 seconds (453.23 k allocations: 17.731 MiB)
+      From worker 17:	 75.957770 seconds (518.44 k allocations: 20.282 MiB)
+      From worker 32:	 75.088637 seconds (502.92 k allocations: 19.675 MiB, 0.03% gc time)
+      From worker 23:	 57.512576 seconds (401.18 k allocations: 15.695 MiB)
+      From worker 9:	 45.414529 seconds (445.68 k allocations: 17.436 MiB)
+┌ LogLevel(-2): 12%, Active workers: 33, Completed tasks: 79.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 25:	 24.698161 seconds (283.12 k allocations: 11.076 MiB, 0.04% gc time)
+      From worker 18:	 35.878198 seconds (387.39 k allocations: 15.155 MiB, 0.02% gc time)
+      From worker 19:	 64.783482 seconds (587.29 k allocations: 22.976 MiB, 0.01% gc time)
+      From worker 24:	 29.472912 seconds (246.72 k allocations: 9.652 MiB)
+      From worker 28:	 72.407308 seconds (495.96 k allocations: 19.403 MiB)
+      From worker 3:	 33.426900 seconds (375.29 k allocations: 14.682 MiB)
+      From worker 6:	 43.788297 seconds (463.95 k allocations: 18.151 MiB)
+      From worker 20:	 71.668660 seconds (519.01 k allocations: 20.304 MiB)
+      From worker 36:	 46.582394 seconds (510.14 k allocations: 19.689 MiB)
+      From worker 14:	 60.613313 seconds (451.36 k allocations: 17.658 MiB)
+      From worker 12:	 66.747049 seconds (482.53 k allocations: 18.877 MiB, 0.02% gc time)
+      From worker 31:	 46.039593 seconds (373.15 k allocations: 14.598 MiB)
+┌ LogLevel(-2): 13%, Active workers: 24, Completed tasks: 91.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 7:	 38.822851 seconds (336.23 k allocations: 13.154 MiB)
+      From worker 10:	 51.846797 seconds (423.83 k allocations: 16.581 MiB)
+      From worker 16:	 21.898124 seconds (311.45 k allocations: 12.185 MiB)
+      From worker 29:	 27.741101 seconds (283.47 k allocations: 11.090 MiB, 0.09% gc time)
+      From worker 35:	 93.736415 seconds (844.20 k allocations: 32.583 MiB)
+      From worker 30:	 38.167791 seconds (469.05 k allocations: 18.350 MiB, 0.01% gc time)
+      From worker 11:	 24.335991 seconds (355.87 k allocations: 13.922 MiB)
+      From worker 26:	 78.823745 seconds (578.07 k allocations: 22.615 MiB, 0.01% gc time)
+      From worker 37:	 44.287799 seconds (556.83 k allocations: 21.492 MiB)
+      From worker 27:	 90.760609 seconds (632.11 k allocations: 24.729 MiB)
+┌ LogLevel(-2): 14%, Active workers: 19, Completed tasks: 101.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 2:	 43.345066 seconds (418.87 k allocations: 16.387 MiB)
+      From worker 33:	 27.190081 seconds (471.24 k allocations: 18.188 MiB)
+      From worker 23:	 26.472635 seconds (343.01 k allocations: 13.419 MiB)
+      From worker 8:	 33.796243 seconds (393.68 k allocations: 15.402 MiB)
+      From worker 22:	 57.434359 seconds (524.78 k allocations: 20.531 MiB, 0.01% gc time)
+      From worker 10:	 14.414905 seconds (279.48 k allocations: 10.934 MiB)
+      From worker 20:	 21.862666 seconds (361.58 k allocations: 14.146 MiB)
+      From worker 7:	 17.782737 seconds (331.70 k allocations: 12.977 MiB, 0.02% gc time)
+      From worker 39:	 56.332407 seconds (570.61 k allocations: 22.023 MiB)
+      From worker 35:	 15.820411 seconds (440.46 k allocations: 17.000 MiB, 0.02% gc time)
+      From worker 38:	 44.340484 seconds (524.10 k allocations: 20.228 MiB)
+      From worker 15:	 45.488613 seconds (516.89 k allocations: 20.222 MiB)
+      From worker 21:	 39.299963 seconds (600.98 k allocations: 25.076 MiB, 0.37% compilation time)
+      From worker 19:	 30.118866 seconds (598.15 k allocations: 23.400 MiB)
+      From worker 32:	 36.728555 seconds (508.46 k allocations: 19.892 MiB)
+      From worker 27:	 16.144155 seconds (383.93 k allocations: 15.020 MiB)
+      From worker 17:	 40.912073 seconds (604.62 k allocations: 23.654 MiB)
+      From worker 28:	 31.858566 seconds (555.72 k allocations: 21.740 MiB, 0.08% gc time)
+      From worker 26:	 22.174441 seconds (508.91 k allocations: 19.910 MiB)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=0_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=0_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=1_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=1_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=2_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=2_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=3_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=3_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=4_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=4_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=5_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=5_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=6_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=6_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=7_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=7_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=8_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=8_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=9_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=9_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=10_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=256 nr=UNR t=0.9/a=0.0 dist=Uniform L=256 nr=UNR t=0.9 s=10_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:157
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=2.0 dist=Uniform L=512 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 1%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 2%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 3%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 4%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 5%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 6%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 7%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 8%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 9%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 10%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 26:	4823.619622 seconds (3.64 M allocations: 142.416 MiB, 0.01% gc time)
+┌ LogLevel(-2): 11%, Active workers: 40, Completed tasks: 1.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 19:	5289.678467 seconds (4.12 M allocations: 162.731 MiB, 0.01% gc time, 0.01% compilation time)
+      From worker 30:	5292.961841 seconds (3.86 M allocations: 151.223 MiB, 0.01% gc time)
+      From worker 12:	5364.147374 seconds (3.84 M allocations: 150.199 MiB, 0.01% gc time)
+      From worker 9:	5364.232689 seconds (3.92 M allocations: 153.433 MiB, 0.01% gc time)
+      From worker 31:	5470.912094 seconds (4.10 M allocations: 160.410 MiB, 0.01% gc time)
+      From worker 36:	5545.997150 seconds (4.28 M allocations: 166.850 MiB, 0.01% gc time, 0.00% compilation time)
+      From worker 15:	5552.100856 seconds (3.98 M allocations: 155.828 MiB, 0.01% gc time)
+      From worker 28:	5580.456809 seconds (4.09 M allocations: 159.994 MiB, 0.01% gc time)
+      From worker 32:	5604.703089 seconds (4.22 M allocations: 167.075 MiB, 0.01% gc time, 0.00% compilation time)
+      From worker 3:	5631.438844 seconds (4.11 M allocations: 162.182 MiB, 0.01% gc time, 0.00% compilation time)
+      From worker 14:	5666.489315 seconds (4.08 M allocations: 159.543 MiB, 0.01% gc time)
+┌ LogLevel(-2): 12%, Active workers: 40, Completed tasks: 12.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 27:	5723.449755 seconds (4.12 M allocations: 161.110 MiB, 0.00% gc time)
+      From worker 21:	5729.487604 seconds (4.19 M allocations: 163.869 MiB, 0.00% gc time)
+      From worker 7:	5737.256967 seconds (4.13 M allocations: 161.525 MiB, 0.01% gc time)
+      From worker 24:	5754.890332 seconds (4.06 M allocations: 158.837 MiB, 0.00% gc time)
+      From worker 22:	5779.534907 seconds (4.25 M allocations: 168.097 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 29:	5812.142048 seconds (4.09 M allocations: 160.132 MiB, 0.00% gc time)
+      From worker 39:	5813.755772 seconds (4.31 M allocations: 166.526 MiB, 0.01% gc time)
+      From worker 13:	5837.377577 seconds (4.16 M allocations: 162.693 MiB, 0.00% gc time)
+      From worker 33:	5851.781685 seconds (4.22 M allocations: 162.959 MiB, 0.01% gc time)
+      From worker 11:	5929.209990 seconds (4.25 M allocations: 166.090 MiB, 0.01% gc time)
+      From worker 25:	5930.072769 seconds (4.25 M allocations: 166.129 MiB, 0.00% gc time)
+      From worker 8:	5951.871603 seconds (4.13 M allocations: 161.575 MiB, 0.00% gc time)
+      From worker 20:	5965.542049 seconds (4.16 M allocations: 162.837 MiB, 0.00% gc time)
+      From worker 23:	6003.925948 seconds (4.28 M allocations: 169.391 MiB, 0.01% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 13%, Active workers: 40, Completed tasks: 26.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 34:	6044.418701 seconds (4.43 M allocations: 171.053 MiB, 0.00% gc time)
+      From worker 40:	6059.976557 seconds (4.43 M allocations: 171.135 MiB, 0.00% gc time)
+      From worker 4:	6341.290172 seconds (4.62 M allocations: 182.492 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 17:	6408.446235 seconds (4.49 M allocations: 175.674 MiB, 0.01% gc time)
+      From worker 2:	6408.671277 seconds (4.45 M allocations: 174.037 MiB, 0.00% gc time)
+┌ LogLevel(-2): 14%, Active workers: 40, Completed tasks: 31.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 6:	6490.619591 seconds (4.53 M allocations: 177.387 MiB, 0.01% gc time)
+      From worker 41:	6515.345330 seconds (4.71 M allocations: 181.799 MiB, 0.00% gc time)
+      From worker 35:	6518.489032 seconds (4.69 M allocations: 180.852 MiB, 0.01% gc time)
+      From worker 16:	6590.379717 seconds (4.64 M allocations: 181.622 MiB, 0.01% gc time)
+      From worker 37:	6758.647094 seconds (4.88 M allocations: 188.236 MiB, 0.01% gc time)
+┌ LogLevel(-2): 15%, Active workers: 40, Completed tasks: 36.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 38:	6833.280391 seconds (4.84 M allocations: 186.646 MiB, 0.01% gc time)
+      From worker 10:	7184.677194 seconds (4.81 M allocations: 188.194 MiB, 0.00% gc time)
+┌ LogLevel(-2): 16%, Active workers: 40, Completed tasks: 38.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 5:	7282.204807 seconds (4.97 M allocations: 194.445 MiB, 0.01% gc time)
+      From worker 18:	7598.729157 seconds (5.36 M allocations: 209.813 MiB, 0.01% gc time)
+┌ LogLevel(-2): 17%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 18%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 19%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 20%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 21%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 19:	4914.514099 seconds (3.84 M allocations: 150.126 MiB, 0.00% gc time)
+      From worker 11:	4393.763484 seconds (3.48 M allocations: 136.106 MiB, 0.00% gc time)
+┌ LogLevel(-2): 22%, Active workers: 40, Completed tasks: 42.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 24:	5011.700336 seconds (3.77 M allocations: 147.382 MiB, 0.00% gc time)
+┌ LogLevel(-2): 23%, Active workers: 40, Completed tasks: 43.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 28:	5345.537870 seconds (3.99 M allocations: 155.969 MiB, 0.00% gc time)
+      From worker 7:	5220.134750 seconds (3.92 M allocations: 153.399 MiB, 0.00% gc time)
+      From worker 15:	5507.772421 seconds (3.97 M allocations: 155.324 MiB, 0.00% gc time)
+      From worker 26:	6240.341401 seconds (4.41 M allocations: 172.453 MiB, 0.01% gc time)
+      From worker 39:	5408.535740 seconds (4.10 M allocations: 158.087 MiB, 0.00% gc time)
+      From worker 34:	5188.482253 seconds (3.93 M allocations: 151.651 MiB, 0.00% gc time)
+      From worker 12:	5886.688467 seconds (4.29 M allocations: 167.657 MiB, 0.00% gc time)
+      From worker 36:	5768.252899 seconds (4.40 M allocations: 169.725 MiB, 0.00% gc time)
+      From worker 9:	5992.077064 seconds (4.34 M allocations: 169.735 MiB, 0.00% gc time)
+┌ LogLevel(-2): 24%, Active workers: 40, Completed tasks: 52.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 32:	5858.307290 seconds (4.15 M allocations: 162.225 MiB, 0.00% gc time)
+      From worker 23:	5513.737021 seconds (4.08 M allocations: 159.696 MiB, 0.00% gc time)
+      From worker 3:	5903.526395 seconds (4.36 M allocations: 170.635 MiB, 0.00% gc time)
+      From worker 41:	5049.563148 seconds (4.06 M allocations: 156.808 MiB, 0.00% gc time)
+      From worker 4:	5224.957869 seconds (3.88 M allocations: 151.913 MiB, 0.01% gc time)
+      From worker 25:	5674.806371 seconds (4.20 M allocations: 164.145 MiB, 0.00% gc time)
+      From worker 13:	5801.240371 seconds (4.17 M allocations: 163.016 MiB, 0.00% gc time)
+      From worker 29:	5837.678133 seconds (4.20 M allocations: 164.375 MiB, 0.00% gc time)
+      From worker 30:	6402.843489 seconds (4.46 M allocations: 174.482 MiB, 0.00% gc time)
+      From worker 31:	6281.953232 seconds (4.53 M allocations: 177.372 MiB, 0.00% gc time)
+┌ LogLevel(-2): 25%, Active workers: 40, Completed tasks: 62.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+ERROR: LoadError: MethodError: no method matching +(::Vector{Float64}, ::Float64)
+For element-wise addition, use broadcasting with dot syntax: array .+ scalar
+Closest candidates are:
+  +(::Any, ::Any, !Matched::Any, !Matched::Any...) at /share/apps/eb/cascadelake/software/Julia/1.7.2-linux-x86_64/share/julia/base/operators.jl:655
+  +(!Matched::Base.TwicePrecision, ::Number) at /share/apps/eb/cascadelake/software/Julia/1.7.2-linux-x86_64/share/julia/base/twiceprecision.jl:279
+  +(::AbstractArray, !Matched::StaticArray) at ~/.julia/packages/StaticArrays/PUoe1/src/linalg.jl:13
+  ...
+Stacktrace:
+  [1] (::var"#36#39"{Int64, String, JLD2.JLDFile{JLD2.MmapIO}, Dict{Any, Any}, Int64})(s_file::JLD2.JLDFile{JLD2.MmapIO})
+    @ Main ~/FiberBundle/support/dataManager.jl:154
+  [2] jldopen(::Function, ::String, ::Vararg{String}; kws::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+    @ JLD2 ~/.julia/packages/JLD2/HnW0g/src/loadsave.jl:4
+  [3] jldopen
+    @ ~/.julia/packages/JLD2/HnW0g/src/loadsave.jl:2 [inlined]
+  [4] (::var"#35#38"{JLD2.JLDFile{JLD2.MmapIO}, Dict{Any, Any}, Int64, Vector{Any}, var"#f#25"{var"#f#24#26"{Dict{String, Any}}}})(averaged_file::JLD2.JLDFile{JLD2.MmapIO})
+    @ Main ~/FiberBundle/support/dataManager.jl:138
+  [5] jldopen(::Function, ::String, ::Vararg{String}; kws::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+    @ JLD2 ~/.julia/packages/JLD2/HnW0g/src/loadsave.jl:4
+  [6] jldopen
+    @ ~/.julia/packages/JLD2/HnW0g/src/loadsave.jl:2 [inlined]
+  [7] (::var"#34#37"{Dict{Any, Any}, Int64, Vector{Any}, String, var"#f#25"{var"#f#24#26"{Dict{String, Any}}}})(condensed_file::JLD2.JLDFile{JLD2.MmapIO})
+    @ Main ~/FiberBundle/support/dataManager.jl:131
+  [8] jldopen(::Function, ::String, ::Vararg{String}; kws::Base.Pairs{Symbol, LZ4FrameCompressor, Tuple{Symbol}, NamedTuple{(:compress,), Tuple{LZ4FrameCompressor}}})
+    @ JLD2 ~/.julia/packages/JLD2/HnW0g/src/loadsave.jl:4
+  [9] condense_files(settings::Dict{String, Any}, requested_seeds::UnitRange{Int64}; remove_files::Bool)
+    @ Main ~/FiberBundle/support/dataManager.jl:130
+ [10] clean_after_run
+    @ ~/FiberBundle/support/dataManager.jl:244 [inlined]
+ [11] generate_data(settings::Dict{String, Any}, requested_seeds::UnitRange{Int64}, overwrite::Bool; save_data::Bool, use_threads::Bool)
+    @ Main ~/FiberBundle/dataGenerator.jl:156
+ [12] itterate_settings(dimensions::Vector{Int64}, α::Vector{Float64}, regimes::StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, neighbourhood_rules::Vector{String}, seeds::UnitRange{Int64}; overwrite::Bool, path::String, use_threads::Bool)
+    @ Main ~/FiberBundle/dataGenerator.jl:169
+ [13] macro expansion
+    @ timing.jl:220 [inlined]
+ [14] top-level scope
+    @ ~/FiberBundle/generateData.jl:34
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:24
+      From worker 21:	6084.398455 seconds (4.22 M allocations: 165.146 MiB, 0.00% gc time)
+      From worker 17:	5461.992535 seconds (4.05 M allocations: 158.600 MiB, 0.00% gc time)
+      From worker 33:	6050.815227 seconds (4.41 M allocations: 170.320 MiB, 0.00% gc time)
+      From worker 6:	5550.868790 seconds (4.08 M allocations: 159.563 MiB, 0.00% gc time)
+      From worker 22:	6290.571549 seconds (4.48 M allocations: 175.378 MiB, 0.00% gc time)
+      From worker 8:	6169.987695 seconds (4.36 M allocations: 170.754 MiB, 0.00% gc time)
+┌ LogLevel(-2): 26%, Active workers: 40, Completed tasks: 68.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 35:	5800.970815 seconds (4.35 M allocations: 167.956 MiB, 0.00% gc time)
+      From worker 27:	6639.580213 seconds (4.66 M allocations: 182.407 MiB, 0.00% gc time)
+      From worker 14:	6703.489643 seconds (4.70 M allocations: 184.004 MiB, 0.00% gc time)
+      From worker 20:	6485.080514 seconds (4.58 M allocations: 179.340 MiB, 0.00% gc time)
+      From worker 40:	6459.390301 seconds (4.63 M allocations: 178.881 MiB, 0.00% gc time)
+      From worker 2:	6155.944062 seconds (4.51 M allocations: 176.612 MiB, 0.00% gc time)
+┌ LogLevel(-2): 27%, Active workers: 40, Completed tasks: 74.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 37:	5938.011905 seconds (4.41 M allocations: 170.058 MiB, 0.00% gc time)
+      From worker 10:	5690.152924 seconds (4.17 M allocations: 162.970 MiB, 0.00% gc time)
+      From worker 16:	6434.149424 seconds (4.52 M allocations: 176.725 MiB, 0.00% gc time)
+┌ LogLevel(-2): 28%, Active workers: 40, Completed tasks: 77.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 38:	6322.064604 seconds (4.57 M allocations: 176.247 MiB, 0.00% gc time)
+      From worker 18:	5724.052509 seconds (4.12 M allocations: 161.259 MiB, 0.00% gc time)
+┌ LogLevel(-2): 29%, Active workers: 40, Completed tasks: 79.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 5:	6298.883375 seconds (4.53 M allocations: 177.191 MiB, 0.00% gc time)
+┌ LogLevel(-2): 30%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 31%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 32%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 24:	4276.664112 seconds (3.38 M allocations: 132.110 MiB, 0.00% gc time)
+      From worker 15:	4243.940173 seconds (3.34 M allocations: 130.680 MiB, 0.00% gc time)
+┌ LogLevel(-2): 33%, Active workers: 38, Completed tasks: 82.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 11:	5373.541396 seconds (3.94 M allocations: 154.119 MiB, 0.01% gc time)
+      From worker 7:	5120.779989 seconds (3.86 M allocations: 151.037 MiB, 0.00% gc time)
+┌ LogLevel(-2): 34%, Active workers: 36, Completed tasks: 84.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 3:	4679.050696 seconds (3.60 M allocations: 140.967 MiB, 0.00% gc time)
+      From worker 19:	6175.722245 seconds (4.47 M allocations: 174.975 MiB, 0.00% gc time)
+      From worker 34:	5154.254095 seconds (3.99 M allocations: 153.916 MiB)
+      From worker 21:	4747.632486 seconds (3.62 M allocations: 141.766 MiB)
+      From worker 32:	5137.005320 seconds (3.90 M allocations: 152.407 MiB, 0.00% gc time)
+      From worker 12:	5510.384375 seconds (4.05 M allocations: 158.265 MiB, 0.00% gc time)
+┌ LogLevel(-2): 35%, Active workers: 30, Completed tasks: 90.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 25:	5232.597866 seconds (3.96 M allocations: 154.816 MiB, 0.00% gc time)
+      From worker 26:	5812.541605 seconds (4.36 M allocations: 170.611 MiB, 0.00% gc time)
+      From worker 41:	5434.361602 seconds (4.16 M allocations: 160.408 MiB)
+      From worker 4:	5441.210870 seconds (4.11 M allocations: 160.744 MiB, 0.00% gc time)
+      From worker 23:	5520.663308 seconds (4.24 M allocations: 165.961 MiB, 0.00% gc time)
+      From worker 8:	4922.253316 seconds (3.82 M allocations: 149.260 MiB, 0.00% gc time)
+      From worker 30:	5613.038288 seconds (4.17 M allocations: 163.312 MiB)
+      From worker 6:	5273.656397 seconds (4.04 M allocations: 158.115 MiB, 0.00% gc time)
+      From worker 9:	6021.315334 seconds (4.49 M allocations: 175.684 MiB, 0.00% gc time)
+      From worker 28:	6456.482515 seconds (4.78 M allocations: 187.141 MiB, 0.00% gc time)
+      From worker 29:	5743.798302 seconds (4.34 M allocations: 169.921 MiB, 0.00% gc time)
+      From worker 33:	5509.676119 seconds (4.25 M allocations: 163.950 MiB, 0.00% gc time)
+      From worker 13:	5788.805849 seconds (4.42 M allocations: 172.871 MiB, 0.00% gc time)
+┌ LogLevel(-2): 36%, Active workers: 17, Completed tasks: 103.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 39:	6347.301991 seconds (4.82 M allocations: 186.135 MiB, 0.00% gc time)
+      From worker 10:	4734.911196 seconds (3.90 M allocations: 152.653 MiB, 0.00% gc time)
+      From worker 27:	5354.055793 seconds (4.23 M allocations: 165.507 MiB)
+      From worker 31:	5974.964462 seconds (4.70 M allocations: 183.751 MiB, 0.00% gc time)
+      From worker 22:	5680.147910 seconds (4.45 M allocations: 173.946 MiB, 0.00% gc time)
+      From worker 20:	5300.287509 seconds (4.22 M allocations: 164.999 MiB)
+      From worker 40:	5256.191260 seconds (4.26 M allocations: 164.415 MiB, 0.00% gc time)
+      From worker 14:	5480.009899 seconds (4.29 M allocations: 167.893 MiB, 0.00% gc time)
+      From worker 38:	4966.402271 seconds (4.29 M allocations: 165.743 MiB, 0.00% gc time)
+      From worker 17:	6260.096016 seconds (4.87 M allocations: 190.400 MiB, 0.00% gc time)
+      From worker 18:	4828.299069 seconds (4.11 M allocations: 160.740 MiB, 0.00% gc time)
+      From worker 35:	5843.496058 seconds (4.77 M allocations: 184.195 MiB, 0.00% gc time)
+      From worker 36:	6912.083158 seconds (5.42 M allocations: 209.081 MiB, 0.00% gc time)
+      From worker 16:	5225.544386 seconds (4.35 M allocations: 170.051 MiB, 0.00% gc time)
+      From worker 37:	5657.885778 seconds (4.74 M allocations: 183.100 MiB, 0.00% gc time)
+      From worker 5:	4786.293557 seconds (4.07 M allocations: 159.234 MiB, 0.00% gc time)
+      From worker 2:	5890.190424 seconds (4.88 M allocations: 190.849 MiB, 0.00% gc time)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:157
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=512 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 1%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 2%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 3%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 4%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 5%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 6%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 7%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 8%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 9%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 10%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 11%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 12%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 35:	3378.095891 seconds (4.63 M allocations: 178.557 MiB, 0.00% gc time)
+      From worker 10:	3409.423381 seconds (4.56 M allocations: 178.538 MiB, 0.01% gc time)
+      From worker 3:	3419.053807 seconds (4.60 M allocations: 180.152 MiB, 0.00% gc time)
+      From worker 29:	3427.155947 seconds (4.46 M allocations: 174.293 MiB, 0.01% gc time)
+┌ LogLevel(-2): 13%, Active workers: 40, Completed tasks: 4.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 7:	3489.131894 seconds (4.70 M allocations: 183.803 MiB, 0.00% gc time)
+      From worker 9:	3512.584260 seconds (4.66 M allocations: 182.200 MiB, 0.00% gc time)
+      From worker 16:	3517.390534 seconds (4.74 M allocations: 185.336 MiB, 0.00% gc time)
+      From worker 19:	3524.374117 seconds (4.62 M allocations: 180.794 MiB, 0.00% gc time)
+      From worker 13:	3535.518400 seconds (4.59 M allocations: 179.629 MiB, 0.01% gc time)
+      From worker 37:	3541.530881 seconds (4.82 M allocations: 186.125 MiB, 0.00% gc time)
+      From worker 40:	3546.400833 seconds (4.75 M allocations: 183.463 MiB, 0.00% gc time)
+      From worker 23:	3561.681913 seconds (4.61 M allocations: 180.461 MiB, 0.00% gc time)
+      From worker 18:	3564.491339 seconds (4.67 M allocations: 182.884 MiB, 0.00% gc time)
+      From worker 27:	3581.619392 seconds (4.66 M allocations: 182.423 MiB, 0.01% gc time)
+      From worker 12:	3582.938904 seconds (4.59 M allocations: 179.687 MiB, 0.00% gc time)
+      From worker 25:	3584.338789 seconds (4.71 M allocations: 184.352 MiB, 0.01% gc time)
+      From worker 17:	3601.609614 seconds (4.64 M allocations: 181.589 MiB, 0.00% gc time)
+      From worker 34:	3605.096386 seconds (4.84 M allocations: 186.953 MiB, 0.01% gc time)
+      From worker 33:	3609.313304 seconds (4.81 M allocations: 185.752 MiB, 0.00% gc time)
+      From worker 21:	3628.392415 seconds (4.63 M allocations: 181.074 MiB, 0.02% gc time)
+      From worker 6:	3634.052027 seconds (4.72 M allocations: 184.745 MiB, 0.00% gc time)
+      From worker 24:	3640.275362 seconds (4.62 M allocations: 180.770 MiB)
+      From worker 14:	3658.935044 seconds (4.70 M allocations: 184.017 MiB, 0.01% gc time)
+┌ LogLevel(-2): 14%, Active workers: 40, Completed tasks: 23.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 28:	3671.474163 seconds (4.71 M allocations: 184.096 MiB, 0.00% gc time)
+      From worker 4:	3678.747515 seconds (4.77 M allocations: 186.442 MiB, 0.00% gc time)
+      From worker 38:	3687.579719 seconds (4.77 M allocations: 184.154 MiB, 0.01% gc time)
+      From worker 32:	3696.499951 seconds (4.67 M allocations: 182.819 MiB, 0.01% gc time)
+      From worker 2:	3697.376787 seconds (4.69 M allocations: 183.510 MiB, 0.01% gc time)
+      From worker 39:	3701.445971 seconds (4.85 M allocations: 187.245 MiB, 0.00% gc time)
+      From worker 20:	3701.391598 seconds (4.66 M allocations: 182.412 MiB, 0.01% gc time)
+      From worker 8:	3705.233390 seconds (4.62 M allocations: 180.747 MiB, 0.01% gc time)
+      From worker 5:	3707.372726 seconds (4.71 M allocations: 184.193 MiB, 0.00% gc time)
+      From worker 11:	3707.580704 seconds (4.77 M allocations: 186.802 MiB, 0.00% gc time)
+      From worker 41:	3711.977268 seconds (4.84 M allocations: 186.879 MiB, 0.00% gc time)
+      From worker 36:	3715.219515 seconds (4.91 M allocations: 189.580 MiB, 0.00% gc time)
+      From worker 22:	3763.079618 seconds (4.63 M allocations: 181.047 MiB, 0.00% gc time)
+      From worker 15:	3782.095816 seconds (4.70 M allocations: 183.824 MiB, 0.00% gc time)
+      From worker 30:	3817.100342 seconds (4.88 M allocations: 190.937 MiB, 0.00% gc time)
+┌ LogLevel(-2): 15%, Active workers: 40, Completed tasks: 38.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 31:	3889.872261 seconds (4.75 M allocations: 185.809 MiB, 0.00% gc time)
+      From worker 26:	3928.088931 seconds (4.79 M allocations: 187.310 MiB, 0.00% gc time)
+┌ LogLevel(-2): 16%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 17%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 18%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 19%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 20%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 21%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 22%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 23%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 24%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 25%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 26%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 35:	3522.057384 seconds (4.67 M allocations: 180.195 MiB, 0.01% gc time)
+      From worker 40:	3384.237726 seconds (4.62 M allocations: 178.223 MiB, 0.01% gc time)
+      From worker 7:	3497.677343 seconds (4.66 M allocations: 182.294 MiB, 0.00% gc time)
+      From worker 25:	3406.522782 seconds (4.60 M allocations: 179.859 MiB, 0.00% gc time)
+      From worker 16:	3480.994354 seconds (4.72 M allocations: 184.704 MiB, 0.01% gc time)
+      From worker 10:	3613.119351 seconds (4.72 M allocations: 184.602 MiB, 0.00% gc time)
+      From worker 3:	3607.046690 seconds (4.76 M allocations: 186.258 MiB, 0.00% gc time)
+      From worker 19:	3521.146362 seconds (4.63 M allocations: 181.317 MiB, 0.00% gc time)
+      From worker 37:	3510.064248 seconds (4.82 M allocations: 186.166 MiB, 0.01% gc time)
+      From worker 29:	3627.912526 seconds (4.71 M allocations: 184.332 MiB, 0.00% gc time)
+      From worker 11:	3368.854309 seconds (4.60 M allocations: 179.772 MiB, 0.00% gc time)
+      From worker 24:	3443.429535 seconds (4.49 M allocations: 175.558 MiB, 0.00% gc time)
+      From worker 6:	3464.115626 seconds (4.65 M allocations: 182.027 MiB, 0.00% gc time)
+      From worker 13:	3562.801101 seconds (4.63 M allocations: 181.054 MiB, 0.01% gc time)
+      From worker 9:	3600.133217 seconds (4.65 M allocations: 181.935 MiB, 0.00% gc time)
+      From worker 22:	3354.084608 seconds (4.52 M allocations: 176.751 MiB, 0.00% gc time)
+┌ LogLevel(-2): 27%, Active workers: 40, Completed tasks: 56.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 34:	3544.841590 seconds (4.68 M allocations: 180.537 MiB, 0.00% gc time)
+      From worker 36:	3441.648351 seconds (4.76 M allocations: 183.583 MiB, 0.01% gc time)
+      From worker 33:	3552.293932 seconds (4.77 M allocations: 184.288 MiB, 0.00% gc time)
+      From worker 14:	3523.403475 seconds (4.63 M allocations: 181.224 MiB, 0.00% gc time)
+      From worker 17:	3581.662059 seconds (4.67 M allocations: 182.880 MiB, 0.01% gc time)
+      From worker 38:	3502.219846 seconds (4.68 M allocations: 180.776 MiB, 0.01% gc time)
+      From worker 28:	3518.508994 seconds (4.62 M allocations: 180.888 MiB, 0.00% gc time)
+      From worker 18:	3634.473334 seconds (4.69 M allocations: 183.416 MiB, 0.00% gc time)
+      From worker 5:	3518.496750 seconds (4.63 M allocations: 181.082 MiB, 0.00% gc time)
+      From worker 23:	3670.856616 seconds (4.69 M allocations: 183.326 MiB, 0.00% gc time)
+      From worker 30:	3428.944707 seconds (4.57 M allocations: 178.650 MiB, 0.01% gc time)
+      From worker 2:	3564.845791 seconds (4.58 M allocations: 179.238 MiB, 0.01% gc time)
+      From worker 21:	3676.636538 seconds (4.73 M allocations: 184.858 MiB, 0.00% gc time)
+      From worker 27:	3728.719050 seconds (4.75 M allocations: 185.834 MiB, 0.01% gc time)
+      From worker 12:	3731.519512 seconds (4.63 M allocations: 180.974 MiB, 0.00% gc time)
+┌ LogLevel(-2): 28%, Active workers: 40, Completed tasks: 71.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 20:	3666.509211 seconds (4.70 M allocations: 183.923 MiB, 0.00% gc time)
+      From worker 31:	3501.071162 seconds (4.66 M allocations: 182.254 MiB, 0.00% gc time)
+      From worker 4:	3716.364627 seconds (4.73 M allocations: 185.068 MiB, 0.00% gc time)
+      From worker 39:	3731.206924 seconds (4.79 M allocations: 184.771 MiB, 0.00% gc time)
+      From worker 15:	3712.165316 seconds (4.78 M allocations: 186.902 MiB, 0.00% gc time)
+      From worker 41:	3794.201355 seconds (4.82 M allocations: 186.157 MiB, 0.01% gc time)
+      From worker 32:	3832.219888 seconds (4.74 M allocations: 185.317 MiB, 0.00% gc time)
+      From worker 8:	3852.520279 seconds (4.80 M allocations: 187.605 MiB, 0.00% gc time)
+┌ LogLevel(-2): 29%, Active workers: 40, Completed tasks: 79.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 26:	3763.409340 seconds (4.81 M allocations: 188.247 MiB, 0.00% gc time)
+┌ LogLevel(-2): 30%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 31%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 32%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 33%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 34%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 35%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 36%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 37%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 38%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 39%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 25:	3469.668406 seconds (4.61 M allocations: 180.239 MiB, 0.01% gc time)
+      From worker 7:	3485.461389 seconds (4.59 M allocations: 179.467 MiB, 0.00% gc time)
+      From worker 29:	3453.973563 seconds (4.53 M allocations: 177.083 MiB, 0.00% gc time)
+      From worker 37:	3500.417451 seconds (4.73 M allocations: 182.528 MiB, 0.00% gc time)
+      From worker 10:	3541.084681 seconds (4.58 M allocations: 179.304 MiB, 0.01% gc time)
+      From worker 40:	3643.651004 seconds (4.78 M allocations: 184.544 MiB, 0.00% gc time)
+      From worker 3:	3547.810525 seconds (4.70 M allocations: 184.034 MiB, 0.00% gc time)
+      From worker 16:	3580.537699 seconds (4.72 M allocations: 184.486 MiB, 0.00% gc time)
+      From worker 22:	3467.755751 seconds (4.53 M allocations: 177.382 MiB, 0.00% gc time)
+      From worker 6:	3498.364393 seconds (4.68 M allocations: 183.064 MiB, 0.00% gc time)
+      From worker 35:	3701.233243 seconds (4.81 M allocations: 185.773 MiB, 0.00% gc time)
+      From worker 31:	3220.212802 seconds (4.47 M allocations: 174.988 MiB, 0.01% gc time)
+      From worker 24:	3540.337760 seconds (4.61 M allocations: 180.493 MiB, 0.01% gc time)
+      From worker 23:	3397.441982 seconds (4.62 M allocations: 180.804 MiB, 0.01% gc time)
+      From worker 11:	3560.655400 seconds (4.68 M allocations: 183.286 MiB, 0.01% gc time)
+      From worker 19:	3595.013376 seconds (4.65 M allocations: 181.947 MiB, 0.01% gc time)
+      From worker 9:	3538.929925 seconds (4.70 M allocations: 183.704 MiB, 0.00% gc time)
+      From worker 21:	3346.537016 seconds (4.55 M allocations: 177.934 MiB, 0.00% gc time)
+      From worker 14:	3483.984482 seconds (4.67 M allocations: 182.638 MiB, 0.00% gc time)
+      From worker 13:	3588.450828 seconds (4.74 M allocations: 185.565 MiB, 0.00% gc time)
+      From worker 2:	3431.873326 seconds (4.61 M allocations: 180.465 MiB, 0.00% gc time)
+      From worker 33:	3537.242157 seconds (4.79 M allocations: 184.801 MiB, 0.00% gc time)
+┌ LogLevel(-2): 40%, Active workers: 19, Completed tasks: 101.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 36:	3564.683683 seconds (4.87 M allocations: 188.116 MiB, 0.00% gc time)
+      From worker 4:	3325.283614 seconds (4.60 M allocations: 180.033 MiB, 0.01% gc time)
+      From worker 34:	3572.254433 seconds (4.86 M allocations: 187.598 MiB, 0.01% gc time)
+      From worker 30:	3477.915362 seconds (4.72 M allocations: 184.838 MiB, 0.00% gc time)
+      From worker 38:	3548.258529 seconds (4.84 M allocations: 186.942 MiB, 0.00% gc time)
+      From worker 18:	3553.610073 seconds (4.80 M allocations: 187.740 MiB, 0.00% gc time)
+      From worker 15:	3258.320956 seconds (4.62 M allocations: 180.580 MiB, 0.00% gc time)
+      From worker 41:	3245.264537 seconds (4.73 M allocations: 182.470 MiB)
+      From worker 17:	3574.701674 seconds (4.75 M allocations: 185.973 MiB, 0.01% gc time)
+      From worker 28:	3574.241379 seconds (4.74 M allocations: 185.454 MiB, 0.00% gc time)
+      From worker 27:	3456.924462 seconds (4.82 M allocations: 188.386 MiB, 0.00% gc time)
+      From worker 12:	3456.398133 seconds (4.66 M allocations: 182.149 MiB, 0.01% gc time)
+      From worker 5:	3550.559019 seconds (4.87 M allocations: 190.455 MiB, 0.01% gc time)
+      From worker 32:	3249.177891 seconds (4.58 M allocations: 179.217 MiB, 0.00% gc time)
+      From worker 39:	3377.479507 seconds (4.83 M allocations: 186.505 MiB, 0.00% gc time)
+      From worker 20:	3459.207513 seconds (4.74 M allocations: 185.352 MiB, 0.01% gc time)
+      From worker 26:	3165.409519 seconds (4.64 M allocations: 181.452 MiB, 0.01% gc time)
+      From worker 8:	3316.932540 seconds (4.74 M allocations: 185.584 MiB, 0.00% gc time)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ Warning: last_step not found in data/Uniform/a=0.0 dist=Uniform L=512 nr=UNR t=0.0/a=0.0 dist=Uniform L=512 nr=UNR t=0.0 s=0_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: break_sequence not found in data/Uniform/a=0.0 dist=Uniform L=512 nr=UNR t=0.0/a=0.0 dist=Uniform L=512 nr=UNR t=0.0 s=0_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: tension not found in data/Uniform/a=0.0 dist=Uniform L=512 nr=UNR t=0.0/a=0.0 dist=Uniform L=512 nr=UNR t=0.0 s=0_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:161
+┌ Warning: simulation_time not found in data/Uniform/a=0.0 dist=Uniform L=512 nr=UNR t=0.0/a=0.0 dist=Uniform L=512 nr=UNR t=0.0 s=1_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:142
+┌ Warning: largest_cluster not found in data/Uniform/a=0.0 dist=Uniform L=512 nr=UNR t=0.0/a=0.0 dist=Uniform L=512 nr=UNR t=0.0 s=1_bulk.jld2!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:142

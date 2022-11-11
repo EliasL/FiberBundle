@@ -151,6 +151,8 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
                                 averages[key] = zeros(length(value))
                             end
                         end
+                        println(value)
+                        println(averages[key])
                         averages[key] += value ./ nr_seeds
                         condensed_file["$key/$seed"] = value
                     end
@@ -208,10 +210,7 @@ function get_missing_seeds(settings, requested_seeds)
 end
 
 function prepare_run(settings, requested_seeds::AbstractArray, overwrite=false)
-
-    # Fix this if it is needed
-    #search_for_loose_files(path)
-
+    search_for_loose_files(settings)
 
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
@@ -244,37 +243,26 @@ function clean_after_run(settings, requested_seeds::AbstractArray)
     condense_files(settings, requested_seeds, remove_files=true)
 end
 
-function search_for_loose_files(path)
-    #TODO
-    error("Not fixed yet")
-    return
+function search_for_loose_files(settings)
+    
     @logmsg settingLog "Searching for loose files... "
-    files = readdir(path)
+    files = readdir(settings["path"])
     # Find distribution with lose files
     # Assume there is only one distribution in the directory
     distribution_name = ""
-    Ls = Set([])
-    seeds = Dict()
+    seeds = []
     for f in files
         # Distribution name must end with [a-zA-Z]
-        m = match(r"(^.+[a-zA-Z])([0-9]+)+,([0-9]+)+_bulk.jld2$", f)
-        if m !== nothing
-            distribution_name = m.captures[1]
-            L = parse(Int64, m.captures[2])
-            seed = parse(Int64, m.captures[3])
-            push!(Ls , L)
-            if haskey(seeds, L)
-                push!(seeds[L] , seed)
-            else
-                seeds[L] = [seed]
-            end
+        try
+            s = split(split(f, "s=")[2], "_")[1]
+            push!(seeds, s)
+        catch
+            continue
         end
     end
-    if length(Ls)>0
+    if length(seeds)>0
         @logmsg settingLog "Found loose files, cleaning up... "
-    end
-    for L in Ls
-        #clean_after_run(L, distribution_name, path, seeds[L])
+        clean_after_run(settings, seeds)
     end
     @logmsg settingLog "Done!"
 end
