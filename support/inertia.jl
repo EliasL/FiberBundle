@@ -27,19 +27,25 @@ function diagonalize_inertia_tensors(I_::AbstractMatrix{Float64})
     nr_clusters = size(I_)[1]
     minor_axes = zeros(Float64, nr_clusters, 2)
     major_axes = zeros(Float64, nr_clusters, 2)
+    minor_values = zeros(Float64, nr_clusters)
+    major_values = zeros(Float64, nr_clusters)
 
     for (i, I) in enumerate(eachrow(I_))
         I = SymTridiagonal(I[1:2], I[3:3])
         d = eigen(I)
         if d.values[1] > d.values[2]
-            major_axes[i] = d.vectors[1]
-            minor_axes[i] = d.vectors[2]
+            major_axes[i,:] = d.vectors[1,:]
+            major_values[i] = d.values[1]
+            minor_axes[i,:] = d.vectors[2,:]
+            minor_values[i] = d.values[2]
         else
-            major_axes[i] = d.vectors[2]
-            minor_axes[i] = d.vectors[1]
+            minor_axes[i,:] = d.vectors[1,:]
+            minor_values[i] = d.values[1] 
+            major_axes[i,:] = d.vectors[2,:]
+            major_values[i] = d.values[2]
         end
     end
-    return minor_axes, major_axes
+    return minor_axes, major_axes, minor_values, major_values
 end 
 
 function find_major_and_minor_axes(b::FB)
@@ -51,7 +57,7 @@ function test()
     nr = "SNR"
     path = "data/"
     t = 0.1
-    L=256
+    L=32
     α = 2.0
     seed = 1
     setting = make_settings("Uniform", L, t, nr, α, path)
@@ -61,8 +67,10 @@ function test()
     shift_spanning_cluster!(b)
     resetBundle!(b)
     update_σ!(b)
-    minor_axes, major_axes = find_major_and_minor_axies(b)
-    plot_fb(b, show=false)
+    minor_axes, major_axes, minor_values, major_values = find_major_and_minor_axes(b)
+    p = plot_fb(b, show=false)
+    plot_fb_axes(b, minor_axes, major_axes, minor_values, major_values)
+    display(p)
 end
 
 test()

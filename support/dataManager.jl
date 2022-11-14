@@ -151,8 +151,8 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
                                 averages[key] = zeros(length(value))
                             end
                         end
-                        println(value)
-                        println(averages[key])
+                        #println(value)
+                        #println(averages[key])
                         averages[key] += value ./ nr_seeds
                         condensed_file["$key/$seed"] = value
                     end

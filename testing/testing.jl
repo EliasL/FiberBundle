@@ -4,6 +4,7 @@ using Test
 
 include("../burningMan.jl")
 include("../plottingScripts/showBundle.jl")
+include("../dataGenerator.jl")
 
 seed=0
 Random.seed!(seed) # Setting the seed
@@ -240,6 +241,25 @@ function cm_test()
     # is periodic, it is onlt a question of reference
     @test b.cluster_cm_y[1] in [1,2,3]
 end
+
+function storageTest()
+    test_data_path = "test_data/"
+    settings = make_settings("Uniform", 8, 0.1, "SNR", 2.0, test_data_path)
+
+    # Test clean generation
+    seeds = 1:3
+    for seed in seeds
+        break_bundle(settings, nothing, nothing, seed, use_threads=false)
+    end
+    clean_after_run(settings, seeds)
+
+    # Test overwrite
+    break_bundle(settings, nothing, nothing, 1, use_threads=false)
+    clean_after_run(settings, 1)
+    rm(test_data_path, force=true, recusrive=true)
+end
+
+storageTest()
 
 @testset verbose=true "Tests" begin
     
