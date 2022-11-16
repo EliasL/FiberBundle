@@ -24,7 +24,7 @@ seed_specific_keys = [
 data_keys = vcat(averaged_data_keys, seed_specific_keys)
 
 
-function make_settings(dist, L, t, nr, α, path)
+function make_settings(dist::String, L::Int64, t::Float64, nr::String, α::Float64, path::String)
     settings = Dict(
         "dist" => dist,
         "L" => L,
@@ -250,12 +250,12 @@ function search_for_loose_files(settings)
     # Find distribution with lose files
     # Assume there is only one distribution in the directory
     distribution_name = ""
-    seeds = []
+    seeds::Vector{Int64} = []
     for f in files
         # Distribution name must end with [a-zA-Z]
         try
             s = split(split(f, "s=")[2], "_")[1]
-            push!(seeds, s)
+            push!(seeds, parse(Int, s))
         catch
             continue
         end

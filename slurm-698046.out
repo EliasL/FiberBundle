@@ -1,5 +1,0 @@
-slurmstepd-compute-12: error: *** JOB 698046 ON compute-12 CANCELLED AT 2022-11-10T14:44:14 DUE TO TIME LIMIT ***
-
-signal (15): Terminated
-in expression starting at /home/vemundlu/FiberBundle/generateData.jl:24
-pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)

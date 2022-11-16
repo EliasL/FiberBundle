@@ -8,7 +8,7 @@ include("../plottingScripts/showBundle.jl")
 function inertia_tensors_of_clusters(b::FB)
     I = zeros(Float64, b.c, 3)
     for (i, state) in enumerate(b.status)
-        if state > BROKEN # Then the fiber is part of a cluser
+        if state > 0#BROKEN # Then the fiber is part of a cluser
             x, y = fiber_index_to_xy(i, b.L)
             cmx = b.cluster_cm_x[state]
             cmy = b.cluster_cm_y[state]
@@ -57,7 +57,7 @@ function test()
     nr = "SNR"
     path = "data/"
     t = 0.1
-    L=32
+    L=512
     α = 2.0
     seed = 1
     setting = make_settings("Uniform", L, t, nr, α, path)
@@ -73,4 +73,4 @@ function test()
     display(p)
 end
 
-test()
+#test()

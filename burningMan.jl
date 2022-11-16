@@ -40,8 +40,8 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     cluster_outline_length::Vector{I} = Vector{I}(undef, N)
     # These values are reset for each cluster
     cluster_outline::Vector{I} = Vector{I}(undef, N)
-    cluster_cm_x::Vector{F} = Vector{F}(undef, N)
-    cluster_cm_y::Vector{F} = Vector{F}(undef, N)
+    cluster_cm_x::Vector{F} = zeros(F, N)
+    cluster_cm_y::Vector{F} = zeros(F, N)
     unexplored::Vector{I} = Vector{I}(undef, N)
     # Relative possition of every fiber with respect to it's cluster
     rel_pos_x::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
@@ -139,10 +139,11 @@ function get_fb(settings, without_storage=false)
 end
 
 # Define constants
-ALIVE = -1 #::Int64 = -1 # A fiber that has not yet been broken
-CURRENT_BORDER = -2 #::Int64 = -2 # The border of the current cluster being explored
-PAST_BORDER = -3#::Int64 = -3 # The border of a cluster that has been explored
-BROKEN = 0#::Int64 = 0 # A broken fiber that has not been explored
+# Since they can't be typed in julia version <1.8, we can't use this
+#ALIVE = -1 #::Int64 = -1 # A fiber that has not yet been broken
+#CURRENT_BORDER = -2 #::Int64 = -2 # The border of the current cluster being explored
+#PAST_BORDER = -3#::Int64 = -3 # The border of a cluster that has been explored
+#BROKEN = 0#::Int64 = 0 # A broken fiber that has not been explored
 # Status larger than 0 represents the cluster id that the fiber belongs to
 
  #
@@ -272,16 +273,16 @@ function resetClusters!(b::FB)
         # what cluster they belong to. If this fiber
         # has had a status larger than 0, it means that
         # it has belonged to a cluster. 
-        if s > BROKEN
+        if s > 0#BROKEN
             # In this case, we know that it is broken
             # and should be reset
-            b.status[i] = BROKEN
+            b.status[i] = 0#BROKEN
 
-        elseif s < BROKEN
+        elseif s < 0#BROKEN
             # This means that this fiber was set as either
             # ALIVE, CURRENT_BORDER or PAST_BORDER.
             # Now we reset it to being just ALIVE
-            b.status[i] = ALIVE
+            b.status[i] = -1 #ALIVE
             # We have already added stress to the boarder, so now
             # AFTER having chosen the next fiber to break, we remove
             # this tension and calculate it again
@@ -313,12 +314,12 @@ function findNextFiber!(b::FB)
 end
 
 function break_fiber!(b::FB)
-    b.status[b.break_sequence[b.current_step]] = BROKEN
+    b.status[b.break_sequence[b.current_step]] = 0#BROKEN
     b.σ[b.break_sequence[b.current_step]] = 0
 end
 
 function break_this_fiber!(i::Int64, b::FB)
-    b.status[i] = BROKEN
+    b.status[i] = 0#BROKEN
     b.σ[i] = 0
 end
 
@@ -346,7 +347,7 @@ function update_σ!(b::FB)
     for i in eachindex(b.status)
         #@logmsg σUpdateLog "Breaking fiber $i"
         # If it is broken and unexplored
-        if b.status[i] == BROKEN
+        if b.status[i] == 0#BROKEN
             # We have found a new cluster!
             # increase number of clusters
             b.c += 1
@@ -408,6 +409,15 @@ end
 function normalize_cm(b::FB)
     b.cluster_cm_x[b.c] /= b.cluster_size[b.c]
     b.cluster_cm_y[b.c] /= b.cluster_size[b.c]
+
+    # We don't want the center of mass to end up outside of the grid
+    b.cluster_cm_x[b.c] = mod1(b.cluster_cm_x[b.c], b.L)
+    b.cluster_cm_y[b.c] = mod1(b.cluster_cm_y[b.c], b.L)
+
+    # Also, to not get confused, we reset
+    # the initial possition so that we don't think that it is a cm
+    b.cluster_cm_x[b.N]=0
+    b.cluster_cm_y[b.N]=0
 end
 
 function explore_cluster_at!(i::Int64, b::FB)
@@ -473,7 +483,7 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
         # Status of neighbour fiber
         s::Int64 = b.status[neighbour_fiber]
         # If this adjecent fiber is is BROKEN,
-        if s == BROKEN
+        if s == 0#BROKEN
             # We then have to add this to the list of unexplored 
             nr_unexplored = add_unexplored!(neighbour_fiber, nr_unexplored, b)
             # We set this fiber to be part of the current cluster
@@ -484,11 +494,11 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
             store_possition!(current_fiber, neighbour_fiber, i, b)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
-        elseif s == ALIVE || s == PAST_BORDER
+        elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
             # We have to change to CURRENT_BORDER so that
             # we don't count it again since a fiber will often
             # be checked multiple times
-            b.status[neighbour_fiber] = CURRENT_BORDER
+            b.status[neighbour_fiber] = -2 #CURRENT_BORDER
             b.cluster_outline_length[b.c] += 1
             b.cluster_outline[b.cluster_outline_length[b.c]] = neighbour_fiber
         end
@@ -579,7 +589,7 @@ function apply_simple_stress(b::FB)
     for i in 1:b.cluster_outline_length[b.c]
         fiber = b.cluster_outline[i]
         b.σ[fiber] += added_stress
-        b.status[fiber] = PAST_BORDER
+        b.status[fiber] = -3 #PAST_BORDER
     end
 end
 
@@ -597,7 +607,7 @@ function apply_stress(b::FB)
         g = C * b.neighbourhood_values[i] ^(-b.α)
         added_stress =  b.cluster_size[b.c]*b.neighbourhood_values[i]*g
         b.σ[fiber] += added_stress
-        b.status[fiber] = PAST_BORDER
+        b.status[fiber] = -3 #PAST_BORDER
     end
 end
 

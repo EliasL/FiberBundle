@@ -31,7 +31,7 @@ function break_bundle(settings, progress_channel, working_channel, seed;
         resetBundle!(b)
         break_fiber!(b)
         update_σ!(b)
-        
+                
         update_storage!(b, s, seed)
         if stop_after_spanning && s.spanning_cluster_has_been_found
             break

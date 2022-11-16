@@ -5,6 +5,7 @@ using Test
 include("../burningMan.jl")
 include("../plottingScripts/showBundle.jl")
 include("../dataGenerator.jl")
+include("../support/inertia.jl")
 
 seed=0
 Random.seed!(seed) # Setting the seed
@@ -22,12 +23,12 @@ function basic_test()
     i = b.break_sequence[b.current_step]
     @test i==1 #"The first fiber should break"
     break_fiber!(b)
-    @test b.status[i]==BROKEN #"The first fiber should be broken"
+    @test b.status[i]== 0#BROKEN #"The first fiber should be broken"
     @test sum(b.status) == (-b.N +1) # Now all but one fiber should be broken
     update_σ!(b)
     @test b.neighbours[i, :] == [4,7,3,2] #"Incorrect neighbours: $(neighbours[i, :])"
     @test b.neighbours[9, :] == [3,6,8,7] #"Incorrect neighbours: $(neighbours[9, :])"
-    @test all(b.status[b.neighbours[1,:]] .== PAST_BORDER) #"These should be past borders"
+    @test all(b.status[b.neighbours[1,:]] .== -3)#PAST_BORDER) #"These should be past borders"
     @test all(b.σ[b.neighbours[1,:]] .== 1.25) #"The tension is incorrect"
     @test sum(b.σ) ≈ b.N #"No conservation of tension"
     
@@ -115,9 +116,9 @@ function neighbourhood_id_test()
 end
 
 function neighbourhood_strength_test_with_alpha(nr)
-    for _ in 1:5
-        L = 4
-        b = get_fb(L, α= 1+rand()*10, nr=nr, without_storage=true)
+    for α in [1.0, 2.2, 3.3]
+        L = 3
+        b = get_fb(L, α=α, nr=nr, without_storage=true)
 
         for _ in 1:b.N-1
             findNextFiber!(b)
@@ -212,7 +213,7 @@ function random_spanning_cluster_test()
     end
 end
 
-function cm_test()
+function basic_cm_test()
     # 1,4,7
     # 2,5,8
     # 3,6,9
@@ -222,8 +223,8 @@ function cm_test()
         break_this_fiber!(i,b)
     end
     update_σ!(b)
-    @test b.cluster_cm_x[9] == 1
-    @test b.cluster_cm_y[9] == 1
+    #@test b.cluster_cm_x[9] == 1
+    #@test b.cluster_cm_y[9] == 1
     @test b.cluster_cm_x[1] == 1.5
     @test b.cluster_cm_y[1] == 1.5
 
@@ -233,14 +234,82 @@ function cm_test()
         break_this_fiber!(i,b)
     end
     update_σ!(b)
-    @test b.cluster_cm_x[9] == 2
-    @test b.cluster_cm_y[9] == 1
+    #@test b.cluster_cm_x[9] == 2
+    #@test b.cluster_cm_y[9] == 1
     @test b.cluster_cm_x[1] == 2.5
     # This is a very important test. The cm of this cluster
     # can actually have a y value of 1, 2 or 3. Since the boundry
     # is periodic, it is onlt a question of reference
     @test b.cluster_cm_y[1] in [1,2,3]
 end
+
+function periodic_cm_test()
+
+    #  1  5  9 13
+    #  2  6 10 14
+    #  3  7 11 15
+    #  4  8 12 16
+    L=4
+    b = get_fb(L, without_storage=true)
+    b.status = [-1,  -1,  0,  -1,
+                -1,  -1, -1,  -1,
+                -1,  -1,  0,  -1,
+                -1,  -1,  0,  -1]
+    update_σ!(b)
+    @test b.cluster_cm_x[1] == 4
+    @test b.cluster_cm_y[1] == 3
+
+    #plot_fb(b, show=false, axes=true)
+    #display(plot_fb_cm(b))
+end
+
+function find_strange_fb()
+    for run_nr in 1:500
+        L = 4
+        Random.seed!(run_nr)
+    
+        b=get_fb(L, without_storage=true)
+
+        for k in 1:b.N
+            findNextFiber!(b)
+            resetBundle!(b)
+            break_fiber!(b)
+            update_σ!(b)
+            if !all(0 .<= b.cluster_cm_x .<= b.L) || !all(0 .<= b.cluster_cm_y .<= b.L)
+                println(b.cluster_cm_x)
+                println(b.cluster_cm_y)
+                resetBundle!(b)
+                println(b.status)
+                plot_fb(b, show=false, axes=true)
+                display(plot_fb_cm(b))
+                return 
+            end
+        end
+    end
+end
+#find_strange_fb()
+
+
+function intertiaTest()
+    #  1  5  9 13
+    #  2  6 10 14
+    #  3  7 11 15
+    #  4  8 12 16
+    L=4
+    b = get_fb(L, without_storage=true)
+    b.status = [-1,  -1,  0,  -1,
+                -1,  -1, -1,  -1,
+                -1,  -0,  0,  -1,
+                -1,  -1,  0,  -1]
+    update_σ!(b)
+
+    minor_axes, major_axes, minor_values, major_values = find_major_and_minor_axes(b)
+    p = plot_fb(b, show=false)
+    plot_fb_axes(b, minor_axes, major_axes, minor_values, major_values)
+    display(p)
+end
+
+intertiaTest()
 
 function storageTest()
     test_data_path = "test_data/"
@@ -250,28 +319,54 @@ function storageTest()
     seeds = 1:3
     for seed in seeds
         break_bundle(settings, nothing, nothing, seed, use_threads=false)
+        @test ispath(get_file_name(settings, seed, false))
     end
     clean_after_run(settings, seeds)
+    @test ispath(get_file_name(settings, -1, false))
+    @test ispath(get_file_name(settings, -1, true))
 
-    # Test overwrite
+    # Test overwrite and only go to spanning
     break_bundle(settings, nothing, nothing, 1, use_threads=false)
-    clean_after_run(settings, 1)
-    rm(test_data_path, force=true, recusrive=true)
-end
+    clean_after_run(settings, [1])
+    @test ispath(get_file_name(settings, -1, true))
 
-storageTest()
-
-@testset verbose=true "Tests" begin
-    
-    @testset "Basic" begin basic_test() end
-    @testset "Cluster" begin cluster_test() end
-    @testset "Neighbourhood id" begin neighbourhood_id_test() end
-    @testset "Neighbourhood rules $nr" for nr in ["UNR", "CNR", "SNR"]
-        neighbourhood_strength_test_with_alpha(nr)
+    seed = 1
+    f = load_file(settings, seed=-1, average=false)
+    for key in data_keys
+        @test key*"/$seed" in keys(f)
     end
-    @testset "Store possition" begin test_store_possition() end
-    @testset "Spanning cluster" begin spanning_cluster_test() end
-    @testset "Ransom spanning cluster" begin random_spanning_cluster_test() end
-    @testset "Center of mass" begin cm_test() end
+    f = load_file(settings, seed=-1, average=true)
+    for key in averaged_data_keys
+        @test "average_"*key in keys(f)
+    end
+    expand_file(settings)
+    f = load_file(settings, seed=3, average=false)
+    for key in data_keys
+        @test key in keys(f)
+    end
+    search_for_loose_files(settings)
+    rm(test_data_path, force=true, recursive=true)
 end
-print("Done")
+
+function test()
+    
+    @testset verbose=true "Tests" begin
+        
+        @testset "Basic" begin basic_test() end
+        @testset "Cluster" begin cluster_test() end
+        @testset "Neighbourhood id" begin neighbourhood_id_test() end
+        @testset "Neighbourhood rules $nr" for nr in ["UNR", "CNR", "SNR"]
+            neighbourhood_strength_test_with_alpha(nr)
+        end
+        @testset "Store possition" begin test_store_possition() end
+        @testset "Spanning cluster" begin spanning_cluster_test() end
+        @testset "Ransom spanning cluster" begin random_spanning_cluster_test() end
+        @testset "Center of mass" begin basic_cm_test() 
+                                        periodic_cm_test() end
+        @testset "1D cluster size" begin end
+
+        @testset "Storage" begin storageTest() end
+        
+    end
+end
+#test()

@@ -1,0 +1,1518 @@
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 40 workers... 
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:29
+┌ LogLevel(-1): Preparing workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:7
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:72
+┌ LogLevel(-1): Running settings: 
+│  [8, 16, 32, 64, 128, 256], 
+│  0.0:0.1:1.0, 
+│  [2.0]
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:33
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=128 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 24, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 1%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 2%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 3%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 4%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 5%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 6%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 7%, Active workers: 40, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 26:	 29.819712 seconds (389.50 k allocations: 16.937 MiB, 0.13% gc time, 0.37% compilation time)
+      From worker 24:	 29.954687 seconds (382.32 k allocations: 16.656 MiB, 0.16% gc time, 0.35% compilation time)
+      From worker 34:	 29.998121 seconds (393.38 k allocations: 16.945 MiB, 0.18% gc time, 0.34% compilation time)
+      From worker 11:	 29.813079 seconds (387.38 k allocations: 16.854 MiB, 0.14% gc time, 0.37% compilation time)
+      From worker 31:	 29.110455 seconds (379.00 k allocations: 16.526 MiB, 0.18% gc time, 0.33% compilation time)
+      From worker 3:	 30.294282 seconds (394.72 k allocations: 17.183 MiB, 0.17% gc time, 0.46% compilation time)
+      From worker 2:	 29.515367 seconds (382.62 k allocations: 16.709 MiB, 0.54% gc time, 0.51% compilation time)
+      From worker 37:	 29.451137 seconds (389.67 k allocations: 16.802 MiB, 0.19% gc time, 0.35% compilation time)
+      From worker 35:	 31.023034 seconds (398.59 k allocations: 17.146 MiB, 0.07% gc time, 0.31% compilation time)
+      From worker 41:	 31.172152 seconds (399.96 k allocations: 17.199 MiB, 0.07% gc time, 0.28% compilation time)
+      From worker 8:	 31.175650 seconds (394.65 k allocations: 17.138 MiB, 0.09% gc time, 0.30% compilation time)
+      From worker 25:	 31.196797 seconds (400.05 k allocations: 17.349 MiB, 0.18% gc time, 0.27% compilation time)
+      From worker 16:	 31.262101 seconds (400.68 k allocations: 17.374 MiB, 0.49% gc time, 0.36% compilation time)
+      From worker 23:	 31.361231 seconds (404.53 k allocations: 17.525 MiB, 0.12% gc time, 0.35% compilation time)
+      From worker 22:	 31.409783 seconds (405.46 k allocations: 17.561 MiB, 0.14% gc time, 0.34% compilation time)
+      From worker 33:	 31.591815 seconds (411.38 k allocations: 17.640 MiB, 0.16% gc time, 0.27% compilation time)
+      From worker 13:	 31.681014 seconds (401.69 k allocations: 17.414 MiB, 0.17% gc time, 0.29% compilation time)
+      From worker 38:	 30.465053 seconds (396.60 k allocations: 17.069 MiB, 0.17% gc time, 0.31% compilation time)
+      From worker 6:	 31.808963 seconds (411.49 k allocations: 17.797 MiB, 0.08% gc time, 0.30% compilation time)
+      From worker 36:	 30.460348 seconds (394.24 k allocations: 16.978 MiB, 0.17% gc time, 0.30% compilation time)
+      From worker 20:	 31.903293 seconds (404.53 k allocations: 17.525 MiB, 0.16% gc time, 0.27% compilation time)
+      From worker 40:	 30.915670 seconds (399.00 k allocations: 17.162 MiB, 0.16% gc time, 0.29% compilation time)
+      From worker 10:	 31.858677 seconds (402.63 k allocations: 17.450 MiB, 0.06% gc time, 0.36% compilation time)
+      From worker 30:	 30.772529 seconds (402.23 k allocations: 17.434 MiB, 0.07% gc time, 0.26% compilation time)
+      From worker 4:	 32.083009 seconds (411.66 k allocations: 17.845 MiB, 0.09% gc time, 0.44% compilation time)
+      From worker 21:	 30.554024 seconds (396.06 k allocations: 17.193 MiB, 0.17% gc time, 0.33% compilation time)
+      From worker 14:	 32.156952 seconds (415.84 k allocations: 17.967 MiB, 0.15% gc time, 0.34% compilation time)
+      From worker 29:	 32.150290 seconds (412.11 k allocations: 17.821 MiB, 0.17% gc time, 0.29% compilation time)
+      From worker 5:	 30.987003 seconds (405.64 k allocations: 17.568 MiB, 0.15% gc time, 0.36% compilation time)
+      From worker 19:	 32.309595 seconds (415.75 k allocations: 17.964 MiB, 0.15% gc time, 0.33% compilation time)
+      From worker 28:	 32.411032 seconds (418.28 k allocations: 18.063 MiB, 0.17% gc time, 0.27% compilation time)
+      From worker 7:	 31.157782 seconds (408.21 k allocations: 17.669 MiB, 0.17% gc time, 0.36% compilation time)
+      From worker 15:	 32.369983 seconds (412.56 k allocations: 17.839 MiB, 0.07% gc time, 0.31% compilation time)
+      From worker 39:	 31.176386 seconds (414.55 k allocations: 17.762 MiB, 0.17% gc time, 0.36% compilation time)
+      From worker 32:	 30.845919 seconds (407.24 k allocations: 17.631 MiB, 0.16% gc time, 0.38% compilation time)
+      From worker 9:	 31.441757 seconds (411.27 k allocations: 17.788 MiB, 0.17% gc time, 0.28% compilation time)
+      From worker 12:	 31.448415 seconds (411.98 k allocations: 17.816 MiB, 0.07% gc time, 0.37% compilation time)
+      From worker 17:	 32.789407 seconds (426.26 k allocations: 18.375 MiB, 0.16% gc time, 0.34% compilation time)
+      From worker 18:	 31.180918 seconds (410.74 k allocations: 17.767 MiB, 0.18% gc time, 0.28% compilation time)
+      From worker 27:	 32.054922 seconds (417.65 k allocations: 18.038 MiB, 0.17% gc time, 0.32% compilation time)
+┌ LogLevel(-2): 8%, Active workers: 40, Completed tasks: 12.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 9%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 10%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 11%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 12%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 13%, Active workers: 40, Completed tasks: 40.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 24:	 24.663864 seconds (266.62 k allocations: 10.431 MiB)
+      From worker 34:	 25.603307 seconds (280.21 k allocations: 10.815 MiB)
+      From worker 11:	 26.209280 seconds (277.48 k allocations: 10.856 MiB)
+      From worker 26:	 26.950282 seconds (286.97 k allocations: 11.227 MiB)
+┌ LogLevel(-2): 14%, Active workers: 40, Completed tasks: 44.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 31:	 27.714323 seconds (282.27 k allocations: 11.043 MiB)
+      From worker 37:	 29.559341 seconds (281.93 k allocations: 10.881 MiB)
+┌ LogLevel(-2): 15%, Active workers: 40, Completed tasks: 46.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 25:	 30.500012 seconds (268.97 k allocations: 10.523 MiB)
+      From worker 3:	 30.820869 seconds (268.50 k allocations: 10.504 MiB)
+      From worker 16:	 31.591953 seconds (277.62 k allocations: 10.861 MiB)
+      From worker 35:	 31.418351 seconds (284.61 k allocations: 10.984 MiB)
+      From worker 8:	 32.445530 seconds (287.11 k allocations: 11.232 MiB)
+      From worker 23:	 32.194175 seconds (277.26 k allocations: 10.847 MiB)
+      From worker 33:	 32.517216 seconds (284.70 k allocations: 10.988 MiB)
+      From worker 38:	 31.990607 seconds (282.34 k allocations: 10.897 MiB)
+      From worker 41:	 33.121283 seconds (298.57 k allocations: 11.524 MiB)
+      From worker 29:	 32.088220 seconds (278.64 k allocations: 10.901 MiB)
+      From worker 28:	 31.978772 seconds (274.34 k allocations: 10.732 MiB)
+      From worker 5:	 32.484961 seconds (277.09 k allocations: 10.840 MiB)
+      From worker 13:	 32.699947 seconds (283.65 k allocations: 11.097 MiB)
+      From worker 36:	 32.527030 seconds (284.79 k allocations: 10.992 MiB)
+      From worker 32:	 32.057655 seconds (274.47 k allocations: 10.738 MiB)
+      From worker 4:	 31.835455 seconds (272.88 k allocations: 10.675 MiB)
+      From worker 30:	 32.989446 seconds (280.68 k allocations: 10.980 MiB)
+      From worker 6:	 33.254467 seconds (281.43 k allocations: 11.010 MiB)
+      From worker 15:	 32.957422 seconds (276.51 k allocations: 10.818 MiB)
+      From worker 2:	 34.471778 seconds (295.99 k allocations: 11.580 MiB)
+      From worker 17:	 32.525857 seconds (281.48 k allocations: 11.012 MiB)
+      From worker 18:	 32.692861 seconds (281.21 k allocations: 11.001 MiB)
+┌ LogLevel(-2): 16%, Active workers: 40, Completed tasks: 68.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 20:	 33.950794 seconds (288.52 k allocations: 11.288 MiB)
+      From worker 10:	 34.268342 seconds (295.40 k allocations: 11.557 MiB)
+      From worker 39:	 33.911298 seconds (290.32 k allocations: 11.205 MiB)
+      From worker 9:	 33.695998 seconds (285.20 k allocations: 11.157 MiB)
+      From worker 19:	 33.977020 seconds (287.59 k allocations: 11.252 MiB)
+      From worker 7:	 34.219721 seconds (283.47 k allocations: 11.090 MiB)
+      From worker 14:	 34.686836 seconds (287.99 k allocations: 11.267 MiB)
+      From worker 27:	 33.755153 seconds (283.16 k allocations: 11.078 MiB)
+      From worker 12:	 34.576554 seconds (284.36 k allocations: 11.124 MiB)
+      From worker 21:	 35.579853 seconds (298.54 k allocations: 11.680 MiB)
+      From worker 40:	 35.985375 seconds (311.17 k allocations: 12.010 MiB)
+      From worker 22:	 37.091129 seconds (309.85 k allocations: 12.122 MiB)
+┌ LogLevel(-2): 17%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 18%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 19%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 20%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 21%, Active workers: 40, Completed tasks: 80.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 34:	 32.890427 seconds (304.89 k allocations: 12.145 MiB, 0.13% gc time, 0.05% compilation time)
+      From worker 24:	 34.317555 seconds (309.07 k allocations: 12.458 MiB, 0.10% gc time, 0.05% compilation time)
+      From worker 11:	 33.091111 seconds (299.05 k allocations: 12.066 MiB, 0.13% gc time, 0.05% compilation time)
+      From worker 31:	 32.126046 seconds (289.65 k allocations: 11.698 MiB, 0.15% gc time, 0.06% compilation time)
+      From worker 26:	 34.755684 seconds (309.82 k allocations: 12.487 MiB, 0.12% gc time, 0.05% compilation time)
+┌ LogLevel(-2): 22%, Active workers: 40, Completed tasks: 85.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 3:	 31.069392 seconds (261.10 k allocations: 10.214 MiB)
+      From worker 25:	 33.143193 seconds (294.93 k allocations: 11.905 MiB, 0.15% gc time, 0.05% compilation time)
+      From worker 35:	 32.107818 seconds (298.14 k allocations: 11.885 MiB, 0.14% gc time, 0.06% compilation time)
+      From worker 37:	 34.575482 seconds (309.52 k allocations: 12.324 MiB, 0.11% gc time, 0.05% compilation time)
+      From worker 36:	 31.208930 seconds (291.52 k allocations: 11.629 MiB, 0.16% gc time, 0.06% compilation time)
+      From worker 17:	 30.546400 seconds (281.98 k allocations: 11.398 MiB, 0.15% gc time, 0.06% compilation time)
+      From worker 41:	 31.726604 seconds (297.91 k allocations: 11.876 MiB, 0.15% gc time, 0.06% compilation time)
+┌ LogLevel(-2): 23%, Active workers: 40, Completed tasks: 90.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 16:	 33.576294 seconds (299.89 k allocations: 12.098 MiB, 0.11% gc time, 0.05% compilation time)
+      From worker 33:	 33.079099 seconds (296.01 k allocations: 11.802 MiB, 0.10% gc time, 0.05% compilation time)
+      From worker 38:	 32.913135 seconds (305.71 k allocations: 12.177 MiB, 0.15% gc time, 0.05% compilation time)
+      From worker 13:	 32.598527 seconds (299.05 k allocations: 12.066 MiB, 0.15% gc time, 0.05% compilation time)
+      From worker 5:	 33.050373 seconds (298.25 k allocations: 12.034 MiB, 0.14% gc time, 0.06% compilation time)
+      From worker 32:	 33.315930 seconds (302.73 k allocations: 12.210 MiB, 0.15% gc time, 0.06% compilation time)
+      From worker 8:	 34.381911 seconds (311.64 k allocations: 12.558 MiB, 0.14% gc time, 0.06% compilation time)
+      From worker 40:	 30.296323 seconds (289.84 k allocations: 11.565 MiB, 0.15% gc time, 0.06% compilation time)
+      From worker 28:	 33.932155 seconds (307.25 k allocations: 12.386 MiB, 0.15% gc time, 0.05% compilation time)
+      From worker 23:	 34.734390 seconds (305.79 k allocations: 12.329 MiB, 0.10% gc time, 0.05% compilation time)
+      From worker 19:	 32.714243 seconds (298.56 k allocations: 12.047 MiB, 0.14% gc time, 0.06% compilation time)
+      From worker 20:	 33.565648 seconds (305.52 k allocations: 12.319 MiB, 0.14% gc time, 0.06% compilation time)
+      From worker 30:	 34.744287 seconds (306.94 k allocations: 12.374 MiB, 0.11% gc time, 0.05% compilation time)
+      From worker 14:	 33.219422 seconds (298.87 k allocations: 12.059 MiB, 0.11% gc time, 0.05% compilation time)
+      From worker 18:	 34.300217 seconds (309.42 k allocations: 12.472 MiB, 0.13% gc time, 0.05% compilation time)
+      From worker 15:	 34.628955 seconds (304.28 k allocations: 12.270 MiB, 0.08% gc time, 0.05% compilation time)
+      From worker 39:	 33.492061 seconds (304.76 k allocations: 12.141 MiB, 0.11% gc time, 0.05% compilation time)
+┌ LogLevel(-2): 24%, Active workers: 40, Completed tasks: 109.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 6:	 35.310717 seconds (308.93 k allocations: 12.453 MiB, 0.12% gc time, 0.05% compilation time)
+      From worker 4:	 35.846267 seconds (296.86 k allocations: 11.614 MiB)
+      From worker 29:	 36.466214 seconds (322.90 k allocations: 12.999 MiB, 0.13% gc time, 0.05% compilation time)
+      From worker 27:	 34.100424 seconds (306.27 k allocations: 12.348 MiB, 0.14% gc time, 0.05% compilation time)
+      From worker 9:	 34.440882 seconds (312.13 k allocations: 12.578 MiB, 0.12% gc time, 0.05% compilation time)
+      From worker 12:	 34.634871 seconds (306.27 k allocations: 12.348 MiB, 0.10% gc time, 0.05% compilation time)
+      From worker 10:	 35.406653 seconds (313.94 k allocations: 12.649 MiB, 0.14% gc time, 0.05% compilation time)
+      From worker 22:	 33.699964 seconds (300.60 k allocations: 12.126 MiB, 0.13% gc time, 0.05% compilation time)
+      From worker 2:	 37.011165 seconds (298.07 k allocations: 11.661 MiB)
+      From worker 21:	 35.389467 seconds (316.38 k allocations: 12.744 MiB, 0.10% gc time, 0.05% compilation time)
+      From worker 7:	 36.759464 seconds (324.67 k allocations: 13.068 MiB, 0.08% gc time, 0.04% compilation time)
+┌ LogLevel(-2): 25%, Active workers: 40, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 26%, Active workers: 40, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 27%, Active workers: 40, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 28%, Active workers: 40, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 29%, Active workers: 40, Completed tasks: 120.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 24:	 34.088087 seconds (285.86 k allocations: 11.184 MiB)
+      From worker 34:	 36.140897 seconds (295.17 k allocations: 11.392 MiB)
+      From worker 31:	 34.906828 seconds (285.25 k allocations: 11.160 MiB)
+      From worker 11:	 35.702843 seconds (287.73 k allocations: 11.257 MiB)
+      From worker 26:	 35.097659 seconds (279.70 k allocations: 10.942 MiB)
+      From worker 35:	 31.985644 seconds (276.40 k allocations: 10.668 MiB)
+      From worker 41:	 30.815969 seconds (263.12 k allocations: 10.155 MiB)
+┌ LogLevel(-2): 30%, Active workers: 40, Completed tasks: 127.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 36:	 31.365276 seconds (270.37 k allocations: 10.435 MiB)
+      From worker 25:	 34.121196 seconds (272.74 k allocations: 10.670 MiB)
+      From worker 8:	 31.199316 seconds (252.53 k allocations: 9.879 MiB)
+      From worker 3:	 36.395629 seconds (289.51 k allocations: 11.326 MiB)
+      From worker 37:	 35.563143 seconds (288.32 k allocations: 11.128 MiB)
+      From worker 38:	 33.681174 seconds (284.79 k allocations: 10.991 MiB)
+      From worker 17:	 35.328778 seconds (294.07 k allocations: 11.505 MiB)
+      From worker 32:	 33.428822 seconds (278.55 k allocations: 10.898 MiB)
+      From worker 23:	 33.177076 seconds (266.80 k allocations: 10.438 MiB)
+┌ LogLevel(-2): 31%, Active workers: 40, Completed tasks: 136.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 19:	 32.696710 seconds (273.45 k allocations: 10.698 MiB)
+      From worker 13:	 34.893130 seconds (287.99 k allocations: 11.267 MiB)
+      From worker 20:	 32.947356 seconds (275.09 k allocations: 10.762 MiB)
+      From worker 28:	 34.262161 seconds (289.90 k allocations: 11.341 MiB)
+      From worker 40:	 34.739397 seconds (293.76 k allocations: 11.338 MiB)
+      From worker 33:	 36.190795 seconds (292.95 k allocations: 11.306 MiB)
+      From worker 16:	 37.093555 seconds (293.67 k allocations: 11.489 MiB)
+      From worker 5:	 35.839084 seconds (282.71 k allocations: 11.060 MiB)
+      From worker 9:	 32.645929 seconds (271.94 k allocations: 10.639 MiB)
+      From worker 4:	 33.226352 seconds (275.58 k allocations: 10.781 MiB)
+      From worker 39:	 34.135218 seconds (280.39 k allocations: 10.822 MiB)
+      From worker 10:	 33.173047 seconds (274.47 k allocations: 10.738 MiB)
+      From worker 27:	 34.496228 seconds (286.62 k allocations: 11.213 MiB)
+      From worker 30:	 36.027966 seconds (286.48 k allocations: 11.208 MiB)
+      From worker 14:	 35.748399 seconds (287.37 k allocations: 11.242 MiB)
+      From worker 21:	 32.412778 seconds (275.40 k allocations: 10.774 MiB)
+      From worker 15:	 35.886362 seconds (285.02 k allocations: 11.151 MiB)
+      From worker 6:	 35.591553 seconds (281.65 k allocations: 11.019 MiB)
+      From worker 12:	 34.499624 seconds (274.20 k allocations: 10.727 MiB)
+      From worker 18:	 36.392768 seconds (284.27 k allocations: 11.121 MiB)
+┌ LogLevel(-2): 32%, Active workers: 40, Completed tasks: 156.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 29:	 35.966023 seconds (294.73 k allocations: 11.530 MiB)
+      From worker 22:	 35.583253 seconds (281.87 k allocations: 11.027 MiB)
+      From worker 7:	 35.876532 seconds (282.67 k allocations: 11.059 MiB)
+      From worker 2:	 38.125615 seconds (294.17 k allocations: 11.508 MiB)
+┌ LogLevel(-2): 33%, Active workers: 40, Completed tasks: 160.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 34%, Active workers: 40, Completed tasks: 160.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 35%, Active workers: 40, Completed tasks: 160.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 36%, Active workers: 40, Completed tasks: 160.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 24:	 34.060094 seconds (277.89 k allocations: 10.872 MiB, 0.11% gc time)
+┌ LogLevel(-2): 37%, Active workers: 39, Completed tasks: 161.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 41:	 33.156096 seconds (282.52 k allocations: 10.904 MiB, 0.08% gc time)
+      From worker 35:	 33.798001 seconds (290.45 k allocations: 11.210 MiB, 0.11% gc time)
+      From worker 34:	 36.216709 seconds (290.04 k allocations: 11.194 MiB, 0.13% gc time)
+      From worker 26:	 34.517297 seconds (275.89 k allocations: 10.793 MiB, 0.12% gc time)
+      From worker 36:	 33.728412 seconds (287.69 k allocations: 11.104 MiB, 0.09% gc time)
+      From worker 11:	 36.586954 seconds (285.82 k allocations: 11.182 MiB, 0.11% gc time)
+      From worker 31:	 36.729405 seconds (289.81 k allocations: 11.338 MiB, 0.13% gc time)
+      From worker 3:	 32.324464 seconds (258.26 k allocations: 10.103 MiB)
+┌ LogLevel(-2): 38%, Active workers: 31, Completed tasks: 169.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 13:	 31.532780 seconds (275.18 k allocations: 10.766 MiB, 0.13% gc time)
+      From worker 38:	 33.051366 seconds (288.68 k allocations: 11.142 MiB, 0.15% gc time)
+      From worker 40:	 30.621588 seconds (272.50 k allocations: 10.517 MiB, 0.09% gc time)
+      From worker 32:	 32.629076 seconds (284.67 k allocations: 11.137 MiB, 0.11% gc time)
+      From worker 8:	 35.130478 seconds (286.79 k allocations: 11.220 MiB, 0.26% gc time)
+      From worker 37:	 34.131360 seconds (284.24 k allocations: 10.970 MiB, 0.13% gc time)
+      From worker 28:	 31.765910 seconds (279.97 k allocations: 10.953 MiB, 0.09% gc time)
+      From worker 20:	 32.077634 seconds (282.05 k allocations: 11.034 MiB, 0.11% gc time)
+      From worker 17:	 33.213944 seconds (291.27 k allocations: 11.395 MiB, 0.10% gc time)
+      From worker 21:	 28.985227 seconds (265.87 k allocations: 10.402 MiB, 0.16% gc time)
+      From worker 19:	 32.941062 seconds (291.14 k allocations: 11.390 MiB, 0.10% gc time)
+      From worker 25:	 36.553241 seconds (304.31 k allocations: 11.905 MiB, 0.12% gc time)
+      From worker 10:	 30.180633 seconds (273.41 k allocations: 10.696 MiB, 0.09% gc time)
+      From worker 16:	 32.501429 seconds (280.37 k allocations: 10.968 MiB, 0.15% gc time)
+      From worker 4:	 31.833767 seconds (274.78 k allocations: 10.750 MiB)
+      From worker 29:	 29.144024 seconds (277.18 k allocations: 10.844 MiB, 0.09% gc time)
+      From worker 23:	 34.319891 seconds (291.67 k allocations: 11.411 MiB, 0.14% gc time)
+      From worker 27:	 30.550534 seconds (285.60 k allocations: 11.173 MiB, 0.13% gc time)
+      From worker 9:	 32.488586 seconds (300.67 k allocations: 11.763 MiB, 0.13% gc time)
+      From worker 15:	 30.364671 seconds (271.86 k allocations: 10.635 MiB, 0.16% gc time)
+      From worker 5:	 32.915303 seconds (292.21 k allocations: 11.432 MiB, 0.12% gc time)
+      From worker 18:	 30.171375 seconds (279.30 k allocations: 10.927 MiB, 0.31% gc time)
+      From worker 39:	 32.359122 seconds (296.94 k allocations: 11.461 MiB, 0.14% gc time)
+      From worker 33:	 33.361846 seconds (301.79 k allocations: 11.648 MiB, 0.14% gc time)
+      From worker 14:	 31.008956 seconds (286.31 k allocations: 11.201 MiB, 0.15% gc time)
+      From worker 22:	 28.968387 seconds (279.04 k allocations: 10.916 MiB, 0.17% gc time)
+      From worker 6:	 30.502829 seconds (286.48 k allocations: 11.208 MiB, 0.15% gc time)
+      From worker 12:	 30.453466 seconds (289.28 k allocations: 11.317 MiB, 0.15% gc time)
+      From worker 2:	 26.160466 seconds (268.45 k allocations: 10.502 MiB)
+      From worker 7:	 27.655817 seconds (282.18 k allocations: 11.039 MiB, 0.17% gc time)
+      From worker 30:	 31.391015 seconds (301.96 k allocations: 11.814 MiB, 0.13% gc time)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 200.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:157
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:233
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=2.0 dist=Uniform L=128 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 26, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 33:	  1.843594 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 35:	  2.058408 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 22:	  2.061184 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 13:	  2.076633 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 30:	  2.081919 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 34:	  2.078168 seconds (17.18 k allocations: 678.875 KiB)
+      From worker 26:	  2.109431 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 24:	  2.126391 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 39:	  2.126538 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 21:	  2.136194 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 3:	  2.144862 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 18:	  2.138752 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 14:	  2.152412 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 37:	  2.149842 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 29:	  2.151486 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 11:	  2.153064 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 20:	  2.156240 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 19:	  2.158545 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 41:	  2.177477 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 38:	  2.179385 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 9:	  2.190796 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 7:	  2.195007 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 32:	  2.187180 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 23:	  2.196774 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 10:	  2.201279 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 27:	  2.207950 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 5:	  2.210509 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 28:	  2.221495 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 17:	  2.231029 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 36:	  2.221807 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 4:	  2.229718 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 40:	  2.234314 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 2:	  2.239286 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 16:	  2.235704 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 25:	  2.241873 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 31:	  2.241990 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 8:	  2.262772 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 12:	  2.259996 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 6:	  2.304162 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 15:	  2.311304 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 33:	  1.668245 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 26:	  1.653050 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 30:	  1.740777 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 13:	  1.775176 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 35:	  1.811842 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 34:	  1.862008 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 18:	  1.757012 seconds (16.80 k allocations: 672.625 KiB)
+      From worker 39:	  1.786405 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 22:	  1.943432 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 24:	  1.856558 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 21:	  1.870822 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 14:	  1.962658 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 19:	  1.956753 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 20:	  1.944701 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 7:	  1.972536 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 23:	  1.958262 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 11:	  2.054903 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 32:	  2.013933 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 17:	  1.960271 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 28:	  1.979912 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 3:	  2.033660 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 38:	  2.025775 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 10:	  2.012776 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 8:	  1.951128 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 37:	  2.152689 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 6:	  1.988371 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 40:	  2.012430 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 29:	  2.152941 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 31:	  2.008412 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 9:	  2.166617 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 27:	  2.077618 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 5:	  2.088022 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 36:	  2.065236 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 2:	  2.039371 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 15:	  2.051668 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 12:	  2.120930 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 16:	  2.138412 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 41:	  2.257023 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 25:	  2.151003 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 4:	  2.173670 seconds (16.80 k allocations: 672.656 KiB)
+┌ LogLevel(-2): 1%, Active workers: 40, Completed tasks: 79.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 33:	  2.074017 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 22:	  1.836630 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 35:	  1.977715 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 26:	  2.102158 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 34:	  1.913746 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 39:	  1.932218 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 30:	  2.117335 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 24:	  1.933538 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 18:	  2.033188 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 21:	  1.944455 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 13:	  2.151737 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 14:	  1.958110 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 17:	  1.827092 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 19:	  2.025250 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 32:	  1.939911 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 20:	  2.073228 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 23:	  2.005387 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 7:	  2.041852 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 10:	  1.953048 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 29:	  1.931869 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 6:	  1.982361 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 12:	  1.893150 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 38:	  2.027259 seconds (17.18 k allocations: 678.875 KiB)
+      From worker 11:	  2.160926 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 15:	  1.959986 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 36:	  1.970282 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 28:	  2.073626 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 8:	  2.093271 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 37:	  2.083690 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 3:	  2.045948 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 31:	  2.054419 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 2:	  1.987822 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 9:	  2.078322 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 4:	  1.939585 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 25:	  2.008495 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 40:	  2.142586 seconds (17.18 k allocations: 678.875 KiB)
+      From worker 27:	  2.096711 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 5:	  2.209773 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 41:	  2.148164 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 16:	  2.176800 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 33:	  1.806699 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 26:	  1.827792 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 39:	  1.858026 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 22:	  2.005658 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 34:	  1.998720 seconds (17.18 k allocations: 678.875 KiB)
+      From worker 24:	  2.021227 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 30:	  2.012615 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 35:	  2.118737 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 19:	  1.816947 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 18:	  2.088562 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 14:	  2.039471 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 13:	  2.134185 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 21:	  2.257050 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 32:	  2.026561 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 23:	  2.022704 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 20:	  2.030570 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 17:	  2.161338 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 6:	  1.952207 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 7:	  2.071242 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 29:	  1.997880 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 11:	  1.964847 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 8:	  1.959702 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 12:	  2.021902 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 28:	  2.052642 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 37:	  2.004271 seconds (17.18 k allocations: 679.156 KiB)
+      From worker 15:	  2.100096 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 10:	  2.224366 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 3:	  2.010026 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 2:	  2.009866 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 38:	  2.182860 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 31:	  2.060376 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 36:	  2.143585 seconds (17.18 k allocations: 679.156 KiB)
+      From worker 9:	  2.059372 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 4:	  2.108272 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 25:	  2.100716 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 41:	  1.984476 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 40:	  2.139166 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 27:	  2.193770 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 5:	  2.136981 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 16:	  2.179909 seconds (16.81 k allocations: 673.531 KiB)
+┌ LogLevel(-2): 2%, Active workers: 40, Completed tasks: 160.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 33:	  2.189143 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 26:	  1.963495 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 39:	  1.989547 seconds (17.18 k allocations: 679.156 KiB)
+      From worker 22:	  2.032175 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 14:	  1.773451 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 30:	  2.077554 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 24:	  2.087387 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 34:	  2.211443 seconds (17.18 k allocations: 678.578 KiB)
+      From worker 19:	  2.031156 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 35:	  2.160805 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 13:	  1.987513 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 18:	  2.077467 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 20:	  1.892905 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 29:	  1.884883 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 17:	  1.928884 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 32:	  1.987844 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 21:	  2.001835 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 6:	  1.937948 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 7:	  1.939534 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 15:	  1.742376 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 11:	  1.925122 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 23:	  2.028178 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 37:	  1.797027 seconds (17.18 k allocations: 679.422 KiB)
+      From worker 12:	  1.889774 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 8:	  1.901386 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 25:	  1.670742 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 4:	  1.713714 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 10:	  1.818152 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 28:	  1.875476 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 9:	  1.750637 seconds (16.81 k allocations: 673.234 KiB)
+      From worker 41:	  1.719251 seconds (17.18 k allocations: 678.875 KiB)
+      From worker 38:	  1.787755 seconds (17.18 k allocations: 679.156 KiB)
+      From worker 3:	  1.787583 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 2:	  1.771081 seconds (16.81 k allocations: 673.531 KiB)
+      From worker 36:	  1.784087 seconds (17.19 k allocations: 679.453 KiB)
+      From worker 27:	  1.624757 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 5:	  1.624822 seconds (16.80 k allocations: 672.953 KiB)
+      From worker 40:	  1.706558 seconds (17.18 k allocations: 679.156 KiB)
+      From worker 31:	  1.824633 seconds (16.80 k allocations: 672.656 KiB)
+      From worker 16:	  1.570807 seconds (16.81 k allocations: 673.531 KiB)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 200.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:157
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:248
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:267
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=128 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 36, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 31:	  0.606197 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 5:	  0.620231 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 27:	  0.627601 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 6:	  0.635306 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 11:	  0.645479 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 41:	  0.647138 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 10:	  0.668863 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 7:	  0.688520 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 20:	  0.678862 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 24:	  0.683044 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 39:	  0.691340 seconds (5.76 k allocations: 227.953 KiB)
+      From worker 23:	  0.702432 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 36:	  0.691517 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 16:	  0.698554 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 21:	  0.693960 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 40:	  0.702704 seconds (5.76 k allocations: 227.656 KiB)
+      From worker 19:	  0.712043 seconds (5.63 k allocations: 225.094 KiB)
+      From worker 30:	  0.707510 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 28:	  0.702952 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 34:	  0.716153 seconds (5.76 k allocations: 227.656 KiB)
+      From worker 35:	  0.700688 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 8:	  0.721987 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 15:	  0.720245 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 13:	  0.723735 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 33:	  0.719234 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 2:	  0.723058 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 22:	  0.722923 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 12:	  0.738577 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 25:	  0.728652 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 17:	  0.729202 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 38:	  0.720430 seconds (5.76 k allocations: 227.656 KiB)
+      From worker 32:	  0.722414 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 3:	  0.726523 seconds (5.63 k allocations: 225.094 KiB)
+      From worker 37:	  0.731776 seconds (5.76 k allocations: 227.953 KiB)
+      From worker 4:	  0.734228 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 26:	  0.739348 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 29:	  0.732515 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 9:	  0.741409 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 18:	  0.744158 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 14:	  0.753896 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 5:	  0.219960 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 11:	  0.220094 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 31:	  0.263040 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 27:	  0.261497 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 7:	  0.202087 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 41:	  0.241502 seconds (5.76 k allocations: 227.656 KiB)
+      From worker 10:	  0.230656 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 6:	  0.275260 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 39:	  0.216618 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 20:	  0.275322 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 23:	  0.324610 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 16:	  0.302279 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 24:	  0.399904 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 36:	  0.446808 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 40:	  0.480050 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 21:	  0.495194 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 30:	  0.516790 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 28:	  0.510818 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 8:	  0.492303 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 19:	  0.523192 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 35:	  0.533165 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 32:	  0.545663 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 33:	  0.504547 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 34:	  0.580202 seconds (5.76 k allocations: 227.656 KiB)
+      From worker 12:	  0.536796 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 15:	  0.584058 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 22:	  0.558523 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 37:	  0.577207 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 14:	  0.538198 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 38:	  0.559597 seconds (5.76 k allocations: 227.375 KiB)
+      From worker 13:	  0.586695 seconds (5.63 k allocations: 225.391 KiB)
+      From worker 17:	  0.592239 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 9:	  0.614162 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 26:	  0.617288 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 18:	  0.578299 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 29:	  0.617212 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 25:	  0.625895 seconds (5.63 k allocations: 225.672 KiB)
+      From worker 2:	  0.637266 seconds (94.83 k allocations: 5.277 MiB, 15.72% compilation time)
+      From worker 27:	  0.620571 seconds (94.83 k allocations: 5.277 MiB, 17.95% compilation time)
+      From worker 3:	  0.622115 seconds (94.83 k allocations: 5.277 MiB, 16.10% compilation time)
+      From worker 7:	  0.621757 seconds (94.83 k allocations: 5.277 MiB, 15.28% compilation time)
+      From worker 10:	  0.595302 seconds (94.83 k allocations: 5.277 MiB, 16.41% compilation time)
+      From worker 5:	  0.704858 seconds (94.83 k allocations: 5.277 MiB, 17.29% compilation time)
+      From worker 6:	  0.652565 seconds (94.83 k allocations: 5.277 MiB, 15.50% compilation time)
+      From worker 41:	  0.647576 seconds (94.96 k allocations: 5.279 MiB, 16.14% compilation time)
+      From worker 31:	  0.661372 seconds (94.83 k allocations: 5.277 MiB, 15.31% compilation time)
+      From worker 11:	  0.704060 seconds (94.83 k allocations: 5.277 MiB, 14.73% compilation time)
+      From worker 39:	  0.664557 seconds (94.95 k allocations: 5.279 MiB, 14.69% compilation time)
+      From worker 20:	  0.628243 seconds (94.83 k allocations: 5.277 MiB, 14.98% compilation time)
+      From worker 16:	  0.617389 seconds (94.83 k allocations: 5.277 MiB, 15.09% compilation time)
+      From worker 24:	  0.554020 seconds (94.83 k allocations: 5.277 MiB, 18.76% compilation time)
+      From worker 23:	  0.620198 seconds (94.83 k allocations: 5.277 MiB, 15.43% compilation time)
+      From worker 4:	  0.677711 seconds (94.83 k allocations: 5.277 MiB, 15.05% compilation time)
+      From worker 36:	  0.548447 seconds (94.96 k allocations: 5.279 MiB, 20.74% compilation time)
+      From worker 30:	  0.588643 seconds (94.83 k allocations: 5.277 MiB, 16.95% compilation time)
+      From worker 21:	  0.635274 seconds (94.83 k allocations: 5.277 MiB, 16.19% compilation time)
+      From worker 8:	  0.594178 seconds (94.83 k allocations: 5.277 MiB, 17.38% compilation time)
+      From worker 40:	  0.637335 seconds (94.95 k allocations: 5.279 MiB, 15.74% compilation time)
+      From worker 19:	  0.612312 seconds (94.83 k allocations: 5.277 MiB, 17.52% compilation time)
+      From worker 28:	  0.638207 seconds (94.83 k allocations: 5.277 MiB, 17.37% compilation time)
+      From worker 35:	  0.594764 seconds (94.96 k allocations: 5.279 MiB, 17.41% compilation time)
+      From worker 34:	  0.624168 seconds (94.95 k allocations: 5.279 MiB, 16.47% compilation time)
+      From worker 32:	  0.602646 seconds (94.83 k allocations: 5.277 MiB, 17.39% compilation time)
+      From worker 15:	  0.642879 seconds (94.83 k allocations: 5.277 MiB, 15.23% compilation time)
+      From worker 12:	  0.657984 seconds (94.83 k allocations: 5.277 MiB, 16.26% compilation time)
+      From worker 37:	  0.650701 seconds (94.96 k allocations: 5.279 MiB, 17.75% compilation time)
+      From worker 22:	  0.738048 seconds (94.83 k allocations: 5.277 MiB, 14.33% compilation time)
+      From worker 14:	  0.699502 seconds (94.83 k allocations: 5.277 MiB, 14.13% compilation time)
+      From worker 33:	  0.777632 seconds (94.96 k allocations: 5.279 MiB, 18.55% compilation time)
+      From worker 13:	  0.726321 seconds (94.83 k allocations: 5.277 MiB, 15.37% compilation time)
+      From worker 27:	  0.591375 seconds (5.63 k allocations: 225.094 KiB)
+      From worker 17:	  0.696576 seconds (94.83 k allocations: 5.277 MiB, 15.38% compilation time)
+      From worker 7:	  0.587439 seconds (5.63 k allocations: 225.969 KiB)
+      From worker 38:	  0.719932 seconds (94.95 k allocations: 5.279 MiB, 15.09% compilation time)
+      From worker 25:	  0.711893 seconds (94.83 k allocations: 5.277 MiB, 14.59% compilation time)
+      From worker 18:	  0.777273 seconds (94.83 k allocations: 5.277 MiB, 13.54% compilation time)
+      From worker 29:	  0.762407 seconds (94.83 k allocations: 5.277 MiB, 14.24% compilation time)

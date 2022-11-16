@@ -22,11 +22,11 @@ end
 
 
 
-L=30
+L=512
 a=2.0
 nr="SNR"
 t=0.1
-seed = 0
+seed = 1
 f_path = get_file_path(L, a, t, nr, average=false)
 f = load(f_path)
 println("Loaded $f_path")

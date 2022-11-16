@@ -27,12 +27,19 @@ function break_bundle(settings, seed; save_data=true)
     # Break the bundle
     simulation_time = @elapsed for step in 1:b.N
         # Simulate step
-            
-            findNextFiber!(b)
-            resetBundle!(b)
-            break_fiber!(b)
-            update_σ!(b)
-            update_storage!(b, s, seed)
+            if false
+                @time findNextFiber!(b)
+                @time resetBundle!(b)
+                @time break_fiber!(b)
+                @time update_σ!(b)
+                @time update_storage!(b, s, seed)
+            else 
+                findNextFiber!(b)
+                resetBundle!(b)
+                break_fiber!(b)
+                update_σ!(b)
+                update_storage!(b, s, seed)
+            end
     end
 
     if save_data
@@ -58,7 +65,7 @@ end
 
 
 
-L=128
+L=32
 α=2.0
 t=0.0
 dist="Uniform"
@@ -67,5 +74,5 @@ path = "data/"
 seed=0
 settings = make_settings(dist, L, t, nr, α, path)
 
-@btime break_bundle($settings, $seed, save_data=true)
+@time break_bundle(settings, seed, save_data=true)
 println("ok")
