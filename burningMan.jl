@@ -20,33 +20,33 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     N::I = L*L
     α::F = 2
     nr::String = "UNR"
-    x::Vector{F} = Vector{F}(undef, N)
+    x::Vector{F} = zeros(F, N)
     neighbours::Matrix{I} = fillAdjacent(L, NEIGHBOURS)
     neighbourhoods::Matrix{I} = fillAdjacent(L, NEIGHBOURHOOD)
     movement::SVector{4,I} = SVector{4}([1,-1,-1,1]) # this is dependent on the order of neighbours...
-    current_neighbourhood::Vector{I} = Vector{I}(undef, 8)
-    neighbourhood_values::Vector{I} = Vector{I}(undef, N)
+    current_neighbourhood::Vector{I} = zeros(I, 8)
+    neighbourhood_values::Vector{I} = zeros(I, N)
 
     # These values are reset for each step
-    σ::Vector{F} = Vector{F}(ones(F, N)) # Relative tension
-    tension::Vector{F} = Vector{F}(undef, N)
+    σ::Vector{F} = ones(F, N) # Relative tension
+    tension::Vector{F} = zeros(F, N)
     max_σ::F = 0.0
     status::Vector{I} = fill(I(-1), N)
     current_step::I = 0
-    break_sequence::Vector{I} = Vector{I}(undef, N)
+    break_sequence::Vector{I} = zeros(I, N)
     c::I = 0 # nr_clusters / current_cluster_id
     spanning_cluster_id::I = -1
-    cluster_size::Vector{I} = Vector{I}(undef, N)
-    cluster_outline_length::Vector{I} = Vector{I}(undef, N)
+    cluster_size::Vector{I} = zeros(I, N)
+    cluster_outline_length::Vector{I} = zeros(I, N)
     # These values are reset for each cluster
-    cluster_outline::Vector{I} = Vector{I}(undef, N)
+    cluster_outline::Vector{I} = zeros(I, N)
     cluster_cm_x::Vector{F} = zeros(F, N)
     cluster_cm_y::Vector{F} = zeros(F, N)
-    unexplored::Vector{I} = Vector{I}(undef, N)
+    unexplored::Vector{I} = zeros(I, N)
     # Relative possition of every fiber with respect to it's cluster
     rel_pos_x::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
     rel_pos_y::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
-    cluster_dimensions::Vector{I} = Vector{I}(undef, 4)
+    cluster_dimensions::Vector{I} = zeros(I, 4)
 end
 
 # Fiber bundle storage
@@ -54,10 +54,10 @@ Base.@kwdef mutable struct FBS{F<:AbstractFloat, I<:Integer}
     division::I
     N::I
     # These arrays store one value for each step
-    most_stressed_fiber::Vector{F} = Vector{F}(undef, N)
-    nr_clusters::Vector{I} = Vector{I}(undef, N)
-    largest_cluster::Vector{I} = Vector{I}(undef, N)
-    largest_perimiter::Vector{I} = Vector{I}(undef, N)
+    most_stressed_fiber::Vector{F} = zeros(F, N)
+    nr_clusters::Vector{I} = zeros(I, N)
+    largest_cluster::Vector{I} = zeros(I, N)
+    largest_perimiter::Vector{I} = zeros(I, N)
 
     # We want to store some samples of the processed
     # I'm thinking at 10%, 20%, ... 90% done would work

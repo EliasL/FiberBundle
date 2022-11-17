@@ -57,7 +57,7 @@ function test()
     nr = "SNR"
     path = "data/"
     t = 0.1
-    L=512
+    L=256
     α = 2.0
     seed = 1
     setting = make_settings("Uniform", L, t, nr, α, path)

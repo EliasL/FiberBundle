@@ -61,8 +61,8 @@ function plot_fb_axes(b::FB, minor_axes::AbstractMatrix, major_axes::AbstractMat
                              minor_values::AbstractVector, major_values::AbstractVector)
     lines_x = []
     lines_y = []
-    maj_w = log.(abs.(major_values))
-    min_w = maj_w .* minor_values./major_values
+    maj_w = sqrt.(abs.(major_values)) / maximum(sqrt.(abs.(major_values))) * b.L/4
+    min_w = sqrt.(abs.(minor_values)) / maximum(sqrt.(abs.(major_values))) * b.L/4
     for c in 1:b.c
         x,y = b.cluster_cm_x[c], b.cluster_cm_y[c]
         for slope in [minor_axes[c, :]*min_w[c], major_axes[c, :]*maj_w[c]]
@@ -76,8 +76,8 @@ function plot_fb_axes(b::FB, minor_axes::AbstractMatrix, major_axes::AbstractMat
             push!(points_y, p2[2])
             push!(lines_x, points_x)
             push!(lines_y, points_y)
-            #width = 6 * log(major_values[c]) / log(maximum(major_values))
-            plot!(points_x, points_y, width=2)
+            width = log(b.cluster_size[c]) / log(maximum(b.cluster_size)) * 4
+            plot!(points_x, points_y, width=width)
         end
     end
     #return plot!(lines_x, lines_y, width=hcat(maj_width, maj_width))
