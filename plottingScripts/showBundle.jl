@@ -3,6 +3,11 @@ using DataStructures
 
 include("../burningMan.jl")
 
+function circleShape(x, y, r)
+    θ = LinRange(0, 2*π, 100)
+    return x .+ r*sin.(θ), y .+ r*cos.(θ)
+end
+
 function get_ideal_shift(m::AbstractMatrix)
     # Shift_matrix tries to shift the matrix so that a cluster does#
     # not cross the periodic boarder. In other words, as few broken fibers along
@@ -81,6 +86,20 @@ function plot_fb_axes(b::FB, minor_axes::AbstractMatrix, major_axes::AbstractMat
         end
     end
     #return plot!(lines_x, lines_y, width=hcat(maj_width, maj_width))
+end
+
+function plot_gyration_radi(b::FB, R, nr=:all)
+    if nr != :all
+        R = sort(collect(enumerate(R)),by= x -> x[2], rev=true)[1:nr]
+    else
+        R = enumerate(R)
+    end
+    for (c, r) in R
+        cmx = b.cluster_cm_x[c]
+        cmy = b.cluster_cm_y[c]
+        plot!(circleShape(cmx, cmy, r), seriestype=[:shape,],lw=0.5, c=:blue,
+        linecolor=:black, legend=false, fillalpha = 0.2, aspect_ratio=1)
+    end
 end
 
 function plot_fb_cm(b::FB)

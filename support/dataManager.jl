@@ -143,17 +143,11 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
                         else
                             value = s_file[key]
                         end
-                        # If the key doesn't exist, make it and set it to zero
+                        # If the key doesn't exist, make it
                         if !haskey(averages, key)
-                            if length(value) == 1
-                                averages[key] = 0
-                            else
-                                averages[key] = zeros(length(value))
-                            end
+                                averages[key] = []
                         end
-                        #println(value)
-                        #println(averages[key])
-                        averages[key] += value ./ nr_seeds
+                        push!(averages[key], value)
                         condensed_file["$key/$seed"] = value
                     end
                     if seed <= 10
@@ -170,8 +164,10 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
                 end
             end
             for key in averaged_data_keys
-                averaged_file["average_$key"] = averages[key]
-                #TODO add uncertainty
+                m = mean(averages[key])
+                s = std(averages[key], mean=m)
+                averaged_file["average_$key"] = m
+                averaged_file["std_$key"] = s
             end
         end # Averaged file
         end # Condensed file
@@ -409,5 +405,19 @@ function get_data_overview(path="data/", dists=["Uniform"])
         end
     end
 end
+
+function recalculate_average_file()
+    # We want to expand all the files and then
+    # condense all of them again
+    for dist in dists
+        settings = search_for_settings(path, dist)
+        for setting in settings
+            expand_file(settings)
+            condense_files(settings)
+        end
+    end
+end
+
+recalculate_average_file()
 
 #get_data_overview()

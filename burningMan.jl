@@ -380,6 +380,20 @@ function fiber_index_to_xy(i::Int64, L::Int64)
     return x, y
 end
 
+function distance(a,b,L)
+    # When calculating various propperties of a cluster
+    # we often want the distance between two points. 
+    # because of periodic boundry conditions, this
+    # is slightly more difficult than in normal situations
+
+    # This function finds the shortest distance between two NUMBERS.
+    # Ex: distance (1,9,10) is not 8 like in the normal case, but 
+    # 2. Because of Julias one indexing, we use mod1, and the distance
+    # is therefore not 3.
+
+    return minimum([abs(a-b), abs(a-(b-L)), abs(a-(b+L))])
+end
+
 function save_initial_cluster_possition(i::Int64, b::FB)
     # Calculating the cm is a bit difficult because
     # of the periodic boundryconditions. In order to save
