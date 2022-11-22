@@ -429,6 +429,7 @@ function recalculate_average_file(path="data/", dists=["Uniform"])
             end
         end
     end
+    println("Success!")
 end
 
 recalculate_average_file()
