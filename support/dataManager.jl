@@ -412,6 +412,7 @@ end
 function recalculate_average_file(path="data/", dists=["Uniform"])
     # We want to expand all the files and then
     # condense all of them again
+    return # Remove this line to actually use (This function is a bit dangerous)
     for dist in dists
         settings = search_for_settings(path, dist)
         for s in settings
@@ -432,6 +433,6 @@ function recalculate_average_file(path="data/", dists=["Uniform"])
     println("Success!")
 end
 
-recalculate_average_file()
+#recalculate_average_file()
 
 #get_data_overview()
