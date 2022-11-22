@@ -502,3 +502,13 @@
       From worker 10:	21276.584467 seconds (12.20 M allocations: 484.093 MiB, 0.00% gc time)
 ┌ LogLevel(-2): 23%, Active workers: 11, Completed tasks: 5.
 └ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+slurmstepd-compute-14: error: *** JOB 703238 ON compute-14 CANCELLED AT 2022-11-22T10:39:10 ***
+
+signal (15): Terminated
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:24
+pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+poptask at ./task.jl:827
+wait at ./task.jl:836
+task_done_hook at ./task.jl:544

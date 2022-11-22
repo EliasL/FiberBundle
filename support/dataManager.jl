@@ -255,6 +255,7 @@ function search_for_loose_files(settings)
     end
     if length(seeds)>0
         @logmsg settingLog "Found loose files, cleaning up... "
+        println(settings)
         clean_after_run(settings, seeds)
     end
     @logmsg settingLog "Done!"
@@ -414,12 +415,17 @@ function recalculate_average_file(path="data/", dists=["Uniform"])
     for dist in dists
         settings = search_for_settings(path, dist)
         for s in settings
+            search_for_loose_files(s)
+
             seeds = get_seeds_in_file(s)
             if isempty(seeds)
                 continue
             else
-                expand_file(s)
-                condense_files(s, seeds)
+                try
+                    expand_file(s)
+                    condense_files(s, seeds)
+                catch
+                end
             end
         end
     end
