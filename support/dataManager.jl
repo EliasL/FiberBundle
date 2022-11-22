@@ -126,67 +126,64 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     nr_seeds = length(seeds)
 
     averages = Dict()
-    #try
-        jldopen(condensed_file_name*".temp", "w", compress = LZ4FrameCompressor()) do condensed_file
-        jldopen(averaged_file_name*".temp", "w") do averaged_file
-            averaged_file["seeds_used"] = seeds
-            averaged_file["nr_seeds_used"] = length(seeds)
-            condensed_file["seeds_used"] = seeds
-            condensed_file["nr_seeds_used"] = length(seeds)
-            for seed in seeds
-                seed_file_name = get_name_fun(seed)
-                jldopen(seed_file_name, "r+") do s_file
-                    for key in averaged_data_keys
+
+    if settings["L"] > 512
+        compress = LZ4FrameCompressor()
+    else
+        compress = false
+    end
+
+    jldopen(condensed_file_name*".temp", "w", compress = LZ4FrameCompressor()) do condensed_file
+    jldopen(averaged_file_name*".temp", "w", compress = compress) do averaged_file
+        averaged_file["seeds_used"] = seeds
+        averaged_file["nr_seeds_used"] = length(seeds)
+        condensed_file["seeds_used"] = seeds
+        condensed_file["nr_seeds_used"] = length(seeds)
+        for seed in seeds
+            seed_file_name = get_name_fun(seed)
+            jldopen(seed_file_name, "r+") do s_file
+                for key in averaged_data_keys
+                    if !haskey(s_file, key)
+                        value = 0
+                        @warn "$key not found in $(seed_file_name)!"
+                    else
+                        value = s_file[key]
+                    end
+                    # If the key doesn't exist, make it
+                    if !haskey(averages, key)
+                            averages[key] = []
+                    end
+                    push!(averages[key], value)
+                    condensed_file["$key/$seed"] = value
+                end
+                if seed <= 10
+                    for key in seed_specific_keys
                         if !haskey(s_file, key)
                             value = 0
                             @warn "$key not found in $(seed_file_name)!"
                         else
                             value = s_file[key]
                         end
-                        # If the key doesn't exist, make it
-                        if !haskey(averages, key)
-                                averages[key] = []
-                        end
-                        push!(averages[key], value)
                         condensed_file["$key/$seed"] = value
-                    end
-                    if seed <= 10
-                        for key in seed_specific_keys
-                            if !haskey(s_file, key)
-                                value = 0
-                                @warn "$key not found in $(seed_file_name)!"
-                            else
-                                value = s_file[key]
-                            end
-                            condensed_file["$key/$seed"] = value
-                        end
                     end
                 end
             end
-            for key in averaged_data_keys
-                m = mean(averages[key])
-                s = std(averages[key], mean=m)
-                averaged_file["average_$key"] = m
-                averaged_file["std_$key"] = s
-            end
-        end # Averaged file
-        end # Condensed file
-        if remove_files
-            for seed in seeds
-                rm(get_name_fun(seed))
-            end
         end
-        mv(condensed_file_name*".temp", condensed_file_name, force=true)
-        mv(averaged_file_name*".temp", averaged_file_name, force=true)
-    #catch e
-    #    rm(condensed_file_name*".temp")
-    #    rm(averaged_file_name*".temp")
-    #    println("File condensing failed!")
-    #    if e != "FileNot found"
-    #        throw(e)
-    #    end
-    #    println(e)
-    #end
+        for key in averaged_data_keys
+            m = mean(averages[key])
+            s = std(averages[key], mean=m)
+            averaged_file["average_$key"] = m
+            averaged_file["std_$key"] = s
+        end
+    end # Averaged file
+    end # Condensed file
+    if remove_files
+        for seed in seeds
+            rm(get_name_fun(seed))
+        end
+    end
+    mv(condensed_file_name*".temp", condensed_file_name, force=true)
+    mv(averaged_file_name*".temp", averaged_file_name, force=true)
 end
 
 function get_missing_seeds(settings, requested_seeds)
@@ -268,6 +265,11 @@ function search_for_settings(path, dist)
     files = readdir(path*dist)
     settings = []
     for f in files
+
+        # We skipp empty folders
+        if isempty(readdir(path*dist*"/"*f))
+            continue
+        end
         params = split(f, " ")
         setting = Dict()
 
@@ -406,14 +408,19 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function recalculate_average_file()
+function recalculate_average_file(path="data/", dists=["Uniform"])
     # We want to expand all the files and then
     # condense all of them again
     for dist in dists
         settings = search_for_settings(path, dist)
-        for setting in settings
-            expand_file(settings)
-            condense_files(settings)
+        for s in settings
+            seeds = get_seeds_in_file(s)
+            if isempty(seeds)
+                continue
+            else
+                expand_file(s)
+                condense_files(s, seeds)
+            end
         end
     end
 end
