@@ -61,6 +61,7 @@ function plot_dimension_thing()
     plot!(L, f_lin(L, fit_s), label=L"Fit ($D_s$)", color=:black)
     h_plot = scatter(L, h, markershape=m_shape, label=L"Perimiter length ($h$)", legend=:topleft, xlabel=L"log$_2(L)$", ylabel=L"log$_2(h)$")
     plot!(L, f_lin(L, fit_h), label=L"Fit ($D_h$)")
+    yticks!(h_plot, yticks(s_plot)[1])
 
 
     l = @layout [
