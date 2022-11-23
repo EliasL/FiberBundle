@@ -73,7 +73,7 @@ function test()
     nr = "SNR"
     path = "data/"
     t = 0.1
-    L=256
+    L=512
     α = 2.0
     seed = 1
     setting = make_settings("Uniform", L, t, nr, α, path)
@@ -90,5 +90,4 @@ function test()
     plot_gyration_radi(b, R)
     display(p)
 end
-
 test()
