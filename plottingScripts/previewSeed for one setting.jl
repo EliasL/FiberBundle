@@ -16,6 +16,7 @@ function drawmatrix(A::Matrix, color_stress=true, pixel_size = 1)
     cur_colors = palette(:glasbey_category10_n256)
     nr_colors = 256
     if color_stress
+        display(A)
         A = floor.(Int, A./ maximum(A) .* (nr_colors-1)) .+ 1
     end
     stress_colors = cgrad(:heat, nr_colors, categorical=true)
@@ -53,7 +54,7 @@ end
 function draw_seeds(setting, seed)
     ps = 10 #Pixel size
 
-    color_stress = false
+    color_stress = true
     f = load_file(setting, average=false)
     layout = (3,3)
     lx = layout[1] #layout x
@@ -63,6 +64,7 @@ function draw_seeds(setting, seed)
     states = [floor(Int,nr_stored_states/area*i) for i in 1:area][1:area]
     key = color_stress ? "tension" : "sample_states"
     grids = reshape([reshape(f["$key/$seed"][i, :], (L, L)) for i in states], (lx,ly))
+    println(grids[8][1:10])
     pixel_L = L*ps
     title_space = ceil(Int, pixel_L/2)
     subtitle_space = ceil(Int, pixel_L/5)
@@ -91,7 +93,7 @@ end
 
 NRS = ["SNR"]
 global_path = "data/"
-ts = [0.1]
+ts = [0.4]
 L=512
 α = 2.0
 seed = 1
@@ -103,3 +105,4 @@ for NR in NRS
         ProgressMeter.next!(p)
     end
 end
+println("Done!")

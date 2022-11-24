@@ -263,6 +263,19 @@ function periodic_cm_test()
     #display(plot_fb_cm(b))
 end
 
+function periodic_distance_test()
+    @test distance(0,0,1) == 0
+    @test distance(1,0,5) == 1
+    @test distance(0,1,5) == 1
+    @test distance(1,4,5) == 2
+    @test distance(4,1,5) == 2
+    @test distance(4,5,5) == 1
+    @test distance(5,4,5) == 1
+    @test distance(8,4,5) == 1
+    @test distance(4,8,5) == 1
+end
+
+
 function find_strange_fb()
     for run_nr in 1:500
         L = 4
@@ -363,10 +376,11 @@ function test()
         @testset "Ransom spanning cluster" begin random_spanning_cluster_test() end
         @testset "Center of mass" begin basic_cm_test() 
                                         periodic_cm_test() end
-        @testset "1D cluster size" begin end
+        @testset "Distance" begin periodic_distance_test() end
+        #@testset "1D cluster size" begin end
 
         @testset "Storage" begin storageTest() end
         
     end
 end
-#test()
+test()
