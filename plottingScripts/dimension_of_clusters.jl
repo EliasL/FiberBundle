@@ -79,7 +79,7 @@ function plot_dimension_thing()
         C D
     ]
     plot(SNR_s_plot, SNR_h_plot, UNR_s_plot, UNR_h_plot, size=(800, 600), layout = l,
-plot_title=latexstring("Dimensionality"))#: \$t=$(t[1])\$"))
+plot_title="Dimensionality")#: \$t=$(t[1])\$"))
 
     savefig("plots/Graphs/dimension.pdf")
 end
