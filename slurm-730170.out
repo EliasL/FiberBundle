@@ -1,0 +1,1239 @@
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 40 workers... 
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:29
+┌ LogLevel(-1): Preparing workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:7
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:72
+┌ LogLevel(-1): Running settings: 
+│  [8, 16, 32, 64, 128, 512], 
+│  0.0:0.1:1.0, 
+│  [2.0]
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:33
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=8 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=8 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=16 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=16 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=32 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=32 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=64 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=64 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=128 nr=SNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=128 nr=UNR t=1.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.1
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.2
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.3
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.4
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.5
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.6
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.7
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=512 nr=UNR t=0.8
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:226
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=512 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:241
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:261
+┌ LogLevel(-2): 199 files were found and skipped.
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:220
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=2.0 dist=Uniform L=512 nr=SNR t=0.9
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 1%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 2%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 3%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 4%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 5%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 6%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 7%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 8%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 9%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 10%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 11%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 12%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 13%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 14%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 15%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 16%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 17%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 18%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 19%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 20%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 21%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 22%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 23%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 24%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 25%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 26%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 27%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 28%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 29%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 30%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 31%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 32%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 33%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 34%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 35%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 36%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 37%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 38%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 39%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 40%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 41%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 42%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 43%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 44%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 45%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 46%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 47%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 48%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 49%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 50%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 51%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 52%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 53%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 54%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 55%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 56%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 57%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 58%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 59%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 60%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 61%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 62%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 63%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 64%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 65%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 66%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 67%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 68%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 69%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 70%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 71%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 72%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+ERROR: LoadError: UndefVarError: std not defined
+Stacktrace:
+  [1] (::var"#35#38"{JLD2.JLDFile{JLD2.MmapIO}, Dict{Any, Any}, Vector{Any}, var"#f#25"{var"#f#24#26"{Dict{String, Any}}}})(averaged_file::JLD2.JLDFile{JLD2.MmapIO})
+    @ Main ~/FiberBundle/support/dataManager.jl:174
+  [2] jldopen(::Function, ::String, ::Vararg{String}; kws::Base.Pairs{Symbol, Bool, Tuple{Symbol}, NamedTuple{(:compress,), Tuple{Bool}}})
+    @ JLD2 ~/.julia/packages/JLD2/wKJEL/src/loadsave.jl:4
+  [3] (::var"#34#37"{Dict{Any, Any}, Vector{Any}, String, var"#f#25"{var"#f#24#26"{Dict{String, Any}}}})(condensed_file::JLD2.JLDFile{JLD2.MmapIO})
+    @ Main ~/FiberBundle/support/dataManager.jl:137
+  [4] jldopen(::Function, ::String, ::Vararg{String}; kws::Base.Pairs{Symbol, LZ4FrameCompressor, Tuple{Symbol}, NamedTuple{(:compress,), Tuple{LZ4FrameCompressor}}})
+    @ JLD2 ~/.julia/packages/JLD2/wKJEL/src/loadsave.jl:4
+  [5] condense_files(settings::Dict{String, Any}, requested_seeds::UnitRange{Int64}; remove_files::Bool)
+    @ Main ~/FiberBundle/support/dataManager.jl:136
+  [6] clean_after_run
+    @ ~/FiberBundle/support/dataManager.jl:236 [inlined]
+  [7] generate_data(settings::Dict{String, Any}, requested_seeds::UnitRange{Int64}, overwrite::Bool; save_data::Bool, use_threads::Bool)
+    @ Main ~/FiberBundle/dataGenerator.jl:156
+  [8] itterate_settings(dimensions::Vector{Int64}, α::Vector{Float64}, regimes::StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, neighbourhood_rules::Vector{String}, seeds::UnitRange{Int64}; overwrite::Bool, path::String, use_threads::Bool)
+    @ Main ~/FiberBundle/dataGenerator.jl:169
+  [9] macro expansion
+    @ timing.jl:220 [inlined]
+ [10] top-level scope
+    @ ~/FiberBundle/generateData.jl:34
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:24
+┌ LogLevel(-2): 73%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 74%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 75%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 76%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 77%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 78%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 79%, Active workers: 1, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 2:	1710.068015 seconds (9.35 M allocations: 367.869 MiB, 0.02% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 1.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155

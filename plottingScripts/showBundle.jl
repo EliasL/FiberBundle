@@ -39,26 +39,44 @@ function shift_spanning_cluster!(b::FB)
 end
 
 function plot_fb(b::FB; show=true, axes=false)
-    plot_array(b.status, L=b.L, show=show, axes=axes)
+    plot_array(b.status, L=b.L, show=show, axes=axes, spanning=b.spanning_cluster_id)
 end
 
-function plot_array(a::AbstractArray; L=nothing, show=true, axes=false)
+function plot_array(a::AbstractArray; L=nothing, show=true, axes=false, spanning=0)
     if L===nothing
         L = round(Int, sqrt(length(a)))
     end
     m = reshape(a, (L, L))
-    plot_matrix(m, show=show, axes=axes)
+    plot_matrix(m, show=show, axes=axes, spanning=spanning)
 end
 
-function plot_matrix(m::AbstractMatrix; use_shift=false, show=true, axes=false)
+function plot_matrix(m::AbstractMatrix; use_shift=false, show=true, axes=false, spanning=0)
     if use_shift
         m = shift_spanning_cluster(m)
     end
-    h = heatmap(m, c=:glasbey_category10_n256, legend=:none, aspect_ratio=:equal, showaxis = axes, ticks=axes)
+    L = size(m,1)
+    nr_clusters = maximum(m)
+    nr_colors = nr_clusters
+    background_color = :black
+    spanning_color = :red
+    colors = vcat([background_color],[RGBA(rand(3)...) for _ in eachindex(1:nr_colors)])
+    if spanning != 0
+        colors[spanning+1] = spanning_color
+    end
+
+    c = cgrad(colors)
+
+    # We only want positive states, ie, clusters and 0 for
+    # all others
+    clamp!(m, 0, Inf)
+
+    h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal,
+    showaxis = axes, ticks=axes, size=(L+100, L+100))
     p = plot(h)
     if show
         display(p)
     end
+    save("latest_plot.png", p)
     return p
 end
 

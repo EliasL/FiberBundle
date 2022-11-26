@@ -28,14 +28,14 @@ end
 
 function plot_dimension_thing()
     
-    L = [8,16,32,64,128,256,512,1024]
-    t = [0.0]
+    L = [8,16,32,64,128,256,512]
+    t = (0:8)./10
     NR = ["SNR", "UNR"]
     N = L.*L
     α = 2.0
 
-    function get_s_and_h_plots(nr)
-        files = [load_file(l, α, t[1], nr) for l in L]
+    function get_s_and_h_plots(nr, t)
+        files = [load_file(l, α, t, nr) for l in L]
         #seeds = last(files)["nr_seeds_used"]
         #println(seeds)
         s = [f["average_spanning_cluster_size"] for f in files]
@@ -66,23 +66,79 @@ function plot_dimension_thing()
                         legend=:topleft, xlabel=L"log$_2(L)$", ylabel=L"log$_2(h)$",
                         title=latexstring("$nr: \$D_h=$slope_h\$"))
         plot!(log_L, f_lin(log_L, fit_h), label=L"Fit ($D_h$)")
-        yticks!(h_plot, yticks(s_plot)[1])
+        #yticks!(h_plot, yticks(s_plot)[1])
         return s_plot, h_plot
     end
-    @assert NR[1] == "SNR"
-    SNR_s_plot, SNR_h_plot = get_s_and_h_plots(NR[1])
-    @assert NR[2] == "UNR"
-    UNR_s_plot, UNR_h_plot = get_s_and_h_plots(NR[2])
 
-    l = @layout [
-        A B;
-        C D
-    ]
-    plot(SNR_s_plot, SNR_h_plot, UNR_s_plot, UNR_h_plot, size=(800, 600), layout = l,
-plot_title="Dimensionality")#: \$t=$(t[1])\$"))
+    for t_ in t
+        @assert NR[1] == "SNR"
+        SNR_s_plot, SNR_h_plot = get_s_and_h_plots(NR[1], t_)
+        @assert NR[2] == "UNR"
+        UNR_s_plot, UNR_h_plot = get_s_and_h_plots(NR[2], t_)
+
+        l = @layout [
+            A B;
+            C D
+        ]
+        plot(SNR_s_plot, SNR_h_plot, UNR_s_plot, UNR_h_plot, size=(800, 600), layout = l,
+            plot_title=latexstring("Dimensionality: \$t=$t_\$"))
+
+        savefig("plots/Graphs/dimension_t=$t_.pdf")
+    end
+end
+
+function plot_dimensions_over_t()
+    
+    L = [8,16,32,64,128,256,512]
+    t = (0:8)./10
+    NR = ["SNR", "UNR"]
+    N = L.*L
+    α = 2.0
+
+    function get_s_and_h_p_dimension(nr, t)
+        files = [load_file(l, α, t, nr) for l in L]
+        #seeds = last(files)["nr_seeds_used"]
+        #println(seeds)
+        s = [f["average_spanning_cluster_size"] for f in files]
+        h = [f["average_spanning_cluster_perimiter"] for f in files]
+
+        std_s = [f["std_spanning_cluster_size"] for f in files]
+        std_h = [f["std_spanning_cluster_perimiter"] for f in files]
+
+        log_L = log2.(L)
+        s = log2.(s.± std_s)
+        h = log2.(h.± std_s)
+
+        fit_s = get_fit(log_L, Measurements.value.(s))
+        fit_h = get_fit(log_L, Measurements.value.(h))
+        slope_s = round(fit_s[2], digits=2)
+        slope_h = round(fit_h[2], digits=2)
+
+        s = s .± log2.(std_s)
+        h = h .± log2.(std_h)
+
+        return slope_s, slope_h
+    end
+
+    SNR_s_slope = zeros(Float64, length(t))
+    SNR_h_slope = zeros(Float64, length(t))
+    UNR_s_slope = zeros(Float64, length(t))
+    UNR_h_slope = zeros(Float64, length(t))
+    for i in eachindex(t)
+        SNR_s_slope[i], SNR_h_slope[i] = get_s_and_h_p_dimension(NR[1], t[i])
+        UNR_s_slope[i], UNR_h_slope[i] = get_s_and_h_p_dimension(NR[2], t[i])
+    end
+
+    plot([t,t,t,t], [SNR_s_slope, SNR_h_slope, UNR_s_slope, UNR_h_slope], size=(400, 300),
+        plot_title="Dimensionality", labels=["SNR s" "SNR h" "UNR s" "UNR h"],
+        legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension.pdf")
 end
 
+plot_dimensions_over_t()
 plot_dimension_thing()
+
+
+
 println("Saved plot!")

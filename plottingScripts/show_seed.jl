@@ -1,9 +1,10 @@
 include("showBundle.jl")
+include("../support/inertia.jl")
 
 function show_spanning_cluster()
-    nr = "SNR"
+    nr = "UNR"
     path = "data/"
-    t = 0.1
+    t = 0.2
     L=1024
     α = 2.0
     seed = 2
@@ -15,8 +16,11 @@ function show_spanning_cluster()
     shift_spanning_cluster!(b)
     resetBundle!(b)
     update_σ!(b)
+    #R = find_radius_of_gyration(b)
     p = plot_fb(b, show=false)
-    display(p)
+    #plot_gyration_radi(b, R, 1)
+    #display(p)
+    println("done")
 end
 
 show_spanning_cluster()

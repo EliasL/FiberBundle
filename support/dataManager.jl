@@ -1,6 +1,7 @@
 using JLD2
 using CodecLz4
 using Logging
+using Statistics
 include("logingLevels.jl")
 
 averaged_data_keys = [
