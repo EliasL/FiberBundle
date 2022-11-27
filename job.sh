@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#SBATCH -J 48-512,200
+#SBATCH -J 48-1024,50
 #SBATCH -p porelab
 #SBATCH -N 1
 #SBATCH -n 64
 #SBATCH --exclusive=user
-#SBATCH --time=2-00:00:00
+#SBATCH --time=3-00:00:00
 
 ml eb
 #ml av

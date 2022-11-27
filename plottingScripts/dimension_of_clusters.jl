@@ -29,7 +29,7 @@ end
 function plot_dimension_thing()
     
     L = [8,16,32,64,128,256,512]
-    t = (0:8)./10
+    t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
     α = 2.0
@@ -90,7 +90,7 @@ end
 function plot_dimensions_over_t()
     
     L = [8,16,32,64,128,256,512]
-    t = (0:8)./10
+    t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
     α = 2.0
@@ -130,7 +130,7 @@ function plot_dimensions_over_t()
     end
 
     plot([t,t,t,t], [SNR_s_slope, SNR_h_slope, UNR_s_slope, UNR_h_slope], size=(400, 300),
-        plot_title="Dimensionality", labels=["SNR s" "SNR h" "UNR s" "UNR h"],
+        plot_title="Dimensionality", labels=[L"SNR $D_s$" L"SNR $D_h$" L"UNR $D_s$" L"UNR $D_h$"],
         legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension.pdf")

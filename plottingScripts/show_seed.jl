@@ -2,10 +2,10 @@ include("showBundle.jl")
 include("../support/inertia.jl")
 
 function show_spanning_cluster()
-    nr = "UNR"
+    nr = "SNR"
     path = "data/"
-    t = 0.2
-    L=1024
+    t = 0.9
+    L=512
     α = 2.0
     seed = 2
     setting = make_settings("Uniform", L, t, nr, α, path)
