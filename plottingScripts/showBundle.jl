@@ -42,7 +42,7 @@ function plot_fb(b::FB; show=true, axes=false)
     plot_array(b.status, L=b.L, show=show, axes=axes, spanning=b.spanning_cluster_id)
 end
 
-function plot_array(a::AbstractArray; L=nothing, show=true, axes=false, spanning=0)
+function plot_array(a::AbstractArray; L=nothing, show=true, axes=false, spanning=-1)
     if L===nothing
         L = round(Int, sqrt(length(a)))
     end
@@ -50,7 +50,7 @@ function plot_array(a::AbstractArray; L=nothing, show=true, axes=false, spanning
     plot_matrix(m, show=show, axes=axes, spanning=spanning)
 end
 
-function plot_matrix(m::AbstractMatrix; use_shift=false, show=true, axes=false, spanning=0)
+function plot_matrix(m::AbstractMatrix; use_shift=false, show=true, axes=false, spanning=-1)
     if use_shift
         m = shift_spanning_cluster(m)
     end
@@ -60,7 +60,7 @@ function plot_matrix(m::AbstractMatrix; use_shift=false, show=true, axes=false, 
     background_color = :black
     spanning_color = :red
     colors = vcat([background_color],[RGBA(rand(3)...) for _ in eachindex(1:nr_colors)])
-    if spanning != 0
+    if spanning != -1
         colors[spanning+1] = spanning_color
     end
 

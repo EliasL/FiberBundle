@@ -4,8 +4,6 @@ using Logging
 
 include("support/logingLevels.jl")
 
-@logmsg nodeLog "Preparing workers..."
-
 using JLD2, CodecLz4, Logging
 include("burningMan.jl")
 include("support/dataManager.jl")
@@ -25,14 +23,14 @@ function break_bundle(settings, progress_channel, working_channel, seed;
     
     b::FB, s::FBS = get_fb(settings)
     # Break the bundle
-    @time simulation_time = @elapsed for step in 1:b.N
+    simulation_time = @elapsed for step in 1:b.N
         # Simulate step
         findNextFiber!(b)
         resetBundle!(b)
         break_fiber!(b)
         update_σ!(b)
                 
-        update_storage!(b, s, seed)
+        update_storage!(b, s)
         if stop_after_spanning && s.spanning_cluster_has_been_found
             break
         end
@@ -44,18 +42,11 @@ function break_bundle(settings, progress_channel, working_channel, seed;
 
     if save_data
         jldopen(file_name, "w") do file
-            if seed <= 10
-                file["sample_states"] = s.status_storage
-                file["tension"] = s.tension_storage
-                file["spanning_cluster_state"] = s.spanning_cluster_state_storage
-                file["spanning_cluster_tension"] = s.spanning_cluster_tension_storage
-            end
             file["last_step"] = b.current_step
             file["simulation_time"] = simulation_time
             file["spanning_cluster_size"] = s.spanning_cluster_size_storage
             file["spanning_cluster_perimiter"] = s.spanning_cluster_perimiter_storage
             file["spanning_cluster_step"] = s.spanning_cluster_step
-            file["sample_states_steps"] = s.steps_to_store
             file["most_stressed_fiber"] = s.most_stressed_fiber
             file["nr_clusters"] = s.nr_clusters
             file["break_sequence"] = b.break_sequence
@@ -67,10 +58,6 @@ function break_bundle(settings, progress_channel, working_channel, seed;
         put!(working_channel, false) # trigger a progress bar update
     end
 end
-
-# Done preparing workers!
-@logmsg nodeLog "Done!"
-
 
 function run_workers(settings, seeds; save_data=true, use_threads=true)
     

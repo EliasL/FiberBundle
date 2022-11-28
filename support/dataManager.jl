@@ -16,13 +16,10 @@ averaged_data_keys = [
                     ]
 seed_specific_keys = [
                     "last_step",
+                    "spanning_cluster_step",
                     "break_sequence",
-                    "sample_states",
-                    "tension",
-                    "spanning_cluster_state",
-                    "spanning_cluster_tension",
                     ]
-data_keys = vcat(averaged_data_keys, seed_specific_keys)
+data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
 function make_settings(dist::String, L::Int64, t::Float64, nr::String, α::Float64, path::String)
@@ -143,30 +140,21 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
         for seed in seeds
             seed_file_name = get_name_fun(seed)
             jldopen(seed_file_name, "r+") do s_file
-                for key in averaged_data_keys
+                for key in data_keys
                     if !haskey(s_file, key)
                         value = 0
                         @warn "$key not found in $(seed_file_name)!"
                     else
                         value = s_file[key]
                     end
-                    # If the key doesn't exist, make it
-                    if !haskey(averages, key)
-                            averages[key] = []
-                    end
-                    push!(averages[key], value)
-                    condensed_file["$key/$seed"] = value
-                end
-                if seed <= 10
-                    for key in seed_specific_keys
-                        if !haskey(s_file, key)
-                            value = 0
-                            @warn "$key not found in $(seed_file_name)!"
-                        else
-                            value = s_file[key]
+                    if key in averaged_data_keys
+                        # If the key doesn't exist, make it
+                        if !haskey(averages, key)
+                                averages[key] = []
                         end
-                        condensed_file["$key/$seed"] = value
+                        push!(averages[key], value)
                     end
+                    condensed_file["$key/$seed"] = value
                 end
             end
         end
@@ -338,8 +326,6 @@ function add_key(key, value)
     settings = search_for_settings("data/", "Uniform")
     for average=[true, false], s = settings
         name = get_file_name(s, -1, average)
-        println(name)
-        
         f = load(name)
         if average
             if !haskey(f, "average_$key")

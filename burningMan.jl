@@ -76,30 +76,15 @@ Base.@kwdef mutable struct FBS{F<:AbstractFloat, I<:Integer}
     storage_index::I = 1
 end
 
-function update_storage!(b::FB, s::FBS, seed::Int64)
+function update_storage!(b::FB, s::FBS)
     #Save important data from step
     step = b.current_step
     s.most_stressed_fiber[step] = 1/b.max_σ
     s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
     s.largest_cluster[step] = maximum(b.cluster_size)
     s.largest_perimiter[step] = maximum(b.cluster_outline_length)
-    #Save step for visualization
-    if seed <= 10 #Only save samples from 10 first seeds
-        if step == s.steps_to_store[s.storage_index]
-            for i in b.N
-                s.status_storage[s.storage_index, i] = b.status[i]
-                s.tension_storage[s.storage_index, i] = b.status[i]
-                s.tension_storage[s.storage_index, i] = b.tension[i]
-            end
-            if s.storage_index < length(s.steps_to_store)
-                s.storage_index += 1
-            end
-        end
-    end
 
     if b.spanning_cluster_id != -1 && !s.spanning_cluster_has_been_found
-        s.spanning_cluster_state_storage .= b.status
-        s.spanning_cluster_tension_storage .= b.tension
         s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
         s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
         s.spanning_cluster_step = step

@@ -10,6 +10,10 @@ include("../support/inertia.jl")
 seed=0
 Random.seed!(seed) # Setting the seed
 
+logger = SimpleLogger(stdout, 10000)
+global_logger(logger)
+
+
 function basic_test() 
     # This test will break the fibers in this order
     # 1 4 7
@@ -384,3 +388,4 @@ function test()
     end
 end
 test()
+println("Test done")
