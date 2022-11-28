@@ -1,0 +1,495 @@
+slurmstepd-compute-14: error: *** JOB 732503 ON compute-14 CANCELLED AT 2022-11-28T13:57:15 ***
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 40 workers... 
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:29
+┌ LogLevel(-1): Preparing workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:7
+┌ LogLevel(-1): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:72
+┌ LogLevel(-1): Running settings: 
+│  [1024], 
+│  0.0:0.1:1.0, 
+│  [2.0]
+└ @ Main /home/vemundlu/FiberBundle/generateData.jl:33
+┌ LogLevel(-2): Starting a=2.0 dist=Uniform L=1024 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:242
+┌ LogLevel(-2): Found loose files, cleaning up... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:258
+Dict{String, Any}("nr" => "SNR", "name" => "a=2.0 dist=Uniform L=1024 nr=SNR t=0.0", "t" => 0.0, "L" => 1024, "dist" => "Uniform", "a" => 2.0, "path" => "data/Uniform/a=2.0 dist=Uniform L=1024 nr=SNR t=0.0/")
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:262
+┌ LogLevel(-2): 16 files were found and skipped.
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:221
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=2.0 dist=Uniform L=1024 nr=SNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 1%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 2%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 3%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 4%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 5%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 6%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 7%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 8%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 9%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 10%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 11%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 12%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 13%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 14%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 15%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 16%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 17%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 18%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 19%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 20%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 21%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 22%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 23%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 24%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 25%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 26%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 27%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 28%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 29%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 30%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 31%, Active workers: 34, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 6:	72534.021364 seconds (14.91 M allocations: 585.208 MiB, 0.00% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 32%, Active workers: 33, Completed tasks: 1.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 33:	73429.703994 seconds (15.34 M allocations: 594.031 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 14:	73903.027015 seconds (15.08 M allocations: 591.950 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 28:	74128.456725 seconds (15.19 M allocations: 596.290 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 10:	74462.488479 seconds (15.14 M allocations: 594.218 MiB, 0.00% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 33%, Active workers: 29, Completed tasks: 5.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 20:	78696.196875 seconds (15.92 M allocations: 624.868 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 32:	79194.173302 seconds (16.05 M allocations: 629.707 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 2:	79402.196393 seconds (16.03 M allocations: 629.099 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 31:	79457.555700 seconds (16.12 M allocations: 632.577 MiB, 0.00% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 34%, Active workers: 25, Completed tasks: 9.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 34:	80763.530260 seconds (16.73 M allocations: 647.738 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 5:	81558.291776 seconds (16.42 M allocations: 644.505 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 9:	82002.796398 seconds (16.63 M allocations: 652.684 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 26:	82093.877484 seconds (16.72 M allocations: 655.997 MiB, 0.00% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 35%, Active workers: 21, Completed tasks: 13.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 3:	83692.116984 seconds (16.92 M allocations: 664.041 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 7:	83750.799248 seconds (17.05 M allocations: 668.901 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 8:	84234.630747 seconds (17.04 M allocations: 668.516 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 24:	84374.717556 seconds (16.95 M allocations: 665.229 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 12:	84482.633902 seconds (17.08 M allocations: 670.255 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 4:	85086.728158 seconds (16.97 M allocations: 665.801 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 11:	85254.176213 seconds (17.34 M allocations: 680.306 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 15:	87635.336882 seconds (17.60 M allocations: 690.682 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 29:	87637.671301 seconds (17.64 M allocations: 692.092 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 22:	87839.916227 seconds (17.65 M allocations: 692.489 MiB, 0.00% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 36%, Active workers: 11, Completed tasks: 23.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 13:	88453.353081 seconds (17.92 M allocations: 703.105 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 30:	88609.556299 seconds (17.76 M allocations: 696.658 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 35:	88679.481847 seconds (18.25 M allocations: 706.215 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 16:	89259.817569 seconds (18.15 M allocations: 712.020 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 23:	90357.981386 seconds (18.17 M allocations: 712.698 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 27:	90807.182125 seconds (18.40 M allocations: 721.651 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 18:	93621.451854 seconds (18.89 M allocations: 740.846 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 19:	95656.830251 seconds (19.19 M allocations: 752.538 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 25:	96106.123858 seconds (19.53 M allocations: 766.028 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 21:	97059.707370 seconds (19.75 M allocations: 774.692 MiB, 0.00% gc time, 0.00% compilation time)
+      From worker 17:	97331.502201 seconds (19.76 M allocations: 775.106 MiB, 0.00% gc time, 0.00% compilation time)
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 34.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:106
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:152
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:157
+┌ LogLevel(-2): Starting a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:168
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:242
+┌ LogLevel(-2): Found loose files, cleaning up... 
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:258
+Dict{String, Any}("nr" => "UNR", "name" => "a=0.0 dist=Uniform L=1024 nr=UNR t=0.0", "t" => 0.0, "L" => 1024, "dist" => "Uniform", "a" => 0.0, "path" => "data/Uniform/a=0.0 dist=Uniform L=1024 nr=UNR t=0.0/")
+┌ LogLevel(-2): Done!
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:262
+┌ LogLevel(-2): 18 files were found and skipped.
+└ @ Main /home/vemundlu/FiberBundle/support/dataManager.jl:221
+┌ LogLevel(-2): Running workers...
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:150
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=1024 nr=UNR t=0.0
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:91
+┌ LogLevel(-2): 0%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 1%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 2%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 3%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 4%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 5%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 6%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 7%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 8%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 9%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 10%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 11%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 12%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 13%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 14%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 15%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 16%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 17%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 18%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 19%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 20%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 21%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 22%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 23%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 24%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 25%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 26%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 27%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 28%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 29%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+┌ LogLevel(-2): 30%, Active workers: 32, Completed tasks: 0.
+└ @ Main /home/vemundlu/FiberBundle/dataGenerator.jl:103
+      From worker 12:	
+      From worker 12:	signal (15): Terminated
+      From worker 12:	in expression starting at none:0
+      From worker 8:	
+      From worker 8:	signal (15): Terminated
+      From worker 8:	in expression starting at none:0
+      From worker 24:	
+      From worker 24:	signal (15): Terminated
+      From worker 24:	in expression starting at none:0
+      From worker 13:	
+      From worker 13:	signal (15): Terminated
+      From worker 13:	in expression starting at none:0
+      From worker 11:	
+      From worker 11:	signal (15): Terminated
+      From worker 11:	in expression starting at none:0
+      From worker 10:	
+      From worker 10:	signal (15): Terminated
+      From worker 10:	in expression starting at none:0
+      From worker 2:	
+      From worker 2:	signal (15): Terminated
+      From worker 2:	in expression starting at none:0
+      From worker 33:	
+      From worker 33:	signal (15): Terminated
+      From worker 33:	in expression starting at none:0
+      From worker 5:	
+      From worker 5:	signal (15): Terminated
+      From worker 5:	in expression starting at none:0
+      From worker 32:	
+      From worker 32:	signal (15): Terminated
+      From worker 32:	in expression starting at none:0
+      From worker 30:	
+      From worker 30:	signal (15): Terminated
+      From worker 30:	in expression starting at none:0
+      From worker 9:	
+      From worker 9:	signal (15): Terminated
+      From worker 9:	in expression starting at none:0
+      From worker 23:	
+      From worker 23:	signal (15): Terminated
+      From worker 23:	in expression starting at none:0
+      From worker 19:	
+      From worker 19:	signal (15): Terminated
+      From worker 19:	in expression starting at none:0
+      From worker 29:	
+      From worker 29:	signal (15): Terminated
+      From worker 29:	in expression starting at none:0
+      From worker 27:	
+      From worker 27:	signal (15): Terminated
+      From worker 27:	in expression starting at none:0
+      From worker 31:	
+      From worker 31:	signal (15): Terminated
+      From worker 31:	in expression starting at none:0
+      From worker 18:	
+      From worker 18:	signal (15): Terminated
+      From worker 18:	in expression starting at none:0
+      From worker 22:	
+      From worker 22:	signal (15): Terminated
+      From worker 22:	in expression starting at none:0
+      From worker 14:	
+      From worker 14:	signal (15): Terminated
+      From worker 14:	in expression starting at none:0
+      From worker 21:	
+      From worker 21:	signal (15): Terminated
+      From worker 21:	in expression starting at none:0
+      From worker 20:	
+      From worker 20:	signal (15): Terminated
+      From worker 20:	in expression starting at none:0
+      From worker 25:	
+      From worker 25:	signal (15): Terminated
+      From worker 25:	in expression starting at none:0
+      From worker 17:	
+      From worker 17:	signal (15): Terminated
+      From worker 17:	in expression starting at none:0
+      From worker 3:	
+      From worker 3:	signal (15): Terminated
+      From worker 3:	in expression starting at none:0
+      From worker 6:	
+      From worker 6:	signal (15): Terminated
+      From worker 6:	in expression starting at none:0
+      From worker 4:	
+      From worker 4:	signal (15): Terminated
+      From worker 4:	in expression starting at none:0
+      From worker 7:	
+      From worker 7:	signal (15): Terminated
+      From worker 7:	in expression starting at none:0
+      From worker 15:	
+      From worker 15:	signal (15): Terminated
+      From worker 15:	in expression starting at none:0
+      From worker 26:	
+      From worker 26:	signal (15): Terminated
+      From worker 26:	in expression starting at none:0
+      From worker 28:	
+      From worker 28:	signal (15): Terminated
+      From worker 28:	in expression starting at none:0
+      From worker 41:	
+      From worker 41:	signal (15): Terminated
+      From worker 41:	in expression starting at none:0
+      From worker 40:	
+      From worker 40:	signal (15): Terminated
+      From worker 40:	in expression starting at none:0
+      From worker 37:	
+      From worker 37:	signal (15): Terminated
+      From worker 37:	in expression starting at none:0
+      From worker 38:	
+      From worker 38:	signal (15): Terminated
+      From worker 38:	in expression starting at none:0
+      From worker 39:	
+      From worker 39:	signal (15): Terminated
+      From worker 39:	in expression starting at none:0
+      From worker 35:	
+      From worker 35:	signal (15): Terminated
+      From worker 35:	in expression starting at none:0
+      From worker 34:	
+      From worker 34:	signal (15): Terminated
+      From worker 34:	in expression starting at none:0
+      From worker 36:	
+      From worker 36:	signal (15): Terminated
+      From worker 36:	in expression starting at none:0
+      From worker 36:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 40:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 35:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 39:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 38:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 37:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 41:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 34:	epoll_wait at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 26:	store_possition! at ./array.jl:0 [inlined]
+      From worker 26:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:508
+      From worker 28:	setindex! at ./array.jl:903 [inlined]
+      From worker 28:	apply_simple_stress at /home/vemundlu/FiberBundle/burningMan.jl:605 [inlined]
+      From worker 28:	update_cluster_outline_stress! at /home/vemundlu/FiberBundle/burningMan.jl:583
+      From worker 32:	update_cluster_outline_stress! at /home/vemundlu/FiberBundle/burningMan.jl:579
+      From worker 24:	/ at ./float.jl:408 [inlined]
+      From worker 24:	/ at ./promotion.jl:382 [inlined]
+      From worker 24:	normalize_cm at /home/vemundlu/FiberBundle/burningMan.jl:424
+      From worker 3:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:500
+      From worker 10:	setindex! at ./array.jl:903 [inlined]
+      From worker 10:	store_possition! at /home/vemundlu/FiberBundle/burningMan.jl:530 [inlined]
+      From worker 10:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:508
+      From worker 23:	< at ./int.jl:83 [inlined]
+      From worker 23:	> at ./operators.jl:378 [inlined]
+      From worker 23:	store_possition! at /home/vemundlu/FiberBundle/burningMan.jl:538 [inlined]
+      From worker 23:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:508
+      From worker 30:	getindex at ./array.jl:861 [inlined]
+      From worker 30:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:498
+      From worker 19:	getproperty at ./Base.jl:42 [inlined]
+      From worker 19:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:496
+      From worker 7:	setindex! at ./array.jl:903 [inlined]
+      From worker 7:	apply_simple_stress at /home/vemundlu/FiberBundle/burningMan.jl:605 [inlined]
+      From worker 7:	update_cluster_outline_stress! at /home/vemundlu/FiberBundle/burningMan.jl:583
+      From worker 7:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:365
+      From worker 17:	setindex! at ./array.jl:903 [inlined]
+      From worker 17:	apply_simple_stress at /home/vemundlu/FiberBundle/burningMan.jl:605 [inlined]
+      From worker 17:	update_cluster_outline_stress! at /home/vemundlu/FiberBundle/burningMan.jl:583
+      From worker 17:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:365
+      From worker 31:	setindex! at ./array.jl:903 [inlined]
+      From worker 31:	fill! at ./array.jl:353 [inlined]
+      From worker 31:	reset_relative_possition! at /home/vemundlu/FiberBundle/burningMan.jl:338
+      From worker 12:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:500
+      From worker 12:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 2:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:491
+      From worker 2:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 13:	+ at ./int.jl:87 [inlined]
+      From worker 13:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:516
+      From worker 13:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 13:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 16:	
+      From worker 16:	signal (15): Terminated
+      From worker 16:	in expression starting at none:0
+      From worker 16:	setindex! at ./array.jl:903 [inlined]
+      From worker 16:	update_tension! at /home/vemundlu/FiberBundle/burningMan.jl:305 [inlined]
+      From worker 16:	findNextFiber! at /home/vemundlu/FiberBundle/burningMan.jl:311
+      From worker 33:	setindex! at ./array.jl:903 [inlined]
+      From worker 33:	fill! at ./array.jl:353 [inlined]
+      From worker 33:	reset_relative_possition! at /home/vemundlu/FiberBundle/burningMan.jl:337
+      From worker 33:	resetBundle! at /home/vemundlu/FiberBundle/burningMan.jl:261 [inlined]
+      From worker 33:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:31 [inlined]
+      From worker 33:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 33:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 33:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 33:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 33:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 33:	unknown function (ip: 0x7f320ba899a5)
+      From worker 8:	setindex! at ./array.jl:903 [inlined]
+      From worker 8:	store_possition! at /home/vemundlu/FiberBundle/burningMan.jl:530 [inlined]
+      From worker 8:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:508
+      From worker 8:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 8:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 8:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 8:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 8:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 9:	getproperty at ./Base.jl:42 [inlined]
+      From worker 9:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:498
+      From worker 9:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 9:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 9:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 9:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 9:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 9:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 9:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 9:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 9:	unknown function (ip: 0x7f5903a049a5)
+      From worker 4:	getproperty at ./Base.jl:42 [inlined]
+      From worker 4:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:498
+      From worker 4:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 4:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 4:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 4:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 4:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 4:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 4:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 4:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 4:	unknown function (ip: 0x7fc24071d9a5)
+      From worker 14:	getproperty at ./Base.jl:42 [inlined]
+      From worker 14:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:498
+      From worker 14:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 14:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 14:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 14:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 14:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 14:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 14:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 14:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 14:	unknown function (ip: 0x7f4f80d969a5)
+      From worker 27:	getindex at ./array.jl:861 [inlined]
+      From worker 27:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:498
+      From worker 27:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 27:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 27:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 27:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 27:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 27:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 27:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 27:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 27:	unknown function (ip: 0x7fbb53baf9a5)
+      From worker 6:	getindex at ./array.jl:861 [inlined]
+      From worker 6:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:498
+      From worker 6:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 6:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 6:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 6:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 6:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 6:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 6:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 6:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 6:	unknown function (ip: 0x7fa6498769a5)
+      From worker 29:	getproperty at ./Base.jl:42 [inlined]
+      From worker 29:	check_neighbours! at /home/vemundlu/FiberBundle/burningMan.jl:498
+      From worker 29:	explore_cluster_at! at /home/vemundlu/FiberBundle/burningMan.jl:469
+      From worker 29:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:358
+      From worker 29:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 29:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 29:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 29:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 29:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 29:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 29:	unknown function (ip: 0x7f5a7141f9a5)
+      From worker 25:	setindex! at ./array.jl:903 [inlined]
+      From worker 25:	apply_simple_stress at /home/vemundlu/FiberBundle/burningMan.jl:605 [inlined]
+      From worker 25:	update_cluster_outline_stress! at /home/vemundlu/FiberBundle/burningMan.jl:583
+      From worker 25:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:365
+      From worker 25:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+      From worker 25:	macro expansion at ./timing.jl:299 [inlined]
+      From worker 25:	#break_bundle#50 at /home/vemundlu/FiberBundle/dataGenerator.jl:28
+      From worker 25:	break_bundle##kw at /home/vemundlu/FiberBundle/dataGenerator.jl:17 [inlined]
+      From worker 25:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:128 [inlined]
+      From worker 25:	#59 at /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/macros.jl:288
+      From worker 25:	unknown function (ip: 0x7f2456bf39a5)
+      From worker 28:	update_σ! at /home/vemundlu/FiberBundle/burningMan.jl:365
+      From worker 28:	macro expansion at /home/vemundlu/FiberBundle/dataGenerator.jl:33 [inlined]
+
+signal (15): Terminated
+in expression starting at /home/vemundlu/FiberBundle/generateData.jl:24
+pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)

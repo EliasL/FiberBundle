@@ -1,0 +1,15 @@
+ERROR: LoadError: AssertionError: There is no file maching these settings α=2.0 nr=SNR, L=8, t=0.0
+Stacktrace:
+ [1] load_file(L::Int64, α::Float64, t::Float64, NR::String, dist::String; data_path::String, seed::Int64, average::Bool)
+   @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:304
+ [2] load_file(settings::Dict{String, Any}; seed::Int64, average::Bool)
+   @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:312
+ [3] load_file
+   @ /work/vemundlu/FiberBundle/support/dataManager.jl:310 [inlined]
+ [4] time_estimate(dimensions::Vector{Int64}, α::Vector{Float64}, regimes::StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, NRs::Vector{String}, seeds::UnitRange{Int64}, path::String, dist::String, threads::Int64)
+   @ Main /work/vemundlu/FiberBundle/support/timeEstimator.jl:23
+ [5] time_estimate(dimensions::Vector{Int64}, α::Vector{Float64}, regimes::StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, NRs::Vector{String}, seeds::UnitRange{Int64})
+   @ Main /work/vemundlu/FiberBundle/support/timeEstimator.jl:18
+ [6] top-level scope
+   @ /work/vemundlu/FiberBundle/generateData.jl:23
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:23

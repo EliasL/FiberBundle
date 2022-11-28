@@ -297,9 +297,9 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
         α=0.0
     end
     settings = filter(s -> s["L"] == L
-                        && s["a"]==α 
-                        && s["t"]==t
-                        && s["nr"]==NR, global_settings)
+                        && s["a"] == α 
+                        && s["t"] == t
+                        && s["nr"] == NR, global_settings)
     @assert length(settings) < 2 "There are multiple possibilities"
     @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR, L=$L, t=$t"
     setting = settings[1]

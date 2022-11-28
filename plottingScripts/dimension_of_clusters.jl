@@ -137,6 +137,10 @@ function get_s_and_h_p_dimension()
     savefig("plots/Graphs/dimension.pdf")
 end
 
+function get_gyration_radii(L, nr, t, files)
+    bundles = [get_fb(L, nr=nr, t=t) for _ in eachindex(files)]
+    
+
 
 function plot_dimensions_over_t_with_radius_of_gyration()
     
@@ -146,12 +150,11 @@ function plot_dimensions_over_t_with_radius_of_gyration()
     N = L.*L
     α = 2.0
 
-    function get_s_and_h_p_dimension(nr, t)
+    function get_s_and_gyration(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
-        #seeds = last(files)["nr_seeds_used"]
-        #println(seeds)
+
         s = [f["average_spanning_cluster_size"] for f in files]
-        h = [f["average_spanning_cluster_perimiter"] for f in files]
+        bundles = [f["average_spanning_cluster_perimiter"] for f in files]
 
         std_s = [f["std_spanning_cluster_size"] for f in files]
         std_h = [f["std_spanning_cluster_perimiter"] for f in files]

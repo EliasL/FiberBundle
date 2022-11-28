@@ -5,7 +5,7 @@
 #SBATCH -N 1
 #SBATCH -n 64
 #SBATCH --exclusive=user
-#SBATCH --time=3-00:00:00
+#SBATCH --time=2-00:00:00
 
 ml eb
 #ml av

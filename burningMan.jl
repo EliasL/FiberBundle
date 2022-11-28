@@ -114,7 +114,7 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     end
 end
 
-function get_fb(settings, without_storage=false)
+function get_fb(settings::Dict, without_storage=false)
     L = settings["L"]
     α = settings["a"]
     t = settings["t"]
