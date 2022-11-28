@@ -6,6 +6,7 @@ using LsqFit
 
 include("../support/ploting_settings.jl")
 include("../support/dataManager.jl")
+include("../support/inertia.jl")
 
 f_lin(x,p) = p[1] .+ x .* p[2]
 
@@ -36,8 +37,8 @@ function plot_dimension_thing()
 
     function get_s_and_h_plots(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
-        #seeds = last(files)["nr_seeds_used"]
-        #println(seeds)
+        seeds = zip(L,[f["nr_seeds_used"] for f in files])
+        [println("$nr, $t: ($L, $s)") for (L,s) in seeds]
         s = [f["average_spanning_cluster_size"] for f in files]
         h = [f["average_spanning_cluster_perimiter"] for f in files]
 
@@ -87,7 +88,7 @@ function plot_dimension_thing()
     end
 end
 
-function plot_dimensions_over_t()
+function get_s_and_h_p_dimension()
     
     L = [8,16,32,64,128,256,512]
     t = (0:9)./10
@@ -136,7 +137,58 @@ function plot_dimensions_over_t()
     savefig("plots/Graphs/dimension.pdf")
 end
 
+
+function plot_dimensions_over_t_with_radius_of_gyration()
+    
+    L = [8,16,32,64,128,256,512]
+    t = (0:9)./10
+    NR = ["SNR", "UNR"]
+    N = L.*L
+    α = 2.0
+
+    function get_s_and_h_p_dimension(nr, t)
+        files = [load_file(l, α, t, nr) for l in L]
+        #seeds = last(files)["nr_seeds_used"]
+        #println(seeds)
+        s = [f["average_spanning_cluster_size"] for f in files]
+        h = [f["average_spanning_cluster_perimiter"] for f in files]
+
+        std_s = [f["std_spanning_cluster_size"] for f in files]
+        std_h = [f["std_spanning_cluster_perimiter"] for f in files]
+
+        log_L = log2.(L)
+        s = log2.(s.± std_s)
+        h = log2.(h.± std_s)
+
+        fit_s = get_fit(log_L, Measurements.value.(s))
+        fit_h = get_fit(log_L, Measurements.value.(h))
+        slope_s = round(fit_s[2], digits=2)
+        slope_h = round(fit_h[2], digits=2)
+
+        s = s .± log2.(std_s)
+        h = h .± log2.(std_h)
+
+        return slope_s, slope_h
+    end
+
+    SNR_s_slope = zeros(Float64, length(t))
+    SNR_h_slope = zeros(Float64, length(t))
+    UNR_s_slope = zeros(Float64, length(t))
+    UNR_h_slope = zeros(Float64, length(t))
+    for i in eachindex(t)
+        SNR_s_slope[i], SNR_h_slope[i] = get_s_and_h_p_dimension(NR[1], t[i])
+        UNR_s_slope[i], UNR_h_slope[i] = get_s_and_h_p_dimension(NR[2], t[i])
+    end
+
+    plot([t,t,t,t], [SNR_s_slope, SNR_h_slope, UNR_s_slope, UNR_h_slope], size=(400, 300),
+        plot_title="Dimensionality", labels=[L"SNR $D_s$" L"SNR $D_h$" L"UNR $D_s$" L"UNR $D_h$"],
+        legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
+
+    savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")
+end
+
 plot_dimensions_over_t()
+plot_dimensions_over_t_with_radius_of_gyration()
 plot_dimension_thing()
 
 
