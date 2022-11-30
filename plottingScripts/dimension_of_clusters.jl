@@ -29,7 +29,7 @@ end
 
 function plot_dimension_thing()
     
-    L = [8,16,32,64,128,256,512]
+    L = [8,16,32,64,128]
     t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
@@ -88,9 +88,9 @@ function plot_dimension_thing()
     end
 end
 
-function get_s_and_h_p_dimension()
+function plot_dimensions_over_t()
     
-    L = [8,16,32,64,128,256,512]
+    L = [8,16,32,64,128]
     t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
@@ -139,12 +139,12 @@ end
 
 function get_gyration_radii(L, nr, t, files)
     bundles = [get_fb(L, nr=nr, t=t) for _ in eachindex(files)]
-    
+end
 
 
 function plot_dimensions_over_t_with_radius_of_gyration()
     
-    L = [8,16,32,64,128,256,512]
+    L = [8,16,32,64,128]
     t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
@@ -191,7 +191,7 @@ function plot_dimensions_over_t_with_radius_of_gyration()
 end
 
 plot_dimensions_over_t()
-plot_dimensions_over_t_with_radius_of_gyration()
+#plot_dimensions_over_t_with_radius_of_gyration()
 plot_dimension_thing()
 
 
