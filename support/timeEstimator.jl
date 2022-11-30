@@ -24,19 +24,27 @@ function time_estimate(dimensions, α, regimes, NRs, seeds; path="data/", dist="
             f = load_file(settings)
             seconds_estimated += length(missing_seeds) * f["average_simulation_time"]
         catch
-            @warn "Unable to estimate time, missing data for $settings"
-            return
+            @warn "Unable to estimate time, missing data for:\n$(display_setting(settings))"
+            assume_1_day = 3600*24
+            return assume_1_day
         end
     end
 
     if threads==0
         threads = Threads.nthreads()
     end
-    time_estimate = seconds_estimated/threads
-
+    if length(seeds) >= threads
+        time_estimate = seconds_estimated/threads
+    else
+        time_estimate = seconds_estimated/length(seeds)
+    end
     formated_time = Dates.canonicalize(Dates.CompoundPeriod(Dates.Second(floor(Int64, time_estimate))))
-    @info "This will probably take: $formated_time"
-    return formated_time
+    if isempty(formated_time.periods)
+        @info "This will probably not take very long."
+    else
+        @info "This will probably take: $formated_time"
+    end
+    return time_estimate
 end
 
 function test()
@@ -50,4 +58,4 @@ function test()
     overwrite = false
     time_estimate(L, α, t, NR, seeds)
 end
-test()
+#test()

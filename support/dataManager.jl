@@ -23,6 +23,9 @@ data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
 function make_settings(dist::String, L::Int64, t::Float64, nr::String, α::Float64, path::String)
+    if nr=="UNR"
+        α = 0.0
+    end
     settings = Dict(
         "dist" => dist,
         "L" => L,
@@ -41,6 +44,10 @@ end
 function add_name_and_path_to_setting!(path, dist, settings) 
     settings["name"] = get_setting_name(settings)
     settings["path"] = path*dist*"/"*settings["name"]*"/"
+end
+
+function display_setting(s)
+    return "$(s["dist"]) $(s["nr"]) L:$(s["L"]) α:$(s["a"]) t:$(s["t"])"    
 end
 
 function get_setting_name(settings)
@@ -301,7 +308,9 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
                         && s["t"] == t
                         && s["nr"] == NR, global_settings)
     @assert length(settings) < 2 "There are multiple possibilities"
-    @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR, L=$L, t=$t"
+    if length(settings) == 0
+        throw("There is no file maching these settings α=$α nr=$NR, L=$L, t=$t")
+    end
     setting = settings[1]
     return load(get_file_name(setting, seed, average))
 end
@@ -369,29 +378,75 @@ end
 #add_key("simulation_time", 0)
 
 function get_data_overview(path="data/", dists=["Uniform"])
-    nr = []
-    L = []
-    t = []
-    α = []
-
+    
     for dist in dists
         println("Data for: $dist")
         settings = search_for_settings(path, dist)
+        s = []
+        nr = []
+        L = []
+        t = []
+        α = []
         for setting in settings
-            s = get_seeds_in_file(setting)
-            L = setting["L"]
-            nr = setting["nr"]
-            t = setting["t"]
-            α = setting["a"]
+            seeds = get_seeds_in_file(setting)
+            #L = setting["L"]
+            #nr = setting["nr"]
+            #t = setting["t"]
+            #α = setting["a"]
+            #println("$L, $nr, $t, $α, $seed_text")
             
-            if length(s) == 0
-                println("Empty: $L, $nr, $t, $α")
-                continue
-            end
-            except = setdiff(minimum(s):maximum(s), s)
-            seed_text = "$(minimum(s)) - $(maximum(s))" * (isempty(except) ? "" : " except $(join(except, " , "))")
+            #if length(s) == 0
+            #    println("Empty: $L, $nr, $t, $α")
+            #    continue
+            #end
 
-            println("$L, $nr, $t, $α, $seed_text")
+            # Check if there are missing seeds
+            if isempty(seeds)
+                seed_text = "none"
+            else
+                except = setdiff(minimum(seeds):maximum(seeds), seeds)
+                seed_text = "$(minimum(seeds)) - $(maximum(seeds))" * (isempty(except) ? "" : " except $(join(except, " , "))")
+            end
+            push!(s, seed_text)
+            push!(L, setting["L"])
+            push!(nr, setting["nr"])
+            push!(t, [setting["t"]])
+            push!(α, setting["a"])
+        end
+
+        # Rearrange data
+        data = [(nr[i], α[i], L[i], t[i], s[i]) for i in eachindex(s)]
+        # Sort data
+        sort!(data)
+        # Gather t and s
+        d = 0 #deleted elements
+        for i in eachindex(data)
+            i -= d
+            if i>1 && data[i][5] == data[i-1][5] && data[i][3] == data[i-1][3]
+                if length(data[i-1][4]) == 2
+                    # That means that j should look something like 0.0 - 0.5
+                    data[i-1][4][2] = data[i][4][1]
+                else
+                    push!(data[i-1][4], data[i][4][1])
+                end                
+                popat!(data, i)
+                d += 1
+            end
+        end
+        # Present data
+        println("NR α  L  t  seeds")
+        for i in eachindex(data)
+            for j in eachindex(data[i])
+                # j chooses the variable nr, α, L, t or s
+                # If the value changes
+                if i==1 || j>=4 || data[i][j] != data[i-1][j]
+                    if j!=4
+                        println("   "^(j-1)*"$(data[i][j])")
+                    else
+                        println("   "^(j-1)*"$(join(data[i][j], " - "))")
+                    end
+                end
+            end
         end
     end
 end

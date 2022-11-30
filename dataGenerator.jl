@@ -148,9 +148,6 @@ end
 function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", use_threads=true)
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
         # There is no point in itterating over alphas when using UNR
-        if nr=="UNR"
-            a = 0.0
-        end
         settings = make_settings("Uniform", L, t, nr, a, path)
         @logmsg settingLog "Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite; use_threads=use_threads)

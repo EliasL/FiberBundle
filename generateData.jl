@@ -57,7 +57,7 @@ if use_threads
     @everywhere include("dataGenerator.jl")
 
     @logmsg nodeLog "Running settings: \n $L, \n $t, \n $α"
-    @time itterate_settings(L, α, t, NR, seeds; overwrite=overwrite)
+    @time itterate_settings(L, α, t, NR, s; overwrite=overwrite)
     @logmsg nodeLog "Removing workers"
     rmprocs(workers())
 else
