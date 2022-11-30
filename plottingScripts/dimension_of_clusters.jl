@@ -38,7 +38,13 @@ function plot_dimension_thing()
     function get_s_and_h_plots(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
         seeds = zip(L,[f["nr_seeds_used"] for f in files])
-        [println("$nr, $t: ($L, $s)") for (L,s) in seeds]
+        f = load_file(L[1], α, t, nr, average=false)
+        seeds = 0:4000-1
+        for j in [40, 400, 2000, 4000]
+            println(std([f["spanning_cluster_size/$i"] for i in 0:j]))
+        end
+        spanning_cluster_size = [f["spanning_cluster_size/$i"] for i in seeds]
+        display(plot(seeds, spanning_cluster_size))
         s = [f["average_spanning_cluster_size"] for f in files]
         h = [f["average_spanning_cluster_perimiter"] for f in files]
 
