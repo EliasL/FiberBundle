@@ -1,0 +1,1847 @@
+Data for: Uniform
+NR α  L  t  seeds
+SNR
+   2.0
+      8
+         0.0 - 0.9
+            0 - 3999
+      16
+         0.0 - 0.9
+            0 - 3999
+      32
+         0.0 - 0.9
+            0 - 3999
+      64
+         0.0 - 0.9
+            0 - 3999
+      128
+         0.0 - 0.5
+            0 - 3999
+         0.6 - 0.9
+            0 - 199
+      256
+         0.0 - 0.9
+            0 - 39
+      512
+         0.0 - 0.9
+            0 - 39
+      1024
+         0.0
+            0 - 29
+UNR
+   0.0
+      8
+         0.0 - 0.9
+            0 - 3999
+      16
+         0.0 - 0.9
+            0 - 3999
+      32
+         0.0 - 0.9
+            0 - 3999
+      64
+         0.0 - 0.9
+            0 - 3999
+      128
+         0.0 - 0.5
+            0 - 3999
+         0.6 - 0.9
+            0 - 199
+      256
+         0.0 - 0.9
+            0 - 39
+      512
+         0.0 - 0.9
+            0 - 39
+      1024
+         0.0
+            0 - 29
+Data for: Uniform
+NR α  L  t  seeds
+SNR
+   2.0
+      8
+         0.0 - 0.9
+            0 - 3999
+      16
+         0.0 - 0.9
+            0 - 3999
+      32
+         0.0 - 0.9
+            0 - 3999
+      64
+         0.0 - 0.9
+            0 - 3999
+      128
+         0.0 - 0.5
+            0 - 3999
+         0.6 - 0.9
+            0 - 199
+      256
+         0.0 - 0.9
+            0 - 39
+      512
+         0.0 - 0.9
+            0 - 39
+      1024
+         0.0
+            0 - 29
+UNR
+   0.0
+      8
+         0.0 - 0.9
+            0 - 3999
+      16
+         0.0 - 0.9
+            0 - 3999
+      32
+         0.0 - 0.9
+            0 - 3999
+      64
+         0.0 - 0.9
+            0 - 3999
+      128
+         0.0 - 0.5
+            0 - 3999
+         0.6 - 0.9
+            0 - 199
+      256
+         0.0 - 0.9
+            0 - 39
+      512
+         0.0 - 0.9
+            0 - 39
+      1024
+         0.0
+            0 - 29
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 40 workers... 
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:55
+Data for: Uniform
+NR α  L  t  seeds
+SNR
+   2.0
+      8
+         0.0 - 0.9
+            0 - 3999
+      16
+         0.0 - 0.9
+            0 - 3999
+      32
+         0.0 - 0.9
+            0 - 3999
+      64
+         0.0 - 0.9
+            0 - 3999
+      128
+         0.0 - 0.5
+            0 - 3999
+         0.6 - 0.9
+            0 - 199
+      256
+         0.0 - 0.9
+            0 - 39
+      512
+         0.0 - 0.9
+            0 - 39
+      1024
+         0.0
+            0 - 29
+UNR
+   0.0
+      8
+         0.0 - 0.9
+            0 - 3999
+      16
+         0.0 - 0.9
+            0 - 3999
+      32
+         0.0 - 0.9
+            0 - 3999
+      64
+         0.0 - 0.9
+            0 - 3999
+      128
+         0.0 - 0.5
+            0 - 3999
+         0.6 - 0.9
+            0 - 199
+      256
+         0.0 - 0.9
+            0 - 39
+      512
+         0.0 - 0.9
+            0 - 39
+      1024
+         0.0
+            0 - 29
+      From worker 41:	Data for: Uniform
+      From worker 38:	Data for: Uniform
+      From worker 29:	Data for: Uniform
+      From worker 18:	Data for: Uniform
+      From worker 14:	Data for: Uniform
+      From worker 31:	Data for: Uniform
+      From worker 19:	Data for: Uniform
+      From worker 15:	Data for: Uniform
+      From worker 23:	Data for: Uniform
+      From worker 4:	Data for: Uniform
+      From worker 28:	Data for: Uniform
+      From worker 22:	Data for: Uniform
+      From worker 33:	Data for: Uniform
+      From worker 25:	Data for: Uniform
+      From worker 37:	Data for: Uniform
+      From worker 13:	Data for: Uniform
+      From worker 35:	Data for: Uniform
+      From worker 32:	Data for: Uniform
+      From worker 9:	Data for: Uniform
+      From worker 20:	Data for: Uniform
+      From worker 7:	Data for: Uniform
+      From worker 12:	Data for: Uniform
+      From worker 39:	Data for: Uniform
+      From worker 26:	Data for: Uniform
+      From worker 6:	Data for: Uniform
+      From worker 24:	Data for: Uniform
+      From worker 16:	Data for: Uniform
+      From worker 36:	Data for: Uniform
+      From worker 27:	Data for: Uniform
+      From worker 34:	Data for: Uniform
+      From worker 8:	Data for: Uniform
+      From worker 40:	Data for: Uniform
+      From worker 3:	Data for: Uniform
+      From worker 11:	Data for: Uniform
+      From worker 21:	Data for: Uniform
+      From worker 30:	Data for: Uniform
+      From worker 17:	Data for: Uniform
+      From worker 2:	Data for: Uniform
+      From worker 10:	Data for: Uniform
+      From worker 5:	Data for: Uniform
+      From worker 31:	NR α  L  t  seeds
+      From worker 31:	SNR
+      From worker 18:	NR α  L  t  seeds
+      From worker 18:	SNR
+      From worker 31:	   2.0
+      From worker 18:	   2.0
+      From worker 31:	      8
+      From worker 18:	      8
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 23:	NR α  L  t  seeds
+      From worker 23:	SNR
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 18:	      16
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 18:	      32
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 18:	      64
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 18:	      128
+      From worker 18:	         0.0 - 0.5
+      From worker 18:	            0 - 3999
+      From worker 18:	         0.6 - 0.9
+      From worker 18:	            0 - 199
+      From worker 18:	      256
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 39
+      From worker 18:	      512
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 39
+      From worker 18:	      1024
+      From worker 18:	         0.0
+      From worker 18:	            0 - 29
+      From worker 18:	UNR
+      From worker 18:	   0.0
+      From worker 18:	      8
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 18:	      16
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 18:	      32
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 18:	      64
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 3999
+      From worker 18:	      128
+      From worker 18:	         0.0 - 0.5
+      From worker 18:	            0 - 3999
+      From worker 18:	         0.6 - 0.9
+      From worker 18:	            0 - 199
+      From worker 18:	      256
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 39
+      From worker 18:	      512
+      From worker 18:	         0.0 - 0.9
+      From worker 18:	            0 - 39
+      From worker 18:	      1024
+      From worker 18:	         0.0
+      From worker 18:	            0 - 29
+      From worker 35:	NR α  L  t  seeds
+      From worker 35:	SNR
+      From worker 23:	   2.0
+      From worker 31:	      16
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 31:	      32
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 31:	      64
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 31:	      128
+      From worker 31:	         0.0 - 0.5
+      From worker 31:	            0 - 3999
+      From worker 31:	         0.6 - 0.9
+      From worker 31:	            0 - 199
+      From worker 31:	      256
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 39
+      From worker 31:	      512
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 39
+      From worker 31:	      1024
+      From worker 31:	         0.0
+      From worker 31:	            0 - 29
+      From worker 31:	UNR
+      From worker 31:	   0.0
+      From worker 31:	      8
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 31:	      16
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 31:	      32
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 31:	      64
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 3999
+      From worker 31:	      128
+      From worker 31:	         0.0 - 0.5
+      From worker 31:	            0 - 3999
+      From worker 31:	         0.6 - 0.9
+      From worker 31:	            0 - 199
+      From worker 31:	      256
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 39
+      From worker 31:	      512
+      From worker 31:	         0.0 - 0.9
+      From worker 31:	            0 - 39
+      From worker 31:	      1024
+      From worker 31:	         0.0
+      From worker 31:	            0 - 29
+      From worker 23:	      8
+      From worker 35:	   2.0
+      From worker 35:	      8
+      From worker 29:	NR α  L  t  seeds
+      From worker 29:	SNR
+      From worker 23:	         0.0 - 0.9
+      From worker 23:	            0 - 3999
+      From worker 35:	         0.0 - 0.9
+      From worker 35:	            0 - 3999
+      From worker 29:	   2.0
+      From worker 29:	      8
+      From worker 35:	      16
+      From worker 23:	      16
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	         0.0 - 0.9
+      From worker 35:	            0 - 3999
+      From worker 35:	      32
+      From worker 23:	            0 - 3999
+      From worker 23:	      32
+      From worker 35:	         0.0 - 0.9
+      From worker 35:	            0 - 3999
+      From worker 23:	         0.0 - 0.9
+      From worker 23:	            0 - 3999
+      From worker 23:	      64
+      From worker 35:	      64
+      From worker 35:	         0.0 - 0.9
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	            0 - 3999
+      From worker 23:	            0 - 3999
+      From worker 23:	      128
+      From worker 35:	      128
+      From worker 23:	         0.0 - 0.5
+      From worker 35:	         0.0 - 0.5
+      From worker 23:	            0 - 3999
+      From worker 35:	            0 - 3999
+      From worker 23:	         0.6 - 0.9
+      From worker 23:	            0 - 199
+      From worker 23:	      256
+      From worker 35:	         0.6 - 0.9
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	            0 - 199
+      From worker 23:	            0 - 39
+      From worker 23:	      512
+      From worker 35:	      256
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	         0.0 - 0.9
+      From worker 23:	            0 - 39
+      From worker 23:	      1024
+      From worker 35:	            0 - 39
+      From worker 23:	         0.0
+      From worker 35:	      512
+      From worker 23:	            0 - 29
+      From worker 35:	         0.0 - 0.9
+      From worker 35:	            0 - 39
+      From worker 23:	UNR
+      From worker 23:	   0.0
+      From worker 23:	      8
+      From worker 35:	      1024
+      From worker 35:	         0.0
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	            0 - 29
+      From worker 23:	            0 - 3999
+      From worker 23:	      16
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	UNR
+      From worker 23:	            0 - 3999
+      From worker 35:	   0.0
+      From worker 23:	      32
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	      8
+      From worker 23:	            0 - 3999
+      From worker 35:	         0.0 - 0.9
+      From worker 23:	      64
+      From worker 35:	            0 - 3999
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	      16
+      From worker 23:	            0 - 3999
+      From worker 23:	      128
+      From worker 23:	         0.0 - 0.5
+      From worker 35:	         0.0 - 0.9
+      From worker 35:	            0 - 3999
+      From worker 23:	            0 - 3999
+      From worker 23:	         0.6 - 0.9
+      From worker 35:	      32
+      From worker 23:	            0 - 199
+      From worker 35:	         0.0 - 0.9
+      From worker 23:	      256
+      From worker 35:	            0 - 3999
+      From worker 23:	         0.0 - 0.9
+      From worker 23:	            0 - 39
+      From worker 23:	      512
+      From worker 35:	      64
+      From worker 23:	         0.0 - 0.9
+      From worker 35:	         0.0 - 0.9
+      From worker 23:	            0 - 39
+      From worker 23:	      1024
+      From worker 35:	            0 - 3999
+      From worker 23:	         0.0
+      From worker 35:	      128
+      From worker 23:	            0 - 29
+      From worker 35:	         0.0 - 0.5
+      From worker 35:	            0 - 3999
+      From worker 35:	         0.6 - 0.9
+      From worker 35:	            0 - 199
+      From worker 35:	      256
+      From worker 35:	         0.0 - 0.9
+      From worker 35:	            0 - 39
+      From worker 35:	      512
+      From worker 35:	         0.0 - 0.9
+      From worker 35:	            0 - 39
+      From worker 35:	      1024
+      From worker 35:	         0.0
+      From worker 35:	            0 - 29
+      From worker 19:	NR α  L  t  seeds
+      From worker 19:	SNR
+      From worker 25:	NR α  L  t  seeds
+      From worker 25:	SNR
+      From worker 19:	   2.0
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 19:	      8
+      From worker 32:	NR α  L  t  seeds
+      From worker 32:	SNR
+      From worker 29:	      16
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 29:	      32
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 29:	      64
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 29:	      128
+      From worker 29:	         0.0 - 0.5
+      From worker 29:	            0 - 3999
+      From worker 29:	         0.6 - 0.9
+      From worker 29:	            0 - 199
+      From worker 29:	      256
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 39
+      From worker 29:	      512
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 39
+      From worker 29:	      1024
+      From worker 29:	         0.0
+      From worker 29:	            0 - 29
+      From worker 29:	UNR
+      From worker 29:	   0.0
+      From worker 29:	      8
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 29:	      16
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 29:	      32
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 29:	      64
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 3999
+      From worker 29:	      128
+      From worker 29:	         0.0 - 0.5
+      From worker 29:	            0 - 3999
+      From worker 29:	         0.6 - 0.9
+      From worker 29:	            0 - 199
+      From worker 29:	      256
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 39
+      From worker 29:	      512
+      From worker 29:	         0.0 - 0.9
+      From worker 29:	            0 - 39
+      From worker 29:	      1024
+      From worker 29:	         0.0
+      From worker 29:	            0 - 29
+      From worker 25:	   2.0
+      From worker 32:	   2.0
+      From worker 32:	      8
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 25:	      8
+      From worker 14:	NR α  L  t  seeds
+      From worker 14:	SNR
+      From worker 19:	      16
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 19:	      32
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 19:	      64
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 19:	      128
+      From worker 19:	         0.0 - 0.5
+      From worker 19:	            0 - 3999
+      From worker 19:	         0.6 - 0.9
+      From worker 19:	            0 - 199
+      From worker 19:	      256
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 39
+      From worker 19:	      512
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 39
+      From worker 19:	      1024
+      From worker 19:	         0.0
+      From worker 19:	            0 - 29
+      From worker 19:	UNR
+      From worker 19:	   0.0
+      From worker 19:	      8
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 19:	      16
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 19:	      32
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 19:	      64
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 3999
+      From worker 19:	      128
+      From worker 19:	         0.0 - 0.5
+      From worker 19:	            0 - 3999
+      From worker 19:	         0.6 - 0.9
+      From worker 19:	            0 - 199
+      From worker 19:	      256
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 39
+      From worker 19:	      512
+      From worker 19:	         0.0 - 0.9
+      From worker 19:	            0 - 39
+      From worker 19:	      1024
+      From worker 19:	         0.0
+      From worker 19:	            0 - 29
+      From worker 14:	   2.0
+      From worker 14:	      8
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 28:	NR α  L  t  seeds
+      From worker 28:	SNR
+      From worker 32:	      16
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 32:	      32
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 32:	      64
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 32:	      128
+      From worker 32:	         0.0 - 0.5
+      From worker 32:	            0 - 3999
+      From worker 32:	         0.6 - 0.9
+      From worker 32:	            0 - 199
+      From worker 32:	      256
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 39
+      From worker 32:	      512
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 39
+      From worker 32:	      1024
+      From worker 32:	         0.0
+      From worker 32:	            0 - 29
+      From worker 32:	UNR
+      From worker 32:	   0.0
+      From worker 32:	      8
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 32:	      16
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 32:	      32
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 32:	      64
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 3999
+      From worker 32:	      128
+      From worker 32:	         0.0 - 0.5
+      From worker 32:	            0 - 3999
+      From worker 32:	         0.6 - 0.9
+      From worker 32:	            0 - 199
+      From worker 32:	      256
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 39
+      From worker 32:	      512
+      From worker 32:	         0.0 - 0.9
+      From worker 32:	            0 - 39
+      From worker 32:	      1024
+      From worker 32:	         0.0
+      From worker 32:	            0 - 29
+      From worker 28:	   2.0
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 28:	      8
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      16
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      32
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      64
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      128
+      From worker 14:	         0.0 - 0.5
+      From worker 14:	            0 - 3999
+      From worker 14:	         0.6 - 0.9
+      From worker 14:	            0 - 199
+      From worker 14:	      256
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 39
+      From worker 14:	      512
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 39
+      From worker 14:	      1024
+      From worker 14:	         0.0
+      From worker 14:	            0 - 29
+      From worker 14:	UNR
+      From worker 14:	   0.0
+      From worker 14:	      8
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      16
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      32
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      64
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 3999
+      From worker 14:	      128
+      From worker 14:	         0.0 - 0.5
+      From worker 14:	            0 - 3999
+      From worker 14:	         0.6 - 0.9
+      From worker 14:	            0 - 199
+      From worker 14:	      256
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 39
+      From worker 14:	      512
+      From worker 14:	         0.0 - 0.9
+      From worker 14:	            0 - 39
+      From worker 14:	      1024
+      From worker 14:	         0.0
+      From worker 14:	            0 - 29
+      From worker 25:	      16
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 25:	      32
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 25:	      64
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 25:	      128
+      From worker 25:	         0.0 - 0.5
+      From worker 25:	            0 - 3999
+      From worker 25:	         0.6 - 0.9
+      From worker 25:	            0 - 199
+      From worker 25:	      256
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 39
+      From worker 25:	      512
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 39
+      From worker 25:	      1024
+      From worker 25:	         0.0
+      From worker 25:	            0 - 29
+      From worker 25:	UNR
+      From worker 25:	   0.0
+      From worker 25:	      8
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 25:	      16
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 25:	      32
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 25:	      64
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 3999
+      From worker 25:	      128
+      From worker 25:	         0.0 - 0.5
+      From worker 25:	            0 - 3999
+      From worker 25:	         0.6 - 0.9
+      From worker 25:	            0 - 199
+      From worker 25:	      256
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 39
+      From worker 25:	      512
+      From worker 25:	         0.0 - 0.9
+      From worker 25:	            0 - 39
+      From worker 25:	      1024
+      From worker 25:	         0.0
+      From worker 25:	            0 - 29
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      16
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      32
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      64
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      128
+      From worker 28:	         0.0 - 0.5
+      From worker 28:	            0 - 3999
+      From worker 28:	         0.6 - 0.9
+      From worker 28:	            0 - 199
+      From worker 28:	      256
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 39
+      From worker 28:	      512
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 39
+      From worker 28:	      1024
+      From worker 28:	         0.0
+      From worker 28:	            0 - 29
+      From worker 28:	UNR
+      From worker 28:	   0.0
+      From worker 28:	      8
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      16
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      32
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      64
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 3999
+      From worker 28:	      128
+      From worker 28:	         0.0 - 0.5
+      From worker 28:	            0 - 3999
+      From worker 28:	         0.6 - 0.9
+      From worker 28:	            0 - 199
+      From worker 28:	      256
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 39
+      From worker 28:	      512
+      From worker 28:	         0.0 - 0.9
+      From worker 28:	            0 - 39
+      From worker 28:	      1024
+      From worker 28:	         0.0
+      From worker 28:	            0 - 29
+      From worker 4:	NR α  L  t  seeds
+      From worker 4:	SNR
+      From worker 15:	NR α  L  t  seeds
+      From worker 15:	SNR
+      From worker 4:	   2.0
+      From worker 4:	      8
+      From worker 15:	   2.0
+      From worker 15:	      8
+      From worker 37:	NR α  L  t  seeds
+      From worker 37:	SNR
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 13:	NR α  L  t  seeds
+      From worker 13:	SNR
+      From worker 37:	   2.0
+      From worker 37:	      8
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 4:	      16
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 4:	      32
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 4:	      64
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 4:	      128
+      From worker 4:	         0.0 - 0.5
+      From worker 4:	            0 - 3999
+      From worker 4:	         0.6 - 0.9
+      From worker 4:	            0 - 199
+      From worker 4:	      256
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 39
+      From worker 4:	      512
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 39
+      From worker 4:	      1024
+      From worker 4:	         0.0
+      From worker 4:	            0 - 29
+      From worker 4:	UNR
+      From worker 4:	   0.0
+      From worker 4:	      8
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 4:	      16
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 4:	      32
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 4:	      64
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 3999
+      From worker 4:	      128
+      From worker 4:	         0.0 - 0.5
+      From worker 4:	            0 - 3999
+      From worker 4:	         0.6 - 0.9
+      From worker 4:	            0 - 199
+      From worker 4:	      256
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 39
+      From worker 4:	      512
+      From worker 4:	         0.0 - 0.9
+      From worker 4:	            0 - 39
+      From worker 4:	      1024
+      From worker 4:	         0.0
+      From worker 4:	            0 - 29
+      From worker 13:	   2.0
+      From worker 13:	      8
+      From worker 15:	      16
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 15:	      32
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 15:	      64
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 15:	      128
+      From worker 15:	         0.0 - 0.5
+      From worker 15:	            0 - 3999
+      From worker 15:	         0.6 - 0.9
+      From worker 15:	            0 - 199
+      From worker 15:	      256
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 39
+      From worker 15:	      512
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 39
+      From worker 15:	      1024
+      From worker 15:	         0.0
+      From worker 15:	            0 - 29
+      From worker 15:	UNR
+      From worker 15:	   0.0
+      From worker 15:	      8
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 15:	      16
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 15:	      32
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 15:	      64
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 3999
+      From worker 15:	      128
+      From worker 15:	         0.0 - 0.5
+      From worker 15:	            0 - 3999
+      From worker 15:	         0.6 - 0.9
+      From worker 15:	            0 - 199
+      From worker 15:	      256
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 39
+      From worker 15:	      512
+      From worker 15:	         0.0 - 0.9
+      From worker 15:	            0 - 39
+      From worker 15:	      1024
+      From worker 15:	         0.0
+      From worker 15:	            0 - 29
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 37:	      16
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 37:	      32
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 37:	      64
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 37:	      128
+      From worker 37:	         0.0 - 0.5
+      From worker 37:	            0 - 3999
+      From worker 37:	         0.6 - 0.9
+      From worker 37:	            0 - 199
+      From worker 37:	      256
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 39
+      From worker 37:	      512
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 39
+      From worker 37:	      1024
+      From worker 37:	         0.0
+      From worker 37:	            0 - 29
+      From worker 37:	UNR
+      From worker 37:	   0.0
+      From worker 37:	      8
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 37:	      16
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 37:	      32
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 37:	      64
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 3999
+      From worker 37:	      128
+      From worker 37:	         0.0 - 0.5
+      From worker 37:	            0 - 3999
+      From worker 37:	         0.6 - 0.9
+      From worker 37:	            0 - 199
+      From worker 37:	      256
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 39
+      From worker 37:	      512
+      From worker 37:	         0.0 - 0.9
+      From worker 37:	            0 - 39
+      From worker 37:	      1024
+      From worker 37:	         0.0
+      From worker 37:	            0 - 29
+      From worker 13:	      16
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 13:	      32
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 13:	      64
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 13:	      128
+      From worker 13:	         0.0 - 0.5
+      From worker 13:	            0 - 3999
+      From worker 13:	         0.6 - 0.9
+      From worker 13:	            0 - 199
+      From worker 13:	      256
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 39
+      From worker 13:	      512
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 39
+      From worker 13:	      1024
+      From worker 13:	         0.0
+      From worker 13:	            0 - 29
+      From worker 13:	UNR
+      From worker 13:	   0.0
+      From worker 13:	      8
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 13:	      16
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 13:	      32
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 13:	      64
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 3999
+      From worker 13:	      128
+      From worker 13:	         0.0 - 0.5
+      From worker 13:	            0 - 3999
+      From worker 13:	         0.6 - 0.9
+      From worker 13:	            0 - 199
+      From worker 13:	      256
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 39
+      From worker 13:	      512
+      From worker 13:	         0.0 - 0.9
+      From worker 13:	            0 - 39
+      From worker 13:	      1024
+      From worker 13:	         0.0
+      From worker 13:	            0 - 29
+      From worker 20:	NR α  L  t  seeds
+      From worker 20:	SNR
+      From worker 20:	   2.0
+      From worker 20:	      8
+      From worker 9:	NR α  L  t  seeds
+      From worker 9:	SNR
+      From worker 9:	   2.0
+      From worker 9:	      8
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 20:	      16
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 20:	      32
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 20:	      64
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 20:	      128
+      From worker 20:	         0.0 - 0.5
+      From worker 20:	            0 - 3999
+      From worker 20:	         0.6 - 0.9
+      From worker 20:	            0 - 199
+      From worker 20:	      256
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 39
+      From worker 20:	      512
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 39
+      From worker 20:	      1024
+      From worker 20:	         0.0
+      From worker 20:	            0 - 29
+      From worker 20:	UNR
+      From worker 20:	   0.0
+      From worker 20:	      8
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 20:	      16
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 20:	      32
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 20:	      64
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 3999
+      From worker 20:	      128
+      From worker 20:	         0.0 - 0.5
+      From worker 20:	            0 - 3999
+      From worker 20:	         0.6 - 0.9
+      From worker 20:	            0 - 199
+      From worker 20:	      256
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 39
+      From worker 20:	      512
+      From worker 20:	         0.0 - 0.9
+      From worker 20:	            0 - 39
+      From worker 20:	      1024
+      From worker 20:	         0.0
+      From worker 20:	            0 - 29
+      From worker 9:	      16
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 9:	      32
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 9:	      64
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 9:	      128
+      From worker 9:	         0.0 - 0.5
+      From worker 9:	            0 - 3999
+      From worker 9:	         0.6 - 0.9
+      From worker 9:	            0 - 199
+      From worker 9:	      256
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 39
+      From worker 9:	      512
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 39
+      From worker 9:	      1024
+      From worker 9:	         0.0
+      From worker 9:	            0 - 29
+      From worker 9:	UNR
+      From worker 9:	   0.0
+      From worker 9:	      8
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 9:	      16
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 9:	      32
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 9:	      64
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 3999
+      From worker 9:	      128
+      From worker 9:	         0.0 - 0.5
+      From worker 9:	            0 - 3999
+      From worker 9:	         0.6 - 0.9
+      From worker 9:	            0 - 199
+      From worker 9:	      256
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 39
+      From worker 9:	      512
+      From worker 9:	         0.0 - 0.9
+      From worker 9:	            0 - 39
+      From worker 9:	      1024
+      From worker 9:	         0.0
+      From worker 9:	            0 - 29
+      From worker 33:	NR α  L  t  seeds
+      From worker 33:	SNR
+      From worker 33:	   2.0
+      From worker 33:	      8
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 22:	NR α  L  t  seeds
+      From worker 22:	SNR
+      From worker 33:	      16
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 33:	      32
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 33:	      64
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 33:	      128
+      From worker 33:	         0.0 - 0.5
+      From worker 33:	            0 - 3999
+      From worker 33:	         0.6 - 0.9
+      From worker 33:	            0 - 199
+      From worker 33:	      256
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 39
+      From worker 33:	      512
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 39
+      From worker 33:	      1024
+      From worker 33:	         0.0
+      From worker 33:	            0 - 29
+      From worker 33:	UNR
+      From worker 33:	   0.0
+      From worker 33:	      8
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 33:	      16
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 33:	      32
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 33:	      64
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 3999
+      From worker 33:	      128
+      From worker 33:	         0.0 - 0.5
+      From worker 33:	            0 - 3999
+      From worker 33:	         0.6 - 0.9
+      From worker 33:	            0 - 199
+      From worker 33:	      256
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 39
+      From worker 33:	      512
+      From worker 33:	         0.0 - 0.9
+      From worker 33:	            0 - 39
+      From worker 33:	      1024
+      From worker 33:	         0.0
+      From worker 33:	            0 - 29
+      From worker 22:	   2.0
+      From worker 22:	      8
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      16
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      32
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      64
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      128
+      From worker 22:	         0.0 - 0.5
+      From worker 22:	            0 - 3999
+      From worker 22:	         0.6 - 0.9
+      From worker 22:	            0 - 199
+      From worker 22:	      256
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 39
+      From worker 22:	      512
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 39
+      From worker 22:	      1024
+      From worker 22:	         0.0
+      From worker 22:	            0 - 29
+      From worker 22:	UNR
+      From worker 22:	   0.0
+      From worker 22:	      8
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      16
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      32
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      64
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 3999
+      From worker 22:	      128
+      From worker 22:	         0.0 - 0.5
+      From worker 22:	            0 - 3999
+      From worker 22:	         0.6 - 0.9
+      From worker 22:	            0 - 199
+      From worker 22:	      256
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 39
+      From worker 22:	      512
+      From worker 22:	         0.0 - 0.9
+      From worker 22:	            0 - 39
+      From worker 22:	      1024
+      From worker 22:	         0.0
+      From worker 22:	            0 - 29
+      From worker 7:	NR α  L  t  seeds
+      From worker 7:	SNR
+      From worker 7:	   2.0
+      From worker 7:	      8
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      16
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      32
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      64
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      128
+      From worker 7:	         0.0 - 0.5
+      From worker 7:	            0 - 3999
+      From worker 7:	         0.6 - 0.9
+      From worker 7:	            0 - 199
+      From worker 7:	      256
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 39
+      From worker 7:	      512
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 39
+      From worker 7:	      1024
+      From worker 7:	         0.0
+      From worker 7:	            0 - 29
+      From worker 7:	UNR
+      From worker 7:	   0.0
+      From worker 7:	      8
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      16
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      32
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      64
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 3999
+      From worker 7:	      128
+      From worker 7:	         0.0 - 0.5
+      From worker 7:	            0 - 3999
+      From worker 7:	         0.6 - 0.9
+      From worker 7:	            0 - 199
+      From worker 7:	      256
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 39
+      From worker 7:	      512
+      From worker 7:	         0.0 - 0.9
+      From worker 7:	            0 - 39
+      From worker 7:	      1024
+      From worker 7:	         0.0
+      From worker 7:	            0 - 29
+      From worker 24:	NR α  L  t  seeds
+      From worker 24:	SNR
+      From worker 24:	   2.0
+      From worker 24:	      8
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      16
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      32
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      64
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      128
+      From worker 24:	         0.0 - 0.5
+      From worker 24:	            0 - 3999
+      From worker 24:	         0.6 - 0.9
+      From worker 24:	            0 - 199
+      From worker 24:	      256
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 39
+      From worker 24:	      512
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 39
+      From worker 24:	      1024
+      From worker 24:	         0.0
+      From worker 24:	            0 - 29
+      From worker 24:	UNR
+      From worker 24:	   0.0
+      From worker 24:	      8
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      16
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      32
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      64
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 3999
+      From worker 24:	      128
+      From worker 24:	         0.0 - 0.5
+      From worker 24:	            0 - 3999
+      From worker 24:	         0.6 - 0.9
+      From worker 24:	            0 - 199
+      From worker 24:	      256
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 39
+      From worker 24:	      512
+      From worker 24:	         0.0 - 0.9
+      From worker 24:	            0 - 39
+      From worker 24:	      1024
+      From worker 24:	         0.0
+      From worker 24:	            0 - 29
+      From worker 6:	NR α  L  t  seeds
+      From worker 6:	SNR
+      From worker 6:	   2.0
+      From worker 6:	      8
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      16
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      32
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      64
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      128
+      From worker 6:	         0.0 - 0.5
+      From worker 6:	            0 - 3999
+      From worker 6:	         0.6 - 0.9
+      From worker 6:	            0 - 199
+      From worker 6:	      256
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 39
+      From worker 6:	      512
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 39
+      From worker 6:	      1024
+      From worker 6:	         0.0
+      From worker 6:	            0 - 29
+      From worker 6:	UNR
+      From worker 6:	   0.0
+      From worker 6:	      8
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      16
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      32
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      64
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 3999
+      From worker 6:	      128
+      From worker 6:	         0.0 - 0.5
+      From worker 6:	            0 - 3999
+      From worker 6:	         0.6 - 0.9
+      From worker 6:	            0 - 199
+      From worker 6:	      256
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 39
+      From worker 6:	      512
+      From worker 6:	         0.0 - 0.9
+      From worker 6:	            0 - 39
+      From worker 6:	      1024
+      From worker 6:	         0.0
+      From worker 6:	            0 - 29
+      From worker 16:	NR α  L  t  seeds
+      From worker 16:	SNR
+      From worker 16:	   2.0
+      From worker 16:	      8
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      16
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      32
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      64
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      128
+      From worker 16:	         0.0 - 0.5
+      From worker 16:	            0 - 3999
+      From worker 16:	         0.6 - 0.9
+      From worker 16:	            0 - 199
+      From worker 16:	      256
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 39
+      From worker 16:	      512
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 39
+      From worker 16:	      1024
+      From worker 16:	         0.0
+      From worker 16:	            0 - 29
+      From worker 16:	UNR
+      From worker 16:	   0.0
+      From worker 16:	      8
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      16
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      32
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      64
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 3999
+      From worker 16:	      128
+      From worker 16:	         0.0 - 0.5
+      From worker 16:	            0 - 3999
+      From worker 16:	         0.6 - 0.9
+      From worker 16:	            0 - 199
+      From worker 16:	      256
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 39
+      From worker 16:	      512
+      From worker 16:	         0.0 - 0.9
+      From worker 16:	            0 - 39
+      From worker 16:	      1024
+      From worker 16:	         0.0
+      From worker 16:	            0 - 29
+      From worker 30:	NR α  L  t  seeds
+      From worker 30:	SNR
+      From worker 30:	   2.0
+      From worker 30:	      8
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      16
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      32
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      64
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      128
+      From worker 30:	         0.0 - 0.5
+      From worker 30:	            0 - 3999
+      From worker 30:	         0.6 - 0.9
+      From worker 30:	            0 - 199
+      From worker 30:	      256
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 39
+      From worker 30:	      512
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 39
+      From worker 30:	      1024
+      From worker 30:	         0.0
+      From worker 30:	            0 - 29
+      From worker 30:	UNR
+      From worker 30:	   0.0
+      From worker 30:	      8
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      16
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      32
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      64
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 3999
+      From worker 30:	      128
+      From worker 30:	         0.0 - 0.5
+      From worker 30:	            0 - 3999
+      From worker 30:	         0.6 - 0.9
+      From worker 30:	            0 - 199
+      From worker 30:	      256
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 39
+      From worker 30:	      512
+      From worker 30:	         0.0 - 0.9
+      From worker 30:	            0 - 39
+      From worker 30:	      1024
+      From worker 30:	         0.0
+      From worker 30:	            0 - 29
+      From worker 41:	NR α  L  t  seeds
+      From worker 41:	SNR
+      From worker 41:	   2.0
+      From worker 41:	      8
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      16
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      32
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      64
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      128
+      From worker 41:	         0.0 - 0.5
+      From worker 41:	            0 - 3999
+      From worker 41:	         0.6 - 0.9
+      From worker 41:	            0 - 199
+      From worker 41:	      256
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 39
+      From worker 41:	      512
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 39
+      From worker 41:	      1024
+      From worker 41:	         0.0
+      From worker 41:	            0 - 29
+      From worker 41:	UNR
+      From worker 41:	   0.0
+      From worker 41:	      8
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      16
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      32
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      64
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 3999
+      From worker 41:	      128
+      From worker 41:	         0.0 - 0.5
+      From worker 41:	            0 - 3999
+      From worker 41:	         0.6 - 0.9
+      From worker 41:	            0 - 199
+      From worker 41:	      256
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 39
+      From worker 41:	      512
+      From worker 41:	         0.0 - 0.9
+      From worker 41:	            0 - 39
+      From worker 41:	      1024
+      From worker 41:	         0.0
+      From worker 41:	            0 - 29
+      From worker 26:	NR α  L  t  seeds
+      From worker 26:	SNR
+      From worker 17:	NR α  L  t  seeds
+      From worker 17:	SNR
+      From worker 26:	   2.0
+      From worker 26:	      8
+      From worker 17:	   2.0
+      From worker 17:	      8
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 26:	      16
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 26:	      32
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 26:	      64
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 26:	      128
+      From worker 26:	         0.0 - 0.5
+      From worker 26:	            0 - 3999
+      From worker 26:	         0.6 - 0.9
+      From worker 26:	            0 - 199
+      From worker 26:	      256
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 39
+      From worker 26:	      512
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 39
+      From worker 26:	      1024
+      From worker 26:	         0.0
+      From worker 26:	            0 - 29
+      From worker 26:	UNR
+      From worker 26:	   0.0
+      From worker 26:	      8
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 26:	      16
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 26:	      32
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 26:	      64
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 3999
+      From worker 26:	      128
+      From worker 26:	         0.0 - 0.5
+      From worker 26:	            0 - 3999
+      From worker 26:	         0.6 - 0.9
+      From worker 26:	            0 - 199
+      From worker 26:	      256
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 39
+      From worker 26:	      512
+      From worker 26:	         0.0 - 0.9
+      From worker 26:	            0 - 39
+      From worker 26:	      1024
+      From worker 26:	         0.0
+      From worker 26:	            0 - 29
+      From worker 17:	      16
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 17:	      32
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 17:	      64
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 17:	      128
+      From worker 17:	         0.0 - 0.5
+      From worker 17:	            0 - 3999
+      From worker 17:	         0.6 - 0.9
+      From worker 17:	            0 - 199
+      From worker 17:	      256
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 39
+      From worker 17:	      512
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 39
+      From worker 17:	      1024
+      From worker 17:	         0.0
+      From worker 17:	            0 - 29
+      From worker 17:	UNR
+      From worker 17:	   0.0
+      From worker 17:	      8
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 17:	      16
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 17:	      32
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 17:	      64
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 3999
+      From worker 17:	      128
+      From worker 17:	         0.0 - 0.5
+      From worker 17:	            0 - 3999
+      From worker 17:	         0.6 - 0.9
+      From worker 17:	            0 - 199
+      From worker 17:	      256
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 39
+      From worker 17:	      512
+      From worker 17:	         0.0 - 0.9
+      From worker 17:	            0 - 39
+      From worker 17:	      1024
+      From worker 17:	         0.0
+      From worker 17:	            0 - 29
+      From worker 38:	NR α  L  t  seeds
+      From worker 38:	SNR
+      From worker 38:	   2.0
+      From worker 38:	      8
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      16
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      32
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      64
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      128
+      From worker 38:	         0.0 - 0.5
+      From worker 38:	            0 - 3999
+      From worker 38:	         0.6 - 0.9
+      From worker 38:	            0 - 199
+      From worker 38:	      256
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 39
+      From worker 38:	      512
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 39
+      From worker 38:	      1024
+      From worker 38:	         0.0
+      From worker 38:	            0 - 29
+      From worker 38:	UNR
+      From worker 38:	   0.0
+      From worker 38:	      8
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      16
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      32
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      64
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 3999
+      From worker 38:	      128
+      From worker 38:	         0.0 - 0.5
+      From worker 38:	            0 - 3999
+      From worker 38:	         0.6 - 0.9
+      From worker 38:	            0 - 199
+      From worker 38:	      256
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 39
+      From worker 38:	      512
+      From worker 38:	         0.0 - 0.9
+      From worker 38:	            0 - 39
+      From worker 38:	      1024
+      From worker 38:	         0.0
+      From worker 38:	            0 - 29
+      From worker 12:	NR α  L  t  seeds
+      From worker 12:	SNR
+      From worker 12:	   2.0
+      From worker 12:	      8
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      16
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      32
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      64
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      128
+      From worker 12:	         0.0 - 0.5
+      From worker 12:	            0 - 3999
+      From worker 12:	         0.6 - 0.9
+      From worker 12:	            0 - 199
+      From worker 12:	      256
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 39
+      From worker 12:	      512
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 39
+      From worker 12:	      1024
+      From worker 12:	         0.0
+      From worker 12:	            0 - 29
+      From worker 12:	UNR
+      From worker 12:	   0.0
+      From worker 12:	      8
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      16
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      32
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      64
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 3999
+      From worker 12:	      128
+      From worker 12:	         0.0 - 0.5
+      From worker 12:	            0 - 3999
+      From worker 12:	         0.6 - 0.9
+      From worker 12:	            0 - 199
+      From worker 12:	      256
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 39
+      From worker 12:	      512
+      From worker 12:	         0.0 - 0.9
+      From worker 12:	            0 - 39
+      From worker 12:	      1024
+      From worker 12:	         0.0
+      From worker 12:	            0 - 29
+      From worker 39:	NR α  L  t  seeds
+      From worker 39:	SNR
+      From worker 39:	   2.0
+      From worker 39:	      8
+      From worker 39:	         0.0 - 0.9
+      From worker 39:	            0 - 3999
+      From worker 39:	      16
+      From worker 39:	         0.0 - 0.9
+      From worker 39:	            0 - 3999
+      From worker 39:	      32
+      From worker 39:	         0.0 - 0.9
+      From worker 39:	            0 - 3999
+      From worker 39:	      64
+      From worker 39:	         0.0 - 0.9
+      From worker 39:	            0 - 3999
+      From worker 39:	      128
+      From worker 39:	         0.0 - 0.5
+      From worker 39:	            0 - 3999
+      From worker 39:	         0.6 - 0.9
+      From worker 39:	            0 - 199
+      From worker 39:	      256
+      From worker 39:	         0.0 - 0.9
+      From worker 39:	            0 - 39
+      From worker 39:	      512
+      From worker 39:	         0.0 - 0.9
+      From worker 39:	            0 - 39
+      From worker 39:	      1024
+      From worker 39:	         0.0
+      From worker 39:	            0 - 29
+      From worker 39:	UNR
+      From worker 39:	   0.0
+      From worker 39:	      8
+      From worker 39:	         0.0 - 0.9
