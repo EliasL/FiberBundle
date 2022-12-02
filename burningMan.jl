@@ -246,6 +246,16 @@ function resetBundle!(b::FB)
     reset_relative_possition!(b)
 end
 
+function healBundle!(b::FB)
+    # This completely resets the bundle
+    fill!(b.σ, 1)
+    fill!(b.tension, 0)
+    fill!(b.status, -1)
+    b.current_step = 0
+    fill!(b.break_sequence, 0)
+    resetBundle!(b)
+end
+
 function resetClusters!(b::FB)
     # After having explored and assigned numbers to 
     # all the fibers indicating their state, we now 

@@ -47,8 +47,8 @@ end
 
 
 
-seeds = [0, 500] # From seed to seed
-L = [256]
+seeds = [0, 30] # From seed to seed
+L = [1024]
 
 make_job(seeds, L, force_short=false)
-#start_job()
+start_job()

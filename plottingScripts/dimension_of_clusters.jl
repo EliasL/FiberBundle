@@ -29,19 +29,20 @@ end
 
 function plot_dimension_thing()
     
-    L = [8,16,32,64,128]
+    L = [8,16,32,64,128,256,512]
     t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
     α = 2.0
 
-    function get_s_and_h_plots(nr, t)
+    function get_s_and_r_plots(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
         seeds = zip(L,[f["nr_seeds_used"] for f in files])
         f = load_file(L[1], α, t, nr, average=false)
         seeds = 0:4000-1
-        for j in [40, 400, 2000, 4000]
-            println(std([f["spanning_cluster_size/$i"] for i in 0:j]))
+        println("$nr, $t")
+        for j in [40, 400, 2000, 4000-1]
+            println(std([f["spanning_cluster_perimiter/$i"] for i in 0:j]))
         end
         spanning_cluster_size = [f["spanning_cluster_size/$i"] for i in seeds]
         display(plot(seeds, spanning_cluster_size))
@@ -53,15 +54,15 @@ function plot_dimension_thing()
 
         log_L = log2.(L)
         s = log2.(s.± std_s)
-        h = log2.(h.± std_s)
+        h = log2.(h.± std_h)
 
         fit_s = get_fit(log_L, Measurements.value.(s))
         fit_h = get_fit(log_L, Measurements.value.(h))
         slope_s = round(fit_s[2], digits=2)
         slope_h = round(fit_h[2], digits=2)
 
-        s = s .± log2.(std_s)
-        h = h .± log2.(std_h)
+        #s = s .± log2.(std_s)
+        #h = h .± log2.(std_h)
 
         m_shape = :cross
         default(color=:black, markersize=3)
@@ -79,15 +80,15 @@ function plot_dimension_thing()
 
     for t_ in t
         @assert NR[1] == "SNR"
-        SNR_s_plot, SNR_h_plot = get_s_and_h_plots(NR[1], t_)
+        SNR_s_plot, SNR_r_plot = get_s_and_r_plots(NR[1], t_)
         @assert NR[2] == "UNR"
-        UNR_s_plot, UNR_h_plot = get_s_and_h_plots(NR[2], t_)
+        UNR_s_plot, UNR_r_plot = get_s_and_r_plots(NR[2], t_)
 
         l = @layout [
             A B;
             C D
         ]
-        plot(SNR_s_plot, SNR_h_plot, UNR_s_plot, UNR_h_plot, size=(800, 600), layout = l,
+        plot(SNR_s_plot, SNR_r_plot, UNR_s_plot, UNR_r_plot, size=(800, 600), layout = l,
             plot_title=latexstring("Dimensionality: \$t=$t_\$"))
 
         savefig("plots/Graphs/dimension_t=$t_.pdf")
@@ -96,13 +97,13 @@ end
 
 function plot_dimensions_over_t()
     
-    L = [8,16,32,64,128]
+    L = [8,16,32,64,128,256,512]
     t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
     α = 2.0
 
-    function get_s_and_h_p_dimension(nr, t)
+    function get_s_and_r_p_dimension(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
         #seeds = last(files)["nr_seeds_used"]
         #println(seeds)
@@ -121,8 +122,8 @@ function plot_dimensions_over_t()
         slope_s = round(fit_s[2], digits=2)
         slope_h = round(fit_h[2], digits=2)
 
-        s = s .± log2.(std_s)
-        h = h .± log2.(std_h)
+        #s = s .± log2.(std_s)
+        #h = h .± log2.(std_h)
 
         return slope_s, slope_h
     end
@@ -132,8 +133,8 @@ function plot_dimensions_over_t()
     UNR_s_slope = zeros(Float64, length(t))
     UNR_h_slope = zeros(Float64, length(t))
     for i in eachindex(t)
-        SNR_s_slope[i], SNR_h_slope[i] = get_s_and_h_p_dimension(NR[1], t[i])
-        UNR_s_slope[i], UNR_h_slope[i] = get_s_and_h_p_dimension(NR[2], t[i])
+        SNR_s_slope[i], SNR_h_slope[i] = get_s_and_r_p_dimension(NR[1], t[i])
+        UNR_s_slope[i], UNR_h_slope[i] = get_s_and_r_p_dimension(NR[2], t[i])
     end
 
     plot([t,t,t,t], [SNR_s_slope, SNR_h_slope, UNR_s_slope, UNR_h_slope], size=(400, 300),
@@ -143,14 +144,31 @@ function plot_dimensions_over_t()
     savefig("plots/Graphs/dimension.pdf")
 end
 
-function get_gyration_radii(L, nr, t, files)
-    bundles = [get_fb(L, nr=nr, t=t) for _ in eachindex(files)]
+function get_gyration_radii(L, nr, t, bulk_files)
+    bundles = [get_fb(L[i], nr=nr, t=t, without_storage=true) for i in eachindex(bulk_files)]
+    r = []
+    std_r = []
+    for (b::FB, file) in zip(bundles, bulk_files)
+        temp_r = []
+        for seed in file["seeds_used"]
+            #println(view(file["break_sequence/$seed"],1:file["last_step/$seed"]))
+            
+            break_fiber_list!(view(file["break_sequence/$seed"],1:file["last_step/$seed"]), b)
+            update_σ!(b)
+            single_r = maximum(find_radius_of_gyration(b))
+            push!(temp_r, single_r)
+            healBundle!(b)
+        end
+        push!(r, mean(temp_r))
+        push!(std_r, std(temp_r))
+    end
+    return r, std_r
 end
 
 
 function plot_dimensions_over_t_with_radius_of_gyration()
     
-    L = [8,16,32,64,128]
+    L = [8,16,32,64,128,256,512]
     t = (0:9)./10
     NR = ["SNR", "UNR"]
     N = L.*L
@@ -158,46 +176,56 @@ function plot_dimensions_over_t_with_radius_of_gyration()
 
     function get_s_and_gyration(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
+        bulk_files = [load_file(l, α, t, nr,average=false) for l in L]
 
         s = [f["average_spanning_cluster_size"] for f in files]
-        bundles = [f["average_spanning_cluster_perimiter"] for f in files]
-
         std_s = [f["std_spanning_cluster_size"] for f in files]
-        std_h = [f["std_spanning_cluster_perimiter"] for f in files]
+        r, std_r = get_gyration_radii(L, nr, t, bulk_files)
 
         log_L = log2.(L)
         s = log2.(s.± std_s)
-        h = log2.(h.± std_s)
+        r = log2.(r.± std_r)
 
         fit_s = get_fit(log_L, Measurements.value.(s))
-        fit_h = get_fit(log_L, Measurements.value.(h))
+        fit_r = get_fit(log_L, Measurements.value.(r))
         slope_s = round(fit_s[2], digits=2)
-        slope_h = round(fit_h[2], digits=2)
+        slope_r = round(fit_r[2], digits=2)
 
-        s = s .± log2.(std_s)
-        h = h .± log2.(std_h)
-
-        return slope_s, slope_h
+        return slope_s, slope_r
     end
 
     SNR_s_slope = zeros(Float64, length(t))
-    SNR_h_slope = zeros(Float64, length(t))
+    SNR_r_slope = zeros(Float64, length(t))
     UNR_s_slope = zeros(Float64, length(t))
-    UNR_h_slope = zeros(Float64, length(t))
-    for i in eachindex(t)
-        SNR_s_slope[i], SNR_h_slope[i] = get_s_and_h_p_dimension(NR[1], t[i])
-        UNR_s_slope[i], UNR_h_slope[i] = get_s_and_h_p_dimension(NR[2], t[i])
+    UNR_r_slope = zeros(Float64, length(t))
+    try
+        f = load("data/gyration_data.jld2")
+        SNR_r_slope = f["SNR_r_slope"]
+        UNR_r_slope = f["UNR_r_slope"]
+        SNR_s_slope = f["SNR_s_slope"]
+        UNR_s_slope = f["UNR_s_slope"]
+    catch
+        for i in eachindex(t)
+            SNR_s_slope[i], SNR_r_slope[i] = get_s_and_gyration(NR[1], t[i])
+            UNR_s_slope[i], UNR_r_slope[i] = get_s_and_gyration(NR[2], t[i])
+        end
+        jldopen("data/gyration_data.jld2", "w") do file
+            file["SNR_r_slope"] = SNR_r_slope
+            file["UNR_r_slope"] = UNR_r_slope
+            file["SNR_s_slope"] = SNR_s_slope
+            file["UNR_s_slope"] = UNR_s_slope
+        end
     end
 
-    plot([t,t,t,t], [SNR_s_slope, SNR_h_slope, UNR_s_slope, UNR_h_slope], size=(400, 300),
-        plot_title="Dimensionality", labels=[L"SNR $D_s$" L"SNR $D_h$" L"UNR $D_s$" L"UNR $D_h$"],
+    plot([t,t,t,t], [SNR_s_slope, SNR_r_slope, UNR_s_slope, UNR_r_slope], size=(400, 300),
+        plot_title="Dimensionality", labels=[L"SNR $D_s$" L"SNR $D_r$" L"UNR $D_s$" L"UNR $D_r$"],
         legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")
 end
 
 plot_dimensions_over_t()
-#plot_dimensions_over_t_with_radius_of_gyration()
+plot_dimensions_over_t_with_radius_of_gyration()
 plot_dimension_thing()
 
 
