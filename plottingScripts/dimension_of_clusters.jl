@@ -30,7 +30,7 @@ end
 function plot_dimension_thing()
     
     L = [8,16,32,64,128,256,512]
-    t = (0:9)./10
+    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -39,13 +39,13 @@ function plot_dimension_thing()
         files = [load_file(l, α, t, nr) for l in L]
         seeds = zip(L,[f["nr_seeds_used"] for f in files])
         f = load_file(L[1], α, t, nr, average=false)
-        seeds = 0:4000-1
-        println("$nr, $t")
-        for j in [40, 400, 2000, 4000-1]
-            println(std([f["spanning_cluster_perimiter/$i"] for i in 0:j]))
-        end
-        spanning_cluster_size = [f["spanning_cluster_size/$i"] for i in seeds]
-        display(plot(seeds, spanning_cluster_size))
+        #seeds = 0:4000-1
+        #println("$nr, $t")
+        #for j in [40, 400, 2000, 4000-1]
+        #    println(std([f["spanning_cluster_perimiter/$i"] for i in 0:j]))
+        #end
+        #spanning_cluster_size = [f["spanning_cluster_size/$i"] for i in seeds]
+        #display(plot(seeds, spanning_cluster_size))
         s = [f["average_spanning_cluster_size"] for f in files]
         h = [f["average_spanning_cluster_perimiter"] for f in files]
 
@@ -89,7 +89,7 @@ function plot_dimension_thing()
             C D
         ]
         plot(CLS_s_plot, CLS_r_plot, LLS_s_plot, LLS_r_plot, size=(800, 600), layout = l,
-            plot_title=latexstring("Dimensionality: \$t=$t_\$"))
+            plot_title=latexstring("Dimensionality: \$t_0=$t_\$"))
 
         savefig("plots/Graphs/dimension_t=$t_.pdf")
     end
@@ -98,7 +98,7 @@ end
 function plot_dimensions_over_t()
     
     L = [8,16,32,64,128,256,512]
-    t = (0:9)./10
+    t = (0:9) ./ 10#vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -137,9 +137,11 @@ function plot_dimensions_over_t()
         LLS_s_slope[i], LLS_h_slope[i] = get_s_and_r_p_dimension(NR[2], t[i])
     end
 
+
+    default(markersize=3, markershape=:vline)
     plot([t,t,t,t], [CLS_s_slope, CLS_h_slope, LLS_s_slope, LLS_h_slope], size=(400, 300),
         plot_title="Dimensionality", labels=[L"CLS $D_s$" L"CLS $D_h$" L"LLS $D_s$" L"LLS $D_h$"],
-        legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
+        legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :auto :auto :auto])
 
     savefig("plots/Graphs/dimension.pdf")
 end
@@ -190,7 +192,7 @@ end
 function plot_dimensions_over_t_with_radius_of_gyration()
     
     L = [8,16,32,64,128,256,512]
-    t = (0:9)./10
+    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -225,9 +227,12 @@ function plot_dimensions_over_t_with_radius_of_gyration()
         LLS_s_slope[i], LLS_r_slope[i] = get_s_and_gyration(NR[2], t[i])
     end
 
+
+    m_shape = :cross
+    default(color=:black, markersize=3)
     plot([t,t,t,t], [CLS_s_slope, CLS_r_slope, LLS_s_slope, LLS_r_slope], size=(400, 300),
         plot_title="Dimensionality", labels=[L"CLS $D_s$" L"CLS $D_r$" L"LLS $D_s$" L"LLS $D_r$"],
-        legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
+        legend=:right, xlabel=L"t_0", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")
 end
@@ -235,7 +240,7 @@ end
 function plot_dimensions_with_radius_of_gyration()
     
     L = [8,16,32,64,128,256,512]
-    t = (0:9)./10
+    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -297,13 +302,13 @@ function plot_dimensions_with_radius_of_gyration()
 
     plot([t,t,t,t], [CLS_s_slope, CLS_r_slope, LLS_s_slope, LLS_r_slope], size=(400, 300),
         plot_title="Dimensionality", labels=[L"CLS $D_s$" L"CLS $D_r$" L"LLS $D_s$" L"LLS $D_r$"],
-        legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
+        legend=:right, xlabel=L"t_0", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")
 end
-
+default(markershape=:circle)
 plot_dimensions_over_t()
-plot_dimensions_over_t_with_radius_of_gyration()
+#plot_dimensions_over_t_with_radius_of_gyration()
 plot_dimension_thing()
 
 

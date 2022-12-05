@@ -411,12 +411,12 @@ function get_data_overview(path="data/", dists=["Uniform"])
         for i in eachindex(data)
             i -= d
             if i>1 && data[i][5] == data[i-1][5] && data[i][3] == data[i-1][3]
-                if length(data[i-1][4]) == 2
-                    # That means that j should look something like 0.0 - 0.5
-                    data[i-1][4][2] = data[i][4][1]
-                else
-                    push!(data[i-1][4], data[i][4][1])
-                end                
+                #if length(data[i-1][4]) == 2
+                #    # That means that j should look something like 0.0 - 0.5
+                #    data[i-1][4][2] = data[i][4][1]
+                #else
+                #end                
+                push!(data[i-1][4], data[i][4][1])
                 popat!(data, i)
                 d += 1
             end
@@ -431,7 +431,7 @@ function get_data_overview(path="data/", dists=["Uniform"])
                     if j!=4
                         println("   "^(j-1)*"$(data[i][j])")
                     else
-                        println("   "^(j-1)*"$(join(data[i][j], " - "))")
+                        println("   "^(j-1)*"$(join(data[i][j], ", "))")
                     end
                 end
             end
@@ -485,7 +485,7 @@ function rename_files_and_folders(path="data/", dists=["Uniform"])
     println("Success!")
 end
 
-rename_files_and_folders()
+#rename_files_and_folders()
 
 #recalculate_average_file()
 

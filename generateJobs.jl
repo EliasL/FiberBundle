@@ -47,7 +47,7 @@ end
 
 
 
-seeds = [0, 300] # From seed to seed
+seeds = [0, 500] # From seed to seed
 L = [8,16,32,64,128,256]
 t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 make_job(seeds, L, t=t, α=[2.0], force_short=false)
