@@ -6,41 +6,14 @@ using Measures
 include("../support/ploting_settings.jl")
 include("../support/dataManager.jl")
 
-full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
-
 global_path = "data/"
-
-distributions(t) = [ "t=$t Uniform LLS", "t=$t Uniform CLS", "t=$t Uniform CNR"]
-nr_dist = length(distributions(1))
-desired_data = [
-    "average_nr_clusters",
-    "average_largest_cluster",
-    "average_largest_perimiter",
-    "average_most_stressed_fiber",
-    "nr_seeds_used",
-    "average_spanning_cluster_size",
-    "average_spanning_cluster_perimiter",
-    "average_spanning_cluster_step",
-]
-
-function file(global_path, L, distribution)
-    # We only extract the data we want
-    fileDict = Dict()
-    jldopen(full_name(global_path, L, distribution), "r") do f
-        for data_key in desired_data
-            fileDict[data_key] = f[data_key]
-        end
-    end
-    return fileDict
-end
 
 L = 512
 N = L*L
-k_N = [1:n for n in N]./N
-
-t = search_for_t(global_path)
-lables = permutedims(["LLS", "CLS", "CNR"])
-files = [[file(global_path, L, distribution) for distribution in distributions(t_)] for t_ in t]
+α = 2.0
+t = (0:9)./10
+lables = permutedims(["LLS", "CLS"])
+files = [[load_file(L, α, t_, nr) for nr in ["LLS", "CLS"]] for t_ in t]
 seeds = files[1][1]["nr_seeds_used"]
 #Files [t] [distribution] [value]
 

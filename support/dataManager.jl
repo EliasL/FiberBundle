@@ -389,18 +389,6 @@ function get_data_overview(path="data/", dists=["Uniform"])
         α = []
         for setting in settings
             seeds = get_seeds_in_file(setting)
-            #L = setting["L"]
-            #nr = setting["nr"]
-            #t = setting["t"]
-            #α = setting["a"]
-            #println("$L, $nr, $t, $α, $seed_text")
-            
-            #if length(s) == 0
-            #    println("Empty: $L, $nr, $t, $α")
-            #    continue
-            #end
-
-            # Check if there are missing seeds
             if isempty(seeds)
                 seed_text = "none"
             else
@@ -474,6 +462,27 @@ function recalculate_average_file(path="data/", dists=["Uniform"])
     end
     println("Success!")
 end
+
+function rename_files_and_folders(path="data/", dists=["Uniform"])
+    new_name(s) = replace(s, "UNR" => "LLS", "SNR" => "CLS")
+    for dist in dists
+        folders = readdir(path*dist)
+        settings = []
+        for folder in folders
+            full_path = path*dist*"/"*folder
+            for file in readdir(full_path)
+                new_file_name = new_name(file)
+                mv(full_path*"/"*file, full_path*"/"*new_file_name)
+            end
+            new_folder_name = new_name(folder)
+            mv(full_path, path*dist*"/"*new_folder_name)
+            return
+        end    
+    end
+    println("Success!")
+end
+
+rename_files_and_folders()
 
 #recalculate_average_file()
 
