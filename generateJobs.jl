@@ -6,10 +6,10 @@ function format(total_seconds)
     (m,r) = divrem(r, 60)
     s = ceil(Int64, r)
     (d,h,m,s) = round.(Int64, [d,h,m,s])
-    extra_hours = floor(Int64, d*2 + h/10)
-    extra_minutes = 15 
+    extra_hours = floor(Int64, d*4 + h/6)
+    extra_minutes = 15 + h*5
 
-    return "$d-$h:$m:$s"
+    return "$d-$(h+extra_hours):$(m+extra_minutes):$s"
 end
 
 function make_job(s, L; t=t = (0:9) ./ 10, NR = ["SNR", "UNR"], α = [2.0], force_short=false)
@@ -47,8 +47,8 @@ end
 
 
 
-seeds = [0, 30] # From seed to seed
-L = [1024]
+seeds = [0, 100] # From seed to seed
+L = [8,16,32,64,128,256]
 
-make_job(seeds, L, force_short=false)
+make_job(seeds, L, α=[0.5,1,1.3], force_short=false)
 start_job()
