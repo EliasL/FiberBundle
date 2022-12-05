@@ -70,7 +70,7 @@ end
 
 
 function test()
-    nr = "SNR"
+    nr = "CLS"
     path = "data/"
     t = 0.1
     L=512

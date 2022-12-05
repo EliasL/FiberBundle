@@ -36,7 +36,7 @@ end
 #seeds = 0:100-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
 #L = [256, 512]
 #t = (0:9) ./ 10
-#NR = ["SNR", "UNR"]
+#NR = ["CLS", "LLS"]
 args = get_ARGS()
 L=args["L"]
 t=args["t"]

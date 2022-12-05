@@ -19,7 +19,7 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     L::I
     N::I = L*L
     α::F = 2
-    nr::String = "UNR"
+    nr::String = "LLS"
     x::Vector{F} = zeros(F, N)
     neighbours::Matrix{I} = fillAdjacent(L, NEIGHBOURS)
     neighbourhoods::Matrix{I} = fillAdjacent(L, NEIGHBOURHOOD)
@@ -93,7 +93,7 @@ function update_storage!(b::FB, s::FBS)
 end
 
 
-function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
+function get_fb(L; α=2, t=0, nr="LLS", dist="Uniform", without_storage=false)
     N=L*L
     x = nothing
     if dist == "Uniform"
@@ -573,7 +573,7 @@ end
 
 function update_cluster_outline_stress!(b::FB)
     # Apply the appropreate amount of stress to the fibers
-    if b.nr == "UNR"
+    if b.nr == "LLS"
         # With the Uniform neighbourhood rule, we can apply a simple stress
         apply_simple_stress(b)
         return
@@ -582,7 +582,7 @@ function update_cluster_outline_stress!(b::FB)
         # First a calculation to find the fiber strengths (As a function of their neighbourhood), and then apply the stress
         if b.nr == "CNR"
             apply_to_neighbourhood!(neighbourhoodToStrength, b)
-        elseif b.nr == "SNR"
+        elseif b.nr == "CLS"
             apply_to_neighbourhood!(alive_fibers_in_neighbourhood, b)
         else
             #@debug "Unknown neighbourhood rule: $neighbourhood_rule"

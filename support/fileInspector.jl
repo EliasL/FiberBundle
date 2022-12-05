@@ -24,7 +24,7 @@ end
 
 L=512
 a=2.0
-nr="SNR"
+nr="CLS"
 t=0.1
 seed = 1
 f_path = get_file_path(L, a, t, nr, average=false)

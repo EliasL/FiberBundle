@@ -59,7 +59,7 @@ function test()
     t = (0:9) ./ 10
     α = [2.0]#[1, 1.5, 2, 2.5, 3, 5, 9, 15, 30]
     #t = vcat((0:8) ./ 20, (5:9) ./ 10)
-    NR = ["SNR", "UNR"]
+    NR = ["CLS", "LLS"]
     use_threads = true
     overwrite = false
     time_estimate(L, α, t, NR, seeds)

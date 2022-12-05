@@ -31,7 +31,7 @@ function plot_dimension_thing()
     
     L = [8,16,32,64,128,256,512]
     t = (0:9)./10
-    NR = ["SNR", "UNR"]
+    NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
 
@@ -79,16 +79,16 @@ function plot_dimension_thing()
     end
 
     for t_ in t
-        @assert NR[1] == "SNR"
-        SNR_s_plot, SNR_r_plot = get_s_and_r_plots(NR[1], t_)
-        @assert NR[2] == "UNR"
-        UNR_s_plot, UNR_r_plot = get_s_and_r_plots(NR[2], t_)
+        @assert NR[1] == "CLS"
+        CLS_s_plot, CLS_r_plot = get_s_and_r_plots(NR[1], t_)
+        @assert NR[2] == "LLS"
+        LLS_s_plot, LLS_r_plot = get_s_and_r_plots(NR[2], t_)
 
         l = @layout [
             A B;
             C D
         ]
-        plot(SNR_s_plot, SNR_r_plot, UNR_s_plot, UNR_r_plot, size=(800, 600), layout = l,
+        plot(CLS_s_plot, CLS_r_plot, LLS_s_plot, LLS_r_plot, size=(800, 600), layout = l,
             plot_title=latexstring("Dimensionality: \$t=$t_\$"))
 
         savefig("plots/Graphs/dimension_t=$t_.pdf")
@@ -99,7 +99,7 @@ function plot_dimensions_over_t()
     
     L = [8,16,32,64,128,256,512]
     t = (0:9)./10
-    NR = ["SNR", "UNR"]
+    NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
 
@@ -128,17 +128,17 @@ function plot_dimensions_over_t()
         return slope_s, slope_h
     end
 
-    SNR_s_slope = zeros(Float64, length(t))
-    SNR_h_slope = zeros(Float64, length(t))
-    UNR_s_slope = zeros(Float64, length(t))
-    UNR_h_slope = zeros(Float64, length(t))
+    CLS_s_slope = zeros(Float64, length(t))
+    CLS_h_slope = zeros(Float64, length(t))
+    LLS_s_slope = zeros(Float64, length(t))
+    LLS_h_slope = zeros(Float64, length(t))
     for i in eachindex(t)
-        SNR_s_slope[i], SNR_h_slope[i] = get_s_and_r_p_dimension(NR[1], t[i])
-        UNR_s_slope[i], UNR_h_slope[i] = get_s_and_r_p_dimension(NR[2], t[i])
+        CLS_s_slope[i], CLS_h_slope[i] = get_s_and_r_p_dimension(NR[1], t[i])
+        LLS_s_slope[i], LLS_h_slope[i] = get_s_and_r_p_dimension(NR[2], t[i])
     end
 
-    plot([t,t,t,t], [SNR_s_slope, SNR_h_slope, UNR_s_slope, UNR_h_slope], size=(400, 300),
-        plot_title="Dimensionality", labels=[L"SNR $D_s$" L"SNR $D_h$" L"UNR $D_s$" L"UNR $D_h$"],
+    plot([t,t,t,t], [CLS_s_slope, CLS_h_slope, LLS_s_slope, LLS_h_slope], size=(400, 300),
+        plot_title="Dimensionality", labels=[L"CLS $D_s$" L"CLS $D_h$" L"LLS $D_s$" L"LLS $D_h$"],
         legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension.pdf")
@@ -148,20 +148,20 @@ function get_gyration_radii(L, nr, t, bulk_files)
 
     try
         f = load("data/gyration_data/")
-        SNR_r_slope = f["SNR_r_slope"]
-        UNR_r_slope = f["UNR_r_slope"]
-        SNR_s_slope = f["SNR_s_slope"]
-        UNR_s_slope = f["UNR_s_slope"]
+        CLS_r_slope = f["CLS_r_slope"]
+        LLS_r_slope = f["LLS_r_slope"]
+        CLS_s_slope = f["CLS_s_slope"]
+        LLS_s_slope = f["LLS_s_slope"]
     catch
         for i in eachindex(t)
-            SNR_s_slope[i], SNR_r_slope[i] = get_s_and_gyration(NR[1], t[i])
-            UNR_s_slope[i], UNR_r_slope[i] = get_s_and_gyration(NR[2], t[i])
+            CLS_s_slope[i], CLS_r_slope[i] = get_s_and_gyration(NR[1], t[i])
+            LLS_s_slope[i], LLS_r_slope[i] = get_s_and_gyration(NR[2], t[i])
         end
         jldopen("data/gyration_data.jld2", "w") do file
-            file["SNR_r_slope"] = SNR_r_slope
-            file["UNR_r_slope"] = UNR_r_slope
-            file["SNR_s_slope"] = SNR_s_slope
-            file["UNR_s_slope"] = UNR_s_slope
+            file["CLS_r_slope"] = CLS_r_slope
+            file["LLS_r_slope"] = LLS_r_slope
+            file["CLS_s_slope"] = CLS_s_slope
+            file["LLS_s_slope"] = LLS_s_slope
         end
     end
 
@@ -191,7 +191,7 @@ function plot_dimensions_over_t_with_radius_of_gyration()
     
     L = [8,16,32,64,128,256,512]
     t = (0:9)./10
-    NR = ["SNR", "UNR"]
+    NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
 
@@ -215,18 +215,18 @@ function plot_dimensions_over_t_with_radius_of_gyration()
         return slope_s, slope_r
     end
 
-    SNR_s_slope = zeros(Float64, length(t))
-    SNR_r_slope = zeros(Float64, length(t))
-    UNR_s_slope = zeros(Float64, length(t))
-    UNR_r_slope = zeros(Float64, length(t))
+    CLS_s_slope = zeros(Float64, length(t))
+    CLS_r_slope = zeros(Float64, length(t))
+    LLS_s_slope = zeros(Float64, length(t))
+    LLS_r_slope = zeros(Float64, length(t))
 
     for i in eachindex(t)
-        SNR_s_slope[i], SNR_r_slope[i] = get_s_and_gyration(NR[1], t[i])
-        UNR_s_slope[i], UNR_r_slope[i] = get_s_and_gyration(NR[2], t[i])
+        CLS_s_slope[i], CLS_r_slope[i] = get_s_and_gyration(NR[1], t[i])
+        LLS_s_slope[i], LLS_r_slope[i] = get_s_and_gyration(NR[2], t[i])
     end
 
-    plot([t,t,t,t], [SNR_s_slope, SNR_r_slope, UNR_s_slope, UNR_r_slope], size=(400, 300),
-        plot_title="Dimensionality", labels=[L"SNR $D_s$" L"SNR $D_r$" L"UNR $D_s$" L"UNR $D_r$"],
+    plot([t,t,t,t], [CLS_s_slope, CLS_r_slope, LLS_s_slope, LLS_r_slope], size=(400, 300),
+        plot_title="Dimensionality", labels=[L"CLS $D_s$" L"CLS $D_r$" L"LLS $D_s$" L"LLS $D_r$"],
         legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")
@@ -236,7 +236,7 @@ function plot_dimensions_with_radius_of_gyration()
     
     L = [8,16,32,64,128,256,512]
     t = (0:9)./10
-    NR = ["SNR", "UNR"]
+    NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
 
@@ -272,31 +272,31 @@ function plot_dimensions_with_radius_of_gyration()
         return s_plot, h_plot
     end
 
-    SNR_s_slope = zeros(Float64, length(t))
-    SNR_r_slope = zeros(Float64, length(t))
-    UNR_s_slope = zeros(Float64, length(t))
-    UNR_r_slope = zeros(Float64, length(t))
+    CLS_s_slope = zeros(Float64, length(t))
+    CLS_r_slope = zeros(Float64, length(t))
+    LLS_s_slope = zeros(Float64, length(t))
+    LLS_r_slope = zeros(Float64, length(t))
 
 
     for t_ in t
-        @assert NR[1] == "SNR"
-        SNR_s_plot, SNR_r_plot = get_s_and_r_plots(NR[1], t_)
-        @assert NR[2] == "UNR"
-        UNR_s_plot, UNR_r_plot = get_s_and_r_plots(NR[2], t_)
+        @assert NR[1] == "CLS"
+        CLS_s_plot, CLS_r_plot = get_s_and_r_plots(NR[1], t_)
+        @assert NR[2] == "LLS"
+        LLS_s_plot, LLS_r_plot = get_s_and_r_plots(NR[2], t_)
 
         l = @layout [
             A B;
             C D
         ]
-        plot(SNR_s_plot, SNR_r_plot, UNR_s_plot, UNR_r_plot, size=(800, 600), layout = l,
+        plot(CLS_s_plot, CLS_r_plot, LLS_s_plot, LLS_r_plot, size=(800, 600), layout = l,
             plot_title=latexstring("Dimensionality: \$t=$t_\$"))
 
         savefig("plots/Graphs/dimension_t=$t_.pdf")
     end
 
 
-    plot([t,t,t,t], [SNR_s_slope, SNR_r_slope, UNR_s_slope, UNR_r_slope], size=(400, 300),
-        plot_title="Dimensionality", labels=[L"SNR $D_s$" L"SNR $D_r$" L"UNR $D_s$" L"UNR $D_r$"],
+    plot([t,t,t,t], [CLS_s_slope, CLS_r_slope, LLS_s_slope, LLS_r_slope], size=(400, 300),
+        plot_title="Dimensionality", labels=[L"CLS $D_s$" L"CLS $D_r$" L"LLS $D_s$" L"LLS $D_r$"],
         legend=:right, xlabel=L"t", ylabel="Dimensionality", linestyle=[:solid :solid :dash :dash])
 
     savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")

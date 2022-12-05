@@ -23,7 +23,7 @@ data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
 function make_settings(dist::String, L::Int64, t::Float64, nr::String, α::Float64, path::String)
-    if nr=="UNR"
+    if nr=="LLS"
         α = 0.0
     end
     settings = Dict(
@@ -300,7 +300,7 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
         global global_settings = search_for_settings(data_path, dist)
     end
 
-    if NR=="UNR"
+    if NR=="LLS"
         α=0.0
     end
     settings = filter(s -> s["L"] == L
@@ -363,12 +363,12 @@ function rename(path)
         f_path = path*f*"/"        
         for ff in readdir("$f_path")
             ff_path = f_path*ff
-            if occursin("a=2.0", ff) && occursin("nr=UNR", ff)
+            if occursin("a=2.0", ff) && occursin("nr=LLS", ff)
                 mv(ff_path, f_path*replace(ff, "a=2.0" => "a=0.0"))
             end
         end
         
-        if occursin("a=2.0", f) && occursin("nr=UNR", f)
+        if occursin("a=2.0", f) && occursin("nr=LLS", f)
             mv(f_path, replace(f_path, "a=2.0" => "a=0.0"))
         end
         

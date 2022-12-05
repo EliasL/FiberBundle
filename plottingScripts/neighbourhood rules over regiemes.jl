@@ -10,7 +10,7 @@ full_name(global_path, L, distribution) = global_path*distribution*"/"*distribut
 
 global_path = "data/"
 
-distributions(t) = [ "t=$t Uniform UNR", "t=$t Uniform SNR", "t=$t Uniform CNR"]
+distributions(t) = [ "t=$t Uniform LLS", "t=$t Uniform CLS", "t=$t Uniform CNR"]
 nr_dist = length(distributions(1))
 desired_data = [
     "average_nr_clusters",
@@ -39,7 +39,7 @@ N = L*L
 k_N = [1:n for n in N]./N
 
 t = search_for_t(global_path)
-lables = permutedims(["UNR", "SNR", "CNR"])
+lables = permutedims(["LLS", "CLS", "CNR"])
 files = [[file(global_path, L, distribution) for distribution in distributions(t_)] for t_ in t]
 seeds = files[1][1]["nr_seeds_used"]
 #Files [t] [distribution] [value]

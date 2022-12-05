@@ -9,8 +9,8 @@ full_name(global_path, L, distribution) = global_path*distribution*"/"*distribut
 global_path = "data/"
 
 function plot_for_t(t)
-    distributions = [ "t=$t Uniform", "t=$t Uniform SNR", "t=$t Uniform CNR"]
-    lables = ["Uniform "*L"t_{0}"*"=$t", "Uniform "*L"t_{0}"*"=$t SNR", "Uniform "*L"t_{0}"*"=$t CNR"]
+    distributions = [ "t=$t Uniform", "t=$t Uniform CLS", "t=$t Uniform CNR"]
+    lables = ["Uniform "*L"t_{0}"*"=$t", "Uniform "*L"t_{0}"*"=$t CLS", "Uniform "*L"t_{0}"*"=$t CNR"]
     desired_data = [
         "average_nr_clusters",
         "average_largest_cluster",

@@ -330,7 +330,7 @@ intertiaTest()
 
 function storageTest()
     test_data_path = "test_data/"
-    settings = make_settings("Uniform", 8, 0.1, "SNR", 2.0, test_data_path)
+    settings = make_settings("Uniform", 8, 0.1, "CLS", 2.0, test_data_path)
 
     # Test clean generation
     seeds = 1:3
@@ -372,7 +372,7 @@ function test()
         @testset "Basic" begin basic_test() end
         @testset "Cluster" begin cluster_test() end
         @testset "Neighbourhood id" begin neighbourhood_id_test() end
-        @testset "Neighbourhood rules $nr" for nr in ["UNR", "CNR", "SNR"]
+        @testset "Neighbourhood rules $nr" for nr in ["LLS", "CNR", "CLS"]
             neighbourhood_strength_test_with_alpha(nr)
         end
         @testset "Store possition" begin test_store_possition() end

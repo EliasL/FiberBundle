@@ -2,7 +2,7 @@ include("showBundle.jl")
 include("../support/inertia.jl")
 
 function show_spanning_cluster()
-    nr = "SNR"
+    nr = "CLS"
     path = "data/"
     t = 0.9
     L=512

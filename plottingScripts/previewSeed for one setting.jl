@@ -91,7 +91,7 @@ function draw_seeds(setting, seed)
     finish()
 end
 
-NRS = ["SNR"]
+NRS = ["CLS"]
 global_path = "data/"
 ts = [0.4]
 L=512

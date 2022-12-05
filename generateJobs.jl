@@ -12,7 +12,7 @@ function format(total_seconds)
     return "$d-$(h+extra_hours):$(m+extra_minutes):$s"
 end
 
-function make_job(s, L; t = (0:9) ./ 10, NR = ["SNR", "UNR"], α = [2.0], force_short=false)
+function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], force_short=false)
     threads = 40
     seconds = time_estimate(L, α, t, NR, collect(seeds[1]:seeds[2]), threads=threads)
     formated_time = format(seconds)

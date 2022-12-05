@@ -181,7 +181,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64};
-    neighbourhood_rule::String="UNR")
+    neighbourhood_rule::String="LLS")
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -376,7 +376,7 @@ function update_cluster_outline_stress(c::Int64,
     neighbourhood_values::Vector{Int64},
     )
     # Apply the appropreate amount of stress to the fibers
-    if neighbourhood_rule == "UNR"
+    if neighbourhood_rule == "LLS"
         # With the Uniform neighbourhood rule, we can apply a simple stress
         apply_simple_stress(c, status, σ, cluster_size, cluster_outline, cluster_outline_length)
         return
@@ -386,7 +386,7 @@ function update_cluster_outline_stress(c::Int64,
         if neighbourhood_rule == "CNR"
             apply_to_neighbourhood(neighbourhoodToInt, status, cluster_outline, cluster_outline_length[c], neighbourhood_values, neighbourhoods)
             neighbourhood_values = neighbourhoodStrengths[neighbourhood_values[1:cluster_outline_length[c]]]
-        elseif neighbourhood_rule == "SNR"
+        elseif neighbourhood_rule == "CLS"
             apply_to_neighbourhood(alive_fibers_in_neighbourhood, status, cluster_outline,  cluster_outline_length[c], neighbourhood_values, neighbourhoods)
         else
             error("Unknown neighbourhood rule")
@@ -509,9 +509,9 @@ function break_bundle(nr)
     
 
 end
-@time break_bundle("UNR")
-@time break_bundle("SNR")
+@time break_bundle("LLS")
+@time break_bundle("CLS")
 @btime break_bundle("CNR")
 
-@profile break_bundle("SNR") 
+@profile break_bundle("CLS") 
 pprof(;webport=58699)
