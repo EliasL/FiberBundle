@@ -12,7 +12,7 @@ function format(total_seconds)
     return "$d-$(h+extra_hours):$(m+extra_minutes):$s"
 end
 
-function make_job(s, L; t=t = (0:9) ./ 10, NR = ["SNR", "UNR"], α = [2.0], force_short=false)
+function make_job(s, L; t = (0:9) ./ 10, NR = ["SNR", "UNR"], α = [2.0], force_short=false)
     threads = 40
     seconds = time_estimate(L, α, t, NR, collect(seeds[1]:seeds[2]), threads=threads)
     formated_time = format(seconds)
@@ -33,7 +33,7 @@ function make_job(s, L; t=t = (0:9) ./ 10, NR = ["SNR", "UNR"], α = [2.0], forc
 
     ml eb
     ml Julia/1.7.2-linux-x86_64
-    julia --threads $threads generateData.jl L $(join(L, " ")) t $(join(t, " ")) NR $(join(NR, " ")) s $(join(seeds, " ")) 
+    julia --threads $threads generateData.jl L $(join(L, " ")) t $(join(t, " ")) a $(join(α, " ")) NR $(join(NR, " ")) s $(join(seeds, " ")) 
 
     wait
     """
@@ -47,8 +47,8 @@ end
 
 
 
-seeds = [0, 100] # From seed to seed
+seeds = [0, 300] # From seed to seed
 L = [8,16,32,64,128,256]
-
-make_job(seeds, L, α=[0.5,1,1.3], force_short=false)
+t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+make_job(seeds, L, t=t, α=[2.0], force_short=false)
 start_job()

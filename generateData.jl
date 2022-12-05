@@ -14,6 +14,7 @@ function get_ARGS()
     args["t"]=[]
     args["NR"]=[]
     args["s"]=[]
+    args["a"]=[]
     current_setting = nothing
     for value in ARGS
         if value in keys(args)
@@ -21,7 +22,7 @@ function get_ARGS()
         else
             if current_setting in ["s", "L"]
                 push!(args[current_setting], parse(Int64, value))
-            elseif current_setting in ["t"]
+            elseif current_setting in ["t", "a"]
                 push!(args[current_setting], parse(Float64, value))
             else
                 @assert current_setting !== nothing "Invalid argument. Not one of $(keys(args))"
@@ -41,8 +42,8 @@ L=args["L"]
 t=args["t"]
 NR=args["NR"]
 s=args["s"]
+α=args["a"]
 s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
-α = [2.0]
 use_threads = true
 overwrite = false
 #time_estimate(L, α, t, NR, seeds)
