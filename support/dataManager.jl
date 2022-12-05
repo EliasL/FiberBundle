@@ -472,11 +472,14 @@ function rename_files_and_folders(path="data/", dists=["Uniform"])
             full_path = path*dist*"/"*folder
             for file in readdir(full_path)
                 new_file_name = new_name(file)
-                mv(full_path*"/"*file, full_path*"/"*new_file_name)
+                if new_file_name != file
+                    mv(full_path*"/"*file, full_path*"/"*new_file_name)
+                end
             end
             new_folder_name = new_name(folder)
-            mv(full_path, path*dist*"/"*new_folder_name)
-            return
+            if new_folder_name != folder
+                mv(full_path, path*dist*"/"*new_folder_name)
+            end
         end    
     end
     println("Success!")
