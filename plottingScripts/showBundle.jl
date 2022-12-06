@@ -133,13 +133,13 @@ function generate_illustrations()
     α = 2.0
     seed = 1
     nr = "LLS"
-    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
     nr="CLS"
-    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
     L=1024
-    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
     nr="LLS"
-    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
 end
 
 function save_picture(L, nr, t, α, seed, name, path="data/")
