@@ -320,6 +320,9 @@ end
 
 function break_fiber_list!(I::AbstractArray{Int}, b::FB)
     for i in I
+        if i==0 # We skipp 0 for convenience.
+            continue
+        end
         break_this_fiber!(i, b)
     end
 end

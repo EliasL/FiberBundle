@@ -3,6 +3,7 @@ using CodecLz4
 using Logging
 using Statistics
 include("logingLevels.jl")
+include("../burningMan.jl")
 
 averaged_data_keys = [
                     "simulation_time",
@@ -437,6 +438,21 @@ function get_data_overview(path="data/", dists=["Uniform"])
             end
         end
     end
+end
+
+function get_bundle_from_settings(settings; seed=1, progression=0)
+    file = load_file(settings, average=false)
+    L = settings["L"]
+    N = L*L
+    b = get_fb(L, nr=settings["nr"], without_storage=true)
+    break_sequence = file["break_sequence/$seed"]
+    if progression != 0
+        break_sequence = break_sequence[1:round(Int, N*progression)]
+    end
+    break_fiber_list!(break_sequence, b)
+    update_σ!(b)
+    shift_spanning_cluster!(b)
+    return b
 end
 
 function recalculate_average_file(path="data/", dists=["Uniform"])

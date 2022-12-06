@@ -31,8 +31,8 @@ k_where_nr_clusters_is_max = get_data_from_files("average_nr_clusters", x -> arg
 sigma_c_index = 1:9
 sigma_c = get_data_from_files("average_most_stressed_fiber", maximum, t_index=sigma_c_index)
 k_where_sigma_c_is_max = get_data_from_files("average_most_stressed_fiber", x -> argmax(x)/N)
-largest_cluster_size = get_data_from_files("average_largest_cluster", d_index = floor(Int64, N/3))
-largest_perimeter = get_data_from_files("average_largest_perimiter", d_index = floor(Int64, N/3))
+largest_cluster_size = get_data_from_files("average_largest_cluster", d_index = floor(Int64, N/5))
+largest_perimeter = get_data_from_files("average_largest_perimiter", d_index = floor(Int64, N/5))
 spanning_cluster_size = get_data_from_files("average_spanning_cluster_size", x -> x / N)
 spanning_perimeter = get_data_from_files("average_spanning_cluster_perimiter", x -> x / N)
 
@@ -62,10 +62,10 @@ scatter!(spanning_perimeter[2][r1], spanning_cluster_size[2][r1], color=cur_colo
 
 
 lagrest_clusetr_size_plot = plot(t, largest_cluster_size, label = lables, legend=:bottomright, marker=:circle, ylims=(0, Inf),
-                    xlabel=L"t_0", ylabel=L"S_{\mathrm{max}}/N", title="D: Largest cluster size at "*L"k/N=1/3")
+                    xlabel=L"t_0", ylabel=L"S_{\mathrm{max}}/N", title="D: Largest cluster size at "*L"k/N=1/5")
 
-largest_perimeiter_plot = plot(t, largest_perimeter, label = lables, legend=:right, marker=:circle, ylims=(0, Inf),
-                    xlabel=L"t_0", ylabel=L"H_{\mathrm{max}}/N", title="D: Largest perimiter size at "*L"k/N=1/3")
+largest_perimeter_plot = plot(t, largest_perimeter, label = lables, legend=:right, marker=:circle, ylims=(0, Inf),
+                    xlabel=L"t_0", ylabel=L"H_{\mathrm{max}}/N", title="D: Largest perimiter size at "*L"k/N=1/5")
 
 spanning_cluster_size_plot = plot(t, spanning_cluster_size, label = lables, legend=:topleft, marker=:circle, ylims=(0, Inf),
                     xlabel=L"t_0", ylabel=L"S_{\mathrm{span}}/N", title="B: Spanning cluster size")
@@ -77,7 +77,7 @@ function plot_all()
     l = @layout [
         A B; C D; E F ; G H
     ]
-    plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, lagrest_clusetr_size_plot, largest_perimeiter_plot,
+    plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, lagrest_clusetr_size_plot, largest_perimeter_plot,
         size=(1000, 1000), layout = l,
         plot_title=latexstring("Uniform distribution over regiemes, \$L=$L\$, $seeds samples"), plot_titlevspan=0.1)
 
@@ -100,7 +100,7 @@ function plot_differences()
     l = @layout [
         A; B; C; D;
     ]
-    plot(cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, largest_perimeiter_plot,
+    plot(cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, largest_perimeter_plot,
     size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_differences.pdf")

@@ -2,6 +2,7 @@ using Plots
 using DataStructures
 
 include("../burningMan.jl")
+include("../support/dataManager.jl")
 
 function circleShape(x, y, r)
     θ = LinRange(0, 2*π, 100)
@@ -123,3 +124,45 @@ end
 function plot_fb_cm(b::FB)
     return plot!(b.cluster_cm_x, b.cluster_cm_y, seriestype = :scatter)
 end
+
+function generate_illustrations()
+    
+    path = "data/"
+    t = 0.0
+    L=64
+    α = 2.0
+    seed = 1
+    nr = "LLS"
+    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+    nr="CLS"
+    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+    L=1024
+    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+    nr="LLS"
+    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+end
+
+function save_picture(L, nr, t, α, seed, name, path="data/")
+    settings = make_settings("Uniform", L, t, nr, α, path)
+    b = get_bundle_from_settings(settings, seed=seed)
+    p = plot_fb(b, show=false)
+    # We always save the plot as latest_plot, so we can just copy that file
+    cp("latest_plot.png", "plots/Visualizations/differenceIllustrations/$name.png", force=true)
+    
+end
+
+function test()
+    nr = "LLS"
+    path = "data/"
+    t = 0.0
+    L=64
+    α = 2.0
+    seed = 1
+    settings = make_settings("Uniform", L, t, nr, α, path)
+    b = get_bundle_from_settings(settings, seed=seed)
+    p = plot_fb(b, show=false)
+    display(p)
+end
+
+generate_illustrations()
+#test()

@@ -49,7 +49,7 @@ function break_bundle(settings, progress_channel, working_channel, seed;
             file["spanning_cluster_step"] = s.spanning_cluster_step
             file["most_stressed_fiber"] = s.most_stressed_fiber
             file["nr_clusters"] = s.nr_clusters
-            file["break_sequence"] = b.break_sequence
+            file["break_sequence"] = view(b.break_sequence, 1:b.current_step)
             file["largest_cluster"] = s.largest_cluster
             file["largest_perimiter"] = s.largest_perimiter
         end
