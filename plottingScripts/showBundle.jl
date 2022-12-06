@@ -133,13 +133,13 @@ function generate_illustrations()
     α = 2.0
     seed = 1
     nr = "LLS"
-    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
     nr="CLS"
-    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
     L=1024
-    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
     nr="LLS"
-    save_picture(L, nr, t, α, seed, "$nr $L s$seed")
+    save_picture(L, nr, t, α, seed, "$nr,$L,s$seed")
 end
 
 function save_picture(L, nr, t, α, seed, name, path="data/")
@@ -148,7 +148,7 @@ function save_picture(L, nr, t, α, seed, name, path="data/")
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file
     cp("latest_plot.png", "plots/Visualizations/differenceIllustrations/$name.png", force=true)
-    
+
 end
 
 function test()
