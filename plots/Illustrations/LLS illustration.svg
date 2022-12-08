@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="64.208313mm"
+   width="64.202126mm"
    height="39.453953mm"
-   viewBox="0 0 64.208313 39.453953"
+   viewBox="0 0 64.202124 39.453953"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01, custom)"
@@ -29,9 +29,9 @@
      showgrid="true"
      showguides="false"
      inkscape:zoom="4"
-     inkscape:cx="98.75"
-     inkscape:cy="84.375"
-     inkscape:window-width="2352"
+     inkscape:cx="90.25"
+     inkscape:cy="102.125"
+     inkscape:window-width="2272"
      inkscape:window-height="1230"
      inkscape:window-x="593"
      inkscape:window-y="186"
@@ -41,7 +41,7 @@
        type="xygrid"
        id="grid132"
        originx="-6.5119426"
-       originy="-117.35437" />
+       originy="-117.35439" />
   </sodipodi:namedview>
   <defs
      id="defs2">
@@ -224,8 +224,8 @@
            style="font-style:italic;font-variant:normal;font-weight:500;font-stretch:normal;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Medium Italic';stroke-width:0.5"
            x="65.712975"
            y="137.01924">x,σ<tspan
-   style="font-size:65%;baseline-shift:sub"
-   id="tspan565">4</tspan></tspan></text>
+   style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:65%;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Medium';baseline-shift:sub"
+   id="tspan1572">4</tspan></tspan></text>
       <path
          style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.499999;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
          d="m 47.624999,125.67708 10e-7,10.58334 v 5.29166"
