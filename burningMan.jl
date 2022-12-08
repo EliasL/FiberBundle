@@ -19,7 +19,7 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     L::I
     N::I = L*L
     α::F = 2
-    nr::String = "UNR"
+    nr::String = "LLS"
     x::Vector{F} = zeros(F, N)
     neighbours::Matrix{I} = fillAdjacent(L, NEIGHBOURS)
     neighbourhoods::Matrix{I} = fillAdjacent(L, NEIGHBOURHOOD)
@@ -76,30 +76,15 @@ Base.@kwdef mutable struct FBS{F<:AbstractFloat, I<:Integer}
     storage_index::I = 1
 end
 
-function update_storage!(b::FB, s::FBS, seed::Int64)
+function update_storage!(b::FB, s::FBS)
     #Save important data from step
     step = b.current_step
     s.most_stressed_fiber[step] = 1/b.max_σ
     s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
     s.largest_cluster[step] = maximum(b.cluster_size)
     s.largest_perimiter[step] = maximum(b.cluster_outline_length)
-    #Save step for visualization
-    if seed <= 10 #Only save samples from 10 first seeds
-        if step == s.steps_to_store[s.storage_index]
-            for i in b.N
-                s.status_storage[s.storage_index, i] = b.status[i]
-                s.tension_storage[s.storage_index, i] = b.status[i]
-                s.tension_storage[s.storage_index, i] = b.tension[i]
-            end
-            if s.storage_index < length(s.steps_to_store)
-                s.storage_index += 1
-            end
-        end
-    end
 
     if b.spanning_cluster_id != -1 && !s.spanning_cluster_has_been_found
-        s.spanning_cluster_state_storage .= b.status
-        s.spanning_cluster_tension_storage .= b.tension
         s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
         s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
         s.spanning_cluster_step = step
@@ -108,7 +93,7 @@ function update_storage!(b::FB, s::FBS, seed::Int64)
 end
 
 
-function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
+function get_fb(L; α=2, t=0, nr="LLS", dist="Uniform", without_storage=false)
     N=L*L
     x = nothing
     if dist == "Uniform"
@@ -129,7 +114,7 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     end
 end
 
-function get_fb(settings, without_storage=false)
+function get_fb(settings::Dict, without_storage=false)
     L = settings["L"]
     α = settings["a"]
     t = settings["t"]
@@ -261,6 +246,16 @@ function resetBundle!(b::FB)
     reset_relative_possition!(b)
 end
 
+function healBundle!(b::FB)
+    # This completely resets the bundle
+    fill!(b.σ, 1)
+    fill!(b.tension, 0)
+    fill!(b.status, -1)
+    b.current_step = 0
+    fill!(b.break_sequence, 0)
+    resetBundle!(b)
+end
+
 function resetClusters!(b::FB)
     # After having explored and assigned numbers to 
     # all the fibers indicating their state, we now 
@@ -325,6 +320,9 @@ end
 
 function break_fiber_list!(I::AbstractArray{Int}, b::FB)
     for i in I
+        if i==0 # We skipp 0 for convenience.
+            continue
+        end
         break_this_fiber!(i, b)
     end
 end
@@ -578,7 +576,7 @@ end
 
 function update_cluster_outline_stress!(b::FB)
     # Apply the appropreate amount of stress to the fibers
-    if b.nr == "UNR"
+    if b.nr == "LLS"
         # With the Uniform neighbourhood rule, we can apply a simple stress
         apply_simple_stress(b)
         return
@@ -587,7 +585,7 @@ function update_cluster_outline_stress!(b::FB)
         # First a calculation to find the fiber strengths (As a function of their neighbourhood), and then apply the stress
         if b.nr == "CNR"
             apply_to_neighbourhood!(neighbourhoodToStrength, b)
-        elseif b.nr == "SNR"
+        elseif b.nr == "CLS"
             apply_to_neighbourhood!(alive_fibers_in_neighbourhood, b)
         else
             #@debug "Unknown neighbourhood rule: $neighbourhood_rule"

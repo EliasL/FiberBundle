@@ -70,7 +70,7 @@ end
 
 
 function test()
-    nr = "SNR"
+    nr = "CLS"
     path = "data/"
     t = 0.1
     L=512
@@ -90,4 +90,4 @@ function test()
     plot_gyration_radi(b, R)
     display(p)
 end
-test()
+#test()

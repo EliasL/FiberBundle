@@ -76,7 +76,7 @@ function draw_seeds(L; α_settings=2.0, t_settings=0.0)
     ps = 10 #Pixel size
 
     # This function specifies an α and nr and reutrns the file with this setting
-    NRS = ["UNR", "SNR"]
+    NRS = ["LLS", "CLS"]
     @assert α_settings isa Number || t_settings isa Number "This function is designed to itterate over t OR α"
     iterate_over_t = t_settings isa AbstractArray
 

@@ -1,7 +1,9 @@
 using JLD2
 using CodecLz4
 using Logging
+using Statistics
 include("logingLevels.jl")
+include("../burningMan.jl")
 
 averaged_data_keys = [
                     "simulation_time",
@@ -15,16 +17,16 @@ averaged_data_keys = [
                     ]
 seed_specific_keys = [
                     "last_step",
+                    "spanning_cluster_step",
                     "break_sequence",
-                    "sample_states",
-                    "tension",
-                    "spanning_cluster_state",
-                    "spanning_cluster_tension",
                     ]
-data_keys = vcat(averaged_data_keys, seed_specific_keys)
+data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
 function make_settings(dist::String, L::Int64, t::Float64, nr::String, α::Float64, path::String)
+    if nr=="LLS"
+        α = 0.0
+    end
     settings = Dict(
         "dist" => dist,
         "L" => L,
@@ -43,6 +45,10 @@ end
 function add_name_and_path_to_setting!(path, dist, settings) 
     settings["name"] = get_setting_name(settings)
     settings["path"] = path*dist*"/"*settings["name"]*"/"
+end
+
+function display_setting(s)
+    return "$(s["dist"]) $(s["nr"]) L:$(s["L"]) α:$(s["a"]) t:$(s["t"])"    
 end
 
 function get_setting_name(settings)
@@ -142,30 +148,21 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
         for seed in seeds
             seed_file_name = get_name_fun(seed)
             jldopen(seed_file_name, "r+") do s_file
-                for key in averaged_data_keys
+                for key in data_keys
                     if !haskey(s_file, key)
                         value = 0
                         @warn "$key not found in $(seed_file_name)!"
                     else
                         value = s_file[key]
                     end
-                    # If the key doesn't exist, make it
-                    if !haskey(averages, key)
-                            averages[key] = []
-                    end
-                    push!(averages[key], value)
-                    condensed_file["$key/$seed"] = value
-                end
-                if seed <= 10
-                    for key in seed_specific_keys
-                        if !haskey(s_file, key)
-                            value = 0
-                            @warn "$key not found in $(seed_file_name)!"
-                        else
-                            value = s_file[key]
+                    if key in averaged_data_keys
+                        # If the key doesn't exist, make it
+                        if !haskey(averages, key)
+                                averages[key] = []
                         end
-                        condensed_file["$key/$seed"] = value
+                        push!(averages[key], value)
                     end
+                    condensed_file["$key/$seed"] = value
                 end
             end
         end
@@ -304,15 +301,17 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
         global global_settings = search_for_settings(data_path, dist)
     end
 
-    if NR=="UNR"
+    if NR=="LLS"
         α=0.0
     end
     settings = filter(s -> s["L"] == L
-                        && s["a"]==α 
-                        && s["t"]==t
-                        && s["nr"]==NR, global_settings)
+                        && s["a"] == α 
+                        && s["t"] == t
+                        && s["nr"] == NR, global_settings)
     @assert length(settings) < 2 "There are multiple possibilities"
-    @assert length(settings) != 0 "There is no file maching these settings α=$α nr=$NR, L=$L, t=$t"
+    if length(settings) == 0
+        throw("There is no file maching these settings α=$α nr=$NR, L=$L, t=$t")
+    end
     setting = settings[1]
     return load(get_file_name(setting, seed, average))
 end
@@ -337,8 +336,6 @@ function add_key(key, value)
     settings = search_for_settings("data/", "Uniform")
     for average=[true, false], s = settings
         name = get_file_name(s, -1, average)
-        println(name)
-        
         f = load(name)
         if average
             if !haskey(f, "average_$key")
@@ -367,12 +364,12 @@ function rename(path)
         f_path = path*f*"/"        
         for ff in readdir("$f_path")
             ff_path = f_path*ff
-            if occursin("a=2.0", ff) && occursin("nr=UNR", ff)
+            if occursin("a=2.0", ff) && occursin("nr=LLS", ff)
                 mv(ff_path, f_path*replace(ff, "a=2.0" => "a=0.0"))
             end
         end
         
-        if occursin("a=2.0", f) && occursin("nr=UNR", f)
+        if occursin("a=2.0", f) && occursin("nr=LLS", f)
             mv(f_path, replace(f_path, "a=2.0" => "a=0.0"))
         end
         
@@ -382,31 +379,80 @@ end
 #add_key("simulation_time", 0)
 
 function get_data_overview(path="data/", dists=["Uniform"])
-    nr = []
-    L = []
-    t = []
-    α = []
-
+    
     for dist in dists
         println("Data for: $dist")
         settings = search_for_settings(path, dist)
+        s = []
+        nr = []
+        L = []
+        t = []
+        α = []
         for setting in settings
-            s = get_seeds_in_file(setting)
-            L = setting["L"]
-            nr = setting["nr"]
-            t = setting["t"]
-            α = setting["a"]
-            
-            if length(s) == 0
-                println("Empty: $L, $nr, $t, $α")
-                continue
+            seeds = get_seeds_in_file(setting)
+            if isempty(seeds)
+                seed_text = "none"
+            else
+                except = setdiff(minimum(seeds):maximum(seeds), seeds)
+                seed_text = "$(minimum(seeds)) - $(maximum(seeds))" * (isempty(except) ? "" : " except $(join(except, " , "))")
             end
-            except = setdiff(minimum(s):maximum(s), s)
-            seed_text = "$(minimum(s)) - $(maximum(s))" * (isempty(except) ? "" : " except $(join(except, " , "))")
+            push!(s, seed_text)
+            push!(L, setting["L"])
+            push!(nr, setting["nr"])
+            push!(t, [setting["t"]])
+            push!(α, setting["a"])
+        end
 
-            println("$L, $nr, $t, $α, $seed_text")
+        # Rearrange data
+        data = [(nr[i], α[i], L[i], t[i], s[i]) for i in eachindex(s)]
+        # Sort data
+        sort!(data)
+        # Gather t and s
+        d = 0 #deleted elements
+        for i in eachindex(data)
+            i -= d
+            if i>1 && data[i][5] == data[i-1][5] && data[i][3] == data[i-1][3]
+                #if length(data[i-1][4]) == 2
+                #    # That means that j should look something like 0.0 - 0.5
+                #    data[i-1][4][2] = data[i][4][1]
+                #else
+                #end                
+                push!(data[i-1][4], data[i][4][1])
+                popat!(data, i)
+                d += 1
+            end
+        end
+        # Present data
+        println("NR α  L  t  seeds")
+        for i in eachindex(data)
+            for j in eachindex(data[i])
+                # j chooses the variable nr, α, L, t or s
+                # If the value changes
+                if i==1 || j>=4 || data[i][j] != data[i-1][j]
+                    if j!=4
+                        println("   "^(j-1)*"$(data[i][j])")
+                    else
+                        println("   "^(j-1)*"$(join(data[i][j], ", "))")
+                    end
+                end
+            end
         end
     end
+end
+
+function get_bundle_from_settings(settings; seed=1, progression=0)
+    file = load_file(settings, average=false)
+    L = settings["L"]
+    N = L*L
+    b = get_fb(L, nr=settings["nr"], without_storage=true)
+    break_sequence = file["break_sequence/$seed"]
+    if progression != 0
+        break_sequence = break_sequence[1:round(Int, N*progression)]
+    end
+    break_fiber_list!(break_sequence, b)
+    update_σ!(b)
+    shift_spanning_cluster!(b)
+    return b
 end
 
 function recalculate_average_file(path="data/", dists=["Uniform"])
@@ -432,6 +478,30 @@ function recalculate_average_file(path="data/", dists=["Uniform"])
     end
     println("Success!")
 end
+
+function rename_files_and_folders(path="data/", dists=["Uniform"])
+    new_name(s) = replace(s, "UNR" => "LLS", "SNR" => "CLS")
+    for dist in dists
+        folders = readdir(path*dist)
+        settings = []
+        for folder in folders
+            full_path = path*dist*"/"*folder
+            for file in readdir(full_path)
+                new_file_name = new_name(file)
+                if new_file_name != file
+                    mv(full_path*"/"*file, full_path*"/"*new_file_name)
+                end
+            end
+            new_folder_name = new_name(folder)
+            if new_folder_name != folder
+                mv(full_path, path*dist*"/"*new_folder_name)
+            end
+        end    
+    end
+    println("Success!")
+end
+
+#rename_files_and_folders()
 
 #recalculate_average_file()
 
