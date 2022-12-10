@@ -29,7 +29,7 @@ end
 
 function plot_dimension_thing()
     
-    L = [8,16,32,64,128,256,512]
+    L = [16,32,64,128,256,512]
     t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
@@ -97,8 +97,8 @@ end
 
 function plot_dimensions_over_t()
     
-    L = [8,16,32,64,128,256,512]
-    t = (0:9) ./ 10#vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+    L = [16,32,64,128,256,512]
+    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -191,7 +191,7 @@ end
 
 function plot_dimensions_over_t_with_radius_of_gyration()
     
-    L = [8,16,32,64,128,256,512]
+    L = [16,32,64,128,256,512]
     t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
@@ -239,7 +239,7 @@ end
 
 function plot_dimensions_with_radius_of_gyration()
     
-    L = [8,16,32,64,128,256,512]
+    L = [16,32,64,128,256,512]
     t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
