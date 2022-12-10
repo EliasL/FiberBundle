@@ -8,8 +8,9 @@ function format(total_seconds)
     (d,h,m,s) = round.(Int64, [d,h,m,s])
     extra_hours = floor(Int64, d*4 + h/6)
     extra_minutes = 15 + h*5
+    extra_days=20
 
-    return "$d-$(h+extra_hours):$(m+extra_minutes):$s"
+    return "$(d+extra_days)-$(h+extra_hours):$(m+extra_minutes):$s"
 end
 
 function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], force_short=false)
@@ -47,8 +48,8 @@ end
 
 
 
-seeds = [0, 200] # From seed to seed
-L = [8,16,32,64,128,256, 512]
+seeds = [0, 30] # From seed to seed
+L = [1024]
 t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 make_job(seeds, L, t=t, α=[2.0], force_short=false)
 start_job()

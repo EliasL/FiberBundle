@@ -27,10 +27,7 @@ function get_fit(x,y)
     return curve_fit(f_lin, x, y, p0_lin).param
 end
 
-function plot_dimension_thing()
-    
-    L = [16,32,64,128,256,512]
-    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+function plot_dimension_thing(L, t)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -95,10 +92,8 @@ function plot_dimension_thing()
     end
 end
 
-function plot_dimensions_over_t()
+function plot_dimensions_over_t(L, t)
     
-    L = [16,32,64,128,256,512]
-    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -189,10 +184,7 @@ function get_gyration_radii(L, nr, t, bulk_files)
 end
 
 
-function plot_dimensions_over_t_with_radius_of_gyration()
-    
-    L = [16,32,64,128,256,512]
-    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+function plot_dimensions_over_t_with_radius_of_gyration(L, t)
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -237,10 +229,8 @@ function plot_dimensions_over_t_with_radius_of_gyration()
     savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")
 end
 
-function plot_dimensions_with_radius_of_gyration()
-    
-    L = [16,32,64,128,256,512]
-    t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+function plot_dimensions_with_radius_of_gyration(L, t)
+
     NR = ["CLS", "LLS"]
     N = L.*L
     α = 2.0
@@ -307,9 +297,13 @@ function plot_dimensions_with_radius_of_gyration()
     savefig("plots/Graphs/dimension_using_radius_of_gyration.pdf")
 end
 default(markershape=:circle)
-plot_dimensions_over_t()
+
+
+L = [32,64,128,256,512]
+t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+plot_dimensions_over_t(L, t)
 #plot_dimensions_over_t_with_radius_of_gyration()
-plot_dimension_thing()
+plot_dimension_thing(L, t)
 
 
 
