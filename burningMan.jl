@@ -93,7 +93,7 @@ function update_storage!(b::FB, s::FBS)
 end
 
 
-function get_fb(L; α=2, t=0, nr="LLS", dist="Uniform", without_storage=false)
+function get_fb(L; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=false)
     N=L*L
     x = nothing
     if dist == "Uniform"

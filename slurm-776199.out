@@ -1,0 +1,7 @@
+slurmstepd-compute-11: error: *** JOB 776199 ON compute-11 CANCELLED AT 2022-12-06T16:05:58 ***
+
+signal (15): Terminated
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:51
+
+signal (6): Aborted
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:51

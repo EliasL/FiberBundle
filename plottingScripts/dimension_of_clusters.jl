@@ -119,7 +119,7 @@ function plot_dimensions_over_t(L, t)
 
         #s = s .± log2.(std_s)
         #h = h .± log2.(std_h)
-
+        println("$t", "$nr", ", ", slope_s,", ", slope_h)
         return slope_s, slope_h
     end
 
@@ -141,27 +141,12 @@ function plot_dimensions_over_t(L, t)
     savefig("plots/Graphs/dimension.pdf")
 end
 
-function get_gyration_radii(L, nr, t, bulk_files)
 
-    try
-        f = load("data/gyration_data/")
-        CLS_r_slope = f["CLS_r_slope"]
-        LLS_r_slope = f["LLS_r_slope"]
-        CLS_s_slope = f["CLS_s_slope"]
-        LLS_s_slope = f["LLS_s_slope"]
-    catch
-        for i in eachindex(t)
-            CLS_s_slope[i], CLS_r_slope[i] = get_s_and_gyration(NR[1], t[i])
-            LLS_s_slope[i], LLS_r_slope[i] = get_s_and_gyration(NR[2], t[i])
-        end
-        jldopen("data/gyration_data.jld2", "w") do file
-            file["CLS_r_slope"] = CLS_r_slope
-            file["LLS_r_slope"] = LLS_r_slope
-            file["CLS_s_slope"] = CLS_s_slope
-            file["LLS_s_slope"] = LLS_s_slope
-        end
-    end
 
+function calculate_gyration(L, nr, t, bulk_files)
+    println(L)
+    println(nr)
+    println(t)
     bundles = [get_fb(L[i], nr=nr, t=t, without_storage=true) for i in eachindex(bulk_files)]
     r = []
     std_r = []
@@ -173,6 +158,7 @@ function get_gyration_radii(L, nr, t, bulk_files)
             break_fiber_list!(view(file["break_sequence/$seed"],1:file["last_step/$seed"]), b)
             update_σ!(b)
             #TODO ASSUMPTION MAXIMUM CLUSTER IS SPANNING CLUSTER
+            # probably true in 99.999999% of cases...
             single_r = maximum(find_radius_of_gyration(b))
             push!(temp_r, single_r)
             healBundle!(b)
@@ -181,6 +167,28 @@ function get_gyration_radii(L, nr, t, bulk_files)
         push!(std_r, std(temp_r))
     end
     return r, std_r
+end
+
+function get_gyration_radii(L, nr, t, bulk_files)
+
+    try
+        f = load("data/gyration_data.jld2")
+        CLS_r_slope = f["CLS_r_slope"]
+        LLS_r_slope = f["LLS_r_slope"]
+        CLS_s_slope = f["CLS_s_slope"]
+        LLS_s_slope = f["LLS_s_slope"]
+    catch
+        for i in eachindex(t)
+            CLS_s_slope[i], CLS_r_slope[i] = calculate_gyration(L, nr[1], t[i], bulk_files)
+            LLS_s_slope[i], LLS_r_slope[i] = calculate_gyration(L, nr[2], t[i], bulk_files)
+        end
+        jldopen("data/gyration_data.jld2", "w") do file
+            file["CLS_r_slope"] = CLS_r_slope
+            file["LLS_r_slope"] = LLS_r_slope
+            file["CLS_s_slope"] = CLS_s_slope
+            file["LLS_s_slope"] = LLS_s_slope
+        end
+    end
 end
 
 
@@ -299,10 +307,10 @@ end
 default(markershape=:circle)
 
 
-L = [32,64,128,256,512]
+L = [8, 16, 32,64,128,256,512]
 t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+plot_dimensions_over_t_with_radius_of_gyration(L, t)
 plot_dimensions_over_t(L, t)
-#plot_dimensions_over_t_with_radius_of_gyration()
 plot_dimension_thing(L, t)
 
 

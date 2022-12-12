@@ -297,7 +297,7 @@ end
 function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
-    if global_settings === nothing
+    if global_settings === nothing || data_path != "data/"
         global global_settings = search_for_settings(data_path, dist)
     end
 
@@ -440,19 +440,42 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_settings(settings; seed=1, progression=0)
-    file = load_file(settings, average=false)
-    L = settings["L"]
-    N = L*L
-    b = get_fb(L, nr=settings["nr"], without_storage=true)
+function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0)
+    b = get_fb(L, nr=nr, without_storage=true)
     break_sequence = file["break_sequence/$seed"]
     if progression != 0
-        break_sequence = break_sequence[1:round(Int, N*progression)]
+        @assert step==0
+        break_sequence = break_sequence[1:round(Int, L*L*progression)]
+    end
+    if step > 0
+        @assert progression==0
+        break_sequence = break_sequence[1:step]
+    end
+    if step < 0
+        @assert progression==0
+        break_sequence = break_sequence[1:(file["last_step/$seed"]+step)]
     end
     break_fiber_list!(break_sequence, b)
     update_σ!(b)
     shift_spanning_cluster!(b)
     return b
+end
+
+function get_bundles_from_settings(settings; seeds, progression=0, step=0)
+    file = load_file(settings, average=false)
+    L = settings["L"]
+    nr = settings["nr"]
+    N = L*L
+    bundles = []
+    for seed in seeds
+        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression, step=step)
+        push!(bundles, b)
+    end
+    if length(bundles)==1
+        return bundles[1]
+    else
+        return bundles
+    end
 end
 
 function recalculate_average_file(path="data/", dists=["Uniform"])
