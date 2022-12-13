@@ -1,6 +1,7 @@
 using JLD2
 using CodecLz4
 using Logging
+using ProgressMeter
 using Statistics
 include("logingLevels.jl")
 include("../burningMan.jl")
@@ -181,6 +182,13 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     end
     mv(condensed_file_name*".temp", condensed_file_name, force=true)
     mv(averaged_file_name*".temp", averaged_file_name, force=true)
+end
+
+function remove_files(settings, seeds::AbstractArray)
+    get_name_fun = make_get_name(settings)
+    for seed in seeds
+        rm(get_name_fun(seed))
+    end
 end
 
 function get_missing_seeds(settings, requested_seeds)
@@ -478,24 +486,32 @@ function get_bundles_from_settings(settings; seeds, progression=0, step=0)
     end
 end
 
-function recalculate_average_file(path="data/", dists=["Uniform"])
+function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999)
     # We want to expand all the files and then
     # condense all of them again
-    return # Remove this line to actually use (This function is a bit dangerous)
+    # I found that it's not benificial to have many seeds, so we have the option to
+    # delete seeds that are larger than max_seed
+    #return # Remove this line to actually use (This function is a bit dangerous)
     for dist in dists
         settings = search_for_settings(path, dist)
-        for s in settings
+        @showprogress for s in settings
             search_for_loose_files(s)
-
-            seeds = get_seeds_in_file(s)
+            all_seeds = get_seeds_in_file(s)
+            seeds = all_seeds[all_seeds .<= max_seed]
+            unused_seeds = all_seeds[all_seeds .> max_seed]
+            
             if isempty(seeds)
                 continue
             else
                 try
                     expand_file(s)
                     condense_files(s, seeds)
+
                 catch
                 end
+            end
+            if !isempty(unused_seeds)
+                remove_files(s, unused_seeds)
             end
         end
     end
@@ -526,6 +542,6 @@ end
 
 #rename_files_and_folders()
 
-#recalculate_average_file()
+recalculate_average_file()
 
 #get_data_overview()

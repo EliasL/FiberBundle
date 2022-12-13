@@ -1,6 +1,7 @@
 using Distributed
 using ProgressMeter
 using Logging
+using Dates
 
 include("support/logingLevels.jl")
 
@@ -149,7 +150,7 @@ function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; 
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
         # There is no point in itterating over alphas when using LLS
         settings = make_settings("Uniform", L, t, nr, a, path)
-        @logmsg settingLog "Starting $(settings["name"])"
+        @logmsg settingLog "$(now()): Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite; use_threads=use_threads)
     end
 end

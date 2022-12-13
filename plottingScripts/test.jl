@@ -1,5 +1,7 @@
 using Plots
+using LaTeXStrings
 gr()
-default(markershape=:circle)
-a = plot([1 1; 2 2], [1 2; 2 3], linestyle=[:solid :dash],
-    labels=["solid" "dashed"], size=(2000,1000))
+nr="LLS"
+slope_h = 2
+h_err = 3
+plot(title=latexstring("$nr: \$D_h=$slope_h\$")*" ± "*"$h_err")

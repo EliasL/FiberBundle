@@ -86,4 +86,4 @@ function test()
     plot_gyration_radi(b, R, nr=2)
     display(p)
 end
-test()
+#test()

@@ -17,10 +17,11 @@ function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], force_
     threads = 40
     seconds = time_estimate(L, α, t, NR, collect(seeds[1]:seeds[2]), threads=threads)
     formated_time = format(seconds)
-    partition = seconds < 3600 || force_short ? "short" : "porelab"
-    if force_short
-        formated_time = "0-1:0:0"
-    end
+    #partition = seconds < 3600 || force_short ? "short" : "porelab"
+    #if force_short
+    #    formated_time = "0-1:0:0"
+    #end
+    partition = "porelab"
 
     file_text = """
     #!/bin/bash
@@ -48,8 +49,8 @@ end
 
 
 
-seeds = [0, 1000] # From seed to seed
-L = [128]
+seeds = [0, 100] # From seed to seed
+L = [8, 16, 32, 64, 128, 256, 512]
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
 make_job(seeds, L, t=t, α=[2.0], force_short=false)
 start_job()
