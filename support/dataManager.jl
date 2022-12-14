@@ -121,7 +121,7 @@ function get_seeds_in_file(settings, average=false)
     end
 end
 
-function condense_files(settings, requested_seeds::AbstractArray; remove_files=true)
+function condense_files(settings, requested_seeds::AbstractArray; remove_files=true, keep_existing_seeds=true)
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     averaged_file_name = get_name_fun(average=true)
@@ -129,7 +129,13 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     if length(existing_seeds) > 0
         expand_file(settings)
     end
-    seeds = union(existing_seeds, requested_seeds)
+    
+    seeds = requested_seeds
+    if keep_existing_seeds
+        seeds = union(existing_seeds, requested_seeds)
+    end
+    unused_seeds = setdiff(existing_seeds, requested_seeds)
+
     nr_seeds = length(seeds)
 
     averages = Dict()
@@ -180,15 +186,13 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
             rm(get_name_fun(seed))
         end
     end
+    if !keep_existing_seeds
+        for seed in unused_seeds
+            rm(get_name_fun(seed))
+        end
+    end
     mv(condensed_file_name*".temp", condensed_file_name, force=true)
     mv(averaged_file_name*".temp", averaged_file_name, force=true)
-end
-
-function remove_files(settings, seeds::AbstractArray)
-    get_name_fun = make_get_name(settings)
-    for seed in seeds
-        rm(get_name_fun(seed))
-    end
 end
 
 function get_missing_seeds(settings, requested_seeds)
@@ -491,7 +495,7 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
     # condense all of them again
     # I found that it's not benificial to have many seeds, so we have the option to
     # delete seeds that are larger than max_seed
-    #return # Remove this line to actually use (This function is a bit dangerous)
+    return # Remove this line to actually use (This function is a bit dangerous)
     for dist in dists
         settings = search_for_settings(path, dist)
         @showprogress for s in settings
@@ -499,19 +503,13 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
             all_seeds = get_seeds_in_file(s)
             seeds = all_seeds[all_seeds .<= max_seed]
             unused_seeds = all_seeds[all_seeds .> max_seed]
-            
-            if isempty(seeds)
+            #println("$(s["L"]) ", length(all_seeds), ": ", length(seeds), ", ", length(unused_seeds))
+
+            if isempty(seeds) || s["L"] > 16
                 continue
             else
-                try
-                    expand_file(s)
-                    condense_files(s, seeds)
-
-                catch
-                end
-            end
-            if !isempty(unused_seeds)
-                remove_files(s, unused_seeds)
+                expand_file(s)
+                condense_files(s, seeds, keep_existing_seeds=false)
             end
         end
     end
@@ -542,6 +540,6 @@ end
 
 #rename_files_and_folders()
 
-recalculate_average_file()
+#recalculate_average_file()
 
 #get_data_overview()
