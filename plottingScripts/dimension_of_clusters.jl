@@ -188,7 +188,8 @@ function get_gyration_radii(L, nr, t, bulk_files, recalcualte=false)
     end
 
     if isfile("data/gyration_data/$(nr)_$(t)_r_slope.jld2") && !recalcualte
-        f = load("data/gyration_data/$(nr)_$(t)_r_slope.jld2")
+        println("Loading")
+        @time f = load("data/gyration_data/$(nr)_$(t)_r_slope.jld2")
         r_slope, r_std = f["$(nr)_$(t)_r_slope"]
         if length(L) <= length(r_slope)
             return r_slope[1:length(L)], r_std[1:length(L)]
@@ -196,8 +197,9 @@ function get_gyration_radii(L, nr, t, bulk_files, recalcualte=false)
             get_gyration_radii(L, nr, t, bulk_files, recalcualte=true)
         end
     else
+        println("recalcualte")
         r_slope, r_std = calculate_gyration(L, nr, t, bulk_files)
-        jldopen("data/gyration_data/$(nr)_$(t)_r_slope.jld2", "w") do file
+        @time jldopen("data/gyration_data/$(nr)_$(t)_r_slope.jld2", "w") do file
             file["$(nr)_$(t)_r_slope"] = (r_slope, r_std)
         end
         return r_slope, r_std
@@ -223,8 +225,6 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
         r = log2.(r.± std_r)
 
         fit_s = get_fit(log_L, Measurements.value.(s))
-        println(log_L)
-        println(Measurements.value.(r))
         fit_r = get_fit(log_L, Measurements.value.(r))
         slope_s = round(fit_s[2], digits=2)
         slope_r = round(fit_r[2], digits=2)

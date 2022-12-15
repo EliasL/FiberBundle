@@ -8,10 +8,10 @@ include("../support/dataManager.jl")
 
 global_path = "data/"
 
-L = 512
+L = 256
 N = L*L
 α = 2.0
-t = (0:9)./10
+t = vcat((0:20) ./ 50, (5:9) ./ 10)
 dists = ["LLS", "CLS"]
 lables = permutedims(dists)
 files = [[load_file(L, α, t_, nr) for nr in dists] for t_ in t]
@@ -28,7 +28,7 @@ end
 
 max_number_of_clusters = get_data_from_files("average_nr_clusters", x -> 1/(maximum(x)*N))
 k_where_nr_clusters_is_max = get_data_from_files("average_nr_clusters", x -> argmax(x)/N)
-sigma_c_index = 1:9
+sigma_c_index = 1:25
 sigma_c = get_data_from_files("average_most_stressed_fiber", maximum, t_index=sigma_c_index)
 k_where_sigma_c_is_max = get_data_from_files("average_most_stressed_fiber", x -> argmax(x)/N)
 largest_cluster_size = get_data_from_files("average_largest_cluster", d_index = floor(Int64, N/5))
@@ -91,7 +91,7 @@ function plot_similar()
         A; B; C; D;
     ]
     plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot,
-        size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
+        size=(500, 900), layout = l, left_margin=10Plots.mm)#, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_similarities.pdf")
 end
@@ -101,7 +101,7 @@ function plot_differences()
         A; B; C; D;
     ]
     plot(cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot,
-    size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
+    size=(500, 900), layout = l, left_margin=10Plots.mm)#, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_differences.pdf")
 end
