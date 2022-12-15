@@ -267,7 +267,6 @@ function search_for_loose_files(settings)
         println(settings)
         clean_after_run(settings, seeds)
     end
-    @logmsg settingLog "Done!"
 end
 
 function search_for_settings(path, dist)

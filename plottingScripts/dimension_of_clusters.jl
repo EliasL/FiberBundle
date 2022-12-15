@@ -23,7 +23,7 @@ function get_exp_fit(x,y)
     return [fit_exp[1], fit_lin[2]]
 end
 
-function get_fit(x,y)
+function get_fit(x, y)
     p0_lin = [0.0, 1.0]
     return curve_fit(f_lin, x, y, p0_lin).param
 end
@@ -37,13 +37,13 @@ function plot_dimension_thing(L, t)
         files = [load_file(l, α, t, nr) for l in L]
         seeds = zip(L,[f["nr_seeds_used"] for f in files])
         f = load_file(L[1], α, t, nr, average=false)
-        #seeds = 0:4000-1
-        #println("$nr, $t")
-        #for j in [40, 400, 2000, 4000-1]
+        # seeds = 0:4000-1
+        # println("$nr, $t")
+        # for j in [40, 400, 2000, 4000-1]
         #    println(std([f["spanning_cluster_perimiter/$i"] for i in 0:j]))
-        #end
-        #spanning_cluster_size = [f["spanning_cluster_size/$i"] for i in seeds]
-        #display(plot(seeds, spanning_cluster_size))
+        # end
+        # spanning_cluster_size = [f["spanning_cluster_size/$i"] for i in seeds]
+        # display(plot(seeds, spanning_cluster_size))
         s = [f["average_spanning_cluster_size"] for f in files]
         h = [f["average_spanning_cluster_perimiter"] for f in files]
 
@@ -145,11 +145,11 @@ function plot_dimensions_over_t(L, t)
 
 
     default(markersize=3, markershape=:vline)
-    plot(t, CLS_s_slope, lables=L"CLS $D_s$")
-    plot!(t, CLS_h_slope, lables=L"CLS $D_h$")
-    plot!(t, LLS_s_slope, lables=L"LLS $D_s$")
+    plot(t, CLS_s_slope, labels=L"CLS $D_s$")
+    plot!(t, CLS_h_slope, labels=L"CLS $D_h$")
+    plot!(t, LLS_s_slope, labels=L"LLS $D_s$")
     plot!(t, LLS_h_slope, size=(400, 300),
-        plot_title="Dimensionality", labels=[L"CLS $D_s$" L"CLS $D_h$" L"LLS $D_s$" L"LLS $D_h$"],
+        plot_title="Dimensionality", labels=L"LLS $D_h$",
         legend=:right, xlabel=L"t", ylabel="Dimensionality")
     savefig("plots/Graphs/dimension.pdf")
 
@@ -181,21 +181,26 @@ function calculate_gyration(L, nr, t, bulk_files)
     return r, std_r
 end
 
-function get_gyration_radii(L, nr, t, bulk_files)
+function get_gyration_radii(L, nr, t, bulk_files, recalcualte=false)
     
     if !isdir("data/gyration_data/")
         mkpath("data/gyration_data/")
     end
 
-    if isfile("data/gyration_data/$(nr)_$(t)_r_slope.jld2")
+    if isfile("data/gyration_data/$(nr)_$(t)_r_slope.jld2") && !recalcualte
         f = load("data/gyration_data/$(nr)_$(t)_r_slope.jld2")
         r_slope, r_std = f["$(nr)_$(t)_r_slope"]
-        return r_slope, r_std
+        if length(L) <= length(r_slope)
+            return r_slope[1:length(L)], r_std[1:length(L)]
+        else
+            get_gyration_radii(L, nr, t, bulk_files, recalcualte=true)
+        end
     else
         r_slope, r_std = calculate_gyration(L, nr, t, bulk_files)
         jldopen("data/gyration_data/$(nr)_$(t)_r_slope.jld2", "w") do file
             file["$(nr)_$(t)_r_slope"] = (r_slope, r_std)
         end
+        return r_slope, r_std
     end
 end
 
@@ -218,6 +223,8 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
         r = log2.(r.± std_r)
 
         fit_s = get_fit(log_L, Measurements.value.(s))
+        println(log_L)
+        println(Measurements.value.(r))
         fit_r = get_fit(log_L, Measurements.value.(r))
         slope_s = round(fit_s[2], digits=2)
         slope_r = round(fit_r[2], digits=2)
@@ -331,11 +338,12 @@ end
 default(markershape=:circle)
 
 
-L = [8, 16, 32,64,128,256, 512]
+L = [8, 16, 32,64,128,256]
+#t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
-plot_dimensions_over_t(L, t)
-#plot_dimensions_over_t_with_radius_of_gyration(L, t)
+#plot_dimensions_over_t(L, t)
+plot_dimensions_over_t_with_radius_of_gyration(L, t)
 plot_dimension_thing(L, t)
 
 

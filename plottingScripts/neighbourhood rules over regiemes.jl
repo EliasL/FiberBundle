@@ -3,7 +3,7 @@ using JLD2
 using LaTeXStrings
 using Measures
 
-include("../support/ploting_settings.jl")
+include("ploting_settings.jl")
 include("../support/dataManager.jl")
 
 global_path = "data/"
@@ -90,7 +90,7 @@ function plot_similar()
     l = @layout [
         A; B; C; D;
     ]
-    plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot, lagrest_clusetr_size_plot,
+    plot(max_number_of_clusters_plot, k_where_nr_clusters_is_max_plot, sigma_c_plot,
         size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_similarities.pdf")
@@ -100,7 +100,7 @@ function plot_differences()
     l = @layout [
         A; B; C; D;
     ]
-    plot(cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot, largest_perimeter_plot,
+    plot(cluster_over_perimiter_size_plot, spanning_cluster_size_plot, spanning_perimeter_plot,
     size=(400, 800), layout = l, left_margin=5Plots.mm, bottom_margin=-3Plots.mm, right_margin=3Plots.mm)
 
     savefig("plots/Graphs/NR_differences.pdf")
