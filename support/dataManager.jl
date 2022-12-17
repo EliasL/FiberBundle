@@ -145,8 +145,9 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     else
         compress = false
     end
+    compress = false
 
-    jldopen(condensed_file_name*".temp", "w", compress = LZ4FrameCompressor()) do condensed_file
+    jldopen(condensed_file_name*".temp", "w", compress = compress) do condensed_file
     jldopen(averaged_file_name*".temp", "w", compress = compress) do averaged_file
         averaged_file["seeds_used"] = seeds
         averaged_file["nr_seeds_used"] = length(seeds)
@@ -324,7 +325,8 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
         throw("There is no file maching these settings α=$α nr=$NR, L=$L, t=$t")
     end
     setting = settings[1]
-    return load(get_file_name(setting, seed, average))
+    println("loading...")
+    return @time load(get_file_name(setting, seed, average))
 end
 
 function load_file(settings; seed=-1, average=true)
@@ -494,7 +496,7 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
     # condense all of them again
     # I found that it's not benificial to have many seeds, so we have the option to
     # delete seeds that are larger than max_seed
-    return # Remove this line to actually use (This function is a bit dangerous)
+    #return # Remove this line to actually use (This function is a bit dangerous)
     for dist in dists
         settings = search_for_settings(path, dist)
         @showprogress for s in settings
@@ -539,6 +541,6 @@ end
 
 #rename_files_and_folders()
 
-#recalculate_average_file()
+recalculate_average_file()
 
 #get_data_overview()

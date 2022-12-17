@@ -181,7 +181,7 @@ function calculate_gyration(L, nr, t, bulk_files)
     return r, std_r
 end
 
-function get_gyration_radii(L, nr, t, bulk_files, recalcualte=false)
+function get_gyration_radii(L, nr, t, bulk_files; recalcualte=false)
     
     if !isdir("data/gyration_data/")
         mkpath("data/gyration_data/")
@@ -194,6 +194,7 @@ function get_gyration_radii(L, nr, t, bulk_files, recalcualte=false)
         if length(L) <= length(r_slope)
             return r_slope[1:length(L)], r_std[1:length(L)]
         else
+            println("Nope")
             get_gyration_radii(L, nr, t, bulk_files, recalcualte=true)
         end
     else
@@ -218,7 +219,8 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
 
         s = [f["average_spanning_cluster_size"] for f in files]
         std_s = [f["std_spanning_cluster_size"] for f in files]
-        r, std_r = get_gyration_radii(L, nr, t, bulk_files)
+        @time r, std_r = get_gyration_radii(L, nr, t, bulk_files)
+        println("a")
 
         log_L = log2.(L)
         s = log2.(s.± std_s)
@@ -228,6 +230,7 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
         fit_r = get_fit(log_L, Measurements.value.(r))
         slope_s = round(fit_s[2], digits=2)
         slope_r = round(fit_r[2], digits=2)
+        println("b")
 
         return slope_s, slope_r
     end
@@ -238,8 +241,10 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
     LLS_r_slope = zeros(Float64, length(t))
 
     @showprogress for i in eachindex(t)
+        println("umm")
         CLS_s_slope[i], CLS_r_slope[i] = get_s_and_gyration(NR[1], t[i])
         LLS_s_slope[i], LLS_r_slope[i] = get_s_and_gyration(NR[2], t[i])
+        println("ok?")
     end
 
 
@@ -338,7 +343,7 @@ end
 default(markershape=:circle)
 
 
-L = [8, 16, 32,64,128,256]
+L = [8, 16, 32,64,128,256,512]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
