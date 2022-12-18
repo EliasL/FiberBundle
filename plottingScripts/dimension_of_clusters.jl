@@ -158,9 +158,6 @@ end
 
 
 function calculate_gyration(L, nr, t, bulk_files)
-    println(L)
-    println(nr)
-    println(t)
     bundles = [get_fb(L[i], nr=nr, t=t, without_storage=true) for i in eachindex(bulk_files)]
     r = []
     std_r = []
@@ -181,26 +178,24 @@ function calculate_gyration(L, nr, t, bulk_files)
     return r, std_r
 end
 
-function get_gyration_radii(L, nr, t, bulk_files; recalcualte=false)
+function get_gyration_radii(L, nr, t; recalcualte=false)
     
     if !isdir("data/gyration_data/")
         mkpath("data/gyration_data/")
     end
 
     if isfile("data/gyration_data/$(nr)_$(t)_r_slope.jld2") && !recalcualte
-        println("Loading")
-        @time f = load("data/gyration_data/$(nr)_$(t)_r_slope.jld2")
+        f = load("data/gyration_data/$(nr)_$(t)_r_slope.jld2")
         r_slope, r_std = f["$(nr)_$(t)_r_slope"]
         if length(L) <= length(r_slope)
             return r_slope[1:length(L)], r_std[1:length(L)]
         else
-            println("Nope")
-            get_gyration_radii(L, nr, t, bulk_files, recalcualte=true)
+            get_gyration_radii(L, nr, t, recalcualte=true)
         end
     else
-        println("recalcualte")
+        bulk_files = [load_file(l, α, t, nr,average=false) for l in L]
         r_slope, r_std = calculate_gyration(L, nr, t, bulk_files)
-        @time jldopen("data/gyration_data/$(nr)_$(t)_r_slope.jld2", "w") do file
+        jldopen("data/gyration_data/$(nr)_$(t)_r_slope.jld2", "w") do file
             file["$(nr)_$(t)_r_slope"] = (r_slope, r_std)
         end
         return r_slope, r_std
@@ -215,12 +210,10 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
 
     function get_s_and_gyration(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
-        bulk_files = [load_file(l, α, t, nr,average=false) for l in L]
 
         s = [f["average_spanning_cluster_size"] for f in files]
         std_s = [f["std_spanning_cluster_size"] for f in files]
-        @time r, std_r = get_gyration_radii(L, nr, t, bulk_files)
-        println("a")
+        r, std_r = get_gyration_radii(L, nr, t)
 
         log_L = log2.(L)
         s = log2.(s.± std_s)
@@ -230,7 +223,6 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
         fit_r = get_fit(log_L, Measurements.value.(r))
         slope_s = round(fit_s[2], digits=2)
         slope_r = round(fit_r[2], digits=2)
-        println("b")
 
         return slope_s, slope_r
     end
@@ -240,11 +232,9 @@ function plot_dimensions_over_t_with_radius_of_gyration(L, t)
     LLS_s_slope = zeros(Float64, length(t))
     LLS_r_slope = zeros(Float64, length(t))
 
-    @showprogress for i in eachindex(t)
-        println("umm")
+    for i in eachindex(t)
         CLS_s_slope[i], CLS_r_slope[i] = get_s_and_gyration(NR[1], t[i])
         LLS_s_slope[i], LLS_r_slope[i] = get_s_and_gyration(NR[2], t[i])
-        println("ok?")
     end
 
 
@@ -281,11 +271,10 @@ function plot_dimensions_with_radius_of_gyration(L, t)
 
     function get_s_and_gyration_plot(nr, t)
         files = [load_file(l, α, t, nr) for l in L]
-        bulk_files = [load_file(l, α, t, nr,average=false) for l in L]
 
         s = [f["average_spanning_cluster_size"] for f in files]
         std_s = [f["std_spanning_cluster_size"] for f in files]
-        r, std_r = get_gyration_radii(L, nr, t, bulk_files)
+        r, std_r = get_gyration_radii(L, nr, t)
 
         log_L = log2.(L)
         s = log2.(s.± std_s)
@@ -308,7 +297,7 @@ function plot_dimensions_with_radius_of_gyration(L, t)
                         title=latexstring("$nr: \$D_r=$slope_r\$"))
         plot!(log_L, f_lin(log_L, fit_r), label=L"Fit ($D_r$)")
         #yticks!(h_plot, yticks(s_plot)[1])
-        return s_plot, h_plot
+        return s_plot, r_plot
     end
 
     CLS_s_slope = zeros(Float64, length(t))
@@ -319,9 +308,9 @@ function plot_dimensions_with_radius_of_gyration(L, t)
 
     for t_ in t
         @assert NR[1] == "CLS"
-        CLS_s_plot, CLS_r_plot = get_s_and_r_plots(NR[1], t_)
+        CLS_s_plot, CLS_r_plot = get_s_and_gyration_plot(NR[1], t_)
         @assert NR[2] == "LLS"
-        LLS_s_plot, LLS_r_plot = get_s_and_r_plots(NR[2], t_)
+        LLS_s_plot, LLS_r_plot = get_s_and_gyration_plot(NR[2], t_)
 
         l = @layout [
             A B;
@@ -330,7 +319,7 @@ function plot_dimensions_with_radius_of_gyration(L, t)
         plot(CLS_s_plot, CLS_r_plot, LLS_s_plot, LLS_r_plot, size=(800, 600), layout = l,
             plot_title=latexstring("Dimensionality: \$t=$t_\$"))
 
-        savefig("plots/Graphs/dimension_t=$t_.pdf")
+        savefig("plots/Graphs/Gyration_dimension_t=$t_.pdf")
     end
 
 
@@ -349,6 +338,7 @@ L = [8, 16, 32,64,128,256,512]
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
 #plot_dimensions_over_t(L, t)
 plot_dimensions_over_t_with_radius_of_gyration(L, t)
+plot_dimensions_with_radius_of_gyration(L, t)
 plot_dimension_thing(L, t)
 
 
