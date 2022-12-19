@@ -8,7 +8,7 @@ include("../support/dataManager.jl")
 
 global_path = "data/"
 
-L = 256
+L = 32
 N = L*L
 α = 2.0
 t = vcat((0:20) ./ 50, (5:9) ./ 10)

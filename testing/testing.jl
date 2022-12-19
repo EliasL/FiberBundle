@@ -380,7 +380,7 @@ function custom_cluster_test()
     update_σ!(b)
     display(reshape(b.σ, (L,L)))
 end
-custom_cluster_test()
+#custom_cluster_test()
 
 function test()
     
@@ -404,5 +404,5 @@ function test()
         
     end
 end
-#test()
+test()
 println("Test done")

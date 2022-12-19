@@ -147,10 +147,10 @@ function save_picture(L, nr, t, α, seed, name, path="data/")
 end
 
 function test(seeds=1)
-    nr = "LLS"
+    nr = "CLS"
     path = "data/"
-    t = 0.9
-    L=8
+    t = 0.1
+    L=32
     α = 2.0
     settings = make_settings("Uniform", L, t, nr, α, path)
     bundles = get_bundles_from_settings(settings, seeds=seeds, step=-0)

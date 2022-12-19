@@ -9,7 +9,7 @@ include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/inertia.jl")
 
-f_lin(x,p) = p[1] .+ x .* p[2]
+f_lin(x,p) = p[1] .+ Measurements.value.(x) .* p[2]
 
 function get_fit(x, y)
     p0_lin = [0.0, 1.0]
@@ -17,13 +17,13 @@ function get_fit(x, y)
 end
 
 
-function get_plot_and_slope(x, y, error, label, y_label, fit_label, title; x_label=L"log$_2(L)$")
+function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"log$_2(L)$")
     # Converting to log
     x = log2.(x)
-    y = log2.(y .± error)
+    y = log2.(y)
 
     # Fit to line
-    fit = get_fit(x, Measurements.value.(y))
+    fit = get_fit(Measurements.value.(x), Measurements.value.(y))
     slope = fit[2]
     rounded_slope = round(slope, digits=2)
     
@@ -34,12 +34,12 @@ function get_plot_and_slope(x, y, error, label, y_label, fit_label, title; x_lab
     # Plot
     #   Slope max_min_error
     p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
-    linewidth=1, linestyle=:dash, markersize=3)
+    linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
     #   y values
-    scatter!(x, y, markershape=:cross, color=:black, label=label,
+    scatter!(x, y, markershape=:vline, color=:black, label=label,
     markersize=3, legend=:topleft, xlabel=x_label, ylabel=y_label, title=title*"$rounded_slope ± $slope_err")
     #   y fit
-    plot!(x, f_lin(x, fit), label=fit_label, color=:black)
+    plot!(Measurements.value.(x), f_lin(x, fit), label=fit_label, color=:black, linewidth=1)
 
     return p, slope# ± slope_err
 end
@@ -71,23 +71,24 @@ function plot_dimension_thing(L, t)
             std_s = [f["std_spanning_cluster_size"] for f in files]
             std_h = [f["std_spanning_cluster_perimiter"] for f in files]
             
-            s_plot, s_slope = get_plot_and_slope(L, s, std_s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"))
+            s = s .± std_s
+            h = h .± std_h
+
+            s_plot, s_slope = get_plot_and_slope(L, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"))
             push!(plots, s_plot)
             push!(slopes, s_slope)
-            h_plot, h_slope = get_plot_and_slope(L, h, std_h, L"Cluster size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"))
+            h_plot, h_slope = get_plot_and_slope(L, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"))
             push!(plots, h_plot)
             push!(slopes, h_slope)
 
-
             # Gyration radius!
-            # TODO include error in r? Difficult to combine with student t
             r, r_std = get_gyration_radii(L, nr, t[i], α)
+            r = r .± r_std
 
-
-            s_plot, s_slope = get_plot_and_slope(r, s, std_s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"), x_label=L"log$_2(r)$")
+            s_plot, s_slope = get_plot_and_slope(r, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"), x_label=L"log$_2(r)$")
             push!(plots, s_plot)
             push!(slopes, s_slope)
-            h_plot, h_slope = get_plot_and_slope(r, h, std_h, L"Cluster size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"), x_label=L"log$_2(r)$")
+            h_plot, h_slope = get_plot_and_slope(r, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"), x_label=L"log$_2(r)$")
             push!(plots, h_plot)
             push!(slopes, h_slope)
         end
@@ -125,7 +126,7 @@ function plot_dimension_thing(L, t)
     plot!(t, r_LLS_s_slope, labels=L"R LLS $D_s$", markersize=3, markershape=:vline, linestyle=:dash)
     plot!(t, r_LLS_h_slope,  labels=L"R LLS $D_h$", markersize=3, markershape=:vline, linestyle=:dash,
         plot_title="Dimensionality",size=(500, 400),
-        legend=:right, xlabel=L"t", ylabel="Dimensionality")
+        legend=:right, xlabel=L"t_0", ylabel="Dimensionality")
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
     
 end
@@ -180,7 +181,7 @@ function uncertainty_in_slope(x, v)
 
     # TODO: Replace this with student t stuff
     #https://tma4245.math.ntnu.no/enkel-line%C3%A6r-regresjon/inferens-regresjonsparametrene/?fbclid=IwAR3SuPlGuPJ-kTLwaHR0SVxOe1X9FRLvk9iFs8qIa_tX6oM03HfB_r_AXBU
-
+    x = Measurements.value.(x)
     p1_min = (x[1], v[1].val-v[1].err)
     p1_max = (x[1], v[1].val+v[1].err)
     p2_min = (x[end], v[end].val-v[end].err)

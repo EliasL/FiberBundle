@@ -265,7 +265,6 @@ function search_for_loose_files(settings)
     end
     if length(seeds)>0
         @logmsg settingLog "Found loose files, cleaning up... "
-        println(settings)
         clean_after_run(settings, seeds)
     end
 end

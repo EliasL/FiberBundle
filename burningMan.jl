@@ -384,7 +384,8 @@ function distance(a,b,L)
     # because of periodic boundry conditions, this
     # is slightly more difficult than in normal situations
 
-    # This function finds the shortest distance between two NUMBERS.
+    # This function finds the shortest distance between two NUMBERS. NOT POINTS!
+    # i.e. It is used on a 1D line
     # Ex: distance (1,9,10) is not 8 like in the normal case, but 
     # 2. Because of Julias one indexing, we use mod1, and the distance
     # is therefore not 3.
