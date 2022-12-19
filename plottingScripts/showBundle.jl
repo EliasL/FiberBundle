@@ -65,7 +65,7 @@ function plot_fb(b::FB; show=true, axes=false, use_shift=true)
     # all others
     clamp!(m, 0, Inf)
     image_size = maximum([500,L])+100
-    h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal,
+    h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal, bg_inside = nothing,
     showaxis = axes, ticks=axes, size=(image_size, image_size))
     p = plot(h)
     if show

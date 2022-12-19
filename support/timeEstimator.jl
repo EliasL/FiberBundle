@@ -31,8 +31,8 @@ function time_estimate(dimensions, α, regimes, NRs, seeds; path="data/", dist="
         catch
             @warn "Unable to estimate time, missing data for:\n$(display_setting(settings))"
             assume_1_day = 3600*24
-            assume_7_days = 3600*24*7
-            return assume_7_days
+            assume_6_days = 3600*24*6
+            return assume_6_days
         end
     end
 

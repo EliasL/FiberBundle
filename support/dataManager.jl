@@ -516,24 +516,16 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
     println("Success!")
 end
 
-function rename_files_and_folders(path="data/", dists=["Uniform"])
-    new_name(s) = replace(s, "UNR" => "LLS", "SNR" => "CLS")
+function rename_files_and_folders(path="data/", dists=["gyration_data"])
+    new_name(s) = replace(s, "r_slope" => "r")
     for dist in dists
-        folders = readdir(path*dist)
-        settings = []
-        for folder in folders
-            full_path = path*dist*"/"*folder
-            for file in readdir(full_path)
-                new_file_name = new_name(file)
-                if new_file_name != file
-                    mv(full_path*"/"*file, full_path*"/"*new_file_name)
-                end
+        full_path = path*dist
+        for file in readdir(full_path)
+            new_file_name = new_name(file)
+            if new_file_name != file
+                mv(full_path*"/"*file, full_path*"/"*new_file_name)
             end
-            new_folder_name = new_name(folder)
-            if new_folder_name != folder
-                mv(full_path, path*dist*"/"*new_folder_name)
-            end
-        end    
+        end
     end
     println("Success!")
 end
