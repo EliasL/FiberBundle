@@ -23,14 +23,14 @@ function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], force_
     #end
     partition = "porelab"
 
+    #SBATCH --exclusive=user
     file_text = """
     #!/bin/bash
 
     #SBATCH -J $(maximum(L))-$(seeds[2])
     #SBATCH -p $partition
     #SBATCH -N 1
-    #SBATCH -n 64
-    #SBATCH --exclusive=user
+    #SBATCH -n 50
     #SBATCH --time=$formated_time
 
     ml eb
@@ -49,11 +49,11 @@ end
 
 
 
-seeds = [0, 1000] # From seed to seed
-L = [256]
+seeds = [0, 100] # From seed to seed
+L = [8,16,32,64,128,256]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
-make_job(seeds, L, t=t, α=[2.0], force_short=false)
+make_job(seeds, L, t=t, α=[1.3], force_short=false)
 start_job()

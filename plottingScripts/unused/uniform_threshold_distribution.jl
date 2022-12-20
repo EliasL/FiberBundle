@@ -2,7 +2,7 @@ using Plots
 using JLD2
 using LaTeXStrings
 
-include("../support/ploting_settings.jl")
+include("ploting_settings.jl")
 
 full_name(global_path, L, distribution) = global_path*distribution*"/"*distribution*string(L)*".jld2"
 

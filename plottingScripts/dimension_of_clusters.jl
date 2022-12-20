@@ -47,7 +47,7 @@ end
 function plot_dimension_thing(L, t)
     NR = ["CLS", "LLS"]
     N = L.*L
-    α = 2.0
+    α = 1.3
 
     CLS_s_slope = zeros(Measurement{Float64}, length(t))
     CLS_h_slope = zeros(Measurement{Float64}, length(t))
@@ -196,7 +196,7 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [8, 16, 32,64,128,256,512]
+L = [8, 16, 32,64,128,256]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)

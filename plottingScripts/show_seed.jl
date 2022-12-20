@@ -4,23 +4,18 @@ include("../support/inertia.jl")
 function show_spanning_cluster()
     nr = "CLS"
     path = "data/"
-    t = 0.9
-    L=512
-    α = 2.0
-    seed = 2
-    setting = make_settings("Uniform", L, t, nr, α, path)
-    file = load_file(setting, average=false)
-    b = get_fb(L, nr=nr, without_storage=true)
-    b.status = file["spanning_cluster_state/$seed"]
-
-    shift_spanning_cluster!(b)
-    resetBundle!(b)
-    update_σ!(b)
-    #R = find_radius_of_gyration(b)
+    t = 0.1
+    L=256
+    α = 1.3
+    seed = 1
+    settings = make_settings("Uniform", L, t, nr, α, path)
+    b = get_bundles_from_settings(settings, seeds=seed, step=-0)
     p = plot_fb(b, show=false)
-    #plot_gyration_radi(b, R, 1)
-    #display(p)
-    println("done")
+    minor_axes, major_axes, minor_values, major_values = find_major_and_minor_axes(b)
+    plot_fb_axes(b, minor_axes, major_axes, minor_values, major_values)
+    R = find_radius_of_gyration(b)
+    plot_gyration_radi(b, R, nr=2)
+    display(p)
 end
 
 show_spanning_cluster()
