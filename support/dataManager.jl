@@ -1,6 +1,7 @@
 using JLD2
 using CodecLz4
 using Logging
+using ProgressMeter
 using Statistics
 include("logingLevels.jl")
 include("../burningMan.jl")
@@ -23,7 +24,7 @@ seed_specific_keys = [
 data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
-function make_settings(dist::String, L::Int64, t::Float64, nr::String, α::Float64, path::String)
+function make_settings(L::Int64, t::Float64, nr::String, α::Float64, path::String="data/", dist::String="Uniform")
     if nr=="LLS"
         α = 0.0
     end
@@ -120,7 +121,23 @@ function get_seeds_in_file(settings, average=false)
     end
 end
 
-function condense_files(settings, requested_seeds::AbstractArray; remove_files=true)
+function get_min_steps_in_files(settings)
+    file_name = get_file_name(settings, -1, false)
+    if isfile(file_name)
+        jldopen(file_name, "r") do file
+            if haskey(file, "seeds_used")
+                seeds = file["seeds_used"]
+                return minimum([file["last_step/$s"] for s in seeds])
+            else
+                return 0
+            end
+        end
+    else
+        return 0
+    end
+end
+
+function condense_files(settings, requested_seeds::AbstractArray; remove_files=true, keep_existing_seeds=true)
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     averaged_file_name = get_name_fun(average=true)
@@ -128,7 +145,13 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     if length(existing_seeds) > 0
         expand_file(settings)
     end
-    seeds = union(existing_seeds, requested_seeds)
+    
+    seeds = requested_seeds
+    if keep_existing_seeds
+        seeds = union(existing_seeds, requested_seeds)
+    end
+    unused_seeds = setdiff(existing_seeds, requested_seeds)
+
     nr_seeds = length(seeds)
 
     averages = Dict()
@@ -138,8 +161,9 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     else
         compress = false
     end
+    compress = false
 
-    jldopen(condensed_file_name*".temp", "w", compress = LZ4FrameCompressor()) do condensed_file
+    jldopen(condensed_file_name*".temp", "w", compress = compress) do condensed_file
     jldopen(averaged_file_name*".temp", "w", compress = compress) do averaged_file
         averaged_file["seeds_used"] = seeds
         averaged_file["nr_seeds_used"] = length(seeds)
@@ -176,6 +200,11 @@ function condense_files(settings, requested_seeds::AbstractArray; remove_files=t
     end # Condensed file
     if remove_files
         for seed in seeds
+            rm(get_name_fun(seed))
+        end
+    end
+    if !keep_existing_seeds
+        for seed in unused_seeds
             rm(get_name_fun(seed))
         end
     end
@@ -252,10 +281,8 @@ function search_for_loose_files(settings)
     end
     if length(seeds)>0
         @logmsg settingLog "Found loose files, cleaning up... "
-        println(settings)
         clean_after_run(settings, seeds)
     end
-    @logmsg settingLog "Done!"
 end
 
 function search_for_settings(path, dist)
@@ -290,14 +317,14 @@ end
 
 global_settings = nothing
 function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=true)
-    setting = make_settings(dist, L, t, NR, α, data_path)
+    setting = make_settings(L, t, NR, α, data_path, dist)
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 
 function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
-    if global_settings === nothing
+    if global_settings === nothing || data_path != "data/"
         global global_settings = search_for_settings(data_path, dist)
     end
 
@@ -440,63 +467,102 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_settings(settings; seed=1, progression=0)
-    file = load_file(settings, average=false)
-    L = settings["L"]
-    N = L*L
-    b = get_fb(L, nr=settings["nr"], without_storage=true)
+function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true)
+    if without_storage
+        b = get_fb(L, nr=nr, without_storage=without_storage)
+    else
+        b,s = get_fb(L, nr=nr, without_storage=without_storage)
+        
+        b.current_step = file["last_step/$seed"]
+        simulation_time = file["simulation_time/$seed"]
+        s.spanning_cluster_size_storage = file["spanning_cluster_size/$seed"]
+        s.spanning_cluster_perimiter_storage = file["spanning_cluster_perimiter/$seed"]
+        s.spanning_cluster_step = file["spanning_cluster_step/$seed"]
+        s.most_stressed_fiber = file["most_stressed_fiber/$seed"]
+        s.nr_clusters = file["nr_clusters/$seed"]
+        b.break_sequence[1:b.current_step] = file["break_sequence/$seed"]
+        s.largest_cluster = file["largest_cluster/$seed"]
+        s.largest_perimiter = file["largest_perimiter/$seed"]
+    end
+
     break_sequence = file["break_sequence/$seed"]
+
+
     if progression != 0
-        break_sequence = break_sequence[1:round(Int, N*progression)]
+        @assert step==0
+        break_sequence = break_sequence[1:round(Int, L*L*progression)]
+    end
+    if step > 0
+        @assert progression==0
+        break_sequence = break_sequence[1:step]
+    end
+    if step < 0
+        @assert progression==0
+        break_sequence = break_sequence[1:(file["last_step/$seed"]+step)]
     end
     break_fiber_list!(break_sequence, b)
     update_σ!(b)
     shift_spanning_cluster!(b)
-    return b
+    if without_storage
+        return b
+    else
+        return b, s
+    end
 end
 
-function recalculate_average_file(path="data/", dists=["Uniform"])
+function get_bundles_from_settings(settings; seeds, progression=0, step=0, without_storage=true)
+    file = load_file(settings, average=false)
+    L = settings["L"]
+    nr = settings["nr"]
+    N = L*L
+    bundles = []
+    for seed in seeds
+        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression, step=step, without_storage=without_storage)
+        push!(bundles, b)
+    end
+    if length(bundles)==1
+        return bundles[1]
+    else
+        return bundles
+    end
+end
+
+function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999)
     # We want to expand all the files and then
     # condense all of them again
+    # I found that it's not benificial to have many seeds, so we have the option to
+    # delete seeds that are larger than max_seed
     return # Remove this line to actually use (This function is a bit dangerous)
     for dist in dists
         settings = search_for_settings(path, dist)
-        for s in settings
+        @showprogress for s in settings
             search_for_loose_files(s)
+            all_seeds = get_seeds_in_file(s)
+            seeds = all_seeds[all_seeds .<= max_seed]
+            unused_seeds = all_seeds[all_seeds .> max_seed]
+            #println("$(s["L"]) ", length(all_seeds), ": ", length(seeds), ", ", length(unused_seeds))
 
-            seeds = get_seeds_in_file(s)
-            if isempty(seeds)
+            if isempty(seeds) || s["L"] > 16
                 continue
             else
-                try
-                    expand_file(s)
-                    condense_files(s, seeds)
-                catch
-                end
+                expand_file(s)
+                condense_files(s, seeds, keep_existing_seeds=false)
             end
         end
     end
     println("Success!")
 end
 
-function rename_files_and_folders(path="data/", dists=["Uniform"])
-    new_name(s) = replace(s, "UNR" => "LLS", "SNR" => "CLS")
+function rename_files_and_folders(path="data/", dists=["gyration_data"])
+    new_name(s) = replace(s, "r_slope" => "r")
     for dist in dists
-        folders = readdir(path*dist)
-        settings = []
-        for folder in folders
-            full_path = path*dist*"/"*folder
-            for file in readdir(full_path)
-                new_file_name = new_name(file)
-                if new_file_name != file
-                    mv(full_path*"/"*file, full_path*"/"*new_file_name)
-                end
+        full_path = path*dist
+        for file in readdir(full_path)
+            new_file_name = new_name(file)
+            if new_file_name != file
+                mv(full_path*"/"*file, full_path*"/"*new_file_name)
             end
-            new_folder_name = new_name(folder)
-            if new_folder_name != folder
-                mv(full_path, path*dist*"/"*new_folder_name)
-            end
-        end    
+        end
     end
     println("Success!")
 end

@@ -27,34 +27,28 @@ function get_ideal_shift(m::AbstractMatrix)
     return (L-min_row, L-min_col)
 end
 
-function shift_spanning_cluster(m::AbstractMatrix)
-    shift = get_ideal_shift(m)
-    return circshift(m, shift)
-end
-
 function shift_spanning_cluster!(b::FB)
+    # Get shift
     m = reshape(b.status, (b.L, b.L))
     shift = get_ideal_shift(m)
+
+    # Shift status
     m = circshift(m, shift)
     b.status = reshape(m, (b.N))
+
+    # Shift cm
+    b.cluster_cm_x = mod1.(b.cluster_cm_x.+shift[2], b.L)
+    b.cluster_cm_y = mod1.(b.cluster_cm_y.+shift[1], b.L)
 end
 
-function plot_fb(b::FB; show=true, axes=false)
-    plot_array(b.status, L=b.L, show=show, axes=axes, spanning=b.spanning_cluster_id)
-end
+function plot_fb(b::FB; show=true, axes=false, use_shift=true)
+    L=b.L
+    spanning=b.spanning_cluster_id
 
-function plot_array(a::AbstractArray; L=nothing, show=true, axes=false, spanning=-1)
-    if L===nothing
-        L = round(Int, sqrt(length(a)))
-    end
-    m = reshape(a, (L, L))
-    plot_matrix(m, show=show, axes=axes, spanning=spanning)
-end
-
-function plot_matrix(m::AbstractMatrix; use_shift=false, show=true, axes=false, spanning=-1)
     if use_shift
-        m = shift_spanning_cluster(m)
+        shift_spanning_cluster!(b)
     end
+    m = reshape(b.status, (L, L))
     L = size(m,1)
     nr_clusters = maximum(m)
     nr_colors = nr_clusters
@@ -70,9 +64,9 @@ function plot_matrix(m::AbstractMatrix; use_shift=false, show=true, axes=false, 
     # We only want positive states, ie, clusters and 0 for
     # all others
     clamp!(m, 0, Inf)
-
-    h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal,
-    showaxis = axes, ticks=axes, size=(L+100, L+100))
+    image_size = maximum([500,L])+100
+    h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal, bg_inside = nothing,
+    showaxis = axes, ticks=axes, size=(image_size, image_size))
     p = plot(h)
     if show
         display(p)
@@ -83,6 +77,7 @@ end
 
 function plot_fb_axes(b::FB, minor_axes::AbstractMatrix, major_axes::AbstractMatrix,
                              minor_values::AbstractVector, major_values::AbstractVector)
+
     lines_x = []
     lines_y = []
     maj_w = sqrt.(abs.(major_values)) / maximum(sqrt.(abs.(major_values))) * b.L/4
@@ -107,7 +102,7 @@ function plot_fb_axes(b::FB, minor_axes::AbstractMatrix, major_axes::AbstractMat
     #return plot!(lines_x, lines_y, width=hcat(maj_width, maj_width))
 end
 
-function plot_gyration_radi(b::FB, R, nr=:all)
+function plot_gyration_radi(b::FB, R; nr=:all)
     if nr != :all
         R = sort(collect(enumerate(R)),by= x -> x[2], rev=true)[1:nr]
     else
@@ -143,7 +138,7 @@ function generate_illustrations()
 end
 
 function save_picture(L, nr, t, α, seed, name, path="data/")
-    settings = make_settings("Uniform", L, t, nr, α, path)
+    settings = make_settings(L, t, nr, α, path)
     b = get_bundle_from_settings(settings, seed=seed)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file
@@ -151,18 +146,18 @@ function save_picture(L, nr, t, α, seed, name, path="data/")
 
 end
 
-function test()
-    nr = "LLS"
-    path = "data/"
-    t = 0.0
-    L=64
+function test(seeds=1)
+    nr = "CLS"
+    t = 0.1
+    L=32
     α = 2.0
-    seed = 1
-    settings = make_settings("Uniform", L, t, nr, α, path)
-    b = get_bundle_from_settings(settings, seed=seed)
-    p = plot_fb(b, show=false)
-    display(p)
+    settings = make_settings(L, t, nr, α)
+    bundles = get_bundles_from_settings(settings, seeds=seeds, step=-0)
+    for b in bundles
+        p = plot_fb(b, show=false)
+        display(p)
+    end
 end
 
-generate_illustrations()
-#test()
+#generate_illustrations()
+#test(1:10)

@@ -1,6 +1,7 @@
 using Distributed
 using ProgressMeter
 using Logging
+using Dates
 
 include("support/logingLevels.jl")
 
@@ -10,7 +11,7 @@ include("support/dataManager.jl")
 include("support/distributions.jl")
 
 function break_bundle(settings, progress_channel, working_channel, seed;
-    save_data=true, use_threads=true, stop_after_spanning=true)
+    save_data=true, use_threads=true, stop_after_spanning=false, use_past_progress=true)
     
     if use_threads
         put!(working_channel, true) # Indicate a process has started
@@ -20,14 +21,23 @@ function break_bundle(settings, progress_channel, working_channel, seed;
     file_name = get_file_name(settings, seed)       
     @assert seed != -1 ""
     Random.seed!(seed)
-    
-    b::FB, s::FBS = get_fb(settings)
+
+    # Check if there already exists previous data
+    b::FB = nothing
+    s::FBS = nothing
+    if use_past_progress
+        b, s = get_bundles_from_settings(settings, seed=seed, without_storage=false)
+    else
+        b, s = get_fb(settings)
+    end
+
+
     # Break the bundle
     simulation_time = @elapsed for step in 1:b.N
         # Simulate step
         findNextFiber!(b)
-        resetBundle!(b)
         break_fiber!(b)
+        resetBundle!(b)
         update_σ!(b)
                 
         update_storage!(b, s)
@@ -76,7 +86,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
     completed_runs = Threads.Atomic{Int}(0)
 
     @logmsg settingLog "Starting work on $(settings["name"])"
-
+    flush(stdout)
     if use_threads
         @sync begin # start two tasks which will be synced in the very end
             # the first task updates the progress bar
@@ -88,6 +98,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
                     if percent_done > print_step
                         print_step += 1
                         @logmsg settingLog "$(print_step-1)%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
+                        flush(stdout)
                     end
                 end
                 @logmsg settingLog "100%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
@@ -148,8 +159,8 @@ end
 function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", use_threads=true)
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
         # There is no point in itterating over alphas when using LLS
-        settings = make_settings("Uniform", L, t, nr, a, path)
-        @logmsg settingLog "Starting $(settings["name"])"
+        settings = make_settings(L, t, nr, a, path)
+        @logmsg settingLog "$(now()): Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite; use_threads=use_threads)
     end
 end

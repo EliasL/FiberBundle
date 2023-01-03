@@ -18,12 +18,12 @@ function time_estimate(dimensions, α, regimes, NRs, seeds; path="data/", dist="
     seconds_estimated = 0
 
     for L=dimensions, t=regimes, nr=NRs, a=α
-        settings_with_correct_a = make_settings(dist, L, t, nr, a, path)
+        settings_with_correct_a = make_settings(L, t, nr, a, path, dist)
         if a != 0.0
             # Any alpha should take roughly the same time
             a = 2.0
         end
-        settings = make_settings(dist, L, t, nr, a, path)
+        settings = make_settings(L, t, nr, a, path, dist)
         try
             missing_seeds = get_missing_seeds(settings_with_correct_a, seeds)
             f = load_file(settings)
@@ -31,8 +31,8 @@ function time_estimate(dimensions, α, regimes, NRs, seeds; path="data/", dist="
         catch
             @warn "Unable to estimate time, missing data for:\n$(display_setting(settings))"
             assume_1_day = 3600*24
-            assume_7_days = 3600*24*7
-            return assume_7_days
+            assume_6_days = 3600*24*6
+            return assume_6_days
         end
     end
 

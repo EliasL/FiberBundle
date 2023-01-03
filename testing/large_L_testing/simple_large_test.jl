@@ -68,11 +68,9 @@ end
 L=32
 α=2.0
 t=0.0
-dist="Uniform"
 nr = "CLS"
-path = "data/"
 seed=0
-settings = make_settings(dist, L, t, nr, α, path)
+settings = make_settings(L, t, nr, α)
 
 @time break_bundle(settings, seed, save_data=true)
 println("ok")

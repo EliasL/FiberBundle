@@ -120,8 +120,8 @@ function neighbourhood_id_test()
 end
 
 function neighbourhood_strength_test_with_alpha(nr)
-    for α in [1.0, 2.2, 3.3]
-        L = 3
+    for α in [1.0, 2, 2.2, 3.3]
+        L = 4
         b = get_fb(L, α=α, nr=nr, without_storage=true)
 
         for _ in 1:b.N-1
@@ -248,7 +248,7 @@ function basic_cm_test()
 end
 
 function periodic_cm_test()
-
+    
     #  1  5  9 13
     #  2  6 10 14
     #  3  7 11 15
@@ -256,13 +256,13 @@ function periodic_cm_test()
     L=4
     b = get_fb(L, without_storage=true)
     b.status = [-1,  -1,  0,  -1,
-                -1,  -1, -1,  -1,
-                -1,  -1,  0,  -1,
-                -1,  -1,  0,  -1]
+    -1,  -1, -1,  -1,
+    -1,  -1,  0,  -1,
+    -1,  -1,  0,  -1]
     update_σ!(b)
     @test b.cluster_cm_x[1] == 4
     @test b.cluster_cm_y[1] == 3
-
+    
     #plot_fb(b, show=false, axes=true)
     #display(plot_fb_cm(b))
 end
@@ -279,6 +279,61 @@ function periodic_distance_test()
     @test distance(4,8,5) == 1
 end
 
+function storageTest()
+    test_data_path = "test_data/"
+    settings = make_settings(8, 0.1, "CLS", 2.0, test_data_path)
+
+    # Test clean generation
+    seeds = 1:3
+    for seed in seeds
+        break_bundle(settings, nothing, nothing, seed, use_threads=false, stop_after_spanning=false)
+        @test ispath(get_file_name(settings, seed, false))
+    end
+    clean_after_run(settings, seeds)
+    @test ispath(get_file_name(settings, -1, false))
+    @test ispath(get_file_name(settings, -1, true))
+
+    # Test overwrite and only go to spanning
+    break_bundle(settings, nothing, nothing, 1, use_threads=false)
+    clean_after_run(settings, [1])
+    @test ispath(get_file_name(settings, -1, true))
+
+    seed = 1
+    f = load_file(settings, seed=-1, average=false)
+    for key in data_keys
+        @test key*"/$seed" in keys(f)
+    end
+    f = load_file(settings, seed=-1, average=true)
+    for key in averaged_data_keys
+        @test "average_"*key in keys(f)
+    end
+    expand_file(settings)
+    f = load_file(settings, seed=3, average=false)
+    for key in data_keys
+        @test key in keys(f)
+    end
+
+
+    # Test to see if a bundle can partially be broken and continue later
+
+    settings = make_settings(32, 0.1, "CLS", 2.0, test_data_path)
+    # First do everything at once to create a correct answer
+    break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=false, use_past_progress=false)
+    correct_f = load_file(settings, seed=-1, average=false)
+
+    # Now do it splitt and see if we can reproduce the same result
+    break_bundle(settings, nothing, nothing, 1, use_threads=false)
+    break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=false, use_past_progress=true)
+    test_f = load_file(settings, seed=-1, average=false)
+
+    @assert all(correct_f["largest_cluster/$seed"] .== test_f["largest_cluster/$seed"])
+    @assert abs(correct_f["simulation_time/$seed"] - test_f["simulation_time/$seed"]) < correct_f["simulation_time/$seed"] *0.05
+
+
+
+    search_for_loose_files(settings)
+    rm(test_data_path, force=true, recursive=true)
+end
 
 function find_strange_fb()
     for run_nr in 1:500
@@ -326,44 +381,25 @@ function intertiaTest()
     display(p)
 end
 
-intertiaTest()
+#intertiaTest()
 
-function storageTest()
-    test_data_path = "test_data/"
-    settings = make_settings("Uniform", 8, 0.1, "CLS", 2.0, test_data_path)
+function custom_cluster_test()
+    #  1  5  921 13
+    #  2  6 10 14
+    #  3  7 11 15
+    #  4  8 12 16
+    broken = [6,10,11]
+        
+    L=4
+    b = get_fb(L, nr="CLS", α=0.5, dist=ones(L*L), without_storage=true) #set distribution to break in fixed order
 
-    # Test clean generation
-    seeds = 1:3
-    for seed in seeds
-        break_bundle(settings, nothing, nothing, seed, use_threads=false)
-        @test ispath(get_file_name(settings, seed, false))
+    for i in broken
+        break_this_fiber!(i, b)
     end
-    clean_after_run(settings, seeds)
-    @test ispath(get_file_name(settings, -1, false))
-    @test ispath(get_file_name(settings, -1, true))
-
-    # Test overwrite and only go to spanning
-    break_bundle(settings, nothing, nothing, 1, use_threads=false)
-    clean_after_run(settings, [1])
-    @test ispath(get_file_name(settings, -1, true))
-
-    seed = 1
-    f = load_file(settings, seed=-1, average=false)
-    for key in data_keys
-        @test key*"/$seed" in keys(f)
-    end
-    f = load_file(settings, seed=-1, average=true)
-    for key in averaged_data_keys
-        @test "average_"*key in keys(f)
-    end
-    expand_file(settings)
-    f = load_file(settings, seed=3, average=false)
-    for key in data_keys
-        @test key in keys(f)
-    end
-    search_for_loose_files(settings)
-    rm(test_data_path, force=true, recursive=true)
+    update_σ!(b)
+    display(reshape(b.σ, (L,L)))
 end
+#custom_cluster_test()
 
 function test()
     

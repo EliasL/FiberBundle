@@ -33,17 +33,20 @@ function get_ARGS()
     return args
 end
 
-#seeds = 0:100-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
-#L = [256, 512]
-#t = (0:9) ./ 10
-#NR = ["CLS", "LLS"]
 args = get_ARGS()
 L=args["L"]
 t=args["t"]
 NR=args["NR"]
 s=args["s"]
 α=args["a"]
-s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
+#s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
+
+s = 0:30-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
+L = [32]
+t = vcat((0:20) ./ 50, (5:9) ./ 10)
+NR = ["CLS", "LLS"]
+α = [2.0]
+
 use_threads = true
 overwrite = false
 #time_estimate(L, α, t, NR, seeds)
