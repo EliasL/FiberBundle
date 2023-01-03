@@ -138,7 +138,7 @@ function generate_illustrations()
 end
 
 function save_picture(L, nr, t, α, seed, name, path="data/")
-    settings = make_settings("Uniform", L, t, nr, α, path)
+    settings = make_settings(L, t, nr, α, path)
     b = get_bundle_from_settings(settings, seed=seed)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file
@@ -148,11 +148,10 @@ end
 
 function test(seeds=1)
     nr = "CLS"
-    path = "data/"
     t = 0.1
     L=32
     α = 2.0
-    settings = make_settings("Uniform", L, t, nr, α, path)
+    settings = make_settings(L, t, nr, α)
     bundles = get_bundles_from_settings(settings, seeds=seeds, step=-0)
     for b in bundles
         p = plot_fb(b, show=false)

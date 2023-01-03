@@ -44,10 +44,9 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
     return p, slope# ± slope_err
 end
 
-function plot_dimension_thing(L, t)
+function plot_dimension_thing(L, t, α)
     NR = ["CLS", "LLS"]
     N = L.*L
-    α = 1.3
 
     CLS_s_slope = zeros(Measurement{Float64}, length(t))
     CLS_h_slope = zeros(Measurement{Float64}, length(t))
@@ -197,13 +196,15 @@ function uncertainty_in_slope(x, v)
 end
 
 L = [8, 16, 32,64,128,256]
-#t = vcat((1:9) ./ 10)
+α = 1.3
+
+t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
-t = vcat((0:20) ./ 50, (5:9) ./ 10)
+#t = vcat((0:20) ./ 50, (5:9) ./ 10)
 #plot_dimensions_over_t(L, t)
 #plot_dimensions_over_t_with_radius_of_gyration(L, t)
 #plot_dimensions_with_radius_of_gyration(L, t)
-plot_dimension_thing(L, t)
+plot_dimension_thing(L, t, α)
 
 
 

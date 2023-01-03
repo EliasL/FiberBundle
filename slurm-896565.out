@@ -1,0 +1,7 @@
+slurmstepd-compute-14: error: *** JOB 896565 ON compute-14 CANCELLED AT 2022-12-22T16:27:42 ***
+
+signal (15): Terminated
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:51
+pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517

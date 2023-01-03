@@ -8,7 +8,7 @@ function format(total_seconds)
     (d,h,m,s) = round.(Int64, [d,h,m,s])
     extra_hours = floor(Int64, d*4 + h/6)
     extra_minutes = 15 + h*5
-    extra_days=0
+    extra_days=3
 
     return "$(d+extra_days)-$(h+extra_hours):$(m+extra_minutes):$s"
 end
@@ -18,10 +18,12 @@ function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], force_
     seconds = time_estimate(L, α, t, NR, collect(seeds[1]:seeds[2]), threads=threads)
     formated_time = format(seconds)
     #partition = seconds < 3600 || force_short ? "short" : "porelab"
-    #if force_short
-    #    formated_time = "0-1:0:0"
-    #end
-    partition = "porelab"
+    if force_short
+        formated_time = "0-1:0:0"
+        partition = "short"
+    else
+        partition = "porelab"
+end
 
     #SBATCH --exclusive=user
     file_text = """
@@ -49,11 +51,13 @@ end
 
 
 
-seeds = [0, 100] # From seed to seed
+seeds = [0, 1000] # From seed to seed
+#L = [1024]
 L = [8,16,32,64,128,256]
+#t = [0.0, 0.1]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
 make_job(seeds, L, t=t, α=[1.3], force_short=false)
-start_job()
+#start_job()

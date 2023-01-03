@@ -24,7 +24,7 @@ seed_specific_keys = [
 data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
-function make_settings(dist::String, L::Int64, t::Float64, nr::String, α::Float64, path::String)
+function make_settings(L::Int64, t::Float64, nr::String, α::Float64, path::String="data/", dist::String="Uniform")
     if nr=="LLS"
         α = 0.0
     end
@@ -118,6 +118,22 @@ function get_seeds_in_file(settings, average=false)
         end
     else
         return []
+    end
+end
+
+function get_min_steps_in_files(settings)
+    file_name = get_file_name(settings, -1, false)
+    if isfile(file_name)
+        jldopen(file_name, "r") do file
+            if haskey(file, "seeds_used")
+                seeds = file["seeds_used"]
+                return minimum([file["last_step/$s"] for s in seeds])
+            else
+                return 0
+            end
+        end
+    else
+        return 0
     end
 end
 
@@ -301,7 +317,7 @@ end
 
 global_settings = nothing
 function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=true)
-    setting = make_settings(dist, L, t, NR, α, data_path)
+    setting = make_settings(L, t, NR, α, data_path, dist)
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 
@@ -451,9 +467,27 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0)
-    b = get_fb(L, nr=nr, without_storage=true)
+function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true)
+    if without_storage
+        b = get_fb(L, nr=nr, without_storage=without_storage)
+    else
+        b,s = get_fb(L, nr=nr, without_storage=without_storage)
+        
+        b.current_step = file["last_step/$seed"]
+        simulation_time = file["simulation_time/$seed"]
+        s.spanning_cluster_size_storage = file["spanning_cluster_size/$seed"]
+        s.spanning_cluster_perimiter_storage = file["spanning_cluster_perimiter/$seed"]
+        s.spanning_cluster_step = file["spanning_cluster_step/$seed"]
+        s.most_stressed_fiber = file["most_stressed_fiber/$seed"]
+        s.nr_clusters = file["nr_clusters/$seed"]
+        b.break_sequence[1:b.current_step] = file["break_sequence/$seed"]
+        s.largest_cluster = file["largest_cluster/$seed"]
+        s.largest_perimiter = file["largest_perimiter/$seed"]
+    end
+
     break_sequence = file["break_sequence/$seed"]
+
+
     if progression != 0
         @assert step==0
         break_sequence = break_sequence[1:round(Int, L*L*progression)]
@@ -469,17 +503,21 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0)
     break_fiber_list!(break_sequence, b)
     update_σ!(b)
     shift_spanning_cluster!(b)
-    return b
+    if without_storage
+        return b
+    else
+        return b, s
+    end
 end
 
-function get_bundles_from_settings(settings; seeds, progression=0, step=0)
+function get_bundles_from_settings(settings; seeds, progression=0, step=0, without_storage=true)
     file = load_file(settings, average=false)
     L = settings["L"]
     nr = settings["nr"]
     N = L*L
     bundles = []
     for seed in seeds
-        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression, step=step)
+        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression, step=step, without_storage=without_storage)
         push!(bundles, b)
     end
     if length(bundles)==1
