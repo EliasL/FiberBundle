@@ -4,8 +4,8 @@ using Logging
 include("support/logingLevels.jl")
 include("support/timeEstimator.jl")
 # Sett logging level
-logger = SimpleLogger(stdout, settingLog)
-#logger = SimpleLogger(stdout, -10000)
+#logger = SimpleLogger(stdout, settingLog)
+logger = SimpleLogger(stdout, -10000)
 global_logger(logger)
 
 function get_ARGS()
@@ -47,8 +47,8 @@ t = vcat((0:20) ./ 50, (5:9) ./ 10)
 NR = ["CLS", "LLS"]
 α = [2.0]
 
-use_threads = true
-overwrite = false
+use_threads = false
+overwrite = true
 #time_estimate(L, α, t, NR, seeds)
 
 if use_threads
@@ -67,5 +67,5 @@ if use_threads
 else
     include("dataGenerator.jl")
     @logmsg nodeLog "Start run"
-    itterate_settings(L, α, t, NR, seeds; overwrite=overwrite, use_threads=use_threads)
+    itterate_settings(L, α, t, NR, s; overwrite=overwrite, use_threads=use_threads)
 end

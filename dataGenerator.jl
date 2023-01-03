@@ -23,10 +23,8 @@ function break_bundle(settings, progress_channel, working_channel, seed;
     Random.seed!(seed)
 
     # Check if there already exists previous data
-    b::FB = nothing
-    s::FBS = nothing
     if use_past_progress
-        b, s = get_bundles_from_settings(settings, seed=seed, without_storage=false)
+        b, s = get_bundles_from_settings(settings, seeds=seed, without_storage=false)
     else
         b, s = get_fb(settings)
     end
