@@ -1,0 +1,87 @@
+Title of article
+	Relation to my article
+
+Scaling laws of creep rupture of fiber bundles (2003, F. Kun)
+	Also studies two variations of a model, but uses the ELS/GLS model (and time dependance)
+
+Local load sharing fiber bundles with a lower cutoff of strength disorder (2006, Frank Raischel)
+	Very similar!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Check out:
+
+Text: Among these approaches the so-called fiber bundle model (FBM), widely used to
+study materials breakdown phenomena [12, 13, 14], has proven very useful
+since it grasps the essential mechanisms of the intermittent failure spreading
+yet being simple enough to offer analytic solutions in certain limiting cases
+[15, 16, 12].
+
+	[12] R. C. Hidalgo, F. Kun, K. Kov ́acs, I. Pagonabarraga, Avalanche dynam-
+	ics of fiber bundle models, Phys. Rev. E 80 (2009) 051108.
+	25
+	[13] A. Hansen, P. Hemmer, S. Pradhan, The Fiber Bundle Model: Modeling
+	Failure in Materials, Statistical Physics of Fracture and Breakdown,
+	Wiley, 2015.
+	[14] B. K. Chakrabarti, S. Biswas, S. Pradhan, Cooperative dynamics in the
+	fiber bundle model, Frontiers in Physics 8 (2021) 664.'
+	
+
+Text: Recently, two limiting cases
+of load sharing have been subject to intensive investigations both with a
+high practical relevance: in case of equal load sharing (ELS) all intact fibers
+receive the same fraction of load irrespective of their distance from the failed
+one, while for localized load sharing (LLS) only the intact nearest neighbors
+share equally the load of the broken element [18, 19, 16, 12, 20].
+
+	[18] M. Kloster, A. Hansen, P. C. Hemmer, Burst avalanches in solvable
+	models of fibrous materials, Phys. Rev. E 56 (1997) 2615–2625.
+	[19] R. C. Hidalgo, Y. Moreno, F. Kun, H. J. Herrmann, Fracture model
+	with variable range of interaction, Phys. Rev. E 65 (2002) 046148.
+	[20] Z. Danku, F. Kun, Temporal and spacial evolution of bursts in creep
+	rupture, Phys. Rev. Lett. 111 (2013) 084302.
+	[16] Y. Moreno, J. B. Gomez, A. F. Pacheco, Fracture and Second-Order
+	phase transitions, Phys. Rev. Lett. 85 (14) (2000) 2865–2868.
+
+
+Text: Due to the generality of
+this failure spreading mechanism, fibers of the model can easily be replaced
+by roads carrying traffic [21, 22], flow channels [23], or electric power stations
+[24, 2, 25, 26, 10] on a high voltage transmission grid, making FBMs a basic
+modelling framework for cascading failure with widespread applications on
+complex networks [14].
+
+	[21] B. K. Chakrabarti, A fiber bundle model of traffic jams, Physica A 372
+	(2006) 162–166.
+	[22] J.-F. Zheng, Z.-Y. Gao, X.-M. Zhao, B.-B. Fu, Extended fiber bundle
+	model for traffic jams on scale-free networks, Int. J. Mod. Phys. C 19 (11)
+	(2008) 1727–1735.
+	[23] C. Barr ́e, J. Talbot, Cascading blockages in channel bundles, Phys. Rev.
+	E 92 (2015) 052141.
+	[24] O. Ya ̆gan, Robustness of power systems under a democratic-fiber-
+	bundle-like model, Phys. Rev. E 91 (2015) 062811.
+	[25] J. M. Reynolds-Barredo, D. E. Newman, B. A. Carreras, I. Dobson,
+	The interplay of network structure and dispatch solutions in power grid
+	cascading failures, Chaos 26 (11) (2016) 113111.
+	[26] S. Biswas, L. Goehring, Load dependence of power outage statistics,
+	Europhysics Letters 126 (4) (2019) 44002.
