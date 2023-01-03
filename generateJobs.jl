@@ -51,13 +51,13 @@ end
 
 
 
-seeds = [0, 1000] # From seed to seed
-#L = [1024]
-L = [8,16,32,64,128,256]
+seeds = [0, 30] # From seed to seed
+L = [1024]
+#L = [8,16,32,64,128,256]
 #t = [0.0, 0.1]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
-make_job(seeds, L, t=t, α=[1.3], force_short=false)
+make_job(seeds, L, t=t, α=[2.0], force_short=false)
 #start_job()
