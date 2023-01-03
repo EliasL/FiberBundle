@@ -86,7 +86,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
     completed_runs = Threads.Atomic{Int}(0)
 
     @logmsg settingLog "Starting work on $(settings["name"])"
-
+    flush(STDOUT)
     if use_threads
         @sync begin # start two tasks which will be synced in the very end
             # the first task updates the progress bar
@@ -98,6 +98,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
                     if percent_done > print_step
                         print_step += 1
                         @logmsg settingLog "$(print_step-1)%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
+                        flush(STDOUT)
                     end
                 end
                 @logmsg settingLog "100%, Active workers: $(active_workers[]), Completed tasks: $(completed_runs[])."
