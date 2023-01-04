@@ -29,15 +29,16 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
     rounded_slope = round(slope, digits=2)
     
     # Get slope error
-    slope_err_x, slope_err_y, max_slope, min_slope = uncertainty_in_slope(x, y)
-    slope_err = round(abs(slope-max_slope), digits=2)
+    #slope_err_x, slope_err_y, max_slope, min_slope = uncertainty_in_slope(x, y)
+    #slope_err = round(abs(slope-max_slope), digits=2)
 
     # Plot
     #   Slope max_min_error
-    p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
-    linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
+    #p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
+    #linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
     #   y values
-    scatter!(x, y, markershape=:vline, color=:black, label=label,
+    
+    p = scatter(x, y, markershape=:cross, color=:black, label=label, linewidth=1,
     markersize=3, legend=:topleft, xlabel=x_label, ylabel=y_label, title=title*"$rounded_slope")
     #   y fit
     plot!(Measurements.value.(x), f_lin(x, fit), label=fit_label, color=:black, linewidth=1)
@@ -47,16 +48,11 @@ end
 
 function plot_dimension_thing(L, t, α)
     NR = ["CLS", "LLS"]
-    N = L.*L
 
     CLS_s_slope = zeros(Measurement{Float64}, length(t))
     CLS_h_slope = zeros(Measurement{Float64}, length(t))
     LLS_s_slope = zeros(Measurement{Float64}, length(t))
     LLS_h_slope = zeros(Measurement{Float64}, length(t))
-    r_CLS_s_slope = zeros(Measurement{Float64}, length(t))
-    r_CLS_h_slope = zeros(Measurement{Float64}, length(t))
-    r_LLS_s_slope = zeros(Measurement{Float64}, length(t))
-    r_LLS_h_slope = zeros(Measurement{Float64}, length(t))
 
     for i in eachindex(t)
         
@@ -64,24 +60,18 @@ function plot_dimension_thing(L, t, α)
         plots = []
         slopes = []
         for nr in NR
-            r, s, h, std_r, std_s, std_h, l = get_gyration_radii(L, nr, t[i], α)
+            r, s, h, std_r, std_s, std_h = get_gyration_radii(L, nr, t[i], α)
 
-            s = s .± std_s
+            #= s = s .± std_s
             h = h .± std_h
-            r = r .± std_r
+            r = r .± std_r =#
 
-            s_plot, s_slope = get_plot_and_slope(l, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"))
+            s_plot, s_slope = get_plot_and_slope(r, s, L"Cluster size ($s$)",
+                L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"), x_label=L"log$_2(r)$")
             push!(plots, s_plot)
             push!(slopes, s_slope)
-            h_plot, h_slope = get_plot_and_slope(l, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"))
-            push!(plots, h_plot)
-            push!(slopes, h_slope)
-
-
-            s_plot, s_slope = get_plot_and_slope(r, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"), x_label=L"log$_2(r)$")
-            push!(plots, s_plot)
-            push!(slopes, s_slope)
-            h_plot, h_slope = get_plot_and_slope(r, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"), x_label=L"log$_2(r)$")
+            h_plot, h_slope = get_plot_and_slope(r, h, L"Perimiter size ($h$)",
+                L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"), x_label=L"log$_2(r)$")
             push!(plots, h_plot)
             push!(slopes, h_slope)
         end
@@ -91,33 +81,23 @@ function plot_dimension_thing(L, t, α)
         l = @layout [
             A B;
             C D;
-            E F;
-            G H
             ]
-        plot(plots..., size=(700, 1200), layout = l, left_margin=8Plots.mm,
+        plot(plots..., size=(700, 600), layout = l, left_margin=8Plots.mm,
         plot_title=latexstring("Dimensionality: \$t_0=$(t[i])\$"), )    
-        savefig("plots/Graphs/dimension_t=$(t[i])_L=$(L[1])-$(L[end]).png")
+        savefig("plots/Graphs/dimension_t=$(t[i])_L=$(L[1])-$(L[end]).pdf")
 
         # Save in arrays
         CLS_s_slope[i] = slopes[1]
         CLS_h_slope[i] = slopes[2]
-        r_CLS_s_slope[i] = slopes[3]
-        r_CLS_h_slope[i] = slopes[4]
-        LLS_s_slope[i] = slopes[5]
-        LLS_h_slope[i] = slopes[6]
-        r_LLS_s_slope[i] = slopes[7]
-        r_LLS_h_slope[i] = slopes[8]
+        LLS_s_slope[i] = slopes[3]
+        LLS_h_slope[i] = slopes[4]
 
     end
 
     plot(t, CLS_s_slope, labels=L"CLS $D_s$", markersize=3, markershape=:vline)
-    plot!(t, CLS_h_slope, labels=L"CLS $D_h$", markersize=3, markershape=:vline)
     plot!(t, LLS_s_slope, labels=L"LLS $D_s$", markersize=3, markershape=:vline)
-    plot!(t, LLS_h_slope, labels=L"LLS $D_h$", markersize=3, markershape=:vline)
-    plot!(t, r_CLS_s_slope, labels=L"R CLS $D_s$", markersize=3, markershape=:vline, linestyle=:dash)
-    plot!(t, r_CLS_h_slope, labels=L"R CLS $D_h$", markersize=3, markershape=:vline, linestyle=:dash)
-    plot!(t, r_LLS_s_slope, labels=L"R LLS $D_s$", markersize=3, markershape=:vline, linestyle=:dash)
-    plot!(t, r_LLS_h_slope,  labels=L"R LLS $D_h$", markersize=3, markershape=:vline, linestyle=:dash,
+    plot!(t, CLS_h_slope, labels=L"CLS $D_h$", markersize=3, markershape=:vline)
+    plot!(t, LLS_h_slope,  labels=L"LLS $D_h$", markersize=3, markershape=:vline,
         plot_title="Dimensionality",size=(500, 400), 
         legend=:right, xlabel=L"t_0", ylabel="Dimensionality")
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
@@ -149,7 +129,6 @@ function get_gyration_radii(L, nr, t, α)
     std_R = []
     std_S = []
     std_H = []
-    l_ = []
     if !isdir("data/gyration_data/")
         mkpath("data/gyration_data/")
     end
@@ -174,11 +153,9 @@ function get_gyration_radii(L, nr, t, α)
             push!(H, mean(h))
             push!(std_H, std(h))
 
-            push!(l_, l)
-
         end
     end
-    return R, S, H, std_R, std_S, std_H, l_
+    return R, S, H, std_R, std_S, std_H
 end
 
 function uncertainty_in_slope(x, v)

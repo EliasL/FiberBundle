@@ -315,27 +315,44 @@ function storageTest()
 
 
     # Test to see if a bundle can partially be broken and continue later
-
-    settings = make_settings(32, 0.1, "CLS", 2.0, test_data_path)
+    L = 32
+    settings = make_settings(L, 0.1, "CLS", 2.0, test_data_path)
     # First do everything at once to create a correct answer
-    break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=false, use_past_progress=false)
-    clean_after_run(settings, [1])
+    break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=false)
+    clean_after_run(settings, [seed])
     correct_f = load_file(settings, average=false)
+    b = get_bundle_from_file(correct_f, L, "CLS", spanning=true)
+    plot_fb(b, use_shift=false)
+    @test correct_f["last_step/$seed"] == L*L
+    @test length(correct_f["break_sequence/$seed"]) == L*L
+    correct_break_seq = correct_f["break_sequence/$seed"] 
+    correct_simulation_time = correct_f["simulation_time/$seed"]
+    rm(get_file_name(settings, -1, false))
 
     # Now do it splitt and see if we can reproduce the same result
-    break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=true, use_past_progress=false)
-    break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=false, use_past_progress=true)
-    clean_after_run(settings, [1])
+    break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=true, use_past_progress=false)
+    clean_after_run(settings, [seed])
+    break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=true)
+    clean_after_run(settings, [seed])
     test_f = load_file(settings, average=false)
 
-    @assert all(correct_f["largest_cluster/$seed"] .== test_f["largest_cluster/$seed"])
-    @assert abs(correct_f["simulation_time/$seed"] - test_f["simulation_time/$seed"]) < correct_f["simulation_time/$seed"] *0.05
+    
+    b = get_bundle_from_file(test_f, L, "CLS", spanning=true)
+    plot_fb(b, use_shift=false)
+
+    @test test_f["last_step/$seed"] == L*L
+    @test length(test_f["break_sequence/$seed"]) == L*L
+    println(collect(zip((correct_break_seq .== test_f["break_sequence/$seed"]), correct_break_seq, test_f["break_sequence/$seed"])))
+    @test all(correct_break_seq .== test_f["break_sequence/$seed"])
+    @test abs(correct_simulation_time - test_f["simulation_time/$seed"]) < correct_simulation_time *0.05
 
 
 
     search_for_loose_files(settings)
     rm(test_data_path, force=true, recursive=true)
 end
+storageTest()
+
 
 function find_strange_fb()
     for run_nr in 1:500
@@ -425,5 +442,5 @@ function test()
         
     end
 end
-test()
+#test()
 println("Test done")

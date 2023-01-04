@@ -88,7 +88,7 @@ function make_get_name(settings)
     return f(seed=-1; average=false) = get_file_name(settings, seed, average)
 end
 
-function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]))
+function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]), force_overwrite=false)
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     jldopen(condensed_file_name, "r") do file
@@ -100,14 +100,17 @@ function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]
                 # and let it be generated from scratch
                 continue
             end
-            # Write out the file
-            jldopen(get_name_fun(seed), "w") do s_file
-                for key in data_keys
-                    if haskey(file, "$key/$seed")
-                        s_file[key] = file["$key/$seed"]
+            # Make sure we are not overwriting already existing files
+            if !isfile(get_name_fun(seed)) || force_overwrite
+                # Write out the file
+                jldopen(get_name_fun(seed), "w") do s_file
+                    for key in data_keys
+                        if haskey(file, "$key/$seed")
+                            s_file[key] = file["$key/$seed"]
+                        end
                     end
-                end
-            end # Close seed file
+                end # Close seed file
+            end
         end
     end # Close compact file
 end
@@ -476,7 +479,7 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true)
+function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true, spanning=false)
     if without_storage
         b = get_fb(L, nr=nr, without_storage=without_storage)
     else
@@ -495,7 +498,7 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
         s.largest_perimiter = file["largest_perimiter/$seed"]
     end
 
-    break_sequence = file["break_sequence/$seed"][1:(file["spanning_cluster_step/$seed"]-1)]
+    break_sequence = file["break_sequence/$seed"]
 
 
     if progression != 0
@@ -505,11 +508,16 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     if step > 0
         @assert progression==0
         break_sequence = break_sequence[1:step]
-    end
-    if step < 0
+    elseif step < 0
         @assert progression==0
         break_sequence = break_sequence[1:(file["last_step/$seed"]+step)]
     end
+    if spanning
+        @assert step==0
+        @assert progression==0
+        break_sequence = break_sequence[1:b.spanning_cluster_step]
+    end
+    println(break_sequence)
     break_fiber_list!(break_sequence, b)
     update_σ!(b)
     if without_storage
