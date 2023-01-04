@@ -64,3 +64,449 @@
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
 ┌ LogLevel(-2): 22%, Active workers: 40, Completed tasks: 339.
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 23%, Active workers: 40, Completed tasks: 362.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 24%, Active workers: 40, Completed tasks: 372.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 25%, Active workers: 40, Completed tasks: 391.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 26%, Active workers: 40, Completed tasks: 408.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 27%, Active workers: 40, Completed tasks: 427.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+slurmstepd-compute-12: error: *** JOB 908597 ON compute-12 CANCELLED AT 2023-01-04T15:42:52 ***
+      From worker 21:	
+      From worker 21:	signal (15): Terminated
+      From worker 21:	in expression starting at none:0
+      From worker 30:	
+      From worker 30:	signal (15): Terminated
+      From worker 30:	in expression starting at none:0
+      From worker 18:	
+      From worker 18:	signal (15): Terminated
+      From worker 18:	in expression starting at none:0
+      From worker 5:	
+      From worker 5:	signal (15): Terminated
+      From worker 5:	in expression starting at none:0
+      From worker 24:	
+      From worker 24:	signal (15): Terminated
+      From worker 24:	in expression starting at none:0
+      From worker 7:	
+      From worker 7:	signal (15): Terminated
+      From worker 7:	in expression starting at none:0
+      From worker 8:	
+      From worker 8:	signal (15): Terminated
+      From worker 8:	in expression starting at none:0
+      From worker 5:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 18:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 21:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 8:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 5:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 21:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 18:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 8:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 8:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 18:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 21:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 5:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 2:	
+      From worker 2:	signal (15): Terminated
+      From worker 2:	in expression starting at none:0
+      From worker 2:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 13:	
+      From worker 13:	signal (15): Terminated
+      From worker 13:	in expression starting at none:0
+      From worker 2:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 2:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 13:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	
+      From worker 37:	signal (15): Terminated
+      From worker 37:	in expression starting at none:0
+      From worker 39:	
+      From worker 39:	signal (15): Terminated
+      From worker 39:	in expression starting at none:0
+      From worker 13:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 13:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 28:	
+      From worker 28:	signal (15): Terminated
+      From worker 28:	in expression starting at none:0
+      From worker 37:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 39:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 39:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 39:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 25:	
+      From worker 25:	signal (15): Terminated
+      From worker 25:	in expression starting at none:0
+      From worker 28:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	
+      From worker 36:	signal (15): Terminated
+      From worker 36:	in expression starting at none:0
+      From worker 37:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 9:	
+      From worker 9:	signal (15): Terminated
+      From worker 9:	in expression starting at none:0
+      From worker 28:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 28:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 37:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 25:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 27:	
+      From worker 27:	signal (15): Terminated
+      From worker 27:	in expression starting at none:0
+      From worker 36:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 9:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 25:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 27:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 25:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 31:	
+      From worker 31:	signal (15): Terminated
+      From worker 31:	in expression starting at none:0
+      From worker 27:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 9:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 29:	
+      From worker 29:	signal (15): Terminated
+      From worker 29:	in expression starting at none:0
+      From worker 27:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 11:	
+      From worker 11:	signal (15): Terminated
+      From worker 11:	in expression starting at none:0
+      From worker 9:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 31:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 29:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 11:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 10:	
+      From worker 10:	signal (15): Terminated
+      From worker 10:	in expression starting at none:0
+      From worker 33:	
+      From worker 33:	signal (15): Terminated
+      From worker 33:	in expression starting at none:0
+      From worker 29:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 29:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 38:	
+      From worker 38:	signal (15): Terminated
+      From worker 38:	in expression starting at none:0
+      From worker 31:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 7:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 11:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 7:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 26:	
+      From worker 26:	signal (15): Terminated
+      From worker 26:	in expression starting at none:0
+      From worker 35:	
+      From worker 35:	signal (15): Terminated
+      From worker 35:	in expression starting at none:0
+      From worker 7:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 10:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 11:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 31:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 33:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 24:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 10:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 6:	
+      From worker 6:	signal (15): Terminated
+      From worker 6:	in expression starting at none:0
+      From worker 38:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 24:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 10:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 30:	poptask at ./task.jl:827
+      From worker 30:	wait at ./task.jl:836
+      From worker 30:	task_done_hook at ./task.jl:544
+      From worker 30:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 30:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 30:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 30:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 30:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 30:	unknown function (ip: (nil))
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 30:	poptask at ./task.jl:827
+      From worker 30:	wait at ./task.jl:836
+      From worker 30:	task_done_hook at ./task.jl:544
+      From worker 30:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 30:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 30:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 30:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 30:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 30:	unknown function (ip: (nil))
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 30:	poptask at ./task.jl:827
+      From worker 36:	poptask at ./task.jl:827
+      From worker 30:	wait at ./task.jl:836
+      From worker 36:	wait at ./task.jl:836
+      From worker 30:	task_done_hook at ./task.jl:544
+      From worker 30:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 30:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 30:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 36:	task_done_hook at ./task.jl:544
+      From worker 30:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 30:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 30:	unknown function (ip: (nil))
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 37:	poptask at ./task.jl:827
+      From worker 30:	poptask at ./task.jl:827
+      From worker 30:	wait at ./task.jl:836
+      From worker 36:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 36:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	task_done_hook at ./task.jl:544
+      From worker 30:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 30:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 30:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 36:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 36:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 37:	wait at ./task.jl:836
+      From worker 30:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 30:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 30:	unknown function (ip: (nil))
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 36:	unknown function (ip: (nil))
+      From worker 36:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 30:	poptask at ./task.jl:827
+      From worker 36:	poptask at ./task.jl:827
+      From worker 30:	wait at ./task.jl:836
+      From worker 36:	wait at ./task.jl:836
+      From worker 37:	task_done_hook at ./task.jl:544
+      From worker 7:	poptask at ./task.jl:827
+      From worker 30:	task_done_hook at ./task.jl:544
+      From worker 30:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 30:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 30:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 36:	task_done_hook at ./task.jl:544
+      From worker 36:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 36:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 36:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 36:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 30:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 30:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 30:	unknown function (ip: (nil))
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 36:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 36:	unknown function (ip: (nil))
+      From worker 36:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 37:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 37:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 7:	wait at ./task.jl:836
+      From worker 36:	poptask at ./task.jl:827
+      From worker 37:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 37:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 7:	task_done_hook at ./task.jl:544
+      From worker 37:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 37:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 37:	unknown function (ip: (nil))
+      From worker 37:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 37:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 30:	poptask at ./task.jl:827
+      From worker 36:	wait at ./task.jl:836
+      From worker 7:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 7:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 7:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 7:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 7:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 7:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 7:	unknown function (ip: (nil))
+      From worker 7:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 7:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 37:	poptask at ./task.jl:827
+      From worker 36:	task_done_hook at ./task.jl:544
+      From worker 36:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 36:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 36:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 36:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 36:	start_task at /buildworker/worker/package_linux64/build/src/task.c:888
+      From worker 36:	unknown function (ip: (nil))
+      From worker 36:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 7:	poptask at ./task.jl:827
+      From worker 30:	wait at ./task.jl:836
+      From worker 37:	wait at ./task.jl:836
+      From worker 36:	poptask at ./task.jl:827
+      From worker 7:	wait at ./task.jl:836
+      From worker 37:	task_done_hook at ./task.jl:544
+      From worker 37:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 37:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 37:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 37:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 37:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 37:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 37:	unknown function (ip: (nil))
+      From worker 37:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 37:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	wait at ./task.jl:836
+      From worker 30:	task_done_hook at ./task.jl:544
+      From worker 7:	task_done_hook at ./task.jl:544
+      From worker 7:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 7:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 30:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 7:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 7:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 30:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 30:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 7:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 7:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 7:	unknown function (ip: (nil))
+      From worker 7:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 7:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 37:	poptask at ./task.jl:827
+      From worker 36:	task_done_hook at ./task.jl:544
+      From worker 36:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 36:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 30:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 30:	unknown function (ip: (nil))
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 36:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 36:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 36:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 36:	unknown function (ip: (nil))
+      From worker 36:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 7:	poptask at ./task.jl:827
+      From worker 37:	wait at ./task.jl:836
+      From worker 36:	poptask at ./task.jl:827
+      From worker 7:	wait at ./task.jl:836
+      From worker 37:	task_done_hook at ./task.jl:544
+      From worker 37:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 37:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 37:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 37:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 30:	poptask at ./task.jl:827
+      From worker 37:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 37:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 37:	unknown function (ip: (nil))
+      From worker 37:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 37:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	wait at ./task.jl:836
+      From worker 7:	task_done_hook at ./task.jl:544
+      From worker 7:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 7:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 7:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 7:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 7:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 7:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 7:	unknown function (ip: (nil))
+      From worker 7:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 7:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 37:	poptask at ./task.jl:827
+      From worker 36:	task_done_hook at ./task.jl:544
+      From worker 36:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 36:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 36:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 36:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 36:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 36:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 36:	unknown function (ip: (nil))
+      From worker 36:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 30:	wait at ./task.jl:836
+      From worker 7:	poptask at ./task.jl:827
+      From worker 37:	wait at ./task.jl:836
+      From worker 36:	poptask at ./task.jl:827
+      From worker 37:	task_done_hook at ./task.jl:544
+      From worker 37:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 37:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 7:	wait at ./task.jl:836
+      From worker 37:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 37:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 37:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 37:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 37:	unknown function (ip: (nil))
+      From worker 37:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 37:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 37:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	wait at ./task.jl:836
+      From worker 30:	task_done_hook at ./task.jl:544
+      From worker 30:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 30:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 7:	task_done_hook at ./task.jl:544
+      From worker 7:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 7:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 7:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 7:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 30:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 30:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 7:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 37:	poptask at ./task.jl:827
+      From worker 7:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 7:	unknown function (ip: (nil))
+      From worker 7:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 7:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 7:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	task_done_hook at ./task.jl:544
+      From worker 36:	_jl_invoke at /buildworker/worker/package_linux64/build/src/gf.c:2247 [inlined]
+      From worker 36:	jl_apply_generic at /buildworker/worker/package_linux64/build/src/gf.c:2429
+      From worker 30:	start_task at /buildworker/worker/package_linux64/build/src/task.c:888
+      From worker 30:	unknown function (ip: (nil))
+      From worker 30:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 30:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 30:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 36:	jl_apply at /buildworker/worker/package_linux64/build/src/julia.h:1788 [inlined]
+      From worker 36:	jl_finish_task at /buildworker/worker/package_linux64/build/src/task.c:218
+      From worker 36:	jl_threadfun at /buildworker/worker/package_linux64/build/src/partr.c:272
+      From worker 36:	start_thread at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	clone at /lib/x86_64-linux-gnu/libc.so.6 (unknown line)
+      From worker 36:	unknown function (ip: (nil))
+      From worker 36:	pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+      From worker 36:	uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+      From worker 36:	jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
+      From worker 15:	
+      From worker 15:	signal (15): Terminated
+      From worker 15:	in expression starting at none:0
+      From worker 37:	wait at ./task.jl:836
+      From worker 7:	poptask at ./task.jl:827
+      From worker 36:	poptask at ./task.jl:827
+      From worker 30:	poptask at ./task.jl:827
+      From worker 37:	task_done_hook at ./task.jl:544

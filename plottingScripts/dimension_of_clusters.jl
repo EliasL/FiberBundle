@@ -37,7 +37,7 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
     p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
     linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
     #   y values
-    scatter!(x, y, color=:black, label=label, markeralpha=1,
+    scatter!(x, y, markershape=:vline, color=:black, label=label,
     markersize=3, legend=:topleft, xlabel=x_label, ylabel=y_label, title=title*"$rounded_slope")
     #   y fit
     plot!(Measurements.value.(x), f_lin(x, fit), label=fit_label, color=:black, linewidth=1)
@@ -64,20 +64,16 @@ function plot_dimension_thing(L, t, α)
         plots = []
         slopes = []
         for nr in NR
-            files = [load_file(l, α, t[i], nr, average=true) for l in L]
-            #s = reduce(vcat,[[f["spanning_cluster_size/$seed"] for seed in f["seeds_used"]] for f in files])
-            #h = reduce(vcat,[[f["spanning_cluster_perimiter/$seed"] for seed in f["seeds_used"]] for f in files])
-            # Gyration radius!
-            r, s, h, std_r, std_s, std_h = get_gyration_radii(L, nr, t[i], α)
+            r, s, h, std_r, std_s, std_h, l = get_gyration_radii(L, nr, t[i], α)
 
             s = s .± std_s
             h = h .± std_h
             r = r .± std_r
 
-            s_plot, s_slope = get_plot_and_slope(L, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"))
+            s_plot, s_slope = get_plot_and_slope(l, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"))
             push!(plots, s_plot)
             push!(slopes, s_slope)
-            h_plot, h_slope = get_plot_and_slope(L, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"))
+            h_plot, h_slope = get_plot_and_slope(l, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"))
             push!(plots, h_plot)
             push!(slopes, h_slope)
 
@@ -137,12 +133,10 @@ function calculate_gyration_radi(l, nr, t, file)
     for seed in file["seeds_used"]
         break_fiber_list!(view(file["break_sequence/$seed"],1:file["spanning_cluster_step/$seed"]-1), b)
         update_σ!(b)
-        id = b.spanning_cluster_id
-        if id != -1
-            push!(r, find_radius_of_gyration(b)[id])
-            push!(s, b.cluster_size[id])
-            push!(h, b.cluster_outline_length[id])
-        end
+        id = argmax(b.cluster_size)
+        push!(r, find_radius_of_gyration(b)[id])
+        push!(s, b.cluster_size[id])
+        push!(h, b.cluster_outline_length[id])
         healBundle!(b)
     end
     return r, s, h
@@ -155,30 +149,36 @@ function get_gyration_radii(L, nr, t, α)
     std_R = []
     std_S = []
     std_H = []
-    for l in L
-        if !isdir("data/gyration_data/")
-            mkpath("data/gyration_data/")
-        end
-
-        if isfile("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
-            f = load("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
-            r, s, h = f["$(l)_$(nr)_$(t)_r"]
-        else
-            bulk_file = load_file(l, α, t, nr,average=false)
-            r, s, h = calculate_gyration_radi(l, nr, t, bulk_file)
-            # Save data
-            jldopen("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2", "w") do file
-                file["$(l)_$(nr)_$(t)_r"] = (r, s, h)
-            end
-        end
-        push!(R, mean(r))
-        push!(std_R, std(r))
-        push!(S, mean(s))
-        push!(std_S, std(s))
-        push!(H, mean(h))
-        push!(std_H, std(h))
+    l_ = []
+    if !isdir("data/gyration_data/")
+        mkpath("data/gyration_data/")
     end
-    return R, S, H, std_R, std_S, std_H
+    for l in L
+        if isfile(get_file_name(l, α, t, nr))
+
+            if isfile("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
+                f = load("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
+                r, s, h = f["$(l)_$(nr)_$(t)_r"]
+            else
+                bulk_file = load_file(l, α, t, nr,average=false)
+                r, s, h = calculate_gyration_radi(l, nr, t, bulk_file)
+                # Save data
+                jldopen("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2", "w") do file
+                    file["$(l)_$(nr)_$(t)_r"] = (r, s, h)
+                end
+            end
+            push!(R, mean(r))
+            push!(std_R, std(r))
+            push!(S, mean(s))
+            push!(std_S, std(s))
+            push!(H, mean(h))
+            push!(std_H, std(h))
+
+            push!(l_, l)
+
+        end
+    end
+    return R, S, H, std_R, std_S, std_H, l_
 end
 
 function uncertainty_in_slope(x, v)
@@ -200,8 +200,8 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [8, 16, 32, 64,128,256, 512]
-α = 2
+L = [8, 16, 32, 64,128,256, 512, 1024]
+α = 2.0
 
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)

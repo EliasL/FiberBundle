@@ -3,6 +3,7 @@ using CodecLz4
 using Logging
 using ProgressMeter
 using Statistics
+
 include("logingLevels.jl")
 include("../burningMan.jl")
 
@@ -64,6 +65,11 @@ function get_setting_name(settings)
         end
     end
     return chop(name)
+end
+
+function get_file_name(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
+    s = make_settings(L, t, NR, α, data_path, dist)
+    return get_file_name(s, seed, average)
 end
 
 function get_file_name(settings, seed::Int=-1, average=false)
@@ -321,6 +327,8 @@ function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 
+
+
 function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
@@ -337,7 +345,8 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
                         && s["nr"] == NR, global_settings)
     @assert length(settings) < 2 "There are multiple possibilities"
     if length(settings) == 0
-        throw("There is no file maching these settings α=$α nr=$NR, L=$L, t=$t")
+        println("There is no file maching these settings α=$α nr=$NR, L=$L, t=$t")
+        return nothing
     end
     setting = settings[1]
     return load(get_file_name(setting, seed, average))

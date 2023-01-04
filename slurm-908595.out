@@ -231,3 +231,18 @@
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
 ┌ LogLevel(-2): 37%, Active workers: 39, Completed tasks: 592.
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 38%, Active workers: 39, Completed tasks: 616.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 39%, Active workers: 39, Completed tasks: 622.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 40%, Active workers: 39, Completed tasks: 655.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 41%, Active workers: 39, Completed tasks: 662.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+slurmstepd-compute-14: error: *** JOB 908595 ON compute-14 CANCELLED AT 2023-01-04T15:42:49 ***
+
+signal (15): Terminated
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:54
+pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
