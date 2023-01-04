@@ -31,7 +31,7 @@ function break_bundle(settings, progress_channel, working_channel, seed;
 
 
     # Break the bundle
-    simulation_time = @elapsed for step in 1:b.N
+    simulation_time = @elapsed for step in b.current_step+1:b.N
         # Simulate step
         findNextFiber!(b)
         break_fiber!(b)

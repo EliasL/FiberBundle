@@ -483,8 +483,11 @@ function spanning(b::FB)
     # L-1 because the relative coordinates in the cluster start at 0,0
     # NB! Once the cluster is spanning, the dimension is no longer reliable because of
     # periodicity.
-    return abs(b.cluster_dimensions[1] - b.cluster_dimensions[2]) >= b.L-1 ||
-           abs(b.cluster_dimensions[3] - b.cluster_dimensions[4]) >= b.L-1
+    # NNB!! We actually do L-2 to prevent the cluster from connecting with itself.
+    # This creates multiple center of masses! With different radii of gyration!!
+    # Data before jan. 4 2023 will not have spanning clusters with size L-2.
+    return abs(b.cluster_dimensions[1] - b.cluster_dimensions[2]) >= b.L-2 ||
+           abs(b.cluster_dimensions[3] - b.cluster_dimensions[4]) >= b.L-2
 end
 
 function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)

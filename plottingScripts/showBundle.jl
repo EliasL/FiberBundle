@@ -27,19 +27,26 @@ function get_ideal_shift(m::AbstractMatrix)
     return (L-min_row, L-min_col)
 end
 
+function shift_to_cm(b::FB)
+    cmx = b.cluster_cm_x[b.spanning_cluster_id]
+    cmy = b.cluster_cm_y[b.spanning_cluster_id]
+    return ((round(Int, b.L/2-cmy)), (round(Int, b.L/2-cmx)))
+end
+
 function shift_spanning_cluster!(b::FB)
     # Get shift
     m = reshape(b.status, (b.L, b.L))
     shift = get_ideal_shift(m)
+    #shift = shift_to_cm(b)
 
     # Shift status
     m = circshift(m, shift)
     b.status = reshape(m, (b.N))
-
     # Shift cm
     b.cluster_cm_x = mod1.(b.cluster_cm_x.+shift[2], b.L)
     b.cluster_cm_y = mod1.(b.cluster_cm_y.+shift[1], b.L)
 end
+
 
 function plot_fb(b::FB; show=true, axes=false, use_shift=true)
     L=b.L
@@ -108,11 +115,13 @@ function plot_gyration_radi(b::FB, R; nr=:all)
     else
         R = enumerate(R)
     end
+    s = b.cluster_size[b.spanning_cluster_id]
+    r_ = round(R[1][2]; digits=2)
     for (c, r) in R
         cmx = b.cluster_cm_x[c]
         cmy = b.cluster_cm_y[c]
         plot!(circleShape(cmx, cmy, r), seriestype=[:shape,],lw=0.5, c=:blue,
-        linecolor=:black, legend=false, fillalpha = 0.2, aspect_ratio=1)
+        linecolor=:black, legend=false, fillalpha = 0.2, aspect_ratio=1, title="r:$r_, s:$s")
     end
 end
 

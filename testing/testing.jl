@@ -286,7 +286,7 @@ function storageTest()
     # Test clean generation
     seeds = 1:3
     for seed in seeds
-        break_bundle(settings, nothing, nothing, seed, use_threads=false, stop_after_spanning=false)
+        break_bundle(settings, nothing, nothing, seed, use_threads=false, stop_after_spanning=false, use_past_progress=false)
         @test ispath(get_file_name(settings, seed, false))
     end
     clean_after_run(settings, seeds)
@@ -319,12 +319,14 @@ function storageTest()
     settings = make_settings(32, 0.1, "CLS", 2.0, test_data_path)
     # First do everything at once to create a correct answer
     break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=false, use_past_progress=false)
-    correct_f = load_file(settings, seed=-1, average=false)
+    clean_after_run(settings, [1])
+    correct_f = load_file(settings, average=false)
 
     # Now do it splitt and see if we can reproduce the same result
-    break_bundle(settings, nothing, nothing, 1, use_threads=false)
+    break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=true, use_past_progress=false)
     break_bundle(settings, nothing, nothing, 1, use_threads=false,stop_after_spanning=false, use_past_progress=true)
-    test_f = load_file(settings, seed=-1, average=false)
+    clean_after_run(settings, [1])
+    test_f = load_file(settings, average=false)
 
     @assert all(correct_f["largest_cluster/$seed"] .== test_f["largest_cluster/$seed"])
     @assert abs(correct_f["simulation_time/$seed"] - test_f["simulation_time/$seed"]) < correct_f["simulation_time/$seed"] *0.05

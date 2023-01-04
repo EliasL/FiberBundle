@@ -32,13 +32,13 @@ function break_bundle(settings, seed; save_data=true)
                 @time resetBundle!(b)
                 @time break_fiber!(b)
                 @time update_σ!(b)
-                @time update_storage!(b, s, seed)
+                @time update_storage!(b, s)
             else 
                 findNextFiber!(b)
                 resetBundle!(b)
                 break_fiber!(b)
                 update_σ!(b)
-                update_storage!(b, s, seed)
+                update_storage!(b, s)
             end
     end
 

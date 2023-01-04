@@ -480,12 +480,13 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
         s.spanning_cluster_step = file["spanning_cluster_step/$seed"]
         s.most_stressed_fiber = file["most_stressed_fiber/$seed"]
         s.nr_clusters = file["nr_clusters/$seed"]
-        b.break_sequence[1:b.current_step] = file["break_sequence/$seed"]
+        break_sequence = file["break_sequence/$seed"] 
+        b.break_sequence[1:length(break_sequence)] = break_sequence
         s.largest_cluster = file["largest_cluster/$seed"]
         s.largest_perimiter = file["largest_perimiter/$seed"]
     end
 
-    break_sequence = file["break_sequence/$seed"]
+    break_sequence = file["break_sequence/$seed"][1:(file["spanning_cluster_step/$seed"]-1)]
 
 
     if progression != 0
@@ -502,7 +503,6 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     end
     break_fiber_list!(break_sequence, b)
     update_σ!(b)
-    shift_spanning_cluster!(b)
     if without_storage
         return b
     else
