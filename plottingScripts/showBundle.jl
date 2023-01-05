@@ -48,29 +48,32 @@ function shift_spanning_cluster!(b::FB)
 end
 
 
-function plot_fb(b::FB; show=true, axes=false, use_shift=true)
+function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false)
     L=b.L
     spanning=b.spanning_cluster_id
 
     if use_shift
         shift_spanning_cluster!(b)
     end
-    m = reshape(b.status, (L, L))
-    L = size(m,1)
-    nr_clusters = maximum(m)
-    nr_colors = nr_clusters
-    background_color = :black
-    spanning_color = :red
-    colors = vcat([background_color],[RGBA(rand(3)...) for _ in eachindex(1:nr_colors)])
-    if spanning != -1
-        colors[spanning+1] = spanning_color
+    if stress
+        m = reshape(b.tension, (L,L))
+        c =:thermal
+    else
+        m = reshape(b.status, (L, L))
+        clamp!(m, 0, Inf)
+        nr_clusters = maximum(m)
+        nr_colors = nr_clusters
+        background_color = :black
+        spanning_color = :red
+        colors = vcat([background_color],[RGBA(rand(3)...) for _ in eachindex(1:nr_colors)])
+        if spanning != -1
+            colors[spanning+1] = spanning_color
+        end
+        c = cgrad(colors)
     end
-
-    c = cgrad(colors)
 
     # We only want positive states, ie, clusters and 0 for
     # all others
-    clamp!(m, 0, Inf)
     image_size = maximum([500,L])+100
     h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal, bg_inside = nothing,
     showaxis = axes, ticks=axes, size=(image_size, image_size))

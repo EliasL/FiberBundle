@@ -11,7 +11,7 @@ include("support/dataManager.jl")
 include("support/distributions.jl")
 
 function break_bundle(settings, progress_channel, working_channel, seed;
-    save_data=true, use_threads=true, stop_after_spanning=false, use_past_progress=true)
+    save_data=true, use_threads=true, stop_after_spanning=false, use_past_progress=false)
     
     if use_threads
         put!(working_channel, true) # Indicate a process has started
@@ -19,27 +19,20 @@ function break_bundle(settings, progress_channel, working_channel, seed;
 
 
     file_name = get_file_name(settings, seed)       
-    @assert seed != -1 ""
-    Random.seed!(seed)
 
     # Check if there already exists previous data
     if use_past_progress
-        b, s = get_bundles_from_settings(settings, seeds=seed, without_storage=false)
-        println(b.current_step)
+        @assert false "This feature does not work!"
+        b, s = get_bundles_from_settings(settings, seeds=seed, without_storage=false, update_tension=false)
     else
-        b, s = get_fb(settings)
+        b, s = get_fb(settings, seed)
     end
 
 
     # Break the bundle
     simulation_time = @elapsed for step in b.current_step+1:b.N
         # Simulate step
-        findNextFiber!(b)
-        break_fiber!(b)
-        resetBundle!(b)
-        update_σ!(b)
-                
-        update_storage!(b, s)
+        findAndBreakNextFiber!(b, s)
         if stop_after_spanning && s.spanning_cluster_has_been_found
             break
         end

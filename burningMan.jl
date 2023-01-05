@@ -93,9 +93,12 @@ function update_storage!(b::FB, s::FBS)
 end
 
 
-function get_fb(L; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=false)
+function get_fb(L, seed; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=false)
     N=L*L
-    x = nothing
+    
+    @assert seed!=-1 "Seed should not be negative"
+    Random.seed!(seed)
+
     if dist == "Uniform"
         distribution_function = get_uniform_distribution(t)
         x = distribution_function(N)
@@ -114,13 +117,13 @@ function get_fb(L; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=false)
     end
 end
 
-function get_fb(settings::Dict, without_storage=false)
+function get_fb(settings::Dict, seed, without_storage=false)
     L = settings["L"]
     α = settings["a"]
     t = settings["t"]
     nr = settings["nr"]
     dist = settings["dist"]
-    return get_fb(L, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
+    return get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
 end
 
 # Define constants
@@ -296,16 +299,24 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
     # find what fiber will break first, we need to take into
     # account how much tension the fiber can handle. We do this
     # by dividing by x.
+    update_σ!(b)
     for i in eachindex(b.σ)
         b.tension[i] = b.σ[i] / b.x[i]
     end
 end
 
-function findNextFiber!(b::FB)
-    b.current_step += 1
+function findAndBreakNextFiber!(b::FB, s::FBS)
     update_tension!(b)
+    b.current_step += 1
     b.break_sequence[b.current_step] = argmax(b.tension)
     b.max_σ = b.tension[b.break_sequence[b.current_step]]
+    update_storage!(b, s)
+    break_fiber!(b)
+    resetBundle!(b)
+end
+
+function findAndBreakNextFiber!(b::FB)
+    findAndBreakNextFiber!(b, FBS{Float64, Int64}(division=10, N=b.N))
 end
 
 function break_fiber!(b::FB)
@@ -337,9 +348,9 @@ function reset_relative_possition!(b::FB)
 end
 
 function update_σ!(b::FB)
+    @assert b.c == 0 "The bundle have not been reset!"
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
-
 
     # For every fiber in the plane
     for i in eachindex(b.status)

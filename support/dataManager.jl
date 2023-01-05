@@ -479,11 +479,11 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true, spanning=false)
+function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true, spanning=false, update_tension=true)
     if without_storage
-        b = get_fb(L, nr=nr, without_storage=without_storage)
+        b = get_fb(L, seed, nr=nr, without_storage=without_storage)
     else
-        b,s = get_fb(L, nr=nr, without_storage=without_storage)
+        b,s = get_fb(L, seed, nr=nr, without_storage=without_storage)
         
         b.current_step = file["last_step/$seed"]
         simulation_time = file["simulation_time/$seed"]
@@ -515,11 +515,15 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     if spanning
         @assert step==0
         @assert progression==0
-        break_sequence = break_sequence[1:b.spanning_cluster_step]
+        break_sequence = break_sequence[1:file["spanning_cluster_step/$seed"]]
     end
-    println(break_sequence)
     break_fiber_list!(break_sequence, b)
-    update_σ!(b)
+    if update_tension
+        update_tension!(b)
+    else
+        resetBundle!(b)
+    end
+
     if without_storage
         return b
     else
@@ -527,14 +531,15 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     end
 end
 
-function get_bundles_from_settings(settings; seeds, progression=0, step=0, without_storage=true)
+function get_bundles_from_settings(settings; seeds, progression=0, step=0, without_storage=true, update_tension=true)
     file = load_file(settings, average=false)
     L = settings["L"]
     nr = settings["nr"]
     N = L*L
     bundles = []
     for seed in seeds
-        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression, step=step, without_storage=without_storage)
+        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression,
+            step=step, without_storage=without_storage, update_tension=update_tension)
         push!(bundles, b)
     end
     if length(bundles)==1

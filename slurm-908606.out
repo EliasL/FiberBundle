@@ -45,3 +45,227 @@
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
 ┌ LogLevel(-2): 13%, Active workers: 40, Completed tasks: 41.
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 14%, Active workers: 40, Completed tasks: 50.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 15%, Active workers: 40, Completed tasks: 58.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 16%, Active workers: 40, Completed tasks: 71.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 17%, Active workers: 40, Completed tasks: 77.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 18%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 19%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 20%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 21%, Active workers: 40, Completed tasks: 90.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 22%, Active workers: 40, Completed tasks: 97.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 23%, Active workers: 40, Completed tasks: 106.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 24%, Active workers: 40, Completed tasks: 112.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 25%, Active workers: 40, Completed tasks: 116.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 26%, Active workers: 40, Completed tasks: 120.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 27%, Active workers: 40, Completed tasks: 121.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 28%, Active workers: 40, Completed tasks: 129.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 29%, Active workers: 40, Completed tasks: 134.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 30%, Active workers: 40, Completed tasks: 144.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 31%, Active workers: 40, Completed tasks: 149.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 32%, Active workers: 40, Completed tasks: 153.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 33%, Active workers: 40, Completed tasks: 158.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 34%, Active workers: 39, Completed tasks: 161.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 35%, Active workers: 32, Completed tasks: 168.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 36%, Active workers: 13, Completed tasks: 187.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 200.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:102
+┌ LogLevel(-2): Done!
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:148
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:151
+┌ LogLevel(-2): Done!
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:153
+┌ LogLevel(-2): 2023-01-05T01:07:33.271: Starting a=0.0 dist=Uniform L=512 nr=LLS t=0.0
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:161
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:273
+┌ LogLevel(-2): Running workers...
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:146
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=512 nr=LLS t=0.0
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:86
+┌ LogLevel(-2): 0%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 1%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 2%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 3%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 4%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 5%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 6%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 7%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 8%, Active workers: 40, Completed tasks: 9.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 9%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 10%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 11%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 12%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 13%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 14%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 15%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 16%, Active workers: 40, Completed tasks: 52.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 17%, Active workers: 40, Completed tasks: 75.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 18%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 19%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 20%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 21%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 22%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 23%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 24%, Active workers: 40, Completed tasks: 90.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 25%, Active workers: 40, Completed tasks: 113.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 26%, Active workers: 40, Completed tasks: 120.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 27%, Active workers: 40, Completed tasks: 120.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 28%, Active workers: 40, Completed tasks: 120.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 29%, Active workers: 40, Completed tasks: 120.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 30%, Active workers: 40, Completed tasks: 120.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 31%, Active workers: 40, Completed tasks: 120.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 32%, Active workers: 40, Completed tasks: 130.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 33%, Active workers: 40, Completed tasks: 150.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 34%, Active workers: 40, Completed tasks: 160.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 35%, Active workers: 40, Completed tasks: 160.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 36%, Active workers: 40, Completed tasks: 160.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 37%, Active workers: 40, Completed tasks: 160.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 38%, Active workers: 40, Completed tasks: 160.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 39%, Active workers: 40, Completed tasks: 160.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 40%, Active workers: 26, Completed tasks: 174.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 200.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:102
+┌ LogLevel(-2): Done!
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:148
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:151
+┌ LogLevel(-2): Done!
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:153
+┌ LogLevel(-2): 2023-01-05T06:15:04.872: Starting a=2.0 dist=Uniform L=512 nr=CLS t=0.02
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:161
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:273
+┌ LogLevel(-2): Running workers...
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:146
+┌ LogLevel(-2): Starting work on a=2.0 dist=Uniform L=512 nr=CLS t=0.02
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:86
+┌ LogLevel(-2): 0%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 1%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 2%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 3%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 4%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 5%, Active workers: 40, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 6%, Active workers: 40, Completed tasks: 1.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 7%, Active workers: 40, Completed tasks: 12.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 8%, Active workers: 40, Completed tasks: 27.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 9%, Active workers: 40, Completed tasks: 36.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 10%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 11%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 12%, Active workers: 40, Completed tasks: 40.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 13%, Active workers: 40, Completed tasks: 42.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 14%, Active workers: 40, Completed tasks: 50.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 15%, Active workers: 40, Completed tasks: 64.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 16%, Active workers: 40, Completed tasks: 72.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 17%, Active workers: 40, Completed tasks: 77.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 18%, Active workers: 40, Completed tasks: 80.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 19%, Active workers: 40, Completed tasks: 81.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 20%, Active workers: 40, Completed tasks: 83.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 21%, Active workers: 40, Completed tasks: 89.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 22%, Active workers: 40, Completed tasks: 101.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 23%, Active workers: 40, Completed tasks: 111.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 24%, Active workers: 40, Completed tasks: 115.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 25%, Active workers: 40, Completed tasks: 116.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 26%, Active workers: 40, Completed tasks: 121.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 27%, Active workers: 40, Completed tasks: 123.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 28%, Active workers: 40, Completed tasks: 129.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 29%, Active workers: 40, Completed tasks: 138.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 30%, Active workers: 40, Completed tasks: 148.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
+┌ LogLevel(-2): 31%, Active workers: 40, Completed tasks: 153.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:98
