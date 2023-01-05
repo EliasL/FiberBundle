@@ -18,21 +18,23 @@ end
 function show_progression(L, t, α, nr, seed)
 
     steps = 4
-    progression = (1:steps) ./ steps
+    progression = round.((1:steps) ./ (steps+1), digits=2)
     plots = []
-    for p in progression
+    for progress in progression
         settings = make_settings(L, t, nr, α)
-        b = get_bundles_from_settings(settings, seeds=seed, progression=p)
-        push!(plots, plot_fb(b, show=false))
+        b = get_bundles_from_settings(settings, seeds=seed, progression=progress)
+        p = plot_fb(b, show=false)
+        title!(p, L"k/N="*"$progress")
+        push!(plots, p)
     end
-    plot(plots)  
+    plot(plots...)  
 end
 
 nr = "CLS"
 t = 0.0
-L=256
+L=128
 α = 2.0
-seeds = 1
+seeds = 2
 #show_spanning_cluster(L, t, α, nr, seeds)
 s = make_settings(L, t, nr, α)
 break_bundle(s, nothing, nothing, seeds, use_threads=false)

@@ -177,12 +177,12 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [8, 16, 32, 64,128,256, 512, 1024]
+L = [8, 16, 32, 64,128,256, 512]
 α = 2.0
 
 #t = vcat((1:9) ./ 10)
-#t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
-t = vcat((0:20) ./ 50, (5:9) ./ 10)
+t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+#t = vcat((0:20) ./ 50, (5:9) ./ 10)
 #plot_dimensions_over_t(L, t)
 #plot_dimensions_over_t_with_radius_of_gyration(L, t)
 #plot_dimensions_with_radius_of_gyration(L, t)

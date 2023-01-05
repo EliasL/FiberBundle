@@ -26,7 +26,7 @@ data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
 function make_settings(L::Int64, t::Float64, nr::String, α::Float64, path::String="data/", dist::String="Uniform")
-    if nr=="LLS"
+    if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
     settings = Dict(
@@ -223,10 +223,8 @@ end
 
 function get_missing_seeds(settings, requested_seeds)
 
-
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
-
     if isfile(condensed_file_name)
         jldopen(condensed_file_name, "r") do existing_data
             existing_seeds = existing_data["seeds_used"]

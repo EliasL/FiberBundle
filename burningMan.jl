@@ -352,6 +352,7 @@ function update_σ!(b::FB)
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
+
     # For every fiber in the plane
     for i in eachindex(b.status)
         #@logmsg σUpdateLog "Breaking fiber $i"
@@ -593,8 +594,9 @@ function update_cluster_outline_stress!(b::FB)
     # Apply the appropreate amount of stress to the fibers
     if b.nr == "LLS"
         # With the Uniform neighbourhood rule, we can apply a simple stress
-        apply_simple_stress(b)
-        return
+        apply_simple_stress!(b)
+    elseif b.nr == "ELS"
+        apply_ELS_stress!(b)
     else
         # But with more complex rules, we need to do it in two steps
         # First a calculation to find the fiber strengths (As a function of their neighbourhood), and then apply the stress
@@ -607,11 +609,24 @@ function update_cluster_outline_stress!(b::FB)
             error("Unknown neighbourhood rule")
         end
 
-        apply_stress(b)
+        apply_stress!(b)
     end
 end
 
-function apply_simple_stress(b::FB)
+function apply_ELS_stress!(b::FB)
+    stress = b.N/(b.N-b.current_step)
+    if b.c == 1
+        for i in eachindex(b.status)
+            if b.status[i] < 0 #Not Broken
+                b.σ[i] = stress
+            end
+        end
+    else
+        # We only add stress to the whole bundle once
+    end
+end
+
+function apply_simple_stress!(b::FB)
     added_stress = b.cluster_size[b.c]/b.cluster_outline_length[b.c]
     for i in 1:b.cluster_outline_length[b.c]
         fiber = b.cluster_outline[i]
@@ -621,7 +636,7 @@ function apply_simple_stress(b::FB)
 end
 
 
-function apply_stress(b::FB)
+function apply_stress!(b::FB)
     # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
     # High alpha means that having neighbours is more important
     C=0.0

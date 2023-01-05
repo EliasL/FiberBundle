@@ -48,7 +48,7 @@ s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
 #α = [2.0]
 
 use_threads = true
-overwrite = true
+overwrite = false
 #time_estimate(L, α, t, NR, seeds)
 
 if use_threads

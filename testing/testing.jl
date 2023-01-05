@@ -53,6 +53,42 @@ function basic_test()
     end
 end
 
+
+function basic_test_ELS() 
+    # This test will break the fibers in this order
+    # 1 4 7
+    # 2 5 8
+    # 3 6 9
+    L=3
+    b = get_fb(L, seed, nr="ELS", dist= f(N)=(1:N)./N, without_storage=true) #set distribution to break in fixed order
+    # First fiber!
+    @test sum(b.status) == -b.N #All fibers are alive
+    findAndBreakNextFiber!(b)
+    i = b.break_sequence[b.current_step]
+    @test i==1 #"The first fiber should break"
+    @test b.status[i]== 0#BROKEN #"The first fiber should be broken"
+    update_σ!(b)
+    @test all(b.σ[b.status .< 0] .== 9/8) #"The tension is incorrect"
+    @test sum(b.σ) ≈ b.N #"No conservation of tension"
+    
+    # Second fiber
+    resetBundle!(b)
+    findAndBreakNextFiber!(b)
+    update_tension!(b)
+    @test b.break_sequence[b.current_step]==2 #"The second fiber should break"
+    @test all(b.σ[b.status .< 0] .== 9/7) #"The tension is incorrect"
+    @test sum(b.σ) ≈ b.N #"No conservation of tension"
+    
+    # Break the rest for good measure
+    resetBundle!(b)
+    for _ in 3:b.N-1
+        findAndBreakNextFiber!(b)
+        update_tension!(b)
+        @test sum(b.σ) ≈ b.N #"No conservation of tension"
+        resetBundle!(b)
+    end
+end
+
 function cluster_test()
     #  1  5  921 13
     #  2  6 10 14
@@ -346,7 +382,7 @@ function storageTest()
     rm(test_data_path, force=true, recursive=true)
 end
 
-storageTest()
+#storageTest()
 
 function find_strange_fb()
     for run_nr in 1:500
@@ -417,9 +453,10 @@ function test()
     @testset verbose=true "Tests" begin
         
         @testset "Basic" begin basic_test() end
+        @testset "Basic ELS" begin basic_test_ELS() end
         @testset "Cluster" begin cluster_test() end
         @testset "Neighbourhood id" begin neighbourhood_id_test() end
-        @testset "Neighbourhood rules $nr" for nr in ["LLS", "CNR", "CLS"]
+        @testset "Neighbourhood rules $nr" for nr in ["LLS", "CNR", "CLS", "ELS"]
             neighbourhood_strength_test_with_alpha(nr)
         end
         @testset "Store possition" begin test_store_possition() end
@@ -434,5 +471,5 @@ function test()
         
     end
 end
-#test()
+test()
 println("Test done")
