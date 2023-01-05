@@ -337,7 +337,7 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
         global global_settings = search_for_settings(data_path, dist)
     end
 
-    if NR=="LLS"
+    if NR=="LLS" || NR == "ELS"
         α=0.0
     end
     settings = filter(s -> s["L"] == L
@@ -529,7 +529,8 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     end
 end
 
-function get_bundles_from_settings(settings; seeds, progression=0, step=0, without_storage=true, update_tension=true)
+function get_bundles_from_settings(settings; seeds, progression=0, step=0,
+        without_storage=true, update_tension=true, spanning=false)
     file = load_file(settings, average=false)
     L = settings["L"]
     nr = settings["nr"]
@@ -537,7 +538,7 @@ function get_bundles_from_settings(settings; seeds, progression=0, step=0, witho
     bundles = []
     for seed in seeds
         b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression,
-            step=step, without_storage=without_storage, update_tension=update_tension)
+            step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning)
         push!(bundles, b)
     end
     if length(bundles)==1

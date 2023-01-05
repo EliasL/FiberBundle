@@ -47,12 +47,14 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
 end
 
 function plot_dimension_thing(L, t, α)
-    NR = ["CLS", "LLS"]
+    NR = ["CLS", "LLS", "ELS"]
 
     CLS_s_slope = zeros(Measurement{Float64}, length(t))
     CLS_h_slope = zeros(Measurement{Float64}, length(t))
     LLS_s_slope = zeros(Measurement{Float64}, length(t))
     LLS_h_slope = zeros(Measurement{Float64}, length(t))
+    ELS_s_slope = zeros(Measurement{Float64}, length(t))
+    ELS_h_slope = zeros(Measurement{Float64}, length(t))
 
     for i in eachindex(t)
         
@@ -81,6 +83,7 @@ function plot_dimension_thing(L, t, α)
         l = @layout [
             A B;
             C D;
+            E F;
             ]
         plot(plots..., size=(700, 600), layout = l, left_margin=8Plots.mm,
         plot_title=latexstring("Dimensionality: \$t_0=$(t[i])\$"), )    
@@ -91,13 +94,17 @@ function plot_dimension_thing(L, t, α)
         CLS_h_slope[i] = slopes[2]
         LLS_s_slope[i] = slopes[3]
         LLS_h_slope[i] = slopes[4]
+        ELS_s_slope[i] = slopes[5]
+        ELS_h_slope[i] = slopes[6]
 
     end
 
     plot(t, CLS_s_slope, labels=L"CLS $D_s$", markersize=3, markershape=:vline)
     plot!(t, LLS_s_slope, labels=L"LLS $D_s$", markersize=3, markershape=:vline)
-    plot!(t, CLS_h_slope, labels=L"CLS $D_h$", markersize=3, markershape=:vline)
-    plot!(t, LLS_h_slope,  labels=L"LLS $D_h$", markersize=3, markershape=:vline,
+    plot!(t, ELS_s_slope, labels=L"ELS $D_s$", markersize=3, markershape=:vline,
+    #plot!(t, ELS_h_slope, labels=L"ELS $D_h$", markersize=3, markershape=:vline)
+    #plot!(t, CLS_h_slope, labels=L"CLS $D_h$", markersize=3, markershape=:vline)
+    #plot!(t, LLS_h_slope,  labels=L"LLS $D_h$", markersize=3, markershape=:vline,
         plot_title="Dimensionality",size=(500, 400), 
         legend=:right, xlabel=L"t_0", ylabel="Dimensionality")
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
@@ -105,7 +112,7 @@ function plot_dimension_thing(L, t, α)
 end
 
 function calculate_gyration_radi(l, nr, t, file)
-    b = get_fb(l, nr=nr, t=t, without_storage=true)
+    b = get_fb(l, 0, nr=nr, t=t, without_storage=true)
     r = []
     s = []
     h = []
@@ -177,7 +184,7 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [8, 16, 32, 64,128,256, 512]
+L = [8, 16, 32, 64, 128, 256, 512, 1024]
 α = 2.0
 
 #t = vcat((1:9) ./ 10)

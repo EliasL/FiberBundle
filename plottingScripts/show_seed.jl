@@ -27,14 +27,16 @@ function show_progression(L, t, α, nr, seed)
         title!(p, L"k/N="*"$progress")
         push!(plots, p)
     end
-    plot(plots...)  
+    p = plot(plots...)
+    display(p)
+    savefig("plots/Visualizations/Progressions/$(L)$(nr)_$(t)_$(α).pdf")  
 end
 
-nr = "CLS"
+nr = "ELS"
 t = 0.0
 L=128
 α = 2.0
-seeds = 2
+seeds = 4
 #show_spanning_cluster(L, t, α, nr, seeds)
 s = make_settings(L, t, nr, α)
 break_bundle(s, nothing, nothing, seeds, use_threads=false)
