@@ -87,7 +87,7 @@ function plot_dimension_thing(L, t, α)
             ]
         plot(plots..., size=(700, 600), layout = l, left_margin=8Plots.mm,
         plot_title=latexstring("Dimensionality: \$t_0=$(t[i])\$"), )    
-        savefig("plots/Graphs/dimension_t=$(t[i])_L=$(L[1])-$(L[end]).pdf")
+        savefig("plots/Graphs/SingleT/dimension_t=$(t[i])_L=$(L[1])-$(L[end]).pdf")
 
         # Save in arrays
         CLS_s_slope[i] = slopes[1]

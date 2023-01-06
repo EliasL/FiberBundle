@@ -34,7 +34,7 @@ end
 
 nr = "ELS"
 t = [0.22, 0.24]
-L=32
+L=128
 α = 2.0
 seeds = 1:5
 show_spanning_cluster(L, t, α, nr, seeds)

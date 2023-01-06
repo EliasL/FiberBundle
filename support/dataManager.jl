@@ -513,6 +513,7 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     if spanning
         @assert step==0
         @assert progression==0
+        println(file["spanning_cluster_step/$seed"])
         break_sequence = break_sequence[1:file["spanning_cluster_step/$seed"]]
     end
     break_fiber_list!(break_sequence, b)
