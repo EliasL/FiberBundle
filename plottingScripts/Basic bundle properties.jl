@@ -17,13 +17,12 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         @assert min_steps == N "This bundle is not fully broken! $min_steps != $N"
     end
     
-    get_data(key; divide=true) = map(x -> x[key] ./(N / (divide ? 1 : N)), files_and_t)
+    get_data(key; divide=N) = map(x -> x[key] ./divide, files_and_t)
     
     k_N = [1:n for n in N]./N
     
-    seeds = round(Int64, minimum(get_data("nr_seeds_used", divide=false)))
-    println("$nr, $L, $ts, $seeds")
-    lables = permutedims([L"t_0 = "*"$t" for t in ts])
+    seeds = round(Int64, minimum(get_data("nr_seeds_used", divide=1)))
+    lables = permutedims(["$t" for t in ts])
     colors = theme_palette(:auto)[1:length(ts)]
     
     function add_spanning_point(y_data)
@@ -32,29 +31,30 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x)
     end
 
+    function make_plot(y, possition, ylabel, title="", xlabel="", xlims=(-Inf, Inf))
+        # Use empty scatter as title
+        plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
+        plot!(k_N, y, label = lables, legend=possition, xlims=xlims,color= permutedims(colors),
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title)
+        add_spanning_point(y)
+        return plot
+    end
+
     nr_clusters = get_data("average_nr_clusters")
     largest_cluster = get_data("average_largest_cluster")
     largest_perimiter = get_data("average_largest_perimiter")
-    most_stressed_fiber = get_data("average_most_stressed_fiber")
+    most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
 
     yLabel(string) = use_y_lable ? string : ""
 
-    nr_clusters_plot = plot(k_N, nr_clusters, label = lables, legend=:topright,
-    ylabel=yLabel(L"\#C/N"), plot_titlevspan=-0.1, title="$nr")
-    add_spanning_point(nr_clusters)
+    nr_clusters_plot = make_plot(largest_cluster, :bottomright, L"\#C/N", nr)
 
-    most_stressed_fiber_plot = plot(k_N, most_stressed_fiber, label = lables, legend=:topright,
-    ylabel=yLabel(L"σ_{\mathrm{max}}"))#, title="Stress of most stressed fiber")    
-    add_spanning_point(most_stressed_fiber)
+    most_stressed_fiber_plot = make_plot(most_stressed_fiber, :topright,L"σ_{\mathrm{max}}")
 
-    largest_cluster_plot = plot(k_N, largest_cluster, label = lables, legend=:topleft,
-    ylabel=yLabel(L"S_{\mathrm{max}}/N"), plot_titlevspan=-0.1)#, title="Size of largest cluster")
-    add_spanning_point(largest_cluster)
-
-    largest_perimiter_plot = plot(k_N, largest_perimiter, label = lables, legend=:topright,
-    xlabel=L"k/N", ylabel=yLabel(L"H_{\mathrm{max}}/N"))#, title="Length of the longest perimeter",)
-    add_spanning_point(largest_perimiter)
-
+    largest_cluster_plot = make_plot(largest_cluster, :bottomright,L"S_{\mathrm{max}}/N")
+    
+    largest_perimiter_plot = make_plot(largest_perimiter, :topright,L"H_{\mathrm{max}}/N", "", L"k/N", (0,1.2))
+    
     l = @layout [
         A B; C D
     ]

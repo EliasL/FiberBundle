@@ -48,13 +48,20 @@ end
 
 function plot_dimension_thing(L, t, α)
     NR = ["CLS", "LLS", "ELS"]
-
+#= 
     CLS_s_slope = zeros(Measurement{Float64}, length(t))
     CLS_h_slope = zeros(Measurement{Float64}, length(t))
     LLS_s_slope = zeros(Measurement{Float64}, length(t))
     LLS_h_slope = zeros(Measurement{Float64}, length(t))
     ELS_s_slope = zeros(Measurement{Float64}, length(t))
-    ELS_h_slope = zeros(Measurement{Float64}, length(t))
+    ELS_h_slope = zeros(Measurement{Float64}, length(t)) =#
+
+    CLS_s_slope = zeros(Float64, length(t))
+    CLS_h_slope = zeros(Float64, length(t))
+    LLS_s_slope = zeros(Float64, length(t))
+    LLS_h_slope = zeros(Float64, length(t))
+    ELS_s_slope = zeros(Float64, length(t))
+    ELS_h_slope = zeros(Float64, length(t))
 
     for i in eachindex(t)
         
@@ -98,15 +105,14 @@ function plot_dimension_thing(L, t, α)
         ELS_h_slope[i] = slopes[6]
 
     end
-
-    plot(t, CLS_s_slope, labels=L"CLS $D_s$", markersize=3, markershape=:vline)
-    plot!(t, LLS_s_slope, labels=L"LLS $D_s$", markersize=3, markershape=:vline)
-    plot!(t, ELS_s_slope, labels=L"ELS $D_s$", markersize=3, markershape=:vline,
+    plot(t, CLS_s_slope, labels=L"CLS $D_s$", markershape=:utriangle)
+    plot!(t, LLS_s_slope, labels=L"LLS $D_s$", markershape=:diamond)
+    #plot!(t, ELS_s_slope, labels=L"ELS $D_s$", markersize=3, markershape=:vline)
     #plot!(t, ELS_h_slope, labels=L"ELS $D_h$", markersize=3, markershape=:vline)
-    #plot!(t, CLS_h_slope, labels=L"CLS $D_h$", markersize=3, markershape=:vline)
-    #plot!(t, LLS_h_slope,  labels=L"LLS $D_h$", markersize=3, markershape=:vline,
-        plot_title="Dimensionality",size=(500, 400), 
-        legend=:right, xlabel=L"t_0", ylabel="Dimensionality")
+    plot!(t, LLS_h_slope,  labels=L"LLS $D_h$", markershape=:star4, linestyle=:dash)
+    plot!(t, CLS_h_slope, labels=L"CLS $D_h$", markershape=:dtriangle, linestyle=:dash,
+        legendfontsize=8, size=(400, 300), 
+        legend=:right, xlabel=L"t_0", ylabel=L"D")
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
     
 end
@@ -184,7 +190,7 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [ 128, 256, 512, 1024]
+L = [8, 16, 32, 64, 128, 256, 512, 1024]
 α = 2.0
 
 #t = vcat((1:9) ./ 10)
