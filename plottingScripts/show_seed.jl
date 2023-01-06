@@ -2,10 +2,10 @@ include("showBundle.jl")
 include("../support/inertia.jl")
 include("../dataGenerator.jl")
 
-function show_spanning_cluster(L, t, α, nr, seeds)
-    for seed=seeds, l=L
+function show_spanning_cluster(L, T, α, nr, seeds)
+    for seed=seeds, l=L, t=T
         settings = make_settings(l, t, nr, α)
-        b = get_bundles_from_settings(settings, seeds=seed, step=-0)
+        b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
         R = find_radius_of_gyration(b)
         p = plot_fb(b, show=false)
         #minor_axes, major_axes, minor_values, major_values = find_major_and_minor_axes(b)
@@ -33,11 +33,11 @@ function show_progression(L, t, α, nr, seed)
 end
 
 nr = "ELS"
-t = 0.0
-L=128
+t = [0.22, 0.24]
+L=32
 α = 2.0
-seeds = 4
-#show_spanning_cluster(L, t, α, nr, seeds)
-s = make_settings(L, t, nr, α)
+seeds = 1:5
+show_spanning_cluster(L, t, α, nr, seeds)
+#= s = make_settings(L, t, nr, α)
 break_bundle(s, nothing, nothing, seeds, use_threads=false)
-show_progression(L, t, α, nr, seeds)
+show_progression(L, t, α, nr, seeds) =#
