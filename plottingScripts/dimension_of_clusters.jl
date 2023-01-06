@@ -26,7 +26,7 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
     # Fit to line
     fit = get_fit(Measurements.value.(x), Measurements.value.(y))
     slope = fit[2]
-    rounded_slope = round(slope, digits=2)
+    rounded_slope = round(slope, digits=3)
     
     # Get slope error
     #slope_err_x, slope_err_y, max_slope, min_slope = uncertainty_in_slope(x, y)
