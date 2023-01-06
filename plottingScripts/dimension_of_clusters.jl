@@ -184,7 +184,7 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [8, 16, 32, 64, 128, 256, 512, 1024]
+L = [ 128, 256, 512, 1024]
 α = 2.0
 
 #t = vcat((1:9) ./ 10)

@@ -44,7 +44,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     add_spanning_point(nr_clusters)
 
     most_stressed_fiber_plot = plot(k_N, most_stressed_fiber, label = lables, legend=:topright,
-    ylabel=yLabel(L"σ"))#, title="Stress of most stressed fiber")    
+    ylabel=yLabel(L"σ_{\mathrm{max}}"))#, title="Stress of most stressed fiber")    
     add_spanning_point(most_stressed_fiber)
 
     largest_cluster_plot = plot(k_N, largest_cluster, label = lables, legend=:topleft,
@@ -70,7 +70,7 @@ nr = ["LLS", "CLS"]
 nrs = length(nr)
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
-plot(plots..., layout=(length(plots)÷nrs,nrs), size=(600,800), left_margin=2Plots.mm)
+plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm)
 
 savefig("plots/Graphs/BundleProperties.pdf")
 
