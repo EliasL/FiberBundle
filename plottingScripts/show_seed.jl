@@ -1,8 +1,16 @@
+using LaTeXStrings
+
 include("showBundle.jl")
 include("../support/inertia.jl")
 include("../dataGenerator.jl")
+include("ploting_settings.jl")
 
-function show_spanning_cluster(L, T, α, nr, seeds)
+function show_spanning_cluster()
+    nr = "ELS"
+    t = 0.0
+    L=128
+    α = 2.0
+    seeds = 1:5
     for seed=seeds, l=L, t=T
         settings = make_settings(l, t, nr, α)
         b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
@@ -15,29 +23,28 @@ function show_spanning_cluster(L, T, α, nr, seeds)
     end
 end
 
-function show_progression(L, t, α, nr, seed)
+function show_progression()
+    NR = ["ELS", "LLS", "CLS"]
+    T = 0.0
+    L=128
+    α = 2.0
+    seeds = 0
 
-    steps = 4
-    progression = round.((1:steps) ./ (steps+1), digits=2)
-    plots = []
-    for progress in progression
-        settings = make_settings(L, t, nr, α)
-        b = get_bundles_from_settings(settings, seeds=seed, progression=progress)
-        p = plot_fb(b, show=false)
-        title!(p, L"k/N="*"$progress")
-        push!(plots, p)
+    for seed=seeds, l=L, t=T, nr=NR
+        steps = 4
+        progression = round.((1:steps) ./ (steps+1), digits=2)
+        plots = []
+        for progress in progression
+            settings = make_settings(l, t, nr, α)
+            b = get_bundles_from_settings(settings, seeds=seed, progression=progress)
+            p = plot_fb(b, show=false)
+            title!(p, L"k/N="*"$progress")
+            push!(plots, p)
+        end
+        plot(plots..., layout=(1,steps), size=(L*(steps+1), L*1.4))
+        savefig("plots/Visualizations/Progressions/$(L)$(nr)_$(t)_$(α).pdf")  
     end
-    p = plot(plots...)
-    display(p)
-    savefig("plots/Visualizations/Progressions/$(L)$(nr)_$(t)_$(α).pdf")  
 end
 
-nr = "ELS"
-t = [0.22, 0.24]
-L=128
-α = 2.0
-seeds = 1:5
-show_spanning_cluster(L, t, α, nr, seeds)
-#= s = make_settings(L, t, nr, α)
-break_bundle(s, nothing, nothing, seeds, use_threads=false)
-show_progression(L, t, α, nr, seeds) =#
+#show_spanning_cluster()
+show_progression()
