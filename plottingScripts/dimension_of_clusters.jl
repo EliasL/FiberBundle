@@ -18,7 +18,7 @@ function get_fit(x, y)
 end
 
 
-function get_plot_and_slope!(p, x, y, label, y_label, linestyle, marker; x_label=L"log$_2(L)$")
+function get_plot_and_slope!(p, x, y, label, linestyle, marker; x_label=L"log$_2(L)$")
     # Converting to log
     x = log2.(x)
     y = log2.(y)
@@ -39,7 +39,7 @@ function get_plot_and_slope!(p, x, y, label, y_label, linestyle, marker; x_label
     #   y values =#
     
     scatter!(x, y, markershape=marker, color=:black, label=label, linewidth=1,
-    markerstrokecolor=:black,legend=:topleft, xlabel=x_label, ylabel=y_label,
+    markerstrokecolor=:black,legend=:topleft, xlabel=x_label,
     markersize=3, markerstrokewidth=1)
     #   y fit
     plot!(Measurements.value.(x), f_lin(x, fit), label="", color=:black,
@@ -60,23 +60,26 @@ function plot_dimension_thing(L, ts, α)
         plots = []
 
         for (i, nr) in enumerate(NR)
-            p = plot(titlefontsize=10, right_margin=6Plots.mm, xlims=(1,Inf))
+            p = plot(titlefontsize=9, xlims=(1,Inf), ylims=(-Inf, 18))
             r, s, h, std_r, std_s, std_h = get_gyration_radii(L, nr, t, α)
 
             #= s = s .± std_s
             h = h .± std_h
             r = r .± std_r =#
             s_plot, s_slope = get_plot_and_slope!(p, r, s, " "*L"s",
-                L"log$_2(s)$", :solid, :diamond, x_label=L"log$_2(r)$")
+            :solid, :diamond, x_label=L"log$_2(r)$")
             slopes[j, i*2-1] = s_slope
             push!(labels, "$nr "*L"D_s")
             h_plot, h_slope = get_plot_and_slope!(p, r, h, " "*L"h",
-                L"log$_2(h)$", :dot, :circle, x_label=L"log$_2(r)$")
+            :dot, :dtriangle, x_label=L"log$_2(r)$")
             push!(plots, h_plot)
             slopes[j, i*2] =  h_slope
             push!(labels, "$nr "*L"D_h")
             s_rounded = round(s_slope, digits=2)
             h_rounded = round(h_slope, digits=2)
+            if i==1
+                ylabel!(L"log$_2(s)$, log$_2(h)$")
+            end
             title!("$nr: "*L"D_s="*"$s_rounded "*L"D_h="*"$h_rounded")
             end
         
