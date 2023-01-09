@@ -90,9 +90,8 @@ function plot_dimension_thing(L, ts, α)
 
     end
 
-    plot(ts, slopes, labels=permutedims(labels), markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
-        legendfontsize=8, size=(400, 300), 
-        legend=:right, xlabel=L"t_0", ylabel=L"D")
+    scatter(ts, slopes, labels=permutedims(labels), markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
+        size=(400, 300), legend=:right, xlabel=L"t_0", ylabel=L"D")
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
     
 end
