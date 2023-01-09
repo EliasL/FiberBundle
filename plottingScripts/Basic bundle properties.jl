@@ -47,7 +47,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
     yLabel(string) = use_y_lable ? string : ""
 
-    nr_clusters_plot = make_plot(largest_cluster, :bottomright, L"\#C/N", (0,1.249), nr)
+    nr_clusters_plot = make_plot(nr_clusters, :bottomright, L"\#C/N", (0,1.249), nr)
 
     most_stressed_fiber_plot = make_plot(most_stressed_fiber, :topright,L"σ_{\mathrm{max}}", (0,1.249),)
 
