@@ -18,7 +18,7 @@ function get_fit(x, y)
 end
 
 
-function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"log$_2(L)$")
+function get_plot_and_slope!(p, x, y, label, y_label, linestyle, marker; x_label=L"log$_2(L)$")
     # Converting to log
     x = log2.(x)
     y = log2.(y)
@@ -26,7 +26,7 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
     # Fit to line
     fit = get_fit(Measurements.value.(x), Measurements.value.(y))
     slope = fit[2]
-    rounded_slope = round(slope, digits=3)
+    rounded_slope = round(slope, digits=2)
     
     #= # Get slope error
     slope_err_x, slope_err_y, max_slope, min_slope = uncertainty_in_slope(x, y)
@@ -38,10 +38,12 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
     linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
     #   y values =#
     
-    p=scatter(x, y, markershape=:cross, color=:black, label=label, linewidth=1,
-    markersize=3, legend=:topleft, xlabel=x_label, ylabel=y_label, title=title*"$rounded_slope")# ± $slope_err")
+    scatter!(x, y, markershape=marker, color=:black, label=label, linewidth=1,
+    markerstrokecolor=:black,legend=:topleft, xlabel=x_label, ylabel=y_label,
+    markersize=3, markerstrokewidth=1)
     #   y fit
-    plot!(Measurements.value.(x), f_lin(x, fit), label=fit_label, color=:black, linewidth=1)
+    plot!(Measurements.value.(x), f_lin(x, fit), label="", color=:black,
+    linewidth=1, linestyle=linestyle)
 
     return p, slope# ± slope_err
 end
@@ -56,27 +58,31 @@ function plot_dimension_thing(L, ts, α)
         
         # Get plot and slope
         plots = []
+
         for (i, nr) in enumerate(NR)
+            p = plot(titlefontsize=10, right_margin=6Plots.mm, xlims=(1,Inf))
             r, s, h, std_r, std_s, std_h = get_gyration_radii(L, nr, t, α)
 
             #= s = s .± std_s
             h = h .± std_h
             r = r .± std_r =#
-            s_plot, s_slope = get_plot_and_slope(r, s, L"Cluster size ($s$)",
-                L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"), x_label=L"log$_2(r)$")
-            push!(plots, s_plot)
+            s_plot, s_slope = get_plot_and_slope!(p, r, s, " "*L"s",
+                L"log$_2(s)$", :solid, :diamond, x_label=L"log$_2(r)$")
             slopes[j, i*2-1] = s_slope
             push!(labels, "$nr "*L"D_s")
-            h_plot, h_slope = get_plot_and_slope(r, h, L"Perimiter size ($h$)",
-                L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"), x_label=L"log$_2(r)$")
+            h_plot, h_slope = get_plot_and_slope!(p, r, h, " "*L"h",
+                L"log$_2(h)$", :dot, :circle, x_label=L"log$_2(r)$")
             push!(plots, h_plot)
             slopes[j, i*2] =  h_slope
             push!(labels, "$nr "*L"D_h")
-        end
+            s_rounded = round(s_slope, digits=2)
+            h_rounded = round(h_slope, digits=2)
+            title!("$nr: "*L"D_s="*"$s_rounded "*L"D_h="*"$h_rounded")
+            end
         
         # Plot for each t
-        plot(plots..., size=(700, 600), layout = (2, length(NR)), left_margin=8Plots.mm,
-        plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"), )    
+        plot(plots..., size=(400, 200), layout = (length(NR)),)
+        #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"), )    
         savefig("plots/Graphs/SingleT/dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
 
     end
@@ -166,6 +172,7 @@ L = [8, 16, 32, 64, 128, 256, 512, 1024]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
+#t = [0.0]
 #plot_dimensions_over_t(L, t)
 #plot_dimensions_over_t_with_radius_of_gyration(L, t)
 #plot_dimensions_with_radius_of_gyration(L, t)

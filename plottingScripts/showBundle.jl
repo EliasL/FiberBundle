@@ -171,5 +171,5 @@ function test(seeds=1)
     end
 end
 
-generate_illustrations()
+#generate_illustrations()
 #test(1:10)
