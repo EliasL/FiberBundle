@@ -151,7 +151,7 @@ end
 
 function save_picture(L, nr, t, α, seed, name, path="data/")
     settings = make_settings(L, t, nr, α, path)
-    b = get_bundle_from_settings(settings, seed=seed)
+    b = get_bundles_from_settings(settings, seeds=seed)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file
     cp("latest_plot.png", "plots/Visualizations/differenceIllustrations/$name.png", force=true)
@@ -171,5 +171,5 @@ function test(seeds=1)
     end
 end
 
-#generate_illustrations()
+generate_illustrations()
 #test(1:10)
