@@ -31,7 +31,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x)
     end
 
-    function make_plot(y, possition, ylabel, title="", xlabel="", xlims=(-Inf, Inf))
+    function make_plot(y, possition, ylabel,  xlims=(-Inf, Inf), title="", xlabel="")
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(k_N, y, label = lables, legend=possition, xlims=xlims,color= permutedims(colors),
@@ -47,13 +47,13 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
     yLabel(string) = use_y_lable ? string : ""
 
-    nr_clusters_plot = make_plot(largest_cluster, :bottomright, L"\#C/N", nr)
+    nr_clusters_plot = make_plot(largest_cluster, :bottomright, L"\#C/N", (0,1.249), nr)
 
-    most_stressed_fiber_plot = make_plot(most_stressed_fiber, :topright,L"σ_{\mathrm{max}}")
+    most_stressed_fiber_plot = make_plot(most_stressed_fiber, :topright,L"σ_{\mathrm{max}}", (0,1.249),)
 
-    largest_cluster_plot = make_plot(largest_cluster, :bottomright,L"S_{\mathrm{max}}/N")
+    largest_cluster_plot = make_plot(largest_cluster, :bottomright,L"S_{\mathrm{max}}/N", (0,1.249),)
     
-    largest_perimiter_plot = make_plot(largest_perimiter, :topright,L"H_{\mathrm{max}}/N", "", L"k/N", (0,1.249))
+    largest_perimiter_plot = make_plot(largest_perimiter, :topright,L"H_{\mathrm{max}}/N", (0,1.249), "", L"k/N")
     
     l = @layout [
         A B; C D
