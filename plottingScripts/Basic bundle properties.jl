@@ -35,7 +35,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(k_N, y, label = lables, legend=possition, xlims=xlims,color= permutedims(colors),
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title)
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, linestyle=[:dash :solid :solid :solid :solid :solid])
         add_spanning_point(y)
         return plot
     end
@@ -53,7 +53,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
     largest_cluster_plot = make_plot(largest_cluster, :bottomright,L"S_{\mathrm{max}}/N")
     
-    largest_perimiter_plot = make_plot(largest_perimiter, :topright,L"H_{\mathrm{max}}/N", "", L"k/N", (0,1.2))
+    largest_perimiter_plot = make_plot(largest_perimiter, :topright,L"H_{\mathrm{max}}/N", "", L"k/N", (0,1.249))
     
     l = @layout [
         A B; C D
