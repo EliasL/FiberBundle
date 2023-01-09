@@ -132,30 +132,14 @@ function plot_fb_cm(b::FB)
     return plot!(b.cluster_cm_x, b.cluster_cm_y, seriestype = :scatter)
 end
 
-function generate_illustrations()
-    
-    path = "data/"
-    t = 0.0
-    L=64
-    α = 2.0
-    seed = 1
-    nr = "LLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-    nr="CLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-    L=1024
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-    nr="LLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-end
-
-function save_picture(L, nr, t, α, seed, name, path="data/")
-    settings = make_settings(L, t, nr, α, path)
-    b = get_bundles_from_settings(settings, seeds=seed)
+function save_picture(L, nr, t, α, seed, name, save_path="", data_path="data/")
+    settings = make_settings(L, t, nr, α, data_path)
+    b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file
-    cp("latest_plot.png", "plots/Visualizations/differenceIllustrations/$name.png", force=true)
-
+    if save_path != ""
+        cp("latest_plot.png", "$save_path/$name.png", force=true)
+    end
 end
 
 function test(seeds=1)

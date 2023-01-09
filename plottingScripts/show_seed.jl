@@ -46,5 +46,26 @@ function show_progression()
     end
 end
 
+
+function generate_illustrations()
+    
+    save_path = "plots/Visualizations/differenceIllustrations"
+    t = 0.0
+    L=128
+    α = 2.0
+    seed = 1
+    nr = "LLS"
+
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+    nr="CLS"
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+    L=1024
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+    nr="LLS"
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+end
+
+generate_illustrations()
+
 #show_spanning_cluster()
-show_progression()
+#show_progression()
