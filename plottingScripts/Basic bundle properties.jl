@@ -48,7 +48,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(k_N, y, label = labels, legend=possition, xlims=xlims,color= permutedims(colors),
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, linestyle=[:dash :solid :solid :solid :solid :solid :dot])
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-1)]),[:dot]))
         add_spanning_point(y)
         return plot
     end
@@ -77,7 +77,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 end
 
 L = 128
-ts = [0.0, 0.1, 0.2, 0.3, 0.7, 0.9]
+ts = [0.0, 0.1, 0.2, 0.3, 0.7]
 α = 2.0
 nr = ["LLS", "CLS"]
 nrs = length(nr)

@@ -4,7 +4,7 @@
 #SBATCH -p porelab
 #SBATCH -N 1
 #SBATCH -n 50
-#SBATCH --time=3-0:43:7
+#SBATCH --time=9-24:15:0
 
 ml eb
 ml Julia/1.7.2-linux-x86_64
