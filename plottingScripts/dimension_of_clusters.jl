@@ -143,6 +143,7 @@ function get_gyration_radii(L, nr, t, α)
             push!(std_S, std(s))
             push!(H, mean(h))
             push!(std_H, std(h))
+            println("$l, $t, $(length(r))")
         end
 
     end

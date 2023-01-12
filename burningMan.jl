@@ -256,6 +256,7 @@ function healBundle!(b::FB)
     fill!(b.status, -1)
     b.current_step = 0
     fill!(b.break_sequence, 0)
+    fill!(b.cluster_size, 0)
     resetBundle!(b)
 end
 
@@ -646,8 +647,8 @@ function apply_stress!(b::FB)
     C = 1/C # A normalization constant
     for i in 1:b.cluster_outline_length[b.c]
         fiber = b.cluster_outline[i]
-        g = C * b.neighbourhood_values[i] ^(-b.α)
-        added_stress =  b.cluster_size[b.c]*b.neighbourhood_values[i]*g
+        g = C * b.neighbourhood_values[i] ^(-b.α+1)
+        added_stress =  b.cluster_size[b.c]*g
         b.σ[fiber] += added_stress
         b.status[fiber] = -3 #PAST_BORDER
     end
