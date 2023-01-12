@@ -27,43 +27,53 @@ function get_ideal_shift(m::AbstractMatrix)
     return (L-min_row, L-min_col)
 end
 
+function shift_to_cm(b::FB)
+    cmx = b.cluster_cm_x[b.spanning_cluster_id]
+    cmy = b.cluster_cm_y[b.spanning_cluster_id]
+    return ((round(Int, b.L/2-cmy)), (round(Int, b.L/2-cmx)))
+end
+
 function shift_spanning_cluster!(b::FB)
     # Get shift
     m = reshape(b.status, (b.L, b.L))
     shift = get_ideal_shift(m)
+    #shift = shift_to_cm(b)
 
     # Shift status
     m = circshift(m, shift)
     b.status = reshape(m, (b.N))
-
     # Shift cm
     b.cluster_cm_x = mod1.(b.cluster_cm_x.+shift[2], b.L)
     b.cluster_cm_y = mod1.(b.cluster_cm_y.+shift[1], b.L)
 end
 
-function plot_fb(b::FB; show=true, axes=false, use_shift=true)
+
+function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false)
     L=b.L
     spanning=b.spanning_cluster_id
 
     if use_shift
         shift_spanning_cluster!(b)
     end
-    m = reshape(b.status, (L, L))
-    L = size(m,1)
-    nr_clusters = maximum(m)
-    nr_colors = nr_clusters
-    background_color = :black
-    spanning_color = :red
-    colors = vcat([background_color],[RGBA(rand(3)...) for _ in eachindex(1:nr_colors)])
-    if spanning != -1
-        colors[spanning+1] = spanning_color
+    if stress
+        m = reshape(b.tension, (L,L))
+        c =:thermal
+    else
+        m = reshape(b.status, (L, L))
+        clamp!(m, 0, Inf)
+        nr_clusters = maximum(m)
+        nr_colors = nr_clusters
+        background_color = :black
+        spanning_color = :red
+        colors = vcat([background_color],[RGBA(rand(3)...) for _ in eachindex(1:nr_colors)])
+        if spanning != -1
+            colors[spanning+1] = spanning_color
+        end
+        c = cgrad(colors)
     end
-
-    c = cgrad(colors)
 
     # We only want positive states, ie, clusters and 0 for
     # all others
-    clamp!(m, 0, Inf)
     image_size = maximum([500,L])+100
     h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal, bg_inside = nothing,
     showaxis = axes, ticks=axes, size=(image_size, image_size))
@@ -108,11 +118,13 @@ function plot_gyration_radi(b::FB, R; nr=:all)
     else
         R = enumerate(R)
     end
+    s = b.cluster_size[b.spanning_cluster_id]
+    r_ = round(R[1][2]; digits=2)
     for (c, r) in R
         cmx = b.cluster_cm_x[c]
         cmy = b.cluster_cm_y[c]
         plot!(circleShape(cmx, cmy, r), seriestype=[:shape,],lw=0.5, c=:blue,
-        linecolor=:black, legend=false, fillalpha = 0.2, aspect_ratio=1)
+        linecolor=:black, legend=false, fillalpha = 0.2, aspect_ratio=1, title="r:$r_, s:$s")
     end
 end
 
@@ -120,30 +132,14 @@ function plot_fb_cm(b::FB)
     return plot!(b.cluster_cm_x, b.cluster_cm_y, seriestype = :scatter)
 end
 
-function generate_illustrations()
-    
-    path = "data/"
-    t = 0.0
-    L=64
-    α = 2.0
-    seed = 1
-    nr = "LLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-    nr="CLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-    L=1024
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-    nr="LLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed")
-end
-
-function save_picture(L, nr, t, α, seed, name, path="data/")
-    settings = make_settings(L, t, nr, α, path)
-    b = get_bundle_from_settings(settings, seed=seed)
+function save_picture(L, nr, t, α, seed, name, save_path="", data_path="data/")
+    settings = make_settings(L, t, nr, α, data_path)
+    b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file
-    cp("latest_plot.png", "plots/Visualizations/differenceIllustrations/$name.png", force=true)
-
+    if save_path != ""
+        cp("latest_plot.png", "$save_path/$name.png", force=true)
+    end
 end
 
 function test(seeds=1)

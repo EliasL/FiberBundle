@@ -8,6 +8,7 @@ using ProgressMeter
 include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/inertia.jl")
+include("showBundle.jl")
 
 f_lin(x,p) = p[1] .+ Measurements.value.(x) .* p[2]
 
@@ -17,8 +18,7 @@ function get_fit(x, y)
 end
 
 
-function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"log$_2(L)$")
-
+function get_plot_and_slope!(p, x, y, label, linestyle, marker; x_label=L"log$_2(L)$")
     # Converting to log
     x = log2.(x)
     y = log2.(y)
@@ -28,113 +28,84 @@ function get_plot_and_slope(x, y, label, y_label, fit_label, title; x_label=L"lo
     slope = fit[2]
     rounded_slope = round(slope, digits=2)
     
-    # Get slope error
-    #slope_err_x, slope_err_y, max_slope, min_slope = uncertainty_in_slope(x, y)
-    #slope_err = round(abs(slope-max_slope), digits=2)
+    #= # Get slope error
+    slope_err_x, slope_err_y, max_slope, min_slope = uncertainty_in_slope(x, y)
+    slope_err = round(abs(slope-max_slope), digits=2)
 
     # Plot
     #   Slope max_min_error
-    #p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
-    #linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
-    #   y values
-    p = scatter(x, y, color=:black, label=label, markeralpha=0.1,
-    markersize=1, legend=:topleft, xlabel=x_label, ylabel=y_label, title=title*"$rounded_slope")
+    p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
+    linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
+    #   y values =#
+    
+    scatter!(x, y, markershape=marker, color=:black, label=label, linewidth=1,
+    markerstrokecolor=:black,legend=:topleft, xlabel=x_label,
+    markersize=3, markerstrokewidth=1)
     #   y fit
-    plot!(Measurements.value.(x), f_lin(x, fit), label=fit_label, color=:black, linewidth=1)
+    plot!(Measurements.value.(x), f_lin(x, fit), label="", color=:black,
+    linewidth=1, linestyle=linestyle)
 
     return p, slope# ± slope_err
 end
 
-function plot_dimension_thing(L, t, α)
+function plot_dimension_thing(L, ts, α)
     NR = ["CLS", "LLS"]
-    N = L.*L
+    slopes = zeros(Float64, (length(ts) ,2*length(NR)))
+    labels = []
 
-    CLS_s_slope = zeros(Measurement{Float64}, length(t))
-    CLS_h_slope = zeros(Measurement{Float64}, length(t))
-    LLS_s_slope = zeros(Measurement{Float64}, length(t))
-    LLS_h_slope = zeros(Measurement{Float64}, length(t))
-    r_CLS_s_slope = zeros(Measurement{Float64}, length(t))
-    r_CLS_h_slope = zeros(Measurement{Float64}, length(t))
-    r_LLS_s_slope = zeros(Measurement{Float64}, length(t))
-    r_LLS_h_slope = zeros(Measurement{Float64}, length(t))
 
-    for i in eachindex(t)
+    for (j,t) in enumerate(ts)
         
         # Get plot and slope
         plots = []
-        slopes = []
-        for nr in NR
-            files = [load_file(l, α, t[i], nr, average=true) for l in L]
-            #s = reduce(vcat,[[f["spanning_cluster_size/$seed"] for seed in f["seeds_used"]] for f in files])
-            #h = reduce(vcat,[[f["spanning_cluster_perimiter/$seed"] for seed in f["seeds_used"]] for f in files])
-            # Gyration radius!
-            r, s, h = get_gyration_radii(L, nr, t[i], α)
-            LL = reduce(vcat,[[l for seed in f["seeds_used"]] for (f,l) in zip(files,L)])
 
-            s_plot, s_slope = get_plot_and_slope(LL, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"))
-            push!(plots, s_plot)
-            push!(slopes, s_slope)
-            h_plot, h_slope = get_plot_and_slope(LL, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"))
+        for (i, nr) in enumerate(NR)
+            p = plot(titlefontsize=9, xlims=(1,Inf), ylims=(-Inf, 18))
+            r, s, h, std_r, std_s, std_h = get_gyration_radii(L, nr, t, α)
+
+            #= s = s .± std_s
+            h = h .± std_h
+            r = r .± std_r =#
+            s_plot, s_slope = get_plot_and_slope!(p, r, s, " "*L"s",
+            :solid, :diamond, x_label=L"log$_2(R)$")
+            slopes[j, i*2-1] = s_slope
+            push!(labels, "$nr "*L"D_s")
+            h_plot, h_slope = get_plot_and_slope!(p, r, h, " "*L"h",
+            :dot, :dtriangle, x_label=L"log$_2(R)$")
             push!(plots, h_plot)
-            push!(slopes, h_slope)
-
-
-            s_plot, s_slope = get_plot_and_slope(r, s, L"Cluster size ($s$)", L"log$_2(s)$", L"Fit ($D_s$)", latexstring("$nr: \$D_s=\$"), x_label=L"log$_2(r)$")
-            push!(plots, s_plot)
-            push!(slopes, s_slope)
-            h_plot, h_slope = get_plot_and_slope(r, h, L"Perimiter size ($h$)", L"log$_2(h)$", L"Fit ($D_h$)", latexstring("$nr: \$D_h=\$"), x_label=L"log$_2(r)$")
-            push!(plots, h_plot)
-            push!(slopes, h_slope)
-        end
+            slopes[j, i*2] =  h_slope
+            push!(labels, "$nr "*L"D_h")
+            s_rounded = round(s_slope, digits=2)
+            h_rounded = round(h_slope, digits=2)
+            if i==1
+                ylabel!(L"log$_2(s)$, log$_2(h)$")
+            end
+            title!("$nr: "*L"D_s="*"$s_rounded "*L"D_h="*"$h_rounded")
+            end
         
         # Plot for each t
-
-        l = @layout [
-            A B;
-            C D;
-            E F;
-            G H
-            ]
-        plot(plots..., size=(700, 1200), layout = l, left_margin=8Plots.mm,
-        plot_title=latexstring("Dimensionality: \$t_0=$(t[i])\$"), )    
-        savefig("plots/Graphs/dimension_t=$(t[i])_L=$(L[1])-$(L[end]).png")
-
-        # Save in arrays
-        CLS_s_slope[i] = slopes[1]
-        CLS_h_slope[i] = slopes[2]
-        r_CLS_s_slope[i] = slopes[3]
-        r_CLS_h_slope[i] = slopes[4]
-        LLS_s_slope[i] = slopes[5]
-        LLS_h_slope[i] = slopes[6]
-        r_LLS_s_slope[i] = slopes[7]
-        r_LLS_h_slope[i] = slopes[8]
+        plot(plots..., size=(400, 200), layout = (length(NR)),)
+        #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"), )    
+        savefig("plots/Graphs/SingleT/dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
 
     end
 
-    plot(t, CLS_s_slope, labels=L"CLS $D_s$", markersize=3, markershape=:vline)
-    plot!(t, CLS_h_slope, labels=L"CLS $D_h$", markersize=3, markershape=:vline)
-    plot!(t, LLS_s_slope, labels=L"LLS $D_s$", markersize=3, markershape=:vline)
-    plot!(t, LLS_h_slope, labels=L"LLS $D_h$", markersize=3, markershape=:vline)
-    plot!(t, r_CLS_s_slope, labels=L"R CLS $D_s$", markersize=3, markershape=:vline, linestyle=:dash)
-    plot!(t, r_CLS_h_slope, labels=L"R CLS $D_h$", markersize=3, markershape=:vline, linestyle=:dash)
-    plot!(t, r_LLS_s_slope, labels=L"R LLS $D_s$", markersize=3, markershape=:vline, linestyle=:dash)
-    plot!(t, r_LLS_h_slope,  labels=L"R LLS $D_h$", markersize=3, markershape=:vline, linestyle=:dash,
-        plot_title="Dimensionality",size=(500, 400), 
-        legend=:right, xlabel=L"t_0", ylabel="Dimensionality")
+    scatter(ts, slopes, labels=permutedims(labels), markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
+        size=(400, 300), legend=:right, xlabel=L"t_0", ylabel=L"D")
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
     
 end
 
 function calculate_gyration_radi(l, nr, t, file)
-    b = get_fb(l, nr=nr, t=t, without_storage=true)
+    b = get_fb(l, 0, nr=nr, t=t, without_storage=true)
     r = []
     s = []
     h = []
     println("Calculating radius of gyration $l $nr $t")
     for seed in file["seeds_used"]
-        break_fiber_list!(view(file["break_sequence/$seed"],1:file["last_step/$seed"]), b)
+        break_fiber_list!(view(file["break_sequence/$seed"],1:file["spanning_cluster_step/$seed"]-1), b)
         update_σ!(b)
-        id = b.spanning_cluster_id
+        id = argmax(b.cluster_size)
         push!(r, find_radius_of_gyration(b)[id])
         push!(s, b.cluster_size[id])
         push!(h, b.cluster_outline_length[id])
@@ -147,33 +118,35 @@ function get_gyration_radii(L, nr, t, α)
     R = []
     S = []
     H = []
+    std_R = []
+    std_S = []
+    std_H = []
+    if !isdir("data/gyration_data/")
+        mkpath("data/gyration_data/")
+    end
     for l in L
-        if !isdir("data/gyration_data/")
-            mkpath("data/gyration_data/")
+        if isfile(get_file_name(l, α, t, nr))
+            if isfile("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
+                f = load("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
+                r, s, h = f["$(l)_$(nr)_$(t)_r"]
+            else
+                bulk_file = load_file(l, α, t, nr,average=false)
+                r, s, h = calculate_gyration_radi(l, nr, t, bulk_file)
+                # Save data
+                jldopen("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2", "w") do file
+                    file["$(l)_$(nr)_$(t)_r"] = (r, s, h)
+                end
+            end
+            push!(R, mean(r))
+            push!(std_R, std(r))
+            push!(S, mean(s))
+            push!(std_S, std(s))
+            push!(H, mean(h))
+            push!(std_H, std(h))
         end
 
-        if isfile("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
-            f = load("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
-            r, s, h = f["$(l)_$(nr)_$(t)_r"]
-            push!(R, r)
-            push!(S, s)
-            push!(H, h)
-        else
-            bulk_file = load_file(l, α, t, nr,average=false)
-            r, s, h = calculate_gyration_radi(l, nr, t, bulk_file)
-            # Save data
-            jldopen("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2", "w") do file
-                file["$(l)_$(nr)_$(t)_r"] = (r, s, h)
-            end
-            push!(R, r)
-            push!(S, s)
-            push!(H, h)
-        end
     end
-    R = reduce(vcat,R)
-    S = reduce(vcat,S)
-    H = reduce(vcat,H)
-    return R, S, H 
+    return R, S, H, std_R, std_S, std_H
 end
 
 function uncertainty_in_slope(x, v)
@@ -195,12 +168,13 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [8, 16, 32,64,128,256, 512, 1024]
-α = 2
+L = [8, 16, 32, 64, 128, 256, 512, 1024]
+α = 2.0
 
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
+#t = [0.0]
 #plot_dimensions_over_t(L, t)
 #plot_dimensions_over_t_with_radius_of_gyration(L, t)
 #plot_dimensions_with_radius_of_gyration(L, t)

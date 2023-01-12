@@ -5,7 +5,7 @@ include("support/logingLevels.jl")
 include("support/timeEstimator.jl")
 # Sett logging level
 #logger = SimpleLogger(stdout, settingLog)
-logger = SimpleLogger(stdout, -10000)
+logger = SimpleLogger(stdout, threadLog)
 global_logger(logger)
 
 function get_ARGS()
@@ -39,16 +39,16 @@ t=args["t"]
 NR=args["NR"]
 s=args["s"]
 α=args["a"]
-#s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
+s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
 
-s = 0:30-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
-L = [32]
-t = vcat((0:20) ./ 50, (5:9) ./ 10)
-NR = ["CLS", "LLS"]
-α = [2.0]
+#s = 0:30-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
+#L = [1024]
+#t = vcat((0:20) ./ 50, (5:9) ./ 10)
+#NR = ["CLS", "LLS"]
+#α = [2.0]
 
-use_threads = false
-overwrite = true
+use_threads = true
+overwrite = false
 #time_estimate(L, α, t, NR, seeds)
 
 if use_threads

@@ -71,19 +71,19 @@ end
 
 
 function test()
-    nr = "CLS"
+    nr = "ELS"
     path = "data/"
-    t = 0.1
-    L=512
+    t = 0.0
+    L=128
     α = 2.0
     seed = 1
-    settings = make_settings("Uniform", L, t, nr, α, path)
-    b = get_bundles_from_settings(settings, seeds=seed, step=-0)
+    settings = make_settings(L, t, nr, α)
+    b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
     p = plot_fb(b, show=false)
     minor_axes, major_axes, minor_values, major_values = find_major_and_minor_axes(b)
     plot_fb_axes(b, minor_axes, major_axes, minor_values, major_values)
     R = find_radius_of_gyration(b)
-    plot_gyration_radi(b, R, nr=2)
+    plot_gyration_radi(b, R, nr=1)
     display(p)
 end
 #test()

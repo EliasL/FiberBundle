@@ -1,8 +1,9 @@
 using Plots
-gr()
+using Colors
 Plots.reset_defaults()
-plot_font = "Computer Modern"
 Plots.resetfontsizes()
-default(fontfamily=plot_font, grid=true, legendfontsize=8, markerstrokewidth=0,
-        linewidth=2)
-Plots.scalefontsizes(1)
+gr()
+plot_font = "Computer Modern"
+default(fontfamily=plot_font, foreground_color_legend = nothing, background_color_legend = RGBA(1.0,1.0,1.0,0.3),
+        grid=false)
+Plots.scalefontsizes(1.3)

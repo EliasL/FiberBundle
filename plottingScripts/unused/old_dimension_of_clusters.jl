@@ -8,6 +8,7 @@ using ProgressMeter
 include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/inertia.jl")
+include("showBundle.jl")
 
 f_lin(x,p) = p[1] .+ Measurements.value.(x) .* p[2]
 
@@ -137,12 +138,13 @@ function calculate_average_gyration_radius(L, nr, t, bulk_files)
     for (b::FB, file) in zip(bundles, bulk_files)
         temp_r = []
         for seed in file["seeds_used"]
-            break_fiber_list!(view(file["break_sequence/$seed"],1:file["last_step/$seed"]), b)
+            break_fiber_list!(view(file["break_sequence/$seed"],1:file["last_step/$seed"]-1), b)
             update_σ!(b)
-            #TODO ASSUMPTION MAXIMUM CLUSTER IS SPANNING CLUSTER
-            # probably true in 99.999999% of cases...
-            single_r = maximum(find_radius_of_gyration(b))
-            push!(temp_r, single_r)
+            id = b.spanning_cluster_id
+            if id != -1
+                single_r = maximum(find_radius_of_gyration(b))
+                push!(temp_r, single_r)
+            end
             healBundle!(b)
         end
         push!(r, mean(temp_r))

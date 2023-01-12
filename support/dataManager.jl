@@ -3,6 +3,7 @@ using CodecLz4
 using Logging
 using ProgressMeter
 using Statistics
+
 include("logingLevels.jl")
 include("../burningMan.jl")
 
@@ -25,7 +26,7 @@ data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
 function make_settings(L::Int64, t::Float64, nr::String, α::Float64, path::String="data/", dist::String="Uniform")
-    if nr=="LLS"
+    if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
     settings = Dict(
@@ -66,6 +67,11 @@ function get_setting_name(settings)
     return chop(name)
 end
 
+function get_file_name(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
+    s = make_settings(L, t, NR, α, data_path, dist)
+    return get_file_name(s, seed, average)
+end
+
 function get_file_name(settings, seed::Int=-1, average=false)
     @assert seed>=-1 "We don't want to use negative seeds since -1 is special here"
     s = settings
@@ -82,7 +88,7 @@ function make_get_name(settings)
     return f(seed=-1; average=false) = get_file_name(settings, seed, average)
 end
 
-function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]))
+function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]), force_overwrite=false)
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
     jldopen(condensed_file_name, "r") do file
@@ -94,14 +100,17 @@ function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]
                 # and let it be generated from scratch
                 continue
             end
-            # Write out the file
-            jldopen(get_name_fun(seed), "w") do s_file
-                for key in data_keys
-                    if haskey(file, "$key/$seed")
-                        s_file[key] = file["$key/$seed"]
+            # Make sure we are not overwriting already existing files
+            if !isfile(get_name_fun(seed)) || force_overwrite
+                # Write out the file
+                jldopen(get_name_fun(seed), "w") do s_file
+                    for key in data_keys
+                        if haskey(file, "$key/$seed")
+                            s_file[key] = file["$key/$seed"]
+                        end
                     end
-                end
-            end # Close seed file
+                end # Close seed file
+            end
         end
     end # Close compact file
 end
@@ -214,10 +223,8 @@ end
 
 function get_missing_seeds(settings, requested_seeds)
 
-
     get_name_fun = make_get_name(settings)
     condensed_file_name = get_name_fun()
-
     if isfile(condensed_file_name)
         jldopen(condensed_file_name, "r") do existing_data
             existing_seeds = existing_data["seeds_used"]
@@ -321,6 +328,8 @@ function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 
+
+
 function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
@@ -328,7 +337,7 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
         global global_settings = search_for_settings(data_path, dist)
     end
 
-    if NR=="LLS"
+    if NR=="LLS" || NR == "ELS"
         α=0.0
     end
     settings = filter(s -> s["L"] == L
@@ -337,7 +346,8 @@ function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, ave
                         && s["nr"] == NR, global_settings)
     @assert length(settings) < 2 "There are multiple possibilities"
     if length(settings) == 0
-        throw("There is no file maching these settings α=$α nr=$NR, L=$L, t=$t")
+        println("There is no file maching these settings α=$α nr=$NR, L=$L, t=$t")
+        return nothing
     end
     setting = settings[1]
     return load(get_file_name(setting, seed, average))
@@ -467,11 +477,11 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true)
+function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true, spanning=false, update_tension=true)
     if without_storage
-        b = get_fb(L, nr=nr, without_storage=without_storage)
+        b = get_fb(L, seed, nr=nr, without_storage=without_storage)
     else
-        b,s = get_fb(L, nr=nr, without_storage=without_storage)
+        b,s = get_fb(L, seed, nr=nr, without_storage=without_storage)
         
         b.current_step = file["last_step/$seed"]
         simulation_time = file["simulation_time/$seed"]
@@ -480,7 +490,8 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
         s.spanning_cluster_step = file["spanning_cluster_step/$seed"]
         s.most_stressed_fiber = file["most_stressed_fiber/$seed"]
         s.nr_clusters = file["nr_clusters/$seed"]
-        b.break_sequence[1:b.current_step] = file["break_sequence/$seed"]
+        break_sequence = file["break_sequence/$seed"] 
+        b.break_sequence[1:length(break_sequence)] = break_sequence
         s.largest_cluster = file["largest_cluster/$seed"]
         s.largest_perimiter = file["largest_perimiter/$seed"]
     end
@@ -495,14 +506,23 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     if step > 0
         @assert progression==0
         break_sequence = break_sequence[1:step]
-    end
-    if step < 0
+    elseif step < 0
         @assert progression==0
         break_sequence = break_sequence[1:(file["last_step/$seed"]+step)]
     end
+    if spanning
+        @assert step==0
+        @assert progression==0
+        println(file["spanning_cluster_step/$seed"])
+        break_sequence = break_sequence[1:file["spanning_cluster_step/$seed"]]
+    end
     break_fiber_list!(break_sequence, b)
-    update_σ!(b)
-    shift_spanning_cluster!(b)
+    if update_tension
+        update_tension!(b)
+    else
+        resetBundle!(b)
+    end
+
     if without_storage
         return b
     else
@@ -510,14 +530,16 @@ function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, withou
     end
 end
 
-function get_bundles_from_settings(settings; seeds, progression=0, step=0, without_storage=true)
+function get_bundles_from_settings(settings; seeds, progression=0, step=0,
+        without_storage=true, update_tension=true, spanning=false)
     file = load_file(settings, average=false)
     L = settings["L"]
     nr = settings["nr"]
     N = L*L
     bundles = []
     for seed in seeds
-        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression, step=step, without_storage=without_storage)
+        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression,
+            step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning)
         push!(bundles, b)
     end
     if length(bundles)==1
