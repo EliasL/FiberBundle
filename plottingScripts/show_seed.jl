@@ -37,7 +37,7 @@ function show_progression()
         for progress in progression
             settings = make_settings(l, t, nr, α)
             b = get_bundles_from_settings(settings, seeds=seed, progression=progress)
-            p = plot_fb(b, show=false)
+            p = plot_fb(b, show=false, use_shift=nr=="sELS")
             title!(p, L"k/N="*"$progress")
             push!(plots, p)
         end
@@ -65,7 +65,7 @@ function generate_illustrations()
     save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
 end
 
-generate_illustrations()
+#generate_illustrations()
 
 #show_spanning_cluster()
-#show_progression()
+show_progression()
