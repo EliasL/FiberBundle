@@ -44,10 +44,10 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x)
     end
 
-    function make_plot(y, possition, ylabel,  xlims=(-Inf, Inf), title="", xlabel="")
+    function make_plot(y, ylabel, title="", ylims=(-Inf, Inf), xlabel="", possition=:topright, xlims=(0, 1.2))
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
-        plot!(k_N, y, label = labels, legend=possition, xlims=xlims,color= permutedims(colors),
+        plot!(k_N, y, label = labels, legend=possition, xlims=xlims, ylims=ylims, color= permutedims(colors),
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title, linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-1)]),[:dot]))
         add_spanning_point(y)
         return plot
@@ -60,13 +60,13 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
     yLabel(string) = use_y_lable ? string : ""
 
-    nr_clusters_plot = make_plot(nr_clusters, :bottomright, L"\#C/N", (0,1.249), nr*(nr=="LLS" ? "/ELS" : ""))
+    nr_clusters_plot = make_plot(nr_clusters, L"\#C/N", nr*(nr=="LLS" ? "/ELS" : ""), (0,0.13))
 
-    most_stressed_fiber_plot = make_plot(most_stressed_fiber, :bottomright,L"σ_{\mathrm{max}}", (0,1.249),)
+    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"σ_{\mathrm{max}}")
 
-    largest_cluster_plot = make_plot(largest_cluster, :bottomright,L"S_{\mathrm{max}}/N", (0,1.249),)
+    largest_cluster_plot = make_plot(largest_cluster,L"S_{\mathrm{max}}/N")
     
-    largest_perimiter_plot = make_plot(largest_perimiter, :bottomright,L"H_{\mathrm{max}}/N", (0,1.249), "", L"k/N")
+    largest_perimiter_plot = make_plot(largest_perimiter,L"H_{\mathrm{max}}/N", "", (0,0.375), L"k/N")
     
     l = @layout [
         A B; C D

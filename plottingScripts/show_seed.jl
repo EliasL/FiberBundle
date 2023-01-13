@@ -37,7 +37,7 @@ function show_progression()
         for progress in progression
             settings = make_settings(l, t, nr, α)
             b = get_bundles_from_settings(settings, seeds=seed, progression=progress)
-            p = plot_fb(b, show=false, use_shift=nr=="sELS")
+            p = plot_fb(b, show=false, use_shift=false)
             title!(p, L"k/N="*"$progress")
             push!(plots, p)
         end
