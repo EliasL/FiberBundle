@@ -8,6 +8,6 @@
 
 ml eb
 ml Julia/1.7.2-linux-x86_64
-julia --threads 40 generateData.jl L 1024 t 0.16 0.18 a 2.0 NR CLS LLS s 0 30 
+julia --threads 40 generateData.jl L 1024 t 0.38 a 2.0 NR CLS LLS s 0 30 
 
 wait
