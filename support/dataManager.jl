@@ -477,11 +477,11 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_file(file, L, nr; seed=1, progression=0, step=0, without_storage=true, spanning=false, update_tension=true)
+function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", seed=1, progression=0, step=0, without_storage=true, spanning=false, update_tension=true)
     if without_storage
-        b = get_fb(L, seed, nr=nr, without_storage=without_storage)
+        b = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
     else
-        b,s = get_fb(L, seed, nr=nr, without_storage=without_storage)
+        b,s = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
         
         b.current_step = file["last_step/$seed"]
         simulation_time = file["simulation_time/$seed"]
@@ -535,10 +535,13 @@ function get_bundles_from_settings(settings; seeds, progression=0, step=0,
     file = load_file(settings, average=false)
     L = settings["L"]
     nr = settings["nr"]
+    t = settings["t"]
+    α = settings["a"]
+    dist = settings["dist"]
     N = L*L
     bundles = []
     for seed in seeds
-        b = get_bundle_from_file(file, L, nr, seed=seed, progression=progression,
+        b = get_bundle_from_file(file, L, nr=nr, t=t, α=α, dist=dist, seed=seed, progression=progression,
             step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning)
         push!(bundles, b)
     end

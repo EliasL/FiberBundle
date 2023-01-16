@@ -249,13 +249,15 @@ function resetBundle!(b::FB)
     reset_relative_possition!(b)
 end
 
-function healBundle!(b::FB)
+function healBundle!(b::FB; reset_break_sequence=true)
     # This completely resets the bundle
     fill!(b.σ, 1)
     fill!(b.tension, 0)
     fill!(b.status, -1)
     b.current_step = 0
-    fill!(b.break_sequence, 0)
+    if reset_break_sequence
+        fill!(b.break_sequence, 0)
+    end
     fill!(b.cluster_size, 0)
     resetBundle!(b)
 end
@@ -306,11 +308,15 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
     end
 end
 
-function findAndBreakNextFiber!(b::FB, s::FBS)
-    update_tension!(b)
+function find_next_fiber!(b::FB)
     b.current_step += 1
     b.break_sequence[b.current_step] = argmax(b.tension)
     b.max_σ = b.tension[b.break_sequence[b.current_step]]
+end
+
+function findAndBreakNextFiber!(b::FB, s::FBS)
+    update_tension!(b)
+    find_next_fiber!(b)
     update_storage!(b, s)
     break_fiber!(b)
     resetBundle!(b)
@@ -321,13 +327,14 @@ function findAndBreakNextFiber!(b::FB)
 end
 
 function break_fiber!(b::FB)
-    b.status[b.break_sequence[b.current_step]] = 0#BROKEN
-    b.σ[b.break_sequence[b.current_step]] = 0
+    i = b.break_sequence[b.current_step]
+    break_this_fiber!(i, b)
 end
 
 function break_this_fiber!(i::Int64, b::FB)
     b.status[i] = 0#BROKEN
     b.σ[i] = 0
+    b.tension[i] = 0
 end
 
 function break_fiber_list!(I::AbstractArray{Int}, b::FB)

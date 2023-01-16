@@ -41,7 +41,18 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     function add_spanning_point(y_data)
         x_data = get_data("average_spanning_cluster_step")
         y = [y[round(Int64, x*N)] for (x,y) in zip(x_data,y_data)]
+        #Draw spanning
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x)
+
+        # Add localization point
+        s_data = get_data("average_largest_cluster")
+        function large_slope(s)
+            return s>1/N
+        end
+        x_data = [ findfirst(large_slope, diff(s))+1 for s in s_data]
+        y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
+        #Draw localization
+        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+)
     end
 
     function make_plot(y, ylabel, title="", ylims=(-Inf, Inf), xlabel="", possition=:topright, xlims=(0, 1.2))
