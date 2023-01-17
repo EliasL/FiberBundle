@@ -44,7 +44,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         #Draw spanning
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x)
 
-        # Add localization point
+        #= # Add localization point
         s_data = get_data("average_largest_cluster")
         function large_slope(s)
             return s>1/N
@@ -56,7 +56,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         #x_data = [ findfirst(large_cluster(s,t)) for (s,t) in zip(s_data,ts)]
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
-        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+)
+        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+) =#
     end
 
     function make_plot(y, ylabel, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), possition=:topright)
