@@ -5,7 +5,7 @@ using Test
 include("../burningMan.jl")
 include("../plottingScripts/showBundle.jl")
 include("../dataGenerator.jl")
-include("../support/inertia.jl")
+include("../support/bundleAnalasys.jl")
 
 seed=0
 Random.seed!(seed) # Setting the seed

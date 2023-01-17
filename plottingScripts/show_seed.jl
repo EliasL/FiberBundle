@@ -1,7 +1,7 @@
 using LaTeXStrings
 
 include("showBundle.jl")
-include("../support/inertia.jl")
+include("../support/bundleAnalasys.jl")
 include("../dataGenerator.jl")
 include("ploting_settings.jl")
 

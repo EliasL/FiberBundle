@@ -7,7 +7,7 @@ using ProgressMeter
 
 include("ploting_settings.jl")
 include("../support/dataManager.jl")
-include("../support/inertia.jl")
+include("../support/bundleAnalasys.jl")
 include("showBundle.jl")
 
 f_lin(x,p) = p[1] .+ Measurements.value.(x) .* p[2]

@@ -22,10 +22,10 @@ end
 
 
 
-L=512
+L=1024
 a=2.0
 nr="CLS"
-t=0.1
+t=0.18
 seed = 1
 f_path = get_file_path(L, a, t, nr, average=false)
 f = load(f_path)
@@ -41,7 +41,7 @@ if haskey(f, "average_nr_clusters")
 else
     println("Seed $seed: ")
     for key in data_keys
-        display(f)
+        #display(f)
         print("$key => ")
         d = f["$key/$seed"]
         print_d(d)

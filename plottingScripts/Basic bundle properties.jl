@@ -4,7 +4,7 @@ using LaTeXStrings
 
 include("ploting_settings.jl")
 include("../support/dataManager.jl")
-
+include("../support/bundleAnalasys.jl")
 
 function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     
@@ -39,10 +39,25 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     colors = theme_palette(:auto)[1:length(labels)]
     
     function add_spanning_point(y_data)
+        # Add spanning point
         x_data = get_data("average_spanning_cluster_step")
         y = [y[round(Int64, x*N)] for (x,y) in zip(x_data,y_data)]
         #Draw spanning
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x)
+
+
+        #Add energy change point
+        x_data = [argmax(σ_to_energy(σ)[1]) for σ in most_stressed_fiber]    
+        y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
+        #Draw localization
+        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline)
+        
+        #Add max σ_max
+        x_data = [argmax(σ) for σ in most_stressed_fiber]    
+        y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
+        #Draw localization
+        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:diamond, markersize=2, markerstrokewidth=0)
+
 
         #= # Add localization point
         s_data = get_data("average_largest_cluster")
@@ -59,7 +74,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+) =#
     end
 
-    function make_plot(y, ylabel, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), possition=:topright)
+    function make_plot(y, ylabel; title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), possition=:topright)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(k_N, y, label = labels, legend=possition, xlims=xlims, ylims=ylims, color= permutedims(colors),
@@ -73,18 +88,22 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     largest_perimiter = get_data("average_largest_perimiter")
     most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
 
+
     yLabel(string) = use_y_lable ? string : ""
 
-    nr_clusters_plot = make_plot(nr_clusters, L"\#C/N", nr*(nr=="LLS" ? "/ELS" : ""), (0,0.13))
+    nr_clusters_plot = make_plot(nr_clusters, L"\#C/N", title=nr*(nr=="LLS" ? "/ELS" : ""), ylims=(0,0.13))
 
     most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"σ_{\mathrm{max}}")
 
     largest_cluster_plot = make_plot(largest_cluster,L"S_{\mathrm{max}}/N")
+
+
+    #divEnergy_plot = make_plot(divEnergy,L"dE/(Ndx)")
     
-    largest_perimiter_plot = make_plot(largest_perimiter,L"H_{\mathrm{max}}/N", "", (0,0.375), L"k/N")
+    largest_perimiter_plot = make_plot(largest_perimiter,L"H_{\mathrm{max}}/N", ylims=(0,0.375), xlabel=L"k/N")
     
     l = @layout [
-        A B; C D
+        A B; C D 
     ]
     plots = [nr_clusters_plot, most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot]
     #p = plot(plots... layout=l, plot_title="$nr "*L"L="*"$L")
