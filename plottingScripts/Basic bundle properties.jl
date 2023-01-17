@@ -49,7 +49,11 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         function large_slope(s)
             return s>1/N
         end
-        x_data = [ findfirst(large_slope, diff(s))+1 for s in s_data]
+        function large_cluster(s)
+            return s>0.0000002*N
+        end
+        x_data = [ findfirst(large_slope, diff(s)) for s in s_data]
+        #x_data = [ findfirst(large_cluster, s) for s in s_data]
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+)
