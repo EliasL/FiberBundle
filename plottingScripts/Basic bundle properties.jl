@@ -95,12 +95,12 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
     most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"σ_{\mathrm{max}}")
 
-    largest_cluster_plot = make_plot(largest_cluster,L"S_{\mathrm{max}}/N")
+    largest_cluster_plot = make_plot(largest_cluster,L"s_{\mathrm{max}}/N")
 
 
     #divEnergy_plot = make_plot(divEnergy,L"dE/(Ndx)")
     
-    largest_perimiter_plot = make_plot(largest_perimiter,L"H_{\mathrm{max}}/N", ylims=(0,0.375), xlabel=L"k/N")
+    largest_perimiter_plot = make_plot(largest_perimiter,L"h_{\mathrm{max}}/N", ylims=(0,0.375), xlabel=L"k/N")
     
     l = @layout [
         A B; C D 
