@@ -49,17 +49,17 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         function large_slope(s)
             return s>1/N
         end
-        function large_cluster(s)
-            return s>0.0000002*N
+        function large_cluster(s,t)
+            return s.>0.0000002*N*(1-t)
         end
-        x_data = [ findfirst(large_slope, diff(s)) for s in s_data]
-        #x_data = [ findfirst(large_cluster, s) for s in s_data]
+        x_data = [ findfirst(large_slope, diff(s))*(1-t) for (s,t) in zip(s_data,ts)]
+        #x_data = [ findfirst(large_cluster(s,t)) for (s,t) in zip(s_data,ts)]
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+)
     end
 
-    function make_plot(y, ylabel, title="", ylims=(-Inf, Inf), xlabel="", possition=:topright, xlims=(0, 1.2))
+    function make_plot(y, ylabel, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), possition=:topright)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(k_N, y, label = labels, legend=possition, xlims=xlims, ylims=ylims, color= permutedims(colors),
