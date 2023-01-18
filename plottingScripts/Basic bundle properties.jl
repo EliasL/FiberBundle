@@ -48,12 +48,14 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
         #Add energy change point
         x_data = [argmax(σ_to_energy(σ)[1]) for σ in most_stressed_fiber]    
+        println(x_data[1])
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline)
         
         #Add max σ_max
         x_data = [argmax(σ) for σ in most_stressed_fiber]    
+        println(x_data[1])
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:diamond, markersize=2, markerstrokewidth=0)
