@@ -46,6 +46,24 @@ function show_progression()
     end
 end
 
+function show_t_change()
+    NR = "CLS"
+    T = [0.0, 0.1, 0.2, 0.3, 0.7]
+    L=128
+    α = 2.0
+    plots = []
+    seeds = 0
+
+    for seed=seeds, l=L, t=T
+        settings = make_settings(l, t, NR, α)
+        b = get_bundles_from_settings(settings, seeds=seed, spanning=true,)
+        p = plot_fb(b, show=false, use_shift=true)
+        title!(p, L"t_0="*"$t")
+        push!(plots, p)
+    end
+    plot(plots..., layout=(1,length(T)), size=(L*(length(T)+1), L*1.4))
+    savefig("plots/Visualizations/Progressions/$(L)$(NR)_$(α).pdf")  
+end
 
 function generate_illustrations()
     
@@ -68,4 +86,5 @@ end
 #generate_illustrations()
 
 #show_spanning_cluster()
-show_progression()
+#show_progression()
+show_t_change()
