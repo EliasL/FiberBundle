@@ -7,7 +7,7 @@ include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
 function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
-    
+    add_ELS=false
     N = L.*L
     files_and_t = []
     for t in ts
@@ -17,7 +17,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         @assert min_steps == N "This bundle is not fully broken! $min_steps != $N"
     end
 
-    if nr=="LLS"
+    if nr=="LLS" && add_ELS
         push!(files_and_t, load_file(L, α, 0.0, "ELS"))
         # Check that the data we use is from completely borken bundles
         min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α)) 
@@ -30,7 +30,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     k_N = [1:n for n in N]./N
     
     seeds = round(Int64, minimum(get_data("nr_seeds_used", divide=1)))
-    if nr=="LLS"
+    if nr=="LLS" && add_ELS
         extra_label=["ELS"]
     else
         extra_label=[]
@@ -38,12 +38,12 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     labels = permutedims(vcat(["$t" for t in ts], extra_label))
     colors = theme_palette(:auto)[1:length(labels)]
     
-    function add_spanning_point(y_data)
-        # Add spanning point
+    function add_points(y_data)
+        #= # Add spanning point
         x_data = get_data("average_spanning_cluster_step")
         y = [y[round(Int64, x*N)] for (x,y) in zip(x_data,y_data)]
         #Draw spanning
-        scatter!(x_data, y, color=colors, label=nothing, markershape=:x)
+        scatter!(x_data, y, color=colors, label=nothing, markershape=:x) =#
 
 
         #Add energy change point
@@ -81,7 +81,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(k_N, y, label = labels, legend=possition, xlims=xlims, ylims=ylims, color= permutedims(colors),
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title, linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-1)]),[:dot]))
-        add_spanning_point(y)
+        add_points(y)
         return plot
     end
 
@@ -93,7 +93,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
     yLabel(string) = use_y_lable ? string : ""
 
-    nr_clusters_plot = make_plot(nr_clusters, L"\#C/N", title=nr*(nr=="LLS" ? "/ELS" : ""), ylims=(0,0.13))
+    nr_clusters_plot = make_plot(nr_clusters, L"\#C/N", title=nr*(nr=="LLS" && add_ELS ? "/ELS" : ""), ylims=(0,0.13))
 
     most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"σ_{\mathrm{max}}")
 

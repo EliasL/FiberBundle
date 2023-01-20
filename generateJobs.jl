@@ -51,15 +51,15 @@ end
 
 
 
-seeds = [0, 30] # From seed to seed
+seeds = [0, 3000] # From seed to seed
 #L = [512]
-L = [1024]
-t = [0.38]
+L = [128]
+#t = [0.38]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
-#t = vcat((0:20) ./ 50, (5:9) ./ 10)
+t = vcat((0:20) ./ 50, (5:9) ./ 10)
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 make_job(seeds, L, t=t, α=[2.0], force_short=false)
 start_job()
