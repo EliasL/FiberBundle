@@ -7,7 +7,7 @@ include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
 function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
-    add_ELS=false
+    add_ELS=true
     N = L.*L
     files_and_t = []
     for t in ts
@@ -48,17 +48,15 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 
         #Add energy change point
         x_data = [argmax(σ_to_energy(σ)[1]) for σ in most_stressed_fiber]    
-        println(x_data[1])
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
-        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline)
+        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline, markersize=10)
         
         #Add max σ_max
         x_data = [argmax(σ) for σ in most_stressed_fiber]    
-        println(x_data[1])
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
-        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:diamond, markersize=2, markerstrokewidth=0)
+        scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
 
 
         #= # Add localization point
@@ -75,12 +73,14 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         #Draw localization
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+) =#
     end
-
-    function make_plot(y, ylabel; title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), possition=:topright)
+    
+    yLabel(string) = use_y_lable ? string : ""
+    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), possition=:topright)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
-        plot!(k_N, y, label = labels, legend=possition, xlims=xlims, ylims=ylims, color= permutedims(colors),
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-1)]),[:dot]))
+        plot!(x, y, label = labels, legend=possition, xlims=xlims, ylims=ylims, color= permutedims(colors),
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title,
+        linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-1)]),[:dot]))
         add_points(y)
         return plot
     end
@@ -91,25 +91,12 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
 
 
-    yLabel(string) = use_y_lable ? string : ""
-
-    nr_clusters_plot = make_plot(nr_clusters, L"\#C/N", title=nr*(nr=="LLS" && add_ELS ? "/ELS" : ""), ylims=(0,0.13))
-
-    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"σ_{\mathrm{max}}")
-
-    largest_cluster_plot = make_plot(largest_cluster,L"s_{\mathrm{max}}/N")
-
-
-    #divEnergy_plot = make_plot(divEnergy,L"dE/(Ndx)")
-    
+    nr_clusters_plot = make_plot(nr_clusters, L"M/N", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""), ylims=(0,0.13))
+    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"σ")
+    largest_cluster_plot = make_plot(largest_cluster,L"s_{\mathrm{max}}/N")    
     largest_perimiter_plot = make_plot(largest_perimiter,L"h_{\mathrm{max}}/N", ylims=(0,0.375), xlabel=L"k/N")
-    
-    l = @layout [
-        A B; C D 
-    ]
-    plots = [nr_clusters_plot, most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot]
-    #p = plot(plots... layout=l, plot_title="$nr "*L"L="*"$L")
-    return plots
+    basic_plots = [nr_clusters_plot, most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot]
+    return basic_plots
 end
 
 L = 128
@@ -119,8 +106,8 @@ nr = ["LLS", "CLS"]
 nrs = length(nr)
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
-plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm)
+p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm)
 
-savefig("plots/Graphs/BundleProperties.pdf")
+savefig(p, "plots/Graphs/BundleProperties.svg")
 
 println("Saved plot!")

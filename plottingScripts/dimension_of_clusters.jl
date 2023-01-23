@@ -84,14 +84,14 @@ function plot_dimension_thing(L, ts, α)
             end
         
         # Plot for each t
-        plot(plots..., size=(400, 200), layout = (length(NR)),)
+        #plot(plots..., size=(400, 200), layout = (length(NR)),)
         #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"), )    
-        savefig("plots/Graphs/SingleT/dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
+        #savefig("plots/Graphs/SingleT/dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
 
     end
-
-    scatter(ts, slopes, labels=permutedims(labels), markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
-        size=(400, 300), legend=:right, xlabel=L"t_0", ylabel=L"D")
+    #scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
+    scatter(ts, slopes, labels=permutedims(labels), markerstrokecolor=permutedims(theme_palette(:auto)[1:4]), markercolor=:transparent, markersize=5, markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
+        size=(300, 250), legend=:right, xlabel=L"t_0", ylabel=L"D")
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
     
 end
@@ -143,7 +143,7 @@ function get_gyration_radii(L, nr, t, α)
             push!(std_S, std(s))
             push!(H, mean(h))
             push!(std_H, std(h))
-            println("$l, $t, $(length(r))")
+            #println("$l, $t, $(length(r))")
         end
 
     end
