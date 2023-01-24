@@ -64,7 +64,7 @@ function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false)
         nr_clusters = maximum(m)
         nr_colors = nr_clusters
         background_color = RGBA(0,0,0)
-        spanning_color = RGBA(0.9,0.2,0.2)
+        spanning_color = RGBA(0.9,0.1,0.1)
         colors = vcat([background_color],[RGBA((rand(3))...) for i in 1:nr_colors])
         if spanning != -1
             colors[spanning+1] = spanning_color

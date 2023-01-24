@@ -11,7 +11,7 @@ function show_spanning_cluster()
     L=128
     α = 2.0
     seeds = 1:5
-    for seed=seeds, l=L, t=T
+    for seed=seeds, l=L
         settings = make_settings(l, t, nr, α)
         b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
         R = find_radius_of_gyration(b)
@@ -83,9 +83,9 @@ function generate_illustrations()
     save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
 end
 
-#generate_illustrations()
+generate_illustrations()
 
-#show_spanning_cluster()
-#show_progression()
+show_spanning_cluster()
+show_progression()
 show_t_change("LLS")
 show_t_change("CLS")
