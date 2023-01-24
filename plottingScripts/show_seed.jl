@@ -52,15 +52,16 @@ function show_t_change(NR)
     α = 2.0
     plots = []
     seeds = 0
+    s = L+200
 
     for seed=seeds, l=L, t=T
         settings = make_settings(l, t, NR, α)
         b = get_bundles_from_settings(settings, seeds=seed, spanning=true,)
         p = plot_fb(b, show=false, use_shift=true)
-        title!(p, L"t_0="*"$t")
+        title!(p, L"t_0="*"$t", titlefontsize=s/11)
         push!(plots, p)
     end
-    plot(plots..., layout=(1,length(T)), size=(L*(length(T)+1), L*1.4))
+    plot(plots..., layout=(1,length(T)), size=(s*(length(T)+1), s*1.4))
     savefig("plots/Visualizations/Progressions/$(L)$(NR)_$(α).png")  
 end
 

@@ -36,8 +36,8 @@ end
 function shift_spanning_cluster!(b::FB)
     # Get shift
     m = reshape(b.status, (b.L, b.L))
-    shift = get_ideal_shift(m)
-    #shift = shift_to_cm(b)
+    #shift = get_ideal_shift(m)
+    shift = shift_to_cm(b)
 
     # Shift status
     m = circshift(m, shift)
@@ -50,8 +50,8 @@ end
 
 function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false)
     L=b.L
-    spanning=b.spanning_cluster_id
-
+    spanning=argmax(b.cluster_size)
+    
     if use_shift
         shift_spanning_cluster!(b)
     end
@@ -63,21 +63,23 @@ function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false)
         clamp!(m, 0, Inf)
         nr_clusters = maximum(m)
         nr_colors = nr_clusters
-        background_color = :black
-        spanning_color = :red
-        colors = vcat([background_color],[RGBA(rand(3)...) for _ in eachindex(1:nr_colors)])
+        background_color = RGBA(0,0,0)
+        spanning_color = RGBA(0.9,0.2,0.2)
+        colors = vcat([background_color],[RGBA((rand(3))...) for i in 1:nr_colors])
         if spanning != -1
             colors[spanning+1] = spanning_color
         end
-        c = cgrad(colors)
+        c = colors
     end
 
     # We only want positive states, ie, clusters and 0 for
     # all others
     image_size = maximum([500,L])+100
-    h = heatmap(m, c=c, legend=:none, aspect_ratio=:equal, bg_inside = nothing,
+
+    img = map(x -> c[x+1], m)
+    p = plot(img, legend=:none, aspect_ratio=:equal, bg_inside = nothing,
     showaxis = axes, ticks=axes, size=(image_size, image_size))
-    p = plot(h)
+
     if show
         display(p)
     end

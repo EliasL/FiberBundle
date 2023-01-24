@@ -6,7 +6,7 @@ include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
-function propertiesPlot(L, ts, nr; use_y_lable=true, basic=true, add_ELS=true)
+function otherPropertiesPlot(L, ts, nr; use_y_lable=true, basic=true, add_ELS=true)
     N = L.*L
     files_and_t = []
     for t in ts

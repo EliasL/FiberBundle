@@ -39,12 +39,11 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     colors = theme_palette(:auto)[1:length(labels)]
     
     function add_points(y_data)
-        #= # Add spanning point
+        # Add spanning point
         x_data = get_data("average_spanning_cluster_step")
         y = [y[round(Int64, x*N)] for (x,y) in zip(x_data,y_data)]
         #Draw spanning
-        scatter!(x_data, y, color=colors, label=nothing, markershape=:x) =#
-
+        scatter!(x_data, y, color=colors, label=nothing, markershape=:x) 
 
         #Add energy change point
         x_data = [argmax(σ_to_energy(σ)[1]) for σ in most_stressed_fiber]    
