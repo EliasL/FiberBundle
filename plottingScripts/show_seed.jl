@@ -46,8 +46,7 @@ function show_progression()
     end
 end
 
-function show_t_change()
-    NR = "LLS"
+function show_t_change(NR)
     T = [0.0, 0.1, 0.2, 0.3, 0.7]
     L=128
     α = 2.0
@@ -62,7 +61,7 @@ function show_t_change()
         push!(plots, p)
     end
     plot(plots..., layout=(1,length(T)), size=(L*(length(T)+1), L*1.4))
-    savefig("plots/Visualizations/Progressions/$(L)$(NR)_$(α).pdf")  
+    savefig("plots/Visualizations/Progressions/$(L)$(NR)_$(α).png")  
 end
 
 function generate_illustrations()
@@ -87,4 +86,5 @@ end
 
 #show_spanning_cluster()
 #show_progression()
-show_t_change()
+show_t_change("LLS")
+show_t_change("CLS")
