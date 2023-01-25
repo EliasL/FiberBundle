@@ -57,7 +57,7 @@ function show_t_change(NR)
     for seed=seeds, l=L, t=T
         settings = make_settings(l, t, NR, α)
         b = get_bundles_from_settings(settings, seeds=seed, spanning=true,)
-        p = plot_fb(b, show=false, use_shift=true)
+        p = plot_fb(b, show=false, use_shift=true, cm_shift=false)
         title!(p, L"t_0="*"$t", titlefontsize=s/11)
         push!(plots, p)
     end
