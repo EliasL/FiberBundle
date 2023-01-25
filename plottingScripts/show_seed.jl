@@ -47,7 +47,7 @@ function show_progression()
 end
 
 function show_t_change(NR)
-    T = [0.0, 0.1, 0.2, 0.3, 0.7]
+    T = [0.0, 0.1, 0.2, 0.3, 0.7,0.9]
     L=128
     α = 2.0
     plots = []
@@ -83,9 +83,9 @@ function generate_illustrations()
     save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
 end
 
-generate_illustrations()
+#generate_illustrations()
 
-show_spanning_cluster()
-show_progression()
+#show_spanning_cluster()
+#show_progression()
 show_t_change("LLS")
 show_t_change("CLS")
