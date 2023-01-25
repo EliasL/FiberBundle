@@ -83,9 +83,9 @@ function generate_illustrations()
     save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
 end
 
-#generate_illustrations()
+generate_illustrations()
 
-#show_spanning_cluster()
-#show_progression()
+show_spanning_cluster()
+show_progression()
 show_t_change("LLS")
 show_t_change("CLS")
