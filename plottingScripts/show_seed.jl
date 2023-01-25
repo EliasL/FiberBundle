@@ -47,7 +47,7 @@ function show_progression()
 end
 
 function show_t_change(NR)
-    T = [0.0, 0.1, 0.2, 0.3, 0.7]
+    T = [0.0, 0.1, 0.2, 0.3, 0.7,0.9]
     L=128
     α = 2.0
     plots = []

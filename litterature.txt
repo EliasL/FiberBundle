@@ -6,14 +6,10 @@ Scaling laws of creep rupture of fiber bundles (2003, F. Kun)
 
 Local load sharing fiber bundles with a lower cutoff of strength disorder (2006, Frank Raischel)
 	Very similar!
-
-
-
-
-
-
-
-
+	
+Transition from localized to mean field behaviour of cascading failures
+in the fiber bundle model on complex networks
+	Transition from ELS to LLS
 
 
 
