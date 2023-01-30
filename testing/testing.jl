@@ -168,7 +168,7 @@ function neighbourhood_strength_test_with_alpha(nr)
     end
 end
 
-function test_store_possition()
+function test_store_position()
     current_fiber = 1
     neighbour_fiber = 4
     # Directions = [+1x,-1x,-1y,1y]
@@ -178,22 +178,22 @@ function test_store_possition()
     b.rel_pos_x = [-4,2,0,0]
     b.rel_pos_y= [1,1,0,0]
 
-    store_possition!(current_fiber, neighbour_fiber, direction, b)
+    store_position!(current_fiber, neighbour_fiber, direction, b)
     @test b.rel_pos_x[neighbour_fiber] == -3 #"x movement not working"
     @test b.cluster_dimensions[2] == -4 #"Cluster dimensions not working1: $cluster_dimensions"
 
     direction = 2 #x-1
-    store_possition!(current_fiber, neighbour_fiber, direction, b)
+    store_position!(current_fiber, neighbour_fiber, direction, b)
     @test b.rel_pos_x[neighbour_fiber] == -5 #"x movement not working"
     @test b.cluster_dimensions[2] == -5 #"Cluster dimensions not working1: $cluster_dimensions"
 
     direction = 3 #y+1
-    store_possition!(current_fiber, neighbour_fiber, direction, b)
+    store_position!(current_fiber, neighbour_fiber, direction, b)
     @test b.cluster_dimensions == [2,-5,0,1] #"Cluster dimensions not working2: $cluster_dimensions"
     @test b.rel_pos_y[neighbour_fiber] == 0 #"y movement not working1: $rel_pos_y"
 
     direction = 4 #y-1
-    store_possition!(current_fiber, neighbour_fiber, direction, b)
+    store_position!(current_fiber, neighbour_fiber, direction, b)
     @test b.cluster_dimensions == [2,-5,0,2] #"Cluster dimensions not working3: $cluster_dimensions"
     @test b.rel_pos_y[neighbour_fiber] == 2 #"y movement not working2: $rel_pos_y"
 end
@@ -459,7 +459,7 @@ function test()
         @testset "Neighbourhood rules $nr" for nr in ["LLS", "CNR", "CLS", "ELS"]
             neighbourhood_strength_test_with_alpha(nr)
         end
-        @testset "Store possition" begin test_store_possition() end
+        @testset "Store position" begin test_store_position() end
         @testset "Spanning cluster" begin spanning_cluster_test() end
         @testset "Random spanning cluster" begin random_spanning_cluster_test() end
         @testset "Center of mass" begin basic_cm_test() 

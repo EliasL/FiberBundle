@@ -53,6 +53,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         
         #Add max σ_max
         x_data = [argmax(σ) for σ in most_stressed_fiber]    
+        println(x_data)
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
@@ -74,10 +75,10 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     end
     
     yLabel(string) = use_y_lable ? string : ""
-    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), possition=:topright)
+    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), position=:topright)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
-        plot!(x, y, label = labels, legend=possition, xlims=xlims, ylims=ylims, color= permutedims(colors),
+        plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title,
         linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-1)]),[:dot]))
         add_points(y)

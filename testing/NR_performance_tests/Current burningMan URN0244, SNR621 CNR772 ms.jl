@@ -295,7 +295,7 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
             # increase the cluster size
             cluster_size[c] += 1
             # and increase the cluster dimensions depending on what direction we explored In
-            store_possition(current_fiber, neighbour_fiber, i, cluster_dimensions, rel_pos_x, rel_pos_y)
+            store_position(current_fiber, neighbour_fiber, i, cluster_dimensions, rel_pos_x, rel_pos_y)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
         elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
@@ -312,7 +312,7 @@ end
 
 const movement = [1,-1,1,-1] # direction
 
-function store_possition(current_fiber::Int64, neighbour_fiber::Int64, 
+function store_position(current_fiber::Int64, neighbour_fiber::Int64, 
     direction::Int64, 
     cluster_dimensions::Vector{Int64},
     rel_pos_x::Vector{Int64},

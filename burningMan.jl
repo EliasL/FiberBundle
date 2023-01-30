@@ -43,7 +43,7 @@ Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
     cluster_cm_x::Vector{F} = zeros(F, N)
     cluster_cm_y::Vector{F} = zeros(F, N)
     unexplored::Vector{I} = zeros(I, N)
-    # Relative possition of every fiber with respect to it's cluster
+    # Relative position of every fiber with respect to it's cluster
     rel_pos_x::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
     rel_pos_y::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
     cluster_dimensions::Vector{I} = zeros(I, 4)
@@ -246,7 +246,7 @@ function resetBundle!(b::FB)
 
     resetClusters!(b)
 
-    reset_relative_possition!(b)
+    reset_relative_position!(b)
 end
 
 function healBundle!(b::FB; reset_break_sequence=true)
@@ -347,10 +347,10 @@ function break_fiber_list!(I::AbstractArray{Int}, b::FB)
 end
 
 
-function reset_relative_possition!(b::FB)
-    # Note about the relative possition:
+function reset_relative_position!(b::FB)
+    # Note about the relative position:
     # If a fiber boarders two clusters, it will have the relative
-    # possition of the cluster explored last.
+    # position of the cluster explored last.
     fill!(b.rel_pos_x, 0)
     fill!(b.rel_pos_y, 0)
 end
@@ -413,14 +413,14 @@ function distance(a,b,L)
     return minimum([abs(a-b), abs(a-(b-L)), abs(a-(b+L))])
 end
 
-function save_initial_cluster_possition(i::Int64, b::FB)
+function save_initial_cluster_position(i::Int64, b::FB)
     # Calculating the cm is a bit difficult because
     # of the periodic boundryconditions. In order to save
     # some variables, we are going to store the initial 
-    # entry possition of the cluser in the last entry of b.cluster_cm_x/y.
+    # entry position of the cluser in the last entry of b.cluster_cm_x/y.
     # Since we can never have N clusters, this space is never
     # used and we can freely use it for what we want. 
-    # Then we will use relative possitions with respect to this
+    # Then we will use relative positions with respect to this
     # value in further calculations instead of potentially
     # looping over to a periodic site.
     x,y = fiber_index_to_xy(i, b.L)
@@ -431,10 +431,10 @@ function save_initial_cluster_possition(i::Int64, b::FB)
 end
 
 function add_to_cm(i::Int64, b::FB)
-    # First get source possition
+    # First get source position
     x = b.cluster_cm_x[b.N]
     y = b.cluster_cm_y[b.N]
-    # Now add that together with the relative possition
+    # Now add that together with the relative position
     b.cluster_cm_x[b.c] += x + b.rel_pos_x[i]
     b.cluster_cm_y[b.c] += y + b.rel_pos_y[i]
 end
@@ -448,7 +448,7 @@ function normalize_cm(b::FB)
     b.cluster_cm_y[b.c] = mod1(b.cluster_cm_y[b.c], b.L)
 
     # Also, to not get confused, we reset
-    # the initial possition so that we don't think that it is a cm
+    # the initial position so that we don't think that it is a cm
     b.cluster_cm_x[b.N]=0
     b.cluster_cm_y[b.N]=0
 end
@@ -469,8 +469,8 @@ function explore_cluster_at!(i::Int64, b::FB)
     # We set the center of mass to be zero
     b.cluster_cm_x[b.c] = 0
     b.cluster_cm_y[b.c] = 0
-    # We save the initial possition
-    save_initial_cluster_possition(i, b)
+    # We save the initial position
+    save_initial_cluster_position(i, b)
     # We reset cluster dimisions
     reset_cluster_dimensions!(b)
 
@@ -527,7 +527,7 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
             # increase the cluster size
             b.cluster_size[b.c] += 1
             # and increase the cluster dimensions depending on what direction we explored In
-            store_possition!(current_fiber, neighbour_fiber, i, b)
+            store_position!(current_fiber, neighbour_fiber, i, b)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
         elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
@@ -543,12 +543,12 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
 end
 
 
-function store_possition!(current_fiber::Int64, neighbour_fiber::Int64, 
+function store_position!(current_fiber::Int64, neighbour_fiber::Int64, 
     direction::Int64, 
     b::FB)
     # cluster_dimensions = [max_x, min_x, max_y, min_y]
 
-    # Copy over the possition to the neighbour
+    # Copy over the position to the neighbour
     b.rel_pos_x[neighbour_fiber] = b.rel_pos_x[current_fiber]
     b.rel_pos_y[neighbour_fiber] = b.rel_pos_y[current_fiber]
 
