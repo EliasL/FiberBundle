@@ -57,7 +57,7 @@ function show_t_change(NR)
     for seed=seeds, l=L, t=T
         settings = make_settings(l, t, NR, α)
         b = get_bundles_from_settings(settings, seeds=seed, spanning=true,)
-        p = plot_fb(b, show=false, use_shift=true)
+        p = plot_fb(b, show=false, use_shift=true, cm_shift=false)
         title!(p, L"t_0="*"$t", titlefontsize=s/11)
         push!(plots, p)
     end
@@ -83,9 +83,9 @@ function generate_illustrations()
     save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
 end
 
-#generate_illustrations()
+generate_illustrations()
 
-#show_spanning_cluster()
-#show_progression()
+show_spanning_cluster()
+show_progression()
 show_t_change("LLS")
 show_t_change("CLS")

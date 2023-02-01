@@ -33,12 +33,14 @@ function shift_to_cm(b::FB)
     return ((round(Int, b.L/2-cmy)), (round(Int, b.L/2-cmx)))
 end
 
-function shift_spanning_cluster!(b::FB)
+function shift_spanning_cluster!(b::FB, cm_shift=true)
     # Get shift
     m = reshape(b.status, (b.L, b.L))
-    #shift = get_ideal_shift(m)
-    shift = shift_to_cm(b)
-
+    if cm_shift
+        shift = shift_to_cm(b)
+    else
+        shift = get_ideal_shift(m)
+    end
     # Shift status
     m = circshift(m, shift)
     b.status = reshape(m, (b.N))
@@ -48,12 +50,12 @@ function shift_spanning_cluster!(b::FB)
 end
 
 
-function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false)
+function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false, cm_shift=true)
     L=b.L
     spanning=argmax(b.cluster_size)
     
     if use_shift
-        shift_spanning_cluster!(b)
+        shift_spanning_cluster!(b, cm_shift)
     end
     if stress
         m = reshape(b.tension, (L,L))
