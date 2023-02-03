@@ -343,8 +343,7 @@ function storageTest()
         @test key in keys(f)
     end
 
-    #You cannot resume progress! D:
-#= 
+    
     # Test to see if a bundle can partially be broken and continue later
     L = 8
     settings = make_settings(L, 0.1, "CLS", 2.0, test_data_path)
@@ -352,7 +351,7 @@ function storageTest()
     break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=false)
     clean_after_run(settings, [seed])
     correct_f = load_file(settings, average=false)
-    b = get_bundle_from_file(correct_f, L, "CLS", seed=seed, step=22)
+    b = get_bundle_from_file(correct_f, L, nr="CLS", seed=seed, step=22)
     plot_fb(b, use_shift=false, stress=false)
     @test correct_f["last_step/$seed"] == L*L
     @test length(correct_f["break_sequence/$seed"]) == L*L
@@ -368,15 +367,16 @@ function storageTest()
     test_f = load_file(settings, average=false)
 
     
-    b = get_bundle_from_file(test_f, L, "CLS", seed=seed, step=22)
+    b = get_bundle_from_file(test_f, L, nr="CLS", seed=seed, step=22)
     plot_fb(b, use_shift=false, stress=false)
 
     @test test_f["last_step/$seed"] == L*L
     @test length(test_f["break_sequence/$seed"]) == L*L
     @test all(correct_break_seq .== test_f["break_sequence/$seed"])
-    @test abs(correct_simulation_time - test_f["simulation_time/$seed"]) < correct_simulation_time *0.05
+    
+    #Simulation time is unreliable
+    #@test correct_simulation_time < test_f["simulation_time/$seed"] < correct_simulation_time *1.3
 
- =#
 
     search_for_loose_files(settings)
     rm(test_data_path, force=true, recursive=true)

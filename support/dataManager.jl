@@ -477,7 +477,8 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", seed=1, progression=0, step=0, without_storage=true, spanning=false, update_tension=true)
+function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", seed=1, progression=0, step=0,
+                            without_storage=true, spanning=false, update_tension=true, return_simulation_time=false)
     if without_storage
         b = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
     else
@@ -494,7 +495,8 @@ function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", 
     break_sequence = file["break_sequence/$seed"] 
     b.break_sequence[1:length(break_sequence)] = break_sequence
     simulation_time = file["simulation_time/$seed"]
-    
+    b.current_step= file["last_step/$seed"]
+
     if progression != 0
         @assert step==0
         break_sequence = break_sequence[1:round(Int, L*L*progression)]
@@ -526,12 +528,16 @@ function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", 
     if without_storage
         return b
     else
-        return b, s
+        if return_simulation_time
+            return b, s, simulation_time
+        else
+            return b, s
+        end
     end
 end
 
 function get_bundles_from_settings(settings; seeds, progression=0, step=0,
-        without_storage=true, update_tension=true, spanning=false)
+        without_storage=true, update_tension=true, spanning=false, return_simulation_time=false)
     file = load_file(settings, average=false)
     L = settings["L"]
     nr = settings["nr"]
@@ -542,10 +548,10 @@ function get_bundles_from_settings(settings; seeds, progression=0, step=0,
     bundles = []
     for seed in seeds
         b = get_bundle_from_file(file, L, nr=nr, t=t, α=α, dist=dist, seed=seed, progression=progression,
-            step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning)
+            step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning, return_simulation_time=return_simulation_time)
         push!(bundles, b)
     end
-    if length(bundles)==1
+    if length(seeds)==1
         return bundles[1]
     else
         return bundles

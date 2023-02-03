@@ -22,10 +22,12 @@ function break_bundle(settings, progress_channel, working_channel, seed;
 
     # Check if there already exists previous data
     if use_past_progress
-        @assert false "This feature does not work!"
-        b, s = get_bundles_from_settings(settings, seeds=seed, without_storage=false, update_tension=false)
+        #@assert false "This feature does not work!"
+        b, s, old_sim_time = get_bundles_from_settings(settings, seeds=seed, without_storage=false, update_tension=false,
+                                                        return_simulation_time=true)
     else
         b, s = get_fb(settings, seed)
+        old_sim_time = 0
     end
 
 
@@ -41,11 +43,10 @@ function break_bundle(settings, progress_channel, working_channel, seed;
            put!(progress_channel, true) # trigger a progress bar update
         end
     end
-
     if save_data
         jldopen(file_name, "w") do file
             file["last_step"] = b.current_step
-            file["simulation_time"] = simulation_time
+            file["simulation_time"] = simulation_time + old_sim_time
             file["spanning_cluster_size"] = s.spanning_cluster_size_storage
             file["spanning_cluster_perimiter"] = s.spanning_cluster_perimiter_storage
             file["spanning_cluster_step"] = s.spanning_cluster_step
