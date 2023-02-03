@@ -1,0 +1,59 @@
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 40 workers... 
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:59
+┌ LogLevel(-1): Running settings: 
+│  Any[256], 
+│  Any[0.0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24, 0.26, 0.28, 0.3, 0.32, 0.34, 0.36, 0.38, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9], 
+│  Any[2.0]
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:63
+┌ LogLevel(-2): 2023-02-03T15:38:30.077: Starting a=0.0 dist=Uniform L=256 nr=LLS t=0.0
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:156
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:274
+┌ LogLevel(-2): Running workers...
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:141
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=256 nr=LLS t=0.0
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:81
+      From worker 16:	65536
+      From worker 33:	65536
+      From worker 24:	65536
+      From worker 14:	65536
+      From worker 34:	65536
+      From worker 31:	65536
+      From worker 13:	65536
+      From worker 6:	65536
+      From worker 11:	65536
+      From worker 17:	65536
+      From worker 3:	26524
+      From worker 41:	65536
+      From worker 32:	65536
+      From worker 40:	65536
+      From worker 39:	65536
+      From worker 36:	65536
+      From worker 30:	65536
+      From worker 4:	65536
+      From worker 9:	65536
+      From worker 10:	65536
+      From worker 12:	65536
+      From worker 19:	65536
+      From worker 15:	65536
+      From worker 22:	65536
+      From worker 26:	65536
+      From worker 27:	65536
+      From worker 8:	65536
+      From worker 37:	65536
+      From worker 18:	65536
+      From worker 21:	65536
+      From worker 25:	65536
+      From worker 7:	65536
+      From worker 20:	65536
+      From worker 5:	65536
+      From worker 38:	65536
+      From worker 23:	65536
+      From worker 2:	65536
+      From worker 28:	65536
+      From worker 35:	65536
+      From worker 29:	65536
+┌ LogLevel(-2): 0%, Active workers: 40, Completed tasks: 1.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:93

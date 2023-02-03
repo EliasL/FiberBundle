@@ -7,7 +7,7 @@ include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
 function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
-    add_ELS=true
+    add_ELS=false
     N = L.*L
     files_and_t = []
     for t in ts
@@ -99,7 +99,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     return basic_plots
 end
 
-L = 128
+L = 8
 ts = [0.0, 0.1, 0.2, 0.3, 0.7, 0.9]
 α = 2.0
 nr = ["LLS", "CLS"]

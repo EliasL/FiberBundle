@@ -148,8 +148,8 @@ end
 
 function test(seeds=1)
     nr = "CLS"
-    t = 0.1
-    L=32
+    t = 0.0
+    L=8
     α = 2.0
     settings = make_settings(L, t, nr, α)
     bundles = get_bundles_from_settings(settings, seeds=seeds, step=-0)

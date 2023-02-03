@@ -496,7 +496,6 @@ function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", 
     b.break_sequence[1:length(break_sequence)] = break_sequence
     simulation_time = file["simulation_time/$seed"]
     b.current_step= file["last_step/$seed"]
-
     if progression != 0
         @assert step==0
         break_sequence = break_sequence[1:round(Int, L*L*progression)]
