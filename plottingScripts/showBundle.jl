@@ -1,5 +1,5 @@
 using Plots
-#using DataStructures
+using DataStructures
 
 include("../burningMan.jl")
 include("../support/dataManager.jl")

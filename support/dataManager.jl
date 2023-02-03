@@ -482,39 +482,40 @@ function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", 
         b = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
     else
         b,s = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
-        
-        b.current_step = file["last_step/$seed"]
-        simulation_time = file["simulation_time/$seed"]
         s.spanning_cluster_size_storage = file["spanning_cluster_size/$seed"]
         s.spanning_cluster_perimiter_storage = file["spanning_cluster_perimiter/$seed"]
         s.spanning_cluster_step = file["spanning_cluster_step/$seed"]
         s.most_stressed_fiber = file["most_stressed_fiber/$seed"]
         s.nr_clusters = file["nr_clusters/$seed"]
-        break_sequence = file["break_sequence/$seed"] 
-        b.break_sequence[1:length(break_sequence)] = break_sequence
         s.largest_cluster = file["largest_cluster/$seed"]
         s.largest_perimiter = file["largest_perimiter/$seed"]
     end
 
-    break_sequence = file["break_sequence/$seed"]
-
-
+    break_sequence = file["break_sequence/$seed"] 
+    b.break_sequence[1:length(break_sequence)] = break_sequence
+    simulation_time = file["simulation_time/$seed"]
+    
     if progression != 0
         @assert step==0
         break_sequence = break_sequence[1:round(Int, L*L*progression)]
+        b.current_step = round(Int, L*L*progression)
     end
     if step > 0
         @assert progression==0
+        b.current_step = step
         break_sequence = break_sequence[1:step]
     elseif step < 0
         @assert progression==0
+        b.current_step = file["last_step/$seed"]+step
         break_sequence = break_sequence[1:(file["last_step/$seed"]+step)]
     end
     if spanning
         @assert step==0
         @assert progression==0
+        b.current_step = file["spanning_cluster_step/$seed"]
         break_sequence = break_sequence[1:file["spanning_cluster_step/$seed"]]
     end
+
     break_fiber_list!(break_sequence, b)
     if update_tension
         update_tension!(b)
