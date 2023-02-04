@@ -3,7 +3,7 @@ using Random
 using ProgressMeter
 using StaticArrays
 using Profile
-using PProf
+#using PProf
 
 include("support/neighbourhoodWeighting.jl")
 include("support/distributions.jl")
@@ -15,66 +15,91 @@ Simulate breakage of an LxL fiber matrix
 # Fiber bundle
 
 #An idea is to store variables in a mutable vector so that the struct can stay static (Not mulable)
-Base.@kwdef mutable struct FB{l, n, F<:AbstractFloat, I<:Integer}
-    L::I = l
-    N::I = n
+Base.@kwdef mutable struct FB{F<:AbstractFloat, I<:Integer}
+    L::I
+    N::I = L*L
     α::F = 2
-    nr::String = "UNR"
-    x::MVector{n,F} = MVector{n}(zeros(F, n))
-    #neighbours::SMatrix{n, 4, I} = SMatrix{n, 4}(fillAdjacent(l, NEIGHBOURS))
-    #neighbourhoods::SMatrix{n, 8, I} = SMatrix{n, 8}(fillAdjacent(l, NEIGHBOURHOOD))
-    #movement::SVector{4,I} = SVector{4}([1,-1,1,-1]) # this is dependent on the order of neighbours...
-    #current_neighbourhood::MVector{8, I} = MVector{8}(zeros(I, 8))
-    #neighbourhood_values::MVector{n,I} = MVector{n}(zeros(I, n))
+    nr::String = "LLS"
+    x::Vector{F} = zeros(F, N)
+    neighbours::Matrix{I} = fillAdjacent(L, NEIGHBOURS)
+    neighbourhoods::Matrix{I} = fillAdjacent(L, NEIGHBOURHOOD)
+    movement::SVector{4,I} = SVector{4}([1,-1,-1,1]) # this is dependent on the order of neighbours...
+    current_neighbourhood::Vector{I} = zeros(I, 8)
+    neighbourhood_values::Vector{I} = zeros(I, N)
 
     # These values are reset for each step
-    #σ::MVector{n,F} = MVector{n}(ones(F, n)) # Relative tension
-    #tension::MVector{n,F} = MVector{n}(zeros(F, n))
+    σ::Vector{F} = ones(F, N) # Relative tension
+    tension::Vector{F} = zeros(F, N)
     max_σ::F = 0.0
-    #status::MVector{n,I} = MVector{n}(fill(I(-1), n))
-    c::I=0
-    spanning_cluster_id::I=-1
-    #cluster_size::MVector{n,I} = MVector{n}(zeros(I, n))
-    #cluster_outline_length::MVector{n,I} = MVector{n}(zeros(I, n))
+    status::Vector{I} = fill(I(-1), N)
+    current_step::I = 0
+    break_sequence::Vector{I} = zeros(I, N)
+    c::I = 0 # nr_clusters / current_cluster_id
+    spanning_cluster_id::I = -1
+    cluster_size::Vector{I} = zeros(I, N)
+    cluster_outline_length::Vector{I} = zeros(I, N)
     # These values are reset for each cluster
-    #cluster_outline::MVector{n,I} = MVector{n}(zeros(I, n))
-    #unexplored::MVector{n,I} = MVector{n}(zeros(I, n))
-    # Relative possition of every fiber with respect to it's cluster
-    #rel_pos_x::MVector{n,I} = MVector{n}(zeros(I, n))
-    #rel_pos_y::MVector{n,I} = MVector{n}(zeros(I, n))
-    #cluster_dimensions::MVector{4,I} = MVector{4}(zeros(I, 4))
+    cluster_outline::Vector{I} = zeros(I, N)
+    cluster_cm_x::Vector{F} = zeros(F, N)
+    cluster_cm_y::Vector{F} = zeros(F, N)
+    unexplored::Vector{I} = zeros(I, N)
+    # Relative position of every fiber with respect to it's cluster
+    rel_pos_x::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
+    rel_pos_y::Vector{I} = zeros(I, N)#Vector{I}(undef, N)
+    cluster_dimensions::Vector{I} = zeros(I, 4)
 end
 
 # Fiber bundle storage
-Base.@kwdef mutable struct FBS{division, n, F<:AbstractFloat, I<:Integer}
+Base.@kwdef mutable struct FBS{F<:AbstractFloat, I<:Integer}
+    division::I
+    N::I
     # These arrays store one value for each step
-    most_stressed_fiber::MVector{n,F} = MVector{n}(zeros(F, n))
-    nr_clusters::MVector{n,I} = MVector{n}(zeros(I, n))
-    largest_cluster::MVector{n,I} = MVector{n}(zeros(I, n))
-    largest_perimiter::MVector{n,I} = MVector{n}(zeros(I, n))
+    most_stressed_fiber::Vector{F} = zeros(F, N)
+    nr_clusters::Vector{I} = zeros(I, N)
+    largest_cluster::Vector{I} = zeros(I, N)
+    largest_perimiter::Vector{I} = zeros(I, N)
 
     # We want to store some samples of the processed
     # I'm thinking at 10%, 20%, ... 90% done would work
     # ie, 9 images
-    status_storage = zeros(I, division-1, n)
-    tension_storage = zeros(F, division-1, n)
+    status_storage = zeros(I, division-1, N)
+    tension_storage = zeros(F, division-1, N)
 
-    spanning_cluster_state_storage = zeros(I, n)
-    spanning_cluster_tension_storage = zeros(I, n)
-    spanning_cluster_size_storage = 0
-    spanning_cluster_perimiter_storage = 0
-    spanning_cluster_has_not_been_found = true
-    spanning_cluster_step = 0
+    spanning_cluster_state_storage = zeros(I, N)
+    spanning_cluster_tension_storage = zeros(F, N)
+    spanning_cluster_size_storage::I = 0
+    spanning_cluster_perimiter_storage::I = 0
+    spanning_cluster_has_been_found::Bool = false
+    spanning_cluster_step::I = 0
     # If N=100 Steps to store is now [90, 80, ... , 10]
-    steps_to_store = [round(I,n/division * i) for i in 1:division-1]
-    storage_index = 1
+    steps_to_store::Vector{I} = [round(I,N/division * i) for i in 1:division-1]
+    storage_index::I = 1
 end
 
-function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
+function update_storage!(b::FB, s::FBS)
+    #Save important data from step
+    step = b.current_step
+    s.most_stressed_fiber[step] = 1/b.max_σ
+    s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
+    s.largest_cluster[step] = maximum(b.cluster_size)
+    s.largest_perimiter[step] = maximum(b.cluster_outline_length)
+
+    if b.spanning_cluster_id != -1 && !s.spanning_cluster_has_been_found
+        s.spanning_cluster_size_storage = b.cluster_size[b.spanning_cluster_id]
+        s.spanning_cluster_perimiter_storage = b.cluster_outline_length[b.spanning_cluster_id]
+        s.spanning_cluster_step = step
+        s.spanning_cluster_has_been_found = true
+    end
+end
+
+
+function get_fb(L, seed; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=false)
     N=L*L
-    x = nothing
+    
+    @assert seed!=-1 "Seed should not be negative"
+    Random.seed!(seed)
+
     if dist == "Uniform"
-        print("un")
         distribution_function = get_uniform_distribution(t)
         x = distribution_function(N)
     elseif isa(dist, Function)
@@ -84,22 +109,29 @@ function get_fb(L; α=2, t=0, nr="UNR", dist="Uniform", without_storage=false)
     else
         error("No distribution found! Got: $dist")
     end
-
-    print("i")
-    fb = FB{L, N, Float64, Int64}(α=α, nr=nr, x=x)
+    fb = FB{Float64, Int64}(L=L, α=α, nr=nr, x=x)
     if without_storage
         return fb
     else
-        print("form")
-        return fb, FBS{10, N, Float64, Int64}()
+        return fb, FBS{Float64, Int64}(division=10, N=N)
     end
 end
 
+function get_fb(settings::Dict, seed, without_storage=false)
+    L = settings["L"]
+    α = settings["a"]
+    t = settings["t"]
+    nr = settings["nr"]
+    dist = settings["dist"]
+    return get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
+end
+
 # Define constants
-ALIVE = -1 #::Int64 = -1 # A fiber that has not yet been broken
-CURRENT_BORDER = -2 #::Int64 = -2 # The border of the current cluster being explored
-PAST_BORDER = -3#::Int64 = -3 # The border of a cluster that has been explored
-BROKEN = 0#::Int64 = 0 # A broken fiber that has not been explored
+# Since they can't be typed in julia version <1.8, we can't use this
+#ALIVE = -1 #::Int64 = -1 # A fiber that has not yet been broken
+#CURRENT_BORDER = -2 #::Int64 = -2 # The border of the current cluster being explored
+#PAST_BORDER = -3#::Int64 = -3 # The border of a cluster that has been explored
+#BROKEN = 0#::Int64 = 0 # A broken fiber that has not been explored
 # Status larger than 0 represents the cluster id that the fiber belongs to
 
  #
@@ -214,7 +246,20 @@ function resetBundle!(b::FB)
 
     resetClusters!(b)
 
-    reset_relative_possition!(b)
+    reset_relative_position!(b)
+end
+
+function healBundle!(b::FB; reset_break_sequence=true)
+    # This completely resets the bundle
+    fill!(b.σ, 1)
+    fill!(b.tension, 0)
+    fill!(b.status, -1)
+    b.current_step = 0
+    if reset_break_sequence
+        fill!(b.break_sequence, 0)
+    end
+    fill!(b.cluster_size, 0)
+    resetBundle!(b)
 end
 
 function resetClusters!(b::FB)
@@ -257,32 +302,61 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
     # find what fiber will break first, we need to take into
     # account how much tension the fiber can handle. We do this
     # by dividing by x.
+    update_σ!(b)
     for i in eachindex(b.σ)
         b.tension[i] = b.σ[i] / b.x[i]
     end
 end
 
-function findNextFiber!(b::FB)
-    update_tension!(b)
-    i = argmax(b.tension)
-    b.max_σ = b.tension[i]
-    return i
+function find_next_fiber!(b::FB)
+    b.current_step += 1
+    b.break_sequence[b.current_step] = argmax(b.tension)
+    b.max_σ = b.tension[b.break_sequence[b.current_step]]
 end
 
-function break_fiber!(i::Int, b::FB)
+function findAndBreakNextFiber!(b::FB, s::FBS)
+    update_tension!(b)
+    find_next_fiber!(b)
+    update_storage!(b, s)
+    break_fiber!(b)
+    resetBundle!(b)
+end
+
+function findAndBreakNextFiber!(b::FB)
+    findAndBreakNextFiber!(b, FBS{Float64, Int64}(division=10, N=b.N))
+end
+
+function break_fiber!(b::FB)
+    i = b.break_sequence[b.current_step]
+    break_this_fiber!(i, b)
+end
+
+function break_this_fiber!(i::Int64, b::FB)
     b.status[i] = 0#BROKEN
     b.σ[i] = 0
+    b.tension[i] = 0
 end
 
-function reset_relative_possition!(b::FB)
-    # Note about the relative possition:
+function break_fiber_list!(I::AbstractArray{Int}, b::FB)
+    for i in I
+        if i==0 # We skipp 0 for convenience.
+            continue
+        end
+        break_this_fiber!(i, b)
+    end
+end
+
+
+function reset_relative_position!(b::FB)
+    # Note about the relative position:
     # If a fiber boarders two clusters, it will have the relative
-    # possition of the cluster explored last.
+    # position of the cluster explored last.
     fill!(b.rel_pos_x, 0)
     fill!(b.rel_pos_y, 0)
 end
 
 function update_σ!(b::FB)
+    @assert b.c == 0 "The bundle have not been reset!"
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -318,6 +392,67 @@ function reset_cluster_dimensions!(b::FB)
     fill!(b.cluster_dimensions, 0) # Reset cluster dimensions
 end
 
+function fiber_index_to_xy(i::Int64, L::Int64)
+    y = mod1(i,L)
+    x = ceil(Int64, i/L) #ceil to use one indexing
+    return x, y
+end
+
+function distance(a,b,L)
+    # When calculating various propperties of a cluster
+    # we often want the distance between two points. 
+    # because of periodic boundry conditions, this
+    # is slightly more difficult than in normal situations
+
+    # This function finds the shortest distance between two NUMBERS. NOT POINTS!
+    # i.e. It is used on a 1D line
+    # Ex: distance (1,9,10) is not 8 like in the normal case, but 
+    # 2. Because of Julias one indexing, we use mod1, and the distance
+    # is therefore not 3.
+
+    return minimum([abs(a-b), abs(a-(b-L)), abs(a-(b+L))])
+end
+
+function save_initial_cluster_position(i::Int64, b::FB)
+    # Calculating the cm is a bit difficult because
+    # of the periodic boundryconditions. In order to save
+    # some variables, we are going to store the initial 
+    # entry position of the cluser in the last entry of b.cluster_cm_x/y.
+    # Since we can never have N clusters, this space is never
+    # used and we can freely use it for what we want. 
+    # Then we will use relative positions with respect to this
+    # value in further calculations instead of potentially
+    # looping over to a periodic site.
+    x,y = fiber_index_to_xy(i, b.L)
+    b.cluster_cm_x[b.N] = x
+    b.cluster_cm_y[b.N] = y
+    b.rel_pos_x[i] = 0
+    b.rel_pos_y[i] = 0
+end
+
+function add_to_cm(i::Int64, b::FB)
+    # First get source position
+    x = b.cluster_cm_x[b.N]
+    y = b.cluster_cm_y[b.N]
+    # Now add that together with the relative position
+    b.cluster_cm_x[b.c] += x + b.rel_pos_x[i]
+    b.cluster_cm_y[b.c] += y + b.rel_pos_y[i]
+end
+
+function normalize_cm(b::FB)
+    b.cluster_cm_x[b.c] /= b.cluster_size[b.c]
+    b.cluster_cm_y[b.c] /= b.cluster_size[b.c]
+
+    # We don't want the center of mass to end up outside of the grid
+    b.cluster_cm_x[b.c] = mod1(b.cluster_cm_x[b.c], b.L)
+    b.cluster_cm_y[b.c] = mod1(b.cluster_cm_y[b.c], b.L)
+
+    # Also, to not get confused, we reset
+    # the initial position so that we don't think that it is a cm
+    b.cluster_cm_x[b.N]=0
+    b.cluster_cm_y[b.N]=0
+end
+
 function explore_cluster_at!(i::Int64, b::FB)
     # We explore the cluster of broken fibers and
     # map the border of the cluster
@@ -331,7 +466,12 @@ function explore_cluster_at!(i::Int64, b::FB)
     b.cluster_size[b.c] = 1
     # This value will be continuesly updated as we explore the cluster
     b.cluster_outline_length[b.c] = 0
-
+    # We set the center of mass to be zero
+    b.cluster_cm_x[b.c] = 0
+    b.cluster_cm_y[b.c] = 0
+    # We save the initial position
+    save_initial_cluster_position(i, b)
+    # We reset cluster dimisions
     reset_cluster_dimensions!(b)
 
     # While there are still unexplored fibers in the cluster
@@ -342,15 +482,17 @@ function explore_cluster_at!(i::Int64, b::FB)
         nr_explored += 1
         # Get the next unexplored fiber
         current_fiber = b.unexplored[nr_explored]
+        # Add to the center of mass of the cluster
+        add_to_cm(current_fiber, b)
         # Go through all neighbours of the fiber
         nr_unexplored = check_neighbours!(current_fiber, nr_unexplored, b)
     end
     
-    if spanning(b)
-        return true
-    else 
-        return false
-    end
+    # Now that we know how large the cluster is
+    # we can normalize the size of the cm
+    normalize_cm(b)
+
+    return spanning(b)
 
 
 end
@@ -361,8 +503,11 @@ function spanning(b::FB)
     # L-1 because the relative coordinates in the cluster start at 0,0
     # NB! Once the cluster is spanning, the dimension is no longer reliable because of
     # periodicity.
-    return b.cluster_dimensions[1] - b.cluster_dimensions[2] >= b.L-1 ||
-           b.cluster_dimensions[3] - b.cluster_dimensions[4] >= b.L-1
+    # NNB!! We actually do L-2 to prevent the cluster from connecting with itself.
+    # This creates multiple center of masses! With different radii of gyration!!
+    # Data before jan. 4 2023 will not have spanning clusters with size L-2.
+    return abs(b.cluster_dimensions[1] - b.cluster_dimensions[2]) >= b.L-2 ||
+           abs(b.cluster_dimensions[3] - b.cluster_dimensions[4]) >= b.L-2
 end
 
 function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
@@ -382,7 +527,7 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
             # increase the cluster size
             b.cluster_size[b.c] += 1
             # and increase the cluster dimensions depending on what direction we explored In
-            store_possition!(current_fiber, neighbour_fiber, i, b)
+            store_position!(current_fiber, neighbour_fiber, i, b)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
         elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
@@ -398,12 +543,12 @@ function check_neighbours!(current_fiber::Int64, nr_unexplored::Int64, b::FB)
 end
 
 
-function store_possition!(current_fiber::Int64, neighbour_fiber::Int64, 
+function store_position!(current_fiber::Int64, neighbour_fiber::Int64, 
     direction::Int64, 
     b::FB)
     # cluster_dimensions = [max_x, min_x, max_y, min_y]
 
-    # Copy over the possition to the neighbour
+    # Copy over the position to the neighbour
     b.rel_pos_x[neighbour_fiber] = b.rel_pos_x[current_fiber]
     b.rel_pos_y[neighbour_fiber] = b.rel_pos_y[current_fiber]
 
@@ -428,6 +573,7 @@ function apply_to_neighbourhood!(f::Function, b::FB)
     # put it into the function f
 
     # At the time this function is run, b.c is the current cluster
+    # Run over cluster outline fibers
     for i in 1:b.cluster_outline_length[b.c]
         update_current_neighbourhood!(i, b)
         b.neighbourhood_values[i] = f(b.current_neighbourhood)
@@ -454,27 +600,41 @@ end
 
 function update_cluster_outline_stress!(b::FB)
     # Apply the appropreate amount of stress to the fibers
-    if b.nr == "UNR"
+    if b.nr == "LLS"
         # With the Uniform neighbourhood rule, we can apply a simple stress
-        apply_simple_stress(b)
-        return
+        apply_simple_stress!(b)
+    elseif b.nr == "ELS"
+        apply_ELS_stress!(b)
     else
         # But with more complex rules, we need to do it in two steps
         # First a calculation to find the fiber strengths (As a function of their neighbourhood), and then apply the stress
         if b.nr == "CNR"
             apply_to_neighbourhood!(neighbourhoodToStrength, b)
-        elseif b.nr == "SNR"
+        elseif b.nr == "CLS"
             apply_to_neighbourhood!(alive_fibers_in_neighbourhood, b)
         else
             #@debug "Unknown neighbourhood rule: $neighbourhood_rule"
             error("Unknown neighbourhood rule")
         end
 
-        apply_stress(b)
+        apply_stress!(b)
     end
 end
 
-function apply_simple_stress(b::FB)
+function apply_ELS_stress!(b::FB)
+    stress = b.N/(b.N-b.current_step)
+    if b.c == 1
+        for i in eachindex(b.status)
+            if b.status[i] < 0 #Not Broken
+                b.σ[i] = stress
+            end
+        end
+    else
+        # We only add stress to the whole bundle once
+    end
+end
+
+function apply_simple_stress!(b::FB)
     added_stress = b.cluster_size[b.c]/b.cluster_outline_length[b.c]
     for i in 1:b.cluster_outline_length[b.c]
         fiber = b.cluster_outline[i]
@@ -484,7 +644,7 @@ function apply_simple_stress(b::FB)
 end
 
 
-function apply_stress(b::FB)
+function apply_stress!(b::FB)
     # See page 26 in Jonas Tøgersen Kjellstadli's doctoral theses, 2019:368
     # High alpha means that having neighbours is more important
     C=0.0
@@ -494,13 +654,13 @@ function apply_stress(b::FB)
     C = 1/C # A normalization constant
     for i in 1:b.cluster_outline_length[b.c]
         fiber = b.cluster_outline[i]
-        g = C * b.neighbourhood_values[i] ^(-b.α)
-        added_stress =  b.cluster_size[b.c]*b.neighbourhood_values[i]*g
+        g = C * b.neighbourhood_values[i] ^(-b.α+1)
+        added_stress =  b.cluster_size[b.c]*g
         b.σ[fiber] += added_stress
         b.status[fiber] = -3 #PAST_BORDER
     end
 end
 
 
-@time fb = get_fb(100, without_storage=true)
+#@time fb, storage = get_fb(100)
 #pprof(;webport=58699)

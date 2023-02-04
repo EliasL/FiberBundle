@@ -200,7 +200,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
             # and with that we can update sigma for one cluster
             if neighbourhood_rule == "CNR"
                 update_cluster_otline_stress_with_complex_neighbourhood_rule(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
-            elseif neighbourhood_rule == "SNR"
+            elseif neighbourhood_rule == "CLS"
                 update_cluster_otline_stress_with_simple_neighbourhood_rule(c,status,σ, cluster_size, cluster_outline, cluster_outline_length, neighbourhoods)
             else
                 update_cluster_outline_stress(c,status,σ, cluster_size, cluster_outline, cluster_outline_length)
@@ -474,9 +474,9 @@ function main(neighbourhood_rule)
     end 
 end
 
-println("UNR")
-@btime main(NR) setup=(NR="UNR")
-println("SNR")
-@btime main(NR) setup=(NR="SNR")
+println("LLS")
+@btime main(NR) setup=(NR="LLS")
+println("CLS")
+@btime main(NR) setup=(NR="CLS")
 println("CNR")
 @btime main(NR) setup=(NR="CNR")

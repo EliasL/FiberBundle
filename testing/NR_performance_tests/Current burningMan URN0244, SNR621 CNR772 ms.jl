@@ -181,7 +181,7 @@ function update_σ(status::Vector{Int64}, σ::Vector{Float64},
     cluster_outline::Vector{Int64},
     cluster_outline_length::Vector{Int64},
     unexplored::Vector{Int64};
-    neighbourhood_rule::String="UNR")
+    neighbourhood_rule::String="LLS")
     # Explores the plane, identifies all the clusters, their sizes
     # and outlines
 
@@ -295,7 +295,7 @@ function check_neighbours(current_fiber::Int64, nr_unexplored::Int64, c::Int64,
             # increase the cluster size
             cluster_size[c] += 1
             # and increase the cluster dimensions depending on what direction we explored In
-            store_possition(current_fiber, neighbour_fiber, i, cluster_dimensions, rel_pos_x, rel_pos_y)
+            store_position(current_fiber, neighbour_fiber, i, cluster_dimensions, rel_pos_x, rel_pos_y)
         # In some situations, a fiber will be part of the border of
         # two different clusters, so we check for ALIVE or PAST_BORDER
         elseif s == -1 || s == -3 #ALIVE || PAST_BORDER
@@ -312,7 +312,7 @@ end
 
 const movement = [1,-1,1,-1] # direction
 
-function store_possition(current_fiber::Int64, neighbour_fiber::Int64, 
+function store_position(current_fiber::Int64, neighbour_fiber::Int64, 
     direction::Int64, 
     cluster_dimensions::Vector{Int64},
     rel_pos_x::Vector{Int64},
@@ -376,7 +376,7 @@ function update_cluster_outline_stress(c::Int64,
     neighbourhood_values::Vector{Int64},
     )
     # Apply the appropreate amount of stress to the fibers
-    if neighbourhood_rule == "UNR"
+    if neighbourhood_rule == "LLS"
         # With the Uniform neighbourhood rule, we can apply a simple stress
         apply_simple_stress(c, status, σ, cluster_size, cluster_outline, cluster_outline_length)
         return
@@ -386,7 +386,7 @@ function update_cluster_outline_stress(c::Int64,
         if neighbourhood_rule == "CNR"
             apply_to_neighbourhood(neighbourhoodToInt, status, cluster_outline, cluster_outline_length[c], neighbourhood_values, neighbourhoods)
             neighbourhood_values = neighbourhoodStrengths[neighbourhood_values[1:cluster_outline_length[c]]]
-        elseif neighbourhood_rule == "SNR"
+        elseif neighbourhood_rule == "CLS"
             apply_to_neighbourhood(alive_fibers_in_neighbourhood, status, cluster_outline,  cluster_outline_length[c], neighbourhood_values, neighbourhoods)
         else
             error("Unknown neighbourhood rule")
@@ -509,9 +509,9 @@ function break_bundle(nr)
     
 
 end
-@time break_bundle("UNR")
-@time break_bundle("SNR")
+@time break_bundle("LLS")
+@time break_bundle("CLS")
 @btime break_bundle("CNR")
 
-@profile break_bundle("SNR") 
+@profile break_bundle("CLS") 
 pprof(;webport=58699)
