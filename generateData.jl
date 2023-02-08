@@ -41,11 +41,11 @@ s=args["s"]
 α=args["a"]
 s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
 
-#s = 0:30-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
-#L = [1024]
-#t = vcat((0:20) ./ 50, (5:9) ./ 10)
-#NR = ["CLS", "LLS"]
-#α = [2.0]
+#= s = 0:10000-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
+L = [8]
+t = vcat((0:20) ./ 50, (5:9) ./ 10)
+NR = ["CLS", "LLS"]
+α = [2.0] =#
 
 use_threads = true
 overwrite = true

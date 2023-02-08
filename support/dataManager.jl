@@ -328,8 +328,6 @@ function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 
-
-
 function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
@@ -537,23 +535,26 @@ end
 
 function get_bundles_from_settings(settings; seeds, progression=0, step=0,
         without_storage=true, update_tension=true, spanning=false, return_simulation_time=false)
-    file = load_file(settings, average=false)
-    L = settings["L"]
-    nr = settings["nr"]
-    t = settings["t"]
-    α = settings["a"]
-    dist = settings["dist"]
-    N = L*L
-    bundles = []
-    for seed in seeds
-        b = get_bundle_from_file(file, L, nr=nr, t=t, α=α, dist=dist, seed=seed, progression=progression,
-            step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning, return_simulation_time=return_simulation_time)
-        push!(bundles, b)
-    end
-    if length(seeds)==1
-        return bundles[1]
-    else
-        return bundles
+    #file = load_file(settings, average=false)
+    name = get_file_name(settings, -1, false)
+    jldopen(name, "r") do file
+        L = settings["L"]
+        nr = settings["nr"]
+        t = settings["t"]
+        α = settings["a"]
+        dist = settings["dist"]
+        N = L*L
+        bundles = []
+        for seed in seeds
+            b = get_bundle_from_file(file, L, nr=nr, t=t, α=α, dist=dist, seed=seed, progression=progression,
+                step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning, return_simulation_time=return_simulation_time)
+            push!(bundles, b)
+        end
+        if length(seeds)==1
+            return bundles[1]
+        else
+            return bundles
+        end
     end
 end
 

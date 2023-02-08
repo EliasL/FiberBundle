@@ -11,14 +11,14 @@ include("support/dataManager.jl")
 include("support/distributions.jl")
 
 function break_bundle(settings, progress_channel, working_channel, seed;
-    save_data=true, use_threads=true, stop_after_spanning=false, use_past_progress=true)
+    save_data=true, use_threads=true, stop_after_spanning=false, use_past_progress=false)
     
     if use_threads
         put!(working_channel, true) # Indicate a process has started
     end
 
 
-    file_name = get_file_name(settings, seed)       
+    file_name = get_file_name(settings, seed, false)       
 
     # Check if there already exists previous data
     if use_past_progress

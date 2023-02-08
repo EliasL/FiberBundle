@@ -364,6 +364,9 @@ function storageTest()
     clean_after_run(settings, [seed])
     break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=true)
     clean_after_run(settings, [seed])
+    # Esure that running break_bundle on an already broken bundle doesn't mess things up
+    break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=true)
+    clean_after_run(settings, [seed])
     test_f = load_file(settings, average=false)
 
     

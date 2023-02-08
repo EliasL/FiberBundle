@@ -95,7 +95,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     return other_plots
 end
 
-L = 128
+L = 8
 α = 2.0
 nr = ["LLS", "CLS"]
 ts = vcat((0:20) ./ 50, (5:9) ./ 10)
