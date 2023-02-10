@@ -1,5 +1,5 @@
 from sympy import *
-
+import numpy as np
 
 x_2 = symbols("x_2")
 x_k = symbols("x_k")
