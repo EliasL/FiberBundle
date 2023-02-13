@@ -22,10 +22,10 @@ end
 
 
 
-L=1024
+L=256
 a=2.0
-nr="CLS"
-t=0.18
+nr="LLS"
+t=0.0
 seed = 1
 f_path = get_file_path(L, a, t, nr, average=false)
 f = load(f_path)
@@ -50,5 +50,3 @@ end
 seeds = f["seeds_used"]
 except = setdiff(first(seeds):last(seeds), seeds)
 println("Seeds: $(first(seeds)) - $(last(seeds))" * (isempty(except) ? "" : " except $(join(seeds, " , "))"))
-
-

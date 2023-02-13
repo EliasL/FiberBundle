@@ -64,30 +64,32 @@ t = vcat((6:10) ./ 50)
 t = vcat((11:15) ./ 50)
 t = vcat((16:20) ./ 50)
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
-#= make_job(seeds, L, t=t, α=[2.0], NR=["LLS", "CLS"], force_short=false)
+#= make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
 
 
 seeds = [0, 6000] # From seed to seed
 L = [64]
-make_job(seeds, L, t=t, α=[2.0], NR=["LLS", "CLS"], force_short=false)
+make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job() =#
 
+NR = ["LLS","CLS"]
 
 seeds = [0, 1000] # From seed to seed
-t = vcat((0:5) ./ 50)
+t = [0.8, 0.9]
 L = [256]
-make_job(seeds, L, t=t, α=[2.0], NR=["LLS", "CLS"], force_short=false)
+make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
-
+#= 
 t = vcat((6:10) ./ 50)
-make_job(seeds, L, t=t, α=[2.0], NR=["LLS", "CLS"], force_short=false)
+make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
 
 t = vcat((11:15) ./ 50)
-make_job(seeds, L, t=t, α=[2.0], NR=["LLS", "CLS"], force_short=false)
+make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
 
 t = vcat((16:20) ./ 50)
-make_job(seeds, L, t=t, α=[2.0], NR=["LLS", "CLS"], force_short=false)
+make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
+ =#

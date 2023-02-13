@@ -31,30 +31,38 @@ function get_data_kN(L, NR, ts, key; average=true, divide=:N, return_kN=true)
     end
 end
 
+
+
 function get_data_spanning(L, NR, ts, key; average=true, divide=:N)
+    do_data_test = true
     data = zeros(length(ts), length(L), length(NR))
     for t=eachindex(ts), l=eachindex(L), nr=eachindex(NR)
-
+        if do_data_test
+            data_test(L[l], 2.0, ts[t], NR[nr], "Uniform")
+        end
         name = get_file_name(L[l], 2.0, ts[t], NR[nr], "Uniform", average=average)
         jldopen(name, "r") do file
 
             
+            N = L[l]^2
             x = file["average_spanning_cluster_step"]
+            #x = N*0.4
             d = file[key][round(Int64, x)]
-            N = l*l
             if divide == :N
                 divisor=N
-            elseif divide == :max
+            elseif divide == :L
+                divisor = L[l]
+            elseif divide == :max || divide == :min
                 divisor = 1
             else
                 divisor=divide
             end
             data[t, l, nr] = d/divisor
-
-            if divide == :max && t == length(ts)
+            if divide in [:max, :min] && t == length(ts)
+                f = divide == :max ? maximum : minimum
                 # When we are at the last t value, we find the max of
                 # all the t values and normalize
-                max_t = maximum(data[:, l, nr])
+                max_t = f(data[:, l, nr])
                 data[:, l, nr] ./= max_t
             end 
 
@@ -63,6 +71,14 @@ function get_data_spanning(L, NR, ts, key; average=true, divide=:N)
     return data
 end
 
-
+function data_test(L, α, t, NR, dist)
+    name = get_file_name(L, α, t, NR, dist, average=false)
+    jldopen(name, "r") do file
+        nr_seeds = file["nr_seeds_used"]
+        if file["last_step/$(nr_seeds-1)"] != L*L
+            @warn "Not fully broken: L=$L, t0=$t, NR=$NR"
+        end
+    end
+end
 #d = get_data([128], ["CLS"], [0.0, 0.1], [[1,2]], "average_most_stressed_fiber")
 #println(d)
