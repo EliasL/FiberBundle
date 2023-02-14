@@ -114,8 +114,8 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     y2 = largest_cluster_spanning[:, :, 2] ./ largest_perimeter_spanning[:, :, 2]
     
     ratio_over_σ_LLS = make_plot(y1, log=:log, series_annotation=[[],[],[],[0.12, 0.30]],
-                        L"\tilde{s}_{\mathrm{max}} / \tilde{h}_{\mathrm{max}}", permutedims([L"L="*"$l CLS" for l in L]),
-                        x=x1, xlabel=L"\tilde{σ}", position=:topright,
+                        L"\tilde{s}_{\mathrm{max}} / \tilde{h}_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
+                        x=x1, xlabel=L"\tilde{σ}", position=:topright, title="LLS",
                         series_position=[:right, :bottom])
 
     f = myfit.(eachcol(x1), eachcol(y1))
@@ -126,8 +126,8 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{h}_{\mathrm{max}} / ∂\tilde{σ}}")
     
     ratio_over_σ_CLS = make_plot(y2, log=:log, series_annotation=[[],[],[],[0.34, 0.6]],
-                        "", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l CLS" for l in L]),
-                        x=x2, xlabel=L"\tilde{σ}", position=:bottomleft,
+                        "", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l" for l in L]),
+                        x=x2, xlabel=L"\tilde{σ}", position=:bottomleft, title="CLS",
                         series_position=[:right, :bottom])
     
     other_plots = [#= size_over_σ_LLS, size_over_σ_CLS, span_over_σ_LLS, span_over_σ_CLS,  =#ratio_over_σ_LLS, ratio_over_σ_CLS]

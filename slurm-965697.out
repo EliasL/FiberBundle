@@ -401,3 +401,5 @@
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:93
 ┌ LogLevel(-2): 84%, Active workers: 40, Completed tasks: 817.
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:93
+┌ LogLevel(-2): 85%, Active workers: 40, Completed tasks: 827.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:93
