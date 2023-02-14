@@ -52,20 +52,24 @@ function get_data_spanning(L, NR, ts, key; average=true, divide=:N)
                 divisor=N
             elseif divide == :L
                 divisor = L[l]
-            elseif divide == :max || divide == :min
+            elseif divide in [:max, :min, :maxSubMin]
                 divisor = 1
             else
                 divisor=divide
             end
             data[t, l, nr] = d/divisor
-            if divide in [:max, :min] && t == length(ts)
-                f = divide == :max ? maximum : minimum
-                # When we are at the last t value, we find the max of
-                # all the t values and normalize
-                max_t = f(data[:, l, nr])
-                data[:, l, nr] ./= max_t
-            end 
-
+            if t == length(ts)
+                if divide in [:max, :min, :maxSubMin]
+                    f = divide == :min ? minimum : maximum 
+                    # When we are at the last t value, we find the max of
+                    # all the t values and normalize
+                    max_t = f(data[:, l, nr])
+                    if divide == :maxSubMin
+                        data[:, l, nr] .-= minimum(data[:, l, nr])
+                    end
+                    data[:, l, nr] ./= max_t
+                end
+            end
         end
     end        
     return data

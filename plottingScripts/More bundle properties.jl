@@ -13,9 +13,9 @@ include("../support/dataIterator.jl")
 @. dSogmoid(x,p) = -p[2]*p[3]*ℯ^(p[3]*(x +p[4])) / (ℯ^(p[3]*(x +p[4])) + 1)^2
 
 function get_fit(x, y)
-    upperbounds = [1, 1, -100 , -0.50]
-    lowerbounds = [0, 0, -1000, -0.60]
-    p0 = [0.1, 0.9, -200, -0.55]
+    upperbounds = [1, 1, -100 , -0.40]
+    lowerbounds = [0, 0, -1000, -0.70]
+    p0 = [0.1, 0.9, -100, -0.55]
     return curve_fit(sigmoid, x, y , p0, lower=lowerbounds, upper=upperbounds)
 end
 
@@ -70,7 +70,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     largest_cluster_spanning = get_data_spanning(L, nr, ts, "average_largest_cluster", divide=:max)
     largest_perimeter_spanning = get_data_spanning(L, nr, ts, "average_largest_perimiter", divide=:max)
     most_stressed_fiber_spanning = get_data_spanning(L, nr, ts, "average_most_stressed_fiber", divide=:max)
-    size_over_σ_LLS = make_plot(largest_cluster_spanning[:, :, 1], log=:log, series_annotation=[[0.00],[],[]], 
+    size_over_σ_LLS = make_plot(largest_cluster_spanning[:, :, 1], log=:log, series_annotation=[[0.00],[],[], []], 
                         L"\tilde{s}_{\mathrm{max}}", permutedims([L"L="*"$l LLS" for l in L]),
                         x=most_stressed_fiber_spanning[:, :, 1], #= xlabel=L"\tilde{σ}", =# position=:topright, )
     x = most_stressed_fiber_spanning[:, :, 1]
@@ -82,11 +82,11 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     plot!(xx, df, inset = (1, bbox(0.5,0.35,0.45,0.5)), subplot = 2, xaxis=:log, labels="", xlims=(0.535,0.585),
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{s}_{\mathrm{max}} / ∂\tilde{σ}}")
 
-    size_over_σ_CLS = make_plot(largest_cluster_spanning[:, :, 2], log=:log, series_annotation=[[0.7],[],[]],
+    size_over_σ_CLS = make_plot(largest_cluster_spanning[:, :, 2], log=:log, series_annotation=[[],[0.7],[], []],
                         "",#= L"\tilde{s}_{\mathrm{max}}", =# permutedims([L"L="*"$l CLS" for l in L]), xlims=(-Inf, 1.1),
                         x=most_stressed_fiber_spanning[:, :, 2], #= xlabel=L"\tilde{σ}", =# position=:bottomleft, series_position=:left)
     
-    span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[0.0],[],[]], 
+    span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[0.0],[],[], []], 
                         L"\tilde{h}_{\mathrm{max}}", permutedims([L"L="*"$l LLS" for l in L]),
                         x=most_stressed_fiber_spanning[:, :, 1], xlabel=L"\tilde{σ}", position=:topright, )
 
@@ -98,16 +98,16 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     plot!(xx, df, inset = (1, bbox(0.5,0.35,0.45,0.5)), subplot = 2, xaxis=:log, labels="", xlims=(0.535,0.585),
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{h}_{\mathrm{max}} / ∂\tilde{σ}}")
 
-    span_over_σ_CLS = make_plot(largest_perimeter_spanning[:, :, 2], log=:identity, series_annotation=[[],[],[0.04]],
-                        "", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l CLS" for l in L]), xlims=(0,1), ylims=(0,1),
+    span_over_σ_CLS = make_plot(largest_perimeter_spanning[:, :, 2], log=:log, series_annotation=[[],[],[],[0.04]],
+                        "", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l CLS" for l in L]),
                         x=most_stressed_fiber_spanning[:, :, 2], xlabel=L"\tilde{σ}", position=:topleft, series_position=:right)
     
-    plot!([0,1], [0,1], labels="y=x", color=:black, linestyle=:dash)
+    plot!([minimum(most_stressed_fiber_spanning[:, :, 2]),1], [minimum(most_stressed_fiber_spanning[:, :, 2]),1], labels="y=x", color=:black, linestyle=:dash)
     other_plots = [size_over_σ_LLS, size_over_σ_CLS, span_over_σ_LLS, span_over_σ_CLS]
     return other_plots
 end
 
-L = [32, 64, 128]
+L = [16, 32, 64, 128]
 α = 2.0
 nr = ["LLS", "CLS"]
 ts = vcat((0:20) ./ 50, (5:9) ./ 10)

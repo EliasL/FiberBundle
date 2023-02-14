@@ -8,7 +8,7 @@ function format(total_seconds)
     (d,h,m,s) = round.(Int64, [d,h,m,s])
     extra_hours = floor(Int64, d*4 + h/6)
     extra_minutes = 15 + h*5
-    extra_days=3
+    extra_days=4
 
     return "$(d+extra_days)-$(h+extra_hours):$(m+extra_minutes):$s"
 end
@@ -51,18 +51,18 @@ end
 
 
 
-seeds = [0, 10000] # From seed to seed
+seeds = [10000, 20000] # From seed to seed
 #L = [512]
 L = [16, 32]
 #t = [0.38]
 #t = vcat((0:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
-#t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
-t = vcat((0:5) ./ 50)
-t = vcat((6:10) ./ 50)
-t = vcat((11:15) ./ 50)
-t = vcat((16:20) ./ 50)
+t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+#t = vcat((0:5) ./ 50)
+#t = vcat((6:10) ./ 50)
+#t = vcat((11:15) ./ 50)
+#t = vcat((16:20) ./ 50)
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 #= make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
@@ -75,16 +75,23 @@ start_job() =#
 
 NR = ["LLS","CLS"]
 
-seeds = [0, 1000] # From seed to seed
-t = [0.8, 0.9]
-L = [256]
+#seeds = [0, 1000] # From seed to seed
+#t = [0.8, 0.9]
+L = [32]
 make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
-#= 
-t = vcat((6:10) ./ 50)
+ 
+#t = vcat((6:10) ./ 50)
+L=[16]
+seeds = [10000, 40000]
+make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
+start_job()
+L=[8]
+seeds = [10000, 40000]
 make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
 
+#=
 t = vcat((11:15) ./ 50)
 make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
