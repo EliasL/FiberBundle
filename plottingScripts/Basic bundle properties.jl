@@ -99,14 +99,14 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
     return basic_plots
 end
 
-L = 8
+L = 16
 ts = [0.0, 0.1, 0.2, 0.3, 0.7, 0.9]
 α = 2.0
 nr = ["LLS", "CLS"]
 nrs = length(nr)
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
-p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm)
+p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
 
 savefig(p, "plots/Graphs/BundleProperties.svg")
 

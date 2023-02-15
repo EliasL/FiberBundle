@@ -154,14 +154,13 @@ function neighbourhood_id_test()
 end
 
 function neighbourhood_strength_test_with_alpha(nr)
-    for α in [1.0, 2, 2.2, 3.3]
+    for α in [1.0, 2.0, 2.2, 3.3]
         L = 4
         b = get_fb(L, seed, α=α, nr=nr, without_storage=true)
-
+        
         for _ in 1:b.N-1
             findAndBreakNextFiber!(b)
             update_tension!(b)
-
             @test sum(b.σ) ≈ b.N #"No conservation of tension.\n$(sum(σ)) ≠ $N "
             resetBundle!(b)                
         end
@@ -451,6 +450,32 @@ function custom_cluster_test()
 end
 #custom_cluster_test()
 
+
+function breakb(b::FB, s::FBS)
+    for _ in 1:b.N-1
+        findAndBreakNextFiber!(b, s)
+        update_tension!(b)
+        resetBundle!(b)                
+    end
+    healBundle!(b)
+    return 
+end
+
+function performance_test()
+    L=64
+    α=2.0
+    nr="CLS"
+    seed=1
+    b, s = get_fb(L, seed, α=α, nr=nr, without_storage=false)    
+    
+
+    result = @elapsed breakb(b, s)
+    @test result < 1.3 
+    #println(result)
+    return
+end
+#performance_test()
+
 function test()
     
     @testset verbose=true "Tests" begin
@@ -471,7 +496,7 @@ function test()
         #@testset "1D cluster size" begin end
 
         @testset "Storage" begin storageTest() end
-        
+        @testset "Performance" begin performance_test() end
     end
 end
 test()

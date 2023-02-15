@@ -3,7 +3,7 @@ using Random
 using ProgressMeter
 using SparseArrays
 using Profile
-using PProf
+#using PProf
 
 include("../../support/neighbourhoodWeighting.jl")
 
@@ -476,5 +476,5 @@ for NR in ["LLS", "CLS", "CNR"]
     @btime main($NR)
 end
 
-@profile main("CLS") 
-pprof(;webport=58699)
+#@profile main("CLS") 
+#pprof(;webport=58699)

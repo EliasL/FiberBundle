@@ -661,6 +661,23 @@ function apply_stress!(b::FB)
     end
 end
 
+#= function apply_stress!(b::FB)
+    # Compute normalization constant C using BLAS and LAPACK functions
+    C = 1.0 / dot(b.neighbourhood_values[1:b.cluster_outline_length[b.c]].^(-b.α+1), ones(b.cluster_outline_length[b.c]))
+
+    # Compute added stress for each fiber using BLAS and LAPACK functions
+    g = b.cluster_size[b.c] * C * b.neighbourhood_values[1:b.cluster_outline_length[b.c]].^(-b.α+1)
+    added_stress = similar(g)
+    BLAS.axpy!(1.0, g, zeros(b.N), added_stress)
+
+    # Add added stress to σ and update status using in-place operations
+    @inbounds for i in 1:b.cluster_outline_length[b.c]
+        fiber = b.cluster_outline[i]
+        b.σ[fiber] += added_stress[i]
+        b.status[fiber] = -3 #PAST_BORDER
+    end
+end =#
+
 
 #@time fb, storage = get_fb(100)
 #pprof(;webport=58699)

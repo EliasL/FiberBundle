@@ -36,7 +36,7 @@ end
 function shift_spanning_cluster!(b::FB, cm_shift=true)
     # Get shift
     m = reshape(b.status, (b.L, b.L))
-    if cm_shift
+    if cm_shift && b.spanning_cluster_id != -1
         shift = shift_to_cm(b)
     else
         shift = get_ideal_shift(m)

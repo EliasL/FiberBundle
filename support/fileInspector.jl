@@ -1,7 +1,13 @@
 
 
 include("dataManager.jl")
+include("../plottingScripts/showBundle.jl")
 
+function show_bundle(l, t, nr, α, seed, progression=0.0)
+    settings = make_settings(l, t, nr, α)
+    b = get_bundles_from_settings(settings, seeds=seed, spanning=false, progression=progression)
+    p = plot_fb(b)
+end
 
 
 function print_d(d)
@@ -20,13 +26,11 @@ function print_d(d)
     end
 end
 
-
-
-L=256
+L=32
 a=2.0
-nr="LLS"
-t=0.0
-seed = 1
+nr="CLS"
+t=0.9
+seed = 9999
 f_path = get_file_path(L, a, t, nr, average=false)
 f = load(f_path)
 println("Loaded $f_path")
@@ -50,3 +54,4 @@ end
 seeds = f["seeds_used"]
 except = setdiff(first(seeds):last(seeds), seeds)
 println("Seeds: $(first(seeds)) - $(last(seeds))" * (isempty(except) ? "" : " except $(join(seeds, " , "))"))
+show_bundle(L, t, nr, α, seed, 0.875)

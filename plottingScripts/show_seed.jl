@@ -88,5 +88,5 @@ end
 
 #show_spanning_cluster()
 #show_progression()
-show_t_change("LLS")
-show_t_change("CLS")
+#show_t_change("LLS")
+#show_t_change("CLS")

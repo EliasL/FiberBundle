@@ -33,7 +33,7 @@ end
 
 
 
-function get_data_spanning(L, NR, ts, key; average=true, divide=:N)
+function get_data_spanning(L, NR, ts, key; average=true, ex=2)
     do_data_test = true
     data = zeros(length(ts), length(L), length(NR))
     for t=eachindex(ts), l=eachindex(L), nr=eachindex(NR)
@@ -41,14 +41,13 @@ function get_data_spanning(L, NR, ts, key; average=true, divide=:N)
             data_test(L[l], 2.0, ts[t], NR[nr], "Uniform")
         end
         name = get_file_name(L[l], 2.0, ts[t], NR[nr], "Uniform", average=average)
-        jldopen(name, "r") do file
-
-            
-            N = L[l]^2
+        jldopen(name, "r") do file            
             x = file["average_spanning_cluster_step"]
-            #x = N*0.4
             d = file[key][round(Int64, x)]
-            if divide == :N
+            data[t, l, nr] = d/L[l]^ex
+
+            #= #data[:, l, nr] ./= L[l]^ex
+            #= if divide == :N
                 divisor=N
             elseif divide == :L
                 divisor = L[l]
@@ -56,8 +55,7 @@ function get_data_spanning(L, NR, ts, key; average=true, divide=:N)
                 divisor = 1
             else
                 divisor=divide
-            end
-            data[t, l, nr] = d/divisor
+            end=#
             if t == length(ts)
                 if divide in [:max, :min, :maxSubMin]
                     f = divide == :min ? minimum : maximum 
@@ -69,7 +67,7 @@ function get_data_spanning(L, NR, ts, key; average=true, divide=:N)
                     end
                     data[:, l, nr] ./= max_t
                 end
-            end
+            end  =#
         end
     end        
     return data
