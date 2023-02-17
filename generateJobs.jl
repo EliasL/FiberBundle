@@ -51,14 +51,14 @@ end
 
 
 
-seeds = [10000, 20000] # From seed to seed
+seeds = [0, 1000] # From seed to seed
 #L = [512]
 L = [16, 32]
 #t = [0.38]
 #t = vcat((0:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
-t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+t = [0.8, 0.9]#vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 #t = vcat((0:5) ./ 50)
 #t = vcat((6:10) ./ 50)
 #t = vcat((11:15) ./ 50)
@@ -73,23 +73,25 @@ L = [64]
 make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job() =#
 
-NR = ["LLS","CLS"]
+NR = ["LLS"]
 
 #seeds = [0, 1000] # From seed to seed
 #t = [0.8, 0.9]
-L = [32]
+L = [256]
 make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
- 
+NR = ["CLS"]
+make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
+start_job()
 #t = vcat((6:10) ./ 50)
-L=[16]
+#= L=[16]
 seeds = [10000, 40000]
 make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job()
 L=[8]
 seeds = [10000, 40000]
 make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
-start_job()
+start_job() =#
 
 #=
 t = vcat((11:15) ./ 50)

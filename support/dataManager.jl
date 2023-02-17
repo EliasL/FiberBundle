@@ -475,7 +475,7 @@ function get_data_overview(path="data/", dists=["Uniform"])
     end
 end
 
-function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", seed=1, progression=0, step=0,
+function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", seed=1, progression=0, step=0, critical=false,
                             without_storage=true, spanning=false, update_tension=true, return_simulation_time=false)
     if without_storage
         b = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
@@ -511,10 +511,16 @@ function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", 
     if spanning
         @assert step==0
         @assert progression==0
+        @assert critical==false
         b.current_step = file["spanning_cluster_step/$seed"]
-        break_sequence = break_sequence[1:file["spanning_cluster_step/$seed"]]
+        break_sequence = break_sequence[1:b.current_step]
+    elseif critical
+        @assert step==0
+        @assert progression==0
+        @assert spanning==0
+        b.current_step = argmax(file["most_stressed_fiber/$seed"])
+        break_sequence = break_sequence[1:b.current_step]
     end
-
     break_fiber_list!(break_sequence, b)
     if update_tension
         update_tension!(b)
@@ -533,7 +539,7 @@ function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", 
     end
 end
 
-function get_bundles_from_settings(settings; seeds, progression=0, step=0,
+function get_bundles_from_settings(settings; seeds, progression=0, step=0, critical=false,
         without_storage=true, update_tension=true, spanning=false, return_simulation_time=false)
     #file = load_file(settings, average=false)
     name = get_file_name(settings, -1, false)
@@ -546,7 +552,7 @@ function get_bundles_from_settings(settings; seeds, progression=0, step=0,
         N = L*L
         bundles = []
         for seed in seeds
-            b = get_bundle_from_file(file, L, nr=nr, t=t, α=α, dist=dist, seed=seed, progression=progression,
+            b = get_bundle_from_file(file, L, nr=nr, t=t, α=α, dist=dist, seed=seed, progression=progression, critical=critical,
                 step=step, without_storage=without_storage, update_tension=update_tension, spanning=spanning, return_simulation_time=return_simulation_time)
             push!(bundles, b)
         end

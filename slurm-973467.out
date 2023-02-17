@@ -1,0 +1,17 @@
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 40 workers... 
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:59
+┌ LogLevel(-1): Running settings: 
+│  Any[256], 
+│  Any[0.8, 0.9], 
+│  Any[2.0]
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:63
+┌ LogLevel(-2): 2023-02-17T10:02:52.492: Starting a=0.0 dist=Uniform L=256 nr=LLS t=0.8
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:156
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:274
+┌ LogLevel(-2): Running workers...
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:141
+┌ LogLevel(-2): Starting work on a=0.0 dist=Uniform L=256 nr=LLS t=0.8
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:81

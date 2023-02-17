@@ -32,46 +32,55 @@ function get_data_kN(L, NR, ts, key; average=true, divide=:N, return_kN=true)
 end
 
 
-
-function get_data_spanning(L, NR, ts, key; average=true, ex=2)
+function get_data(L, NR, ts, key, xKey, xKeyf; average=true, ex=[2,2], α=2.0)
     do_data_test = true
     data = zeros(length(ts), length(L), length(NR))
     for t=eachindex(ts), l=eachindex(L), nr=eachindex(NR)
         if do_data_test
-            data_test(L[l], 2.0, ts[t], NR[nr], "Uniform")
+            data_test(L[l], α, ts[t], NR[nr], "Uniform")
         end
-        name = get_file_name(L[l], 2.0, ts[t], NR[nr], "Uniform", average=average)
+        name = get_file_name(L[l], α, ts[t], NR[nr], "Uniform", average=average)
         jldopen(name, "r") do file            
-            x = file["average_spanning_cluster_step"]
-            d = file[key][round(Int64, x)]
-            data[t, l, nr] = d/L[l]^ex
-
-            #= #data[:, l, nr] ./= L[l]^ex
-            #= if divide == :N
-                divisor=N
-            elseif divide == :L
-                divisor = L[l]
-            elseif divide in [:max, :min, :maxSubMin]
-                divisor = 1
+            if average==false
+                value = load_data(file, key, L[l], NR[nr], ts[t], xKey, xKeyf)
             else
-                divisor=divide
-            end=#
-            if t == length(ts)
-                if divide in [:max, :min, :maxSubMin]
-                    f = divide == :min ? minimum : maximum 
-                    # When we are at the last t value, we find the max of
-                    # all the t values and normalize
-                    max_t = f(data[:, l, nr])
-                    if divide == :maxSubMin
-                        data[:, l, nr] .-= minimum(data[:, l, nr])
-                    end
-                    data[:, l, nr] ./= max_t
-                end
-            end  =#
+                x = xKeyf(file["average_$xKey"])
+                value = file[key][round(Int64, x)]
+            end
+            data[t, l, nr] = value/L[l]^ex[nr]
         end
     end        
     return data
 end
+
+
+
+function load_data(bulk_file, key, l, nr, t, xKey, xKeyf)
+    path = "data/$xKey/"
+    if !isdir(path)
+        mkpath(path)
+    end
+    if isfile("$(path)$(l)_$(nr)_$(t)_$key.jld2")
+        f = load("$(path)$(l)_$(nr)_$(t)_$key.jld2")
+        value = f["$(l)_$(nr)_$(t)_$key"]
+    else
+        value = 0
+        seeds_used = bulk_file["seeds_used"]
+        nr_seeds = length(seeds_used)
+        for seed in bulk_file["seeds_used"]
+            x = xKeyf(bulk_file["$xKey/$seed"])
+            value += bulk_file["$key/$seed"][round(Int64, x)]
+        end
+        value /= nr_seeds
+        # Save data
+        jldopen("$(path)$(l)_$(nr)_$(t)_$key.jld2", "w") do file
+            file["$(l)_$(nr)_$(t)_$key"] = value
+        end
+    end
+
+    return value
+end
+
 
 function data_test(L, α, t, NR, dist)
     name = get_file_name(L, α, t, NR, dist, average=false)
