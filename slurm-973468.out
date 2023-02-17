@@ -15,3 +15,10 @@
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:141
 ┌ LogLevel(-2): Starting work on a=2.0 dist=Uniform L=256 nr=CLS t=0.8
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:81
+slurmstepd-compute-13: error: *** JOB 973468 ON compute-13 CANCELLED AT 2023-02-17T13:06:46 ***
+
+signal (15): Terminated
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:54
+pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517

@@ -21,8 +21,7 @@ function break_bundle(settings, progress_channel, working_channel, seed;
     file_name = get_file_name(settings, seed, false)       
 
     # Check if there already exists previous data
-    if use_past_progress
-        #@assert false "This feature does not work!"
+    if use_past_progress && isfile(file_name)
         b, s, old_sim_time = get_bundles_from_settings(settings, seeds=seed, without_storage=false, update_tension=false,
                                                         return_simulation_time=true)
     else
@@ -120,7 +119,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
                 i^2 #I have no idea what this does
                 end
             end
-end             
+        end             
     else
         @showprogress for i in seeds
             break_bundle(settings, progress, working, i; save_data=save_data, use_threads=false)
