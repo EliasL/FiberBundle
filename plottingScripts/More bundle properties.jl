@@ -108,6 +108,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[],[],[], [], [], [tlabel1, tlabel2]], 
     L"h_{\mathrm{max}}", permutedims([L"L="*"$l LLS" for l in L]),
                         x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:topright, )
+                            
 
 #=     y = largest_perimeter_spanning[:, :, 1]
     f = myfit.(eachcol(x), eachcol(y))
@@ -162,6 +163,6 @@ ts = vcat((0:20) ./ 50, (5:7) ./ 10)
 plots = otherPropertiesPlot(L, ts, nr)
 psize=300
 p = plot(plots..., size=(psize*length(nr)*1.2,psize*length(plots)/length(nr)), layout = @layout([ A B; C D; E F]))
-savefig(p, "plots/Graphs/otherBundlePropertiesCriticalC.svg")
+savefig(p, "plots/Graphs/otherBundlePropertiesCriticalC.pdf")
 
 println("Saved plot!")
