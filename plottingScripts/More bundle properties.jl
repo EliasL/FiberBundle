@@ -34,8 +34,8 @@ function myfit(x, y)
     return sigmoid(lin(x), f.param)
 end
 
-function myfunk(x)
-    return @. x^(-8)/300
+function myfunk(x, exp, div)
+    return @. x^(exp)/div
 end
 function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     
@@ -85,12 +85,13 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     most_stressed_fiber_spanning = get_data(L, nr, ts, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=c, average=false)
     xLLS = most_stressed_fiber_spanning[:, :, 1]
     xCLS = most_stressed_fiber_spanning[:, :, 2]
+    xxLLS = lin.(eachcol(xLLS))[end]
+    xxCLS = lin.(eachcol(xCLS))[end]
     size_over_σ_LLS = make_plot(largest_cluster_spanning[:, :, 1], log=:log, series_annotation=[[],[],[], [], [], [tlabel1, tlabel2]], 
     L"s_{\mathrm{max}}", permutedims([L"L="*"$l LLS" for l in L]), series_position=:left,
                         x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:topright, )
     
-    xx = lin.(eachcol(xLLS))[1]
-    plot!(xx, myfunk(xx), labels="", color=:black, linestyle=:dash)
+    plot!(xxLLS, myfunk(xxLLS, -8, 300), labels=L"σ_c^{-8}/300", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     x = most_stressed_fiber_spanning[:, :, 1]
     y = largest_cluster_spanning[:, :, 1]
@@ -105,10 +106,14 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     "",#= L"\tilde{s}_{\mathrm{max}}", =# permutedims([L"L="*"$l CLS" for l in L]),
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, series_position=:left)
     
+    plot!(xxCLS, myfunk(xxCLS, -5.5, 50), labels=L"σ_c^{-5.5}/50", color=:black, linestyle=:dash, alpha=0.5)
+
+
     span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[],[],[], [], [], [tlabel1, tlabel2]], 
     L"h_{\mathrm{max}}", permutedims([L"L="*"$l LLS" for l in L]),
                         x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:topright, )
                             
+    plot!(xxLLS, myfunk(xxLLS, -5.8, 22), labels=L"σ_c^{-5.8}/22", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     y = largest_perimeter_spanning[:, :, 1]
     f = myfit.(eachcol(x), eachcol(y))
@@ -124,6 +129,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft,
                         series_position=:left)
     
+    plot!(xxCLS, myfunk(xxCLS, -4, 6), labels=L"σ_c^{-4}/6", color=:black, linestyle=:dash, alpha=0.5)
     #plot!([minimum(xCLS),maximum(xCLS)], [minimum(xCLS),maximum(xCLS)], labels="y=x", color=:black, linestyle=:dash)
 
     largest_cluster_spanning = get_data(L, nr, ts, "largest_cluster", "most_stressed_fiber", argmax, ex=[0,0], average=false)
@@ -136,6 +142,8 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
                         L" s_{\mathrm{max}}/h_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
                         x=xLLS, xlabel=L"σ_c", position=:bottomleft, title="LLS",
                         series_position=:left)
+    
+    plot!(xxLLS, myfunk(xxLLS, -2.8, 23), labels=L"σ_c^{-2.8}/23", color=:black, linestyle=:dash, alpha=0.5)
 #= 
     f = myfit.(eachcol(x1), eachcol(y1))
     df = derivative.(eachcol(x1), eachcol(y1))
@@ -148,6 +156,8 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     L" s_{\mathrm{max}}/h_{\mathrm{max}}", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l" for l in L]),
                         x=xCLS, xlabel=L"σ_c", position=:bottomleft, title="CLS",
                         series_position=:left)
+
+    plot!(xxCLS, myfunk(xxCLS, -1.75, 10), labels=L"σ_c^{-1.75}/10", color=:black, linestyle=:dash, alpha=0.5)
     
     other_plots = [size_over_σ_LLS, size_over_σ_CLS, span_over_σ_LLS, span_over_σ_CLS, ratio_over_σ_LLS, ratio_over_σ_CLS]
     return other_plots
