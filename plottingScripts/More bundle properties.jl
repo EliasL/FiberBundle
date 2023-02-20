@@ -57,7 +57,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
             series_annotation = permutedims([text.([t in sa ?  L" $t_0=$"*"$t " : "" for t in ts], halign=series_position, valign=sph, pointsize=8) for sa in series_annotation])
         end
         p = scatter(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, xaxis=log, yaxis=log,
-            markershape=[:utriangle :diamond :circle],
+            markershape=[:utriangle :dtriangle :circle :diamond :star4 :rect],
             xlabel=xlabel, ylabel=yLabel(ylabel), title=title, mc=:auto, msc=:auto, 
         series_annotations =series_annotation)
         return p
@@ -74,8 +74,8 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
 
 
     labels = permutedims(NR)
-    a = [0.0, 0.0]
-    b = [0.0, 0.0]
+    a = [2, 0]
+    b = [2, 0]
     c = [0, 0]
     d = [0,0]
     tlabel1=0.3
@@ -87,11 +87,11 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     xCLS = most_stressed_fiber_spanning[:, :, 2]
     xxLLS = lin.(eachcol(xLLS))[end]
     xxCLS = lin.(eachcol(xCLS))[end]
-    size_over_σ_LLS = make_plot(largest_cluster_spanning[:, :, 1], log=:log, series_annotation=[[],[],[], [], [], [tlabel1, tlabel2]], 
-    L"s_{\mathrm{max}}", permutedims([L"L="*"$l LLS" for l in L]), series_position=:left,
-                        x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:topright, )
+    size_over_σ_LLS = make_plot(largest_cluster_spanning[:, :, 1], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []], 
+    L"s_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]), series_position=:left, title="LLS",
+                        x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
     
-    plot!(xxLLS, myfunk(xxLLS, -8, 300), labels=L"σ_c^{-8}/300", color=:black, linestyle=:dash, alpha=0.5)
+    plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -8, 2*10^7), labels=L"σ_c^{-8}/2E7", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     x = most_stressed_fiber_spanning[:, :, 1]
     y = largest_cluster_spanning[:, :, 1]
@@ -103,17 +103,17 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{s}_{\mathrm{max}} / ∂\tilde{σ}}") =#
 
     size_over_σ_CLS = make_plot(largest_cluster_spanning[:, :, 2], log=:log, series_annotation=[[],[],[], [], [], [tlabel1, tlabel2]],
-    "",#= L"\tilde{s}_{\mathrm{max}}", =# permutedims([L"L="*"$l CLS" for l in L]),
+    L"s_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]), title="CLS",
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, series_position=:left)
     
     plot!(xxCLS, myfunk(xxCLS, -5.5, 50), labels=L"σ_c^{-5.5}/50", color=:black, linestyle=:dash, alpha=0.5)
 
 
-    span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[],[],[], [], [], [tlabel1, tlabel2]], 
-    L"h_{\mathrm{max}}", permutedims([L"L="*"$l LLS" for l in L]),
-                        x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:topright, )
+    span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []], 
+    L"h_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]),
+                        x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
                             
-    plot!(xxLLS, myfunk(xxLLS, -5.8, 22), labels=L"σ_c^{-5.8}/22", color=:black, linestyle=:dash, alpha=0.5)
+    plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -5.8, 2*10^6), labels=L"σ_c^{-5.8}/2E6", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     y = largest_perimeter_spanning[:, :, 1]
     f = myfit.(eachcol(x), eachcol(y))
@@ -125,7 +125,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
        
 
     span_over_σ_CLS = make_plot(largest_perimeter_spanning[:, :, 2], log=:log, series_annotation=[[],[],[],[], [], [tlabel1, tlabel2]],
-    "", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l CLS" for l in L]),
+    L"h_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft,
                         series_position=:left)
     
@@ -164,7 +164,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     return other_plots
 end
 
-L = [8,16, 32, 64, 128, 256]
+L = [16, 32, 64, 128, 256]
 α = 2.0
 nr = ["LLS", "CLS"]
 ts = vcat((0:20) ./ 50, (5:7) ./ 10)
