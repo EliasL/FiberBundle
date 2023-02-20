@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH -J 256-1000
+#SBATCH -J 512-200
 #SBATCH -p porelab
 #SBATCH -N 1
-#SBATCH -n 50
-#SBATCH --time=10-24:15:0
+#SBATCH -n 64
+#SBATCH --time=4-0:16:48
 
 ml eb
 ml Julia/1.7.2-linux-x86_64
-julia --threads 40 generateData.jl L 256 t 0.8 0.9 a 2.0 NR CLS s 0 1000 
+julia --threads 50 generateData.jl L 512 t 0.9 a 2.0 NR LLS CLS s 0 200 
 
 wait

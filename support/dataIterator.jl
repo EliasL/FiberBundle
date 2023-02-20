@@ -45,7 +45,7 @@ function get_data(L, NR, ts, key, xKey, xKeyf; average=true, ex=[2,2], α=2.0)
                 value = load_data(file, key, L[l], NR[nr], ts[t], xKey, xKeyf)
             else
                 x = xKeyf(file["average_$xKey"])
-                value = file[key][round(Int64, x)]
+                value = file[key][ceil(Int64, x)]
             end
             data[t, l, nr] = value/L[l]^ex[nr]
         end
@@ -69,7 +69,7 @@ function load_data(bulk_file, key, l, nr, t, xKey, xKeyf)
         nr_seeds = length(seeds_used)
         for seed in bulk_file["seeds_used"]
             x = xKeyf(bulk_file["$xKey/$seed"])
-            value += bulk_file["$key/$seed"][round(Int64, x)]
+            value += bulk_file["$key/$seed"][x]
         end
         value /= nr_seeds
         # Save data

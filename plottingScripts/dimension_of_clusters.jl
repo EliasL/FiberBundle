@@ -92,7 +92,7 @@ function plot_dimension_thing(L, ts, α)
     #scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
     scatter(ts, slopes, labels=permutedims(labels), markerstrokecolor=permutedims(theme_palette(:auto)[1:4]), markercolor=:transparent, markersize=5, markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
         size=(300, 250), legend=:right, xlabel=L"t_0", ylabel=L"D")
-    println(slopes)
+    #println(slopes)
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
     
 end

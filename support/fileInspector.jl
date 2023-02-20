@@ -29,7 +29,7 @@ end
 L=256
 a=2.0
 nr="CLS"
-t=0.9
+t=0.7
 seed = 995
 f_path = get_file_path(L, a, t, nr, average=false)
 jldopen(f_path, "r") do f
@@ -54,7 +54,9 @@ jldopen(f_path, "r") do f
     seeds = f["seeds_used"]
     except = setdiff(first(seeds):last(seeds), seeds)
     println("Seeds: $(first(seeds)) - $(last(seeds))" * (isempty(except) ? "" : " except $(join(seeds, " , "))"))
+    #println(f["largest_cluster/995"])
 end
-for seed in 995:999
+
+#= for seed in 995:999
     show_bundle(L, t, nr, α, seed, critical=true)
-end
+end =#
