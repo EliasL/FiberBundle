@@ -91,7 +91,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     L"s_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]), series_position=:left, title="LLS",
                         x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
     
-    plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -8, 2*10^7), labels=L"σ_c^{-8}/2E7", color=:black, linestyle=:dash, alpha=0.5)
+    plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -8, 2*10^7), labels=L"σ_c^{-8}/(2\times10^7)", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     x = most_stressed_fiber_spanning[:, :, 1]
     y = largest_cluster_spanning[:, :, 1]
@@ -113,7 +113,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     L"h_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]),
                         x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
                             
-    plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -5.8, 2*10^6), labels=L"σ_c^{-5.8}/2E6", color=:black, linestyle=:dash, alpha=0.5)
+    plot!(xxLLS[100:end], myfunk(xxLLS[100:end], -7, 5*10^6), labels=L"σ_c^{-6}/(4\times10^5)", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     y = largest_perimeter_spanning[:, :, 1]
     f = myfit.(eachcol(x), eachcol(y))
@@ -143,8 +143,8 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
                         x=xLLS, xlabel=L"σ_c", position=:bottomleft, title="LLS",
                         series_position=:left)
     
-    plot!(xxLLS, myfunk(xxLLS, -2.8, 23), labels=L"σ_c^{-2.8}/23", color=:black, linestyle=:dash, alpha=0.5)
-    plot!(xxLLS, myfunk(xxLLS, -1.2, 4.2), labels=L"σ_c^{-1.2}/4.2", color=:black, linestyle=:dot, alpha=0.5)
+    plot!(xxLLS, myfunk(xxLLS, -3, 30), labels=L"σ_c^{-3}/30", color=:black, linestyle=:dash, alpha=0.5)
+    plot!(xxLLS, myfunk(xxLLS, -1, 3), labels=L"σ_c^{-1}/3", color=:black, linestyle=:dot, alpha=0.5)
 #= 
     f = myfit.(eachcol(x1), eachcol(y1))
     df = derivative.(eachcol(x1), eachcol(y1))
