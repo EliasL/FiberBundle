@@ -92,19 +92,19 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
 
     
     L=[256]    
-    ts = (0:9) ./ 10
+    ts = [0.0, 0.1, 0.2, 0.3, 0.5, 0.8]
     S = get_data_kN(L, NR, ts, "average_largest_cluster", return_kN=false, divide=:N)
     σ = get_data_kN(L, NR, ts, "average_most_stressed_fiber", return_kN=false, divide=1)
 
 
-    size_over_σ_LLS = make_plot2(σ, S,L"s_{\mathrm{max}}", "LLS", log=:identity, #ylims=(log(4),Inf),
+    size_over_σ_LLS = make_plot2(S, σ, L"σ", "LLS", log=:identity, #ylims=(log(4),Inf),
                        labels=permutedims([L"t_0="*"$t" for t in ts]), title="LLS",
-                       xlabel=L"σ", position=:bottomleft)
-    annotate!(0.35, 0.9, text("L=$(L[1])", 10))
-    size_over_σ_CLS = make_plot2(σ, S,L"s_{\mathrm{max}}", "CLS", log=:identity, #ylims=(log(4),Inf),
+                       xlabel=L"s_{\mathrm{max}}", position=:bottomleft)
+    annotate!(0.35, 0.7, text("L=$(L[1])", 10))
+    size_over_σ_CLS = make_plot2(S, σ, "", "CLS", log=:identity, #ylims=(log(4),Inf),
     labels=permutedims([L"t_0="*"$t" for t in ts]), title="CLS",
-                       xlabel=L"σ", position=:bottomleft)
-    annotate!(0.35, 0.9, text("L=$(L[1])", 10))
+                       xlabel=L"s_{\mathrm{max}}", position=:bottomleft)
+    annotate!(0.35, 0.7, text("L=$(L[1])", 10))
     
     
     other_plots = [σ_over_t_LLS, σ_over_t_CLS, size_over_σ_LLS, size_over_σ_CLS]
