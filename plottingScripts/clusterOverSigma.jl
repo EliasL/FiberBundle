@@ -62,29 +62,29 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     labels = permutedims(NR)
     
 
-    most_stressed_fiber_spanning = get_data(L, nr, ts, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false)
-    
+    σ_c = get_data(L, nr, ts, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false)
+    #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
 
-    σ_over_t_LLS = make_plot(most_stressed_fiber_spanning[:, :, 1], log=:identity, 
+    σ_over_t_LLS = make_plot(σ_c[:, :, 1], log=:identity, 
     L"σ_c", permutedims([L"L="*"$l" for l in L]), title="LLS",
                         x=ts, xlabel=L"t_0", position=:topleft, )
     #min_y = round(minimum(most_stressed_fiber_spanning[:, :, 1]), digits=3)
     #slope = 0.22
     #plot!(ts, min_y .+ ts*slope, labels="$min_y+$slope"*L"\times t_0", color=:black, linestyle=:dash, alpha=0.5)
 
-    y = most_stressed_fiber_spanning[:, end, 1]
+    y = σ_c[:, end, 1]
     f, param = myfit(ts, y, fit_interval=0.6)
     param = round.(param, digits=2)
     xx = lin(ts)
     plot!(xx, f, labels="$(param[2])+$(param[1])×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
 
 
-    σ_over_t_CLS = make_plot(most_stressed_fiber_spanning[:, :, 2], log=:identity, 
+    σ_over_t_CLS = make_plot(σ_c[:, :, 2], log=:identity, 
     L"σ_c", permutedims([L"L="*"$l" for l in L]), title="CLS",
                         x=ts, xlabel=L"t_0", position=:topleft, )
 
-    y = most_stressed_fiber_spanning[:, end, 2]
+    y = σ_c[:, end, 2]
     f, param = myfit(ts, y, fit_interval=0.4)
     param = round.(param, digits=2)
     xx = lin(ts)
@@ -98,11 +98,11 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
 
 
     size_over_σ_LLS = make_plot2(σ, S,L"s_{\mathrm{max}}", "LLS", log=:identity, #ylims=(log(4),Inf),
-                       labels=permutedims([L"t_0="*"$t" for t in ts]),# title="LLS",
+                       labels=permutedims([L"t_0="*"$t" for t in ts]), title="LLS",
                        xlabel=L"σ", position=:bottomleft)
     annotate!(0.35, 0.9, text("L=$(L[1])", 10))
     size_over_σ_CLS = make_plot2(σ, S,L"s_{\mathrm{max}}", "CLS", log=:identity, #ylims=(log(4),Inf),
-    labels=permutedims([L"t_0="*"$t" for t in ts]),# title="CLS",
+    labels=permutedims([L"t_0="*"$t" for t in ts]), title="CLS",
                        xlabel=L"σ", position=:bottomleft)
     annotate!(0.35, 0.9, text("L=$(L[1])", 10))
     
@@ -120,8 +120,10 @@ ts = vcat((0:20) ./ 50, (5:7) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr)
 psize=270
-p = plot(plots..., size=(psize*length(nr)*1.1,psize*length(plots)/length(nr)), layout = @layout([ A B; C D]))
-savefig(p, "plots/Graphs/otherBundlePropertiesSigma.pdf")
+p = plot(plots[1:2]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
+p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
+savefig(p, "plots/Graphs/sigma_C_over_t0.pdf")
+savefig(p2, "plots/Graphs/s_over_sigma.pdf")
 
 println("Saved plot!")
 

@@ -105,7 +105,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     plot!(xx, df, inset = (1, bbox(0.5,0.35,0.45,0.5)), subplot = 2, xaxis=:log, labels="", xlims=(xmin, xmax),
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{s}_{\mathrm{max}} / ∂\tilde{σ}}") =#
 
-    size_over_σ_CLS = make_plot(largest_cluster_spanning[:, :, 2], log=:log, series_annotation=[[],[],[], [], [], [tlabel1, tlabel2]],
+    size_over_σ_CLS = make_plot(largest_cluster_spanning[:, :, 2], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
     L"s_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]), title="CLS",
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, series_position=:left)
     
@@ -127,7 +127,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{h}_{\mathrm{max}} / ∂\tilde{σ}}") =#
        
 
-    span_over_σ_CLS = make_plot(largest_perimeter_spanning[:, :, 2], log=:log, series_annotation=[[],[],[],[], [], [tlabel1, tlabel2]],
+    span_over_σ_CLS = make_plot(largest_perimeter_spanning[:, :, 2], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
     L"h_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft,
                         series_position=:left)
@@ -141,7 +141,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     y1 = (largest_cluster_spanning[:, :, 1] ./ largest_perimeter_spanning[:, :, 1]) ./ permutedims(L.^d[1])
     y2 = (largest_cluster_spanning[:, :, 2] ./ largest_perimeter_spanning[:, :, 2]) ./ permutedims(L.^d[2])
     
-    ratio_over_σ_LLS = make_plot(y1, log=:log, series_annotation=[[],[],[],[], [], [0.3, 0.5]],
+    ratio_over_σ_LLS = make_plot(y1, log=:log, series_annotation=[[],[],[], [], [tlabel1, tlabel2]],
                         L" s_{\mathrm{max}}/h_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
                         x=xLLS, xlabel=L"σ_c", position=:bottomleft, title="LLS",
                         series_position=:left)
@@ -156,7 +156,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     plot!(xx, df, inset = (1, bbox(0.6,0.5,0.36,0.35)), subplot = 2, xaxis=:log, labels="", xlims=(xmin, xmax),
         xlabel=""#= L"\tilde{σ}" =#, ylabel=L"∂\tilde{h}_{\mathrm{max}} / ∂\tilde{σ}}") =#
     
-    ratio_over_σ_CLS = make_plot(y2, log=:log, series_annotation=[[],[],[],[], [], [0.3, 0.5]],
+    ratio_over_σ_CLS = make_plot(y2, log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
     L" s_{\mathrm{max}}/h_{\mathrm{max}}", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l" for l in L]),
                         x=xCLS, xlabel=L"σ_c", position=:bottomleft, title="CLS",
                         series_position=:left)
@@ -177,6 +177,6 @@ ts = vcat((0:20) ./ 50, (5:7) ./ 10)
 plots = otherPropertiesPlot(L, ts, nr)
 psize=300
 p = plot(plots..., size=(psize*length(nr)*1.2,psize*length(plots)/length(nr)), layout = @layout([ A B; C D; E F]))
-savefig(p, "plots/Graphs/otherBundlePropertiesCriticalSigma.pdf")
+savefig(p, "plots/Graphs/sh_over_sigma_c.pdf")
 
 println("Saved plot!")
