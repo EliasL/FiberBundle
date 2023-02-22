@@ -99,7 +99,7 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 end
 
 L = 128
-ts = [0.0, 0.1, 0.2, 0.3, 0.7, 0.9]
+ts = [0.0, 0.1, 0.2,0.3, 0.7, 0.9]
 α = 2.0
 nr = ["LLS", "CLS"]
 nrs = length(nr)

@@ -75,7 +75,7 @@ start_job() =#
 
 NR = ["LLS", "CLS"]
 
-for ts in t 
+for ts in [0.0]
     make_job(seeds, L, t=[ts], α=[2.0], NR=NR, force_short=false)
     start_job()
 end
