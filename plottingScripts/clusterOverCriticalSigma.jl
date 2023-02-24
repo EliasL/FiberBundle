@@ -161,7 +161,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
                         x=xCLS, xlabel=L"σ_c", position=:bottomleft, title="CLS",
                         series_position=:left)
 
-                        plot!(xxCLS, myfunk(xxCLS, -1.75, 10), labels=L"σ_c^{-1.75}/10", color=:black, linestyle=:dash, alpha=0.5)
+    plot!(xxCLS, myfunk(xxCLS, -1.75, 10), labels=L"σ_c^{-1.75}/10", color=:black, linestyle=:dash, alpha=0.5)
     
     other_plots = [size_over_σ_LLS, size_over_σ_CLS, span_over_σ_LLS, span_over_σ_CLS, ratio_over_σ_LLS, ratio_over_σ_CLS]
     return other_plots

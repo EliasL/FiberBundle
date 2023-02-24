@@ -27,6 +27,7 @@ function show_progression()
     NR = ["ELS", "LLS", "CLS"]
     T = 0.0
     L=128
+    s = L + 200
     α = 2.0
     seeds = 0
 
@@ -38,11 +39,11 @@ function show_progression()
             settings = make_settings(l, t, nr, α)
             b = get_bundles_from_settings(settings, seeds=seed, progression=progress)
             p = plot_fb(b, show=false, use_shift=false)
-            title!(p, L"k/N="*"$progress")
+            title!(p, L"k/N="*"$progress", titlefontsize=30)
             push!(plots, p)
         end
-        plot(plots..., layout=(1,steps), size=(L*(steps+1), L*1.4))
-        savefig("plots/Visualizations/Progressions/$(L)$(nr)_$(t)_$(α).pdf")  
+        plot(plots..., layout=(1,steps), size=(s*(steps+1), s*1.4))
+        savefig("plots/Visualizations/Progressions/$(L)$(nr)_$(t)_$(α).png")  
     end
 end
 
@@ -87,6 +88,6 @@ end
 #generate_illustrations()
 
 #show_spanning_cluster()
-#show_progression()
+show_progression()
 #show_t_change("LLS")
 #show_t_change("CLS")
