@@ -18,12 +18,12 @@ function time_estimate(dimensions, α, regimes, NRs, seeds; path="data/", dist="
     seconds_estimated = 0
 
     for L=dimensions, t=regimes, nr=NRs, a=α
-        settings_with_correct_a = make_settings(L, t, nr, a, path, dist)
+        settings_with_correct_a = make_settings(L, t, nr, a, dist, path)
         if a != 0.0
             # Any alpha should take roughly the same time
             a = 2.0
         end
-        settings = make_settings(L, t, nr, a, path, dist)
+        settings = make_settings(L, t, nr, a, dist, path)
         try
             missing_seeds = get_missing_seeds(settings_with_correct_a, seeds)
             f = load_file(settings)

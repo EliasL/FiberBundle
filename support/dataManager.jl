@@ -25,10 +25,11 @@ seed_specific_keys = [
 data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
-function make_settings(L::Int64, t::Float64, nr::String, α::Float64, path::String="data/", dist::String="Uniform")
+function make_settings(L::Int64, t::Float64, nr::String, α::Float64, dist::String="Uniform", path::String="data/")
     if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
+    @assert dist in ["Uniform", "ConstantAverageUniform"]
     settings = Dict(
         "dist" => dist,
         "L" => L,

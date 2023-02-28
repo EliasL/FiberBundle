@@ -37,7 +37,7 @@ end
 function myfunk(x, exp, div)
     return @. x^(exp)/div
 end
-function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
+function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     
     
     yLabel(string) = use_y_lable ? string : ""
@@ -167,16 +167,17 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     return other_plots
 end
 
-L = [16, 32, 64, 128, 256]
+L = [128]#[16, 32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
+dist = "ConstantAverageUniform"
 ts = vcat((0:20) ./ 50, (5:7) ./ 10)
 #ts2 = (0:9) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
-plots = otherPropertiesPlot(L, ts, nr)
+plots = otherPropertiesPlot(L, ts, nr,dist)
 psize=300
 p = plot(plots..., size=(psize*length(nr)*1.2,psize*length(plots)/length(nr)), layout = @layout([ A B; C D; E F]))
-savefig(p, "plots/Graphs/sh_over_sigma_c.pdf")
+savefig(p, "plots/Graphs/$(dist)_sh_over_sigma_c.pdf")
 
 println("Saved plot!")

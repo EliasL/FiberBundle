@@ -1,0 +1,22 @@
+ERROR: LoadError: MethodError: no method matching make_settings(::Int64, ::Float64, ::String, ::Float64, ::String, ::Vector{Any})
+Closest candidates are:
+  make_settings(::Int64, ::Float64, ::String, ::Float64, ::String) at /work/vemundlu/FiberBundle/support/dataManager.jl:28
+  make_settings(::Int64, ::Float64, ::String, ::Float64, ::String, !Matched::String) at /work/vemundlu/FiberBundle/support/dataManager.jl:28
+  make_settings(::Int64, ::Float64, ::String, ::Float64) at /work/vemundlu/FiberBundle/support/dataManager.jl:28
+Stacktrace:
+ [1] itterate_settings(dimensions::Vector{Any}, α::Vector{Any}, regimes::Vector{Any}, neighbourhood_rules::Vector{Any}, seeds::UnitRange{Int64}, dist::Vector{Any}; overwrite::Bool, path::String, use_threads::Bool)
+   @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:154
+ [2] macro expansion
+   @ timing.jl:220 [inlined]
+ [3] top-level scope
+   @ /work/vemundlu/FiberBundle/generateData.jl:67
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:57
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 50 workers... 
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:62
+┌ LogLevel(-1): Running settings: 
+│  Any[512], 
+│  Any[0.0], 
+│  Any[2.0]
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:66

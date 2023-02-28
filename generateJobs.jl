@@ -8,14 +8,14 @@ function format(total_seconds)
     (d,h,m,s) = round.(Int64, [d,h,m,s])
     extra_hours = floor(Int64, d*4 + h/6)
     extra_minutes = 15 + h*5
-    extra_days=4
+    extra_days=1
 
     return "$(d+extra_days)-$(h+extra_hours):$(m+extra_minutes):$s"
 end
 
-function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], force_short=false)
+function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], dist="Uniform", force_short=false)
     threads = 50
-    seconds = time_estimate(L, α, t, NR, collect(seeds[1]:seeds[2]), threads=threads)
+    seconds = time_estimate(L, α, t, NR, dist=dist, collect(seeds[1]:seeds[2]), threads=threads)
     formated_time = format(seconds)
     #partition = seconds < 3600 || force_short ? "short" : "porelab"
     if force_short
@@ -37,7 +37,7 @@ end
 
     ml eb
     ml Julia/1.7.2-linux-x86_64
-    julia --threads $threads generateData.jl L $(join(L, " ")) t $(join(t, " ")) a $(join(α, " ")) NR $(join(NR, " ")) s $(join(seeds, " ")) 
+    julia --threads $threads generateData.jl L $(join(L, " ")) t $(join(t, " ")) a $(join(α, " ")) NR $(join(NR, " ")) s $(join(seeds, " ")) dist $dist 
 
     wait
     """
@@ -52,13 +52,13 @@ end
 
 
 seeds = [0, 200] # From seed to seed
-#L = [512]
 L = [512]
+#L = [128]
 #t = [0.38]
 #t = vcat((0:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
-t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
+#t = vcat((0:9) ./ 50, (10:20) ./ 50, (5:9) ./ 10)
 #t = vcat((0:5) ./ 50)
 #t = vcat((6:10) ./ 50)
 #t = vcat((11:15) ./ 50)
@@ -74,20 +74,17 @@ make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 start_job() =#
 
 NR = ["LLS", "CLS"]
-
-for ts in [0.0]
-    make_job(seeds, L, t=[ts], α=[2.0], NR=NR, force_short=false)
+#dist = "ConstantAverageUniform"
+dist = "Uniform"
+for ts in t
+    make_job(seeds, L, t=[ts], α=[2.0], NR=NR, dist=dist, force_short=false)
     start_job()
 end
 #t = vcat((6:10) ./ 50)
-#= L=[16]
-seeds = [10000, 40000]
-make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
-start_job()
-L=[8]
-seeds = [10000, 40000]
-make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
-start_job() =#
+
+#make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+#start_job()
+
 
 #=
 t = vcat((11:15) ./ 50)

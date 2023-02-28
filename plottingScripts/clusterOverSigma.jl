@@ -62,7 +62,7 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     labels = permutedims(NR)
     
 
-    σ_c = get_data(L, nr, ts, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false)
+    σ_c = get_data(L, nr, ts, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
 
@@ -122,7 +122,7 @@ plots = otherPropertiesPlot(L, ts, nr)
 psize=270
 p = plot(plots[1:2]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
 p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
-savefig(p, "plots/Graphs/sigma_C_over_t0.pdf")
+savefig(p, "plots/Graphs/average_sigma_C_over_t0.pdf")
 savefig(p2, "plots/Graphs/s_over_sigma.pdf")
 
 println("Saved plot!")

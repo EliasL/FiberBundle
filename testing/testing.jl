@@ -310,7 +310,7 @@ end
 
 function storageTest()
     test_data_path = "test_data/"
-    settings = make_settings(8, 0.1, "CLS", 2.0, test_data_path)
+    settings = make_settings(8, 0.1, "CLS", 2.0, "Uniform", test_data_path)
 
     # Test clean generation
     seeds = 1:3
@@ -345,7 +345,7 @@ function storageTest()
     
     # Test to see if a bundle can partially be broken and continue later
     L = 8
-    settings = make_settings(L, 0.1, "CLS", 2.0, test_data_path)
+    settings = make_settings(L, 0.1, "CLS", 2.0, "Uniform", test_data_path)
     # First do everything at once to create a correct answer
     break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=false)
     clean_after_run(settings, [seed])

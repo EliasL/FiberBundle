@@ -6,21 +6,21 @@ include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
-function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
+function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     add_ELS=true
     N = L.*L
     files_and_t = []
     for t in ts
-        push!(files_and_t, load_file(L, α, t, nr))
+        push!(files_and_t, load_file(L, α, t, nr, dist))
         # Check that the data we use is from completely borken bundles
-        min_steps = get_min_steps_in_files(make_settings(L, t, nr, α)) 
+        min_steps = get_min_steps_in_files(make_settings(L, t, nr, α, dist)) 
         @assert min_steps == N "This bundle, $nr L=$L t0=$t, is not fully broken! $min_steps != $N"
     end
 
     if nr=="LLS" && add_ELS
-        push!(files_and_t, load_file(L, α, 0.0, "ELS"))
+        push!(files_and_t, load_file(L, α, 0.0, "ELS", dist))
         # Check that the data we use is from completely borken bundles
-        min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α)) 
+        min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α, dist)) 
         @assert min_steps == N "This bundle is not fully broken! $min_steps != $N"
     end
 
@@ -102,11 +102,12 @@ L = 128
 ts = [0.0, 0.1, 0.2,0.3, 0.7, 0.9]
 α = 2.0
 nr = ["LLS", "CLS"]
+dist = "ConstantAverageUniform"
 nrs = length(nr)
-nr_plots = [basicPropertiesPlot(L, ts, nr[i], use_y_lable=i==1) for i in 1:nrs]
+nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
 
-savefig(p, "plots/Graphs/BundleProperties.svg")
+savefig(p, "plots/Graphs/$(dist)_BundleProperties.svg")
 
 println("Saved plot!")

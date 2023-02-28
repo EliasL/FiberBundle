@@ -102,6 +102,9 @@ function get_fb(L, seed; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=
     if dist == "Uniform"
         distribution_function = get_uniform_distribution(t)
         x = distribution_function(N)
+    elseif dist == "ConstantAverageUniform"
+        distribution_function = get_fixed_average_uniform_distribution(t)
+        x = distribution_function(N)
     elseif isa(dist, Function)
         x = dist(N)
     elseif isa(dist, AbstractVector)
