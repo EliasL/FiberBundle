@@ -79,7 +79,7 @@ end
 function update_storage!(b::FB, s::FBS)
     #Save important data from step
     step = b.current_step
-    s.most_stressed_fiber[step] = 1/b.max_σ
+    s.most_stressed_fiber[step] = b.max_σ
     s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
     s.largest_cluster[step] = maximum(b.cluster_size)
     s.largest_perimiter[step] = maximum(b.cluster_outline_length)
@@ -307,13 +307,13 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
     # by dividing by x.
     update_σ!(b)
     for i in eachindex(b.σ)
-        b.tension[i] = b.σ[i] / b.x[i]
+        b.tension[i] = b.x[i] / b.σ[i] 
     end
 end
 
 function find_next_fiber!(b::FB)
     b.current_step += 1
-    b.break_sequence[b.current_step] = argmax(b.tension)
+    b.break_sequence[b.current_step] = argmin(b.tension)
     b.max_σ = b.tension[b.break_sequence[b.current_step]]
 end
 
