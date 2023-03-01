@@ -29,7 +29,7 @@ function myfit(x, y; fit_interval=1)
 end
 
 
-function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
+function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     
     
     yLabel(string) = use_y_lable ? string : ""
@@ -62,12 +62,12 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     labels = permutedims(NR)
     
 
-    σ_c = get_data(L, nr, ts, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true)
+    σ_c = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
 
-    σ_over_t_LLS = make_plot(σ_c[:, :, 1], log=:identity, 
-    L"σ_c", permutedims([L"L="*"$l" for l in L]), title="LLS",
+    σ_over_t_LLS = make_plot(σ_c[:, 1, :], log=:identity, 
+    L"σ_c", permutedims(["$nr" for nr in NR]), title="",
                         x=ts, xlabel=L"t_0", position=:topleft, )
     #min_y = round(minimum(most_stressed_fiber_spanning[:, :, 1]), digits=3)
     #slope = 0.22
@@ -77,7 +77,13 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     f, param = myfit(ts, y, fit_interval=0.6)
     param = round.(param, digits=2)
     xx = lin(ts)
-    plot!(xx, f, labels="$(param[2])+$(param[1])×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
+    plot!(xx, f, labels="$(param[2])-$(abs(param[1]))×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
+
+    y = σ_c[:, end, 2]
+    f, param = myfit(ts, y, fit_interval=0.6)
+    param = round.(param, digits=2)
+    xx = lin(ts)
+    plot!(xx, f, labels="$(param[2])+$(param[1])×"*L"t_0", color=:black, linestyle=:dot, alpha=0.5)
 
 
     σ_over_t_CLS = make_plot(σ_c[:, :, 2], log=:identity, 
@@ -91,10 +97,10 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     plot!(xx, f, labels="$(param[2])+$(param[1])×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
 
     
-    L=[256]    
+    L=[128]    
     ts = [0.0, 0.1, 0.2, 0.3, 0.5, 0.8]
-    S = get_data_kN(L, NR, ts, "average_largest_cluster", return_kN=false, divide=:N)
-    σ = get_data_kN(L, NR, ts, "average_most_stressed_fiber", return_kN=false, divide=1)
+    S = get_data_kN(L, NR, ts, dist, "average_largest_cluster", return_kN=false, divide=:N)
+    σ = get_data_kN(L, NR, ts, dist, "average_most_stressed_fiber", return_kN=false, divide=1)
 
 
     size_over_σ_LLS = make_plot2(S, σ, L"σ", "LLS", log=:identity, #ylims=(log(4),Inf),
@@ -111,19 +117,20 @@ function otherPropertiesPlot(L, ts, NR; use_y_lable=true, add_ELS=true)
     return other_plots
 end
 
-L = [64, 128, 256]
+L = [128]
 α = 2.0
 nr = ["LLS", "CLS"]
 ts = vcat((0:20) ./ 50, (5:7) ./ 10)
+dist = "ConstantAverageUniform"
 #ts = (0:7) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
-plots = otherPropertiesPlot(L, ts, nr)
+plots = otherPropertiesPlot(L, ts, nr, dist)
 psize=270
-p = plot(plots[1:2]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
+p = plot(plots[1:1]..., size=(psize*1.1,psize), layout = @layout([ A;]))
 p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
-savefig(p, "plots/Graphs/average_sigma_C_over_t0.pdf")
-savefig(p2, "plots/Graphs/s_over_sigma.pdf")
+savefig(p, "plots/Graphs/$(dist)_average_sigma_C_over_t0.pdf")
+savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 println("Saved plot!")
 

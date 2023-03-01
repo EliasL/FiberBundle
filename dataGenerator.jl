@@ -151,7 +151,7 @@ end
 function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds, dist; overwrite=false, path="data/", use_threads=true)
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
         # There is no point in itterating over alphas when using LLS
-        settings = make_settings(L, t, nr, a, path, dist)
+        settings = make_settings(L, t, nr, a, dist, path)
         @logmsg settingLog "$(now()): Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite; use_threads=use_threads)
     end

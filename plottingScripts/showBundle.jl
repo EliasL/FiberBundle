@@ -137,7 +137,7 @@ function plot_fb_cm(b::FB)
 end
 
 function save_picture(L, nr, t, α, seed, name, save_path="", data_path="data/")
-    settings = make_settings(L, t, nr, α, data_path)
+    settings = make_settings(L, t, nr, α, "Uniform", data_path)
     b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file

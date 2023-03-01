@@ -29,7 +29,7 @@ function make_settings(L::Int64, t::Float64, nr::String, α::Float64, dist::Stri
     if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
-    @assert dist in ["Uniform", "ConstantAverageUniform"]
+    @assert dist in ["Uniform", "ConstantAverageUniform"] "$dist is not a valid dist"
     settings = Dict(
         "dist" => dist,
         "L" => L,
@@ -69,7 +69,7 @@ function get_setting_name(settings)
 end
 
 function get_file_name(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
-    s = make_settings(L, t, NR, α, data_path, dist)
+    s = make_settings(L, t, NR, α, dist, data_path)
     return get_file_name(s, seed, average)
 end
 
@@ -139,10 +139,12 @@ function get_min_steps_in_files(settings)
                 seeds = file["seeds_used"]
                 return minimum([file["last_step/$s"] for s in seeds])
             else
+                @warn "Key not found! $file"
                 return 0
             end
         end
     else
+        @warn "File not found! $file_name"
         return 0
     end
 end
@@ -325,7 +327,7 @@ end
 
 global_settings = nothing
 function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=true)
-    setting = make_settings(L, t, NR, α, data_path, dist)
+    setting = make_settings(L, t, NR, α, dist, data_path)
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 

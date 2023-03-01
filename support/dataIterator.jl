@@ -1,7 +1,7 @@
 include("dataManager.jl")
 
 
-function get_data_kN(L, NR, ts, key; average=true, divide=:N, return_kN=true)
+function get_data_kN(L, NR, ts, dist, key; average=true, divide=:N, return_kN=true)
     data = []
     kN = []
     for l in L
@@ -14,7 +14,7 @@ function get_data_kN(L, NR, ts, key; average=true, divide=:N, return_kN=true)
         LData = zeros(N, length(ts), length(NR))
         LkN = zeros(size(LData))
         for nr=eachindex(NR), t=eachindex(ts)
-            name = get_file_name(l, 2.0, ts[t], NR[nr], "Uniform", average=average)
+            name = get_file_name(l, 2.0, ts[t], NR[nr], dist, average=average)
             jldopen(name, "r") do file
                 fdata = file[key]
                 LData[:, t, nr] .= fdata./divisor
@@ -32,14 +32,14 @@ function get_data_kN(L, NR, ts, key; average=true, divide=:N, return_kN=true)
 end
 
 
-function get_data(L, NR, ts, key, xKey, xKeyf; average=true, ex=[2,2], α=2.0)
+function get_data(L, NR, ts, dist, key, xKey, xKeyf; average=true, ex=[2,2], α=2.0)
     do_data_test = true
     data = zeros(length(ts), length(L), length(NR))
     for t=eachindex(ts), l=eachindex(L), nr=eachindex(NR)
         if do_data_test
-            data_test(L[l], α, ts[t], NR[nr], "Uniform")
+            data_test(L[l], α, ts[t], NR[nr], dist)
         end
-        name = get_file_name(L[l], α, ts[t], NR[nr], "Uniform", average=average)
+        name = get_file_name(L[l], α, ts[t], NR[nr], dist, average=average)
         jldopen(name, "r") do file            
             if average==false
                 value = load_data(file, key, L[l], NR[nr], ts[t], xKey, xKeyf)
