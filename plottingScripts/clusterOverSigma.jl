@@ -62,7 +62,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     labels = permutedims(NR)
     
 
-    σ_c = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true)
+    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
 
@@ -77,7 +77,8 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     f, param = myfit(ts, y, fit_interval=0.6)
     param = round.(param, digits=2)
     xx = lin(ts)
-    plot!(xx, f, labels="$(param[2])-$(abs(param[1]))×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
+    s = param[1]>0 ? "+" : "-"
+    plot!(xx, f, labels="$(param[2])$(s)$(abs(param[1]))×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
 
     y = σ_c[:, end, 2]
     f, param = myfit(ts, y, fit_interval=0.6)

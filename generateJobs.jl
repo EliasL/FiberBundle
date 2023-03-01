@@ -33,6 +33,7 @@ end
     #SBATCH -p $partition
     #SBATCH -N 1
     #SBATCH -n 64
+    #SBATCH --priority 1000
     #SBATCH --time=$formated_time
 
     ml eb
@@ -51,9 +52,8 @@ end
 
 
 
-seeds = [0, 200] # From seed to seed
-L = [512]
-L = [256]
+seeds = [0, 6000] # From seed to seed
+L = [16, 32, 64]
 #t = [0.38]
 #t = vcat((0:9) ./ 10)
 #t = vcat((0:10) ./ 50)
@@ -65,7 +65,7 @@ L = [256]
 #t = vcat((16:20) ./ 50)
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 dist = "ConstantAverageUniform"
-seeds = [0, 100] # From seed to seed
+#seeds = [0, 100] # From seed to seed
 make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
 start_job()
 

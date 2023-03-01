@@ -83,9 +83,9 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     d = [0,0]
     tlabel1=0.3
     tlabel2=0.5
-    largest_cluster_spanning = get_data(L, nr, ts, "largest_cluster", "most_stressed_fiber", argmax, ex=a, average=false)
-    largest_perimeter_spanning = get_data(L, nr, ts, "largest_perimiter", "most_stressed_fiber", argmax, ex=b, average=false)
-    most_stressed_fiber_spanning = get_data(L, nr, ts, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=c, average=false)
+    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=a, average=false)
+    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=b, average=false)
+    most_stressed_fiber_spanning = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=c, average=false)
     xLLS = most_stressed_fiber_spanning[:, :, 1]
     xCLS = most_stressed_fiber_spanning[:, :, 2]
     xxLLS = lin.(eachcol(xLLS))[end]
@@ -94,7 +94,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     L"s_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]), series_position=:left, title="LLS",
                         x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
     
-    plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -8, 2*10^7), labels=L"σ_c^{-8}/(2\times10^7)", color=:black, linestyle=:dash, alpha=0.5)
+    #plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -8, 2*10^7), labels=L"σ_c^{-8}/(2\times10^7)", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     x = most_stressed_fiber_spanning[:, :, 1]
     y = largest_cluster_spanning[:, :, 1]
@@ -109,14 +109,14 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     L"s_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]), title="CLS",
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, series_position=:left)
     
-    plot!(xxCLS, myfunk(xxCLS, -5.5, 50), labels=L"σ_c^{-5.5}/50", color=:black, linestyle=:dash, alpha=0.5)
+    #plot!(xxCLS, myfunk(xxCLS, -5.5, 50), labels=L"σ_c^{-5.5}/50", color=:black, linestyle=:dash, alpha=0.5)
 
 
     span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []], 
     L"h_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]),
                         x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
                             
-    plot!(xxLLS[100:end], myfunk(xxLLS[100:end], -7, 5*10^6), labels=L"σ_c^{-6}/(4\times10^5)", color=:black, linestyle=:dash, alpha=0.5)
+    #plot!(xxLLS[100:end], myfunk(xxLLS[100:end], -7, 5*10^6), labels=L"σ_c^{-6}/(4\times10^5)", color=:black, linestyle=:dash, alpha=0.5)
 
 #=     y = largest_perimeter_spanning[:, :, 1]
     f = myfit.(eachcol(x), eachcol(y))
@@ -132,22 +132,22 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
                         x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft,
                         series_position=:left)
     
-    plot!(xxCLS, myfunk(xxCLS, -4, 6), labels=L"σ_c^{-4}/6", color=:black, linestyle=:dash, alpha=0.5)
+    #plot!(xxCLS, myfunk(xxCLS, -4, 6), labels=L"σ_c^{-4}/6", color=:black, linestyle=:dash, alpha=0.5)
     #plot!([minimum(xCLS),maximum(xCLS)], [minimum(xCLS),maximum(xCLS)], labels="y=x", color=:black, linestyle=:dash)
 
-    largest_cluster_spanning = get_data(L, nr, ts, "largest_cluster", "most_stressed_fiber", argmax, ex=[0,0], average=false)
-    largest_perimeter_spanning = get_data(L, nr, ts, "largest_perimiter", "most_stressed_fiber", argmax, ex=[0,0], average=false)
+    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=[0,0], average=false)
+    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=[0,0], average=false)
 
     y1 = (largest_cluster_spanning[:, :, 1] ./ largest_perimeter_spanning[:, :, 1]) ./ permutedims(L.^d[1])
     y2 = (largest_cluster_spanning[:, :, 2] ./ largest_perimeter_spanning[:, :, 2]) ./ permutedims(L.^d[2])
     
-    ratio_over_σ_LLS = make_plot(y1, log=:log, series_annotation=[[],[],[], [], [tlabel1, tlabel2]],
+    ratio_over_σ_LLS = make_plot(y1, log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
                         L" s_{\mathrm{max}}/h_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
                         x=xLLS, xlabel=L"σ_c", position=:bottomleft, title="LLS",
                         series_position=:left)
     
-    plot!(xxLLS, myfunk(xxLLS, -3, 30), labels=L"σ_c^{-3}/30", color=:black, linestyle=:dash, alpha=0.5)
-    plot!(xxLLS, myfunk(xxLLS, -1, 3), labels=L"σ_c^{-1}/3", color=:black, linestyle=:dot, alpha=0.5)
+    #plot!(xxLLS, myfunk(xxLLS, -3, 30), labels=L"σ_c^{-3}/30", color=:black, linestyle=:dash, alpha=0.5)
+    #plot!(xxLLS, myfunk(xxLLS, -1, 3), labels=L"σ_c^{-1}/3", color=:black, linestyle=:dot, alpha=0.5)
 #= 
     f = myfit.(eachcol(x1), eachcol(y1))
     df = derivative.(eachcol(x1), eachcol(y1))
@@ -161,13 +161,13 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
                         x=xCLS, xlabel=L"σ_c", position=:bottomleft, title="CLS",
                         series_position=:left)
 
-    plot!(xxCLS, myfunk(xxCLS, -1.75, 10), labels=L"σ_c^{-1.75}/10", color=:black, linestyle=:dash, alpha=0.5)
+    #plot!(xxCLS, myfunk(xxCLS, -1.75, 10), labels=L"σ_c^{-1.75}/10", color=:black, linestyle=:dash, alpha=0.5)
     
     other_plots = [size_over_σ_LLS, size_over_σ_CLS, span_over_σ_LLS, span_over_σ_CLS, ratio_over_σ_LLS, ratio_over_σ_CLS]
     return other_plots
 end
 
-L = [128]#[16, 32, 64, 128, 256, 512]
+L = [32, 64, 128]#[16, 32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
@@ -175,7 +175,7 @@ ts = vcat((0:20) ./ 50, (5:7) ./ 10)
 #ts2 = (0:9) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
-plots = otherPropertiesPlot(L, ts, nr,dist)
+plots = otherPropertiesPlot(L, ts, nr, dist)
 psize=300
 p = plot(plots..., size=(psize*length(nr)*1.2,psize*length(plots)/length(nr)), layout = @layout([ A B; C D; E F]))
 savefig(p, "plots/Graphs/$(dist)_sh_over_sigma_c.pdf")
