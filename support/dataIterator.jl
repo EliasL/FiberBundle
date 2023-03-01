@@ -42,7 +42,7 @@ function get_data(L, NR, ts, dist, key, xKey, xKeyf; average=true, ex=[2,2], α=
         name = get_file_name(L[l], α, ts[t], NR[nr], dist, average=average)
         jldopen(name, "r") do file            
             if average==false
-                value = load_data(file, key, L[l], NR[nr], ts[t], xKey, xKeyf)
+                value = load_data(file, key, L[l], NR[nr], ts[t], dist, xKey, xKeyf)
             else
                 x = xKeyf(file["average_$xKey"])
                 value = file[key][ceil(Int64, x)]
@@ -55,14 +55,15 @@ end
 
 
 
-function load_data(bulk_file, key, l, nr, t, xKey, xKeyf)
+function load_data(bulk_file, key, l, nr, t, dist, xKey, xKeyf)
     path = "data/$xKey/"
+    name = "$(dist)_$(l)_$(nr)_$(t)_$key"
     if !isdir(path)
         mkpath(path)
     end
-    if isfile("$(path)$(l)_$(nr)_$(t)_$key.jld2")
-        f = load("$(path)$(l)_$(nr)_$(t)_$key.jld2")
-        value = f["$(l)_$(nr)_$(t)_$key"]
+    if isfile("$(path).jld2")
+        f = load("$(path)$(name).jld2")
+        value = f[name]
     else
         value = 0
         seeds_used = bulk_file["seeds_used"]
@@ -73,8 +74,8 @@ function load_data(bulk_file, key, l, nr, t, xKey, xKeyf)
         end
         value /= nr_seeds
         # Save data
-        jldopen("$(path)$(l)_$(nr)_$(t)_$key.jld2", "w") do file
-            file["$(l)_$(nr)_$(t)_$key"] = value
+        jldopen("$(path)$(name).jld2", "w") do file
+            file[name] = value
         end
     end
 
