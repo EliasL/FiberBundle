@@ -8,7 +8,7 @@ function format(total_seconds)
     (d,h,m,s) = round.(Int64, [d,h,m,s])
     extra_hours = floor(Int64, d*4 + h/6)
     extra_minutes = 15 + h*5
-    extra_days=1
+    extra_days=3
 
     return "$(d+extra_days)-$(h+extra_hours):$(m+extra_minutes):$s"
 end
@@ -33,7 +33,7 @@ end
     #SBATCH -p $partition
     #SBATCH -N 1
     #SBATCH -n 64
-    #SBATCH --priority 1000
+    #SBATCH --nice
     #SBATCH --time=$formated_time
 
     ml eb
@@ -52,13 +52,13 @@ end
 
 
 
-seeds = [0, 6000] # From seed to seed
-L = [16, 32, 64]
+seeds = [0, 1000] # From seed to seed
+L = [256]
 #t = [0.38]
 #t = vcat((0:9) ./ 10)
 #t = vcat((0:10) ./ 50)
 #t = vcat((11:20) ./ 50)
-#t = vcat((0:9) ./ 50, (10:20) ./ 50, (5:9) ./ 10)
+t = vcat((0:9) ./ 50, (10:20) ./ 50, (5:9) ./ 10)
 #t = vcat((0:5) ./ 50)
 #t = vcat((6:10) ./ 50)
 #t = vcat((11:15) ./ 50)
@@ -66,20 +66,19 @@ L = [16, 32, 64]
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 dist = "ConstantAverageUniform"
 #seeds = [0, 100] # From seed to seed
-make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
+#make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+#start_job()
 
 
 #L = [64]
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 #start_job()
 
-#= NR = ["LLS", "CLS"]
-dist = "Uniform"
+NR = ["LLS", "CLS"]
 for ts in t
     make_job(seeds, L, t=[ts], α=[2.0], NR=NR, dist=dist, force_short=false)
     start_job()
-end =#
+end
 #t = vcat((6:10) ./ 50)
 
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)

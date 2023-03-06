@@ -36,7 +36,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         extra_label=[]
     end
     labels = permutedims(vcat(["$t" for t in ts], extra_label))
-    colors = theme_palette(:auto)[1:length(labels)]
+    colors = vcat(theme_palette(:auto)[1:12],theme_palette(:auto)[1:12])[1:length(labels)]
     
     function add_points(y_data)
         # Add spanning point
@@ -100,6 +100,8 @@ end
 
 L = 128
 ts = [0.0, 0.1, 0.2,0.3,0.4, 0.7, 0.9]
+
+#ts = vcat((0:20) ./ 50, (5:7) ./ 10)
 α = 2.0
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
