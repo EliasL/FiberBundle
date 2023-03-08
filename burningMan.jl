@@ -79,7 +79,7 @@ end
 function update_storage!(b::FB, s::FBS)
     #Save important data from step
     step = b.current_step
-    s.most_stressed_fiber[step] = 1/b.max_σ
+    s.most_stressed_fiber[step] = b.max_σ
     s.nr_clusters[step] = b.c # The last cluster id is also the number of clusters
     s.largest_cluster[step] = maximum(b.cluster_size)
     s.largest_perimiter[step] = maximum(b.cluster_outline_length)
@@ -101,6 +101,9 @@ function get_fb(L, seed; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=
 
     if dist == "Uniform"
         distribution_function = get_uniform_distribution(t)
+        x = distribution_function(N)
+    elseif dist == "ConstantAverageUniform"
+        distribution_function = get_fixed_average_uniform_distribution(t)
         x = distribution_function(N)
     elseif isa(dist, Function)
         x = dist(N)
@@ -304,13 +307,13 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
     # by dividing by x.
     update_σ!(b)
     for i in eachindex(b.σ)
-        b.tension[i] = b.σ[i] / b.x[i]
+        b.tension[i] = b.x[i] / b.σ[i] 
     end
 end
 
 function find_next_fiber!(b::FB)
     b.current_step += 1
-    b.break_sequence[b.current_step] = argmax(b.tension)
+    b.break_sequence[b.current_step] = argmin(b.tension)
     b.max_σ = b.tension[b.break_sequence[b.current_step]]
 end
 
@@ -660,6 +663,23 @@ function apply_stress!(b::FB)
         b.status[fiber] = -3 #PAST_BORDER
     end
 end
+
+#= function apply_stress!(b::FB)
+    # Compute normalization constant C using BLAS and LAPACK functions
+    C = 1.0 / dot(b.neighbourhood_values[1:b.cluster_outline_length[b.c]].^(-b.α+1), ones(b.cluster_outline_length[b.c]))
+
+    # Compute added stress for each fiber using BLAS and LAPACK functions
+    g = b.cluster_size[b.c] * C * b.neighbourhood_values[1:b.cluster_outline_length[b.c]].^(-b.α+1)
+    added_stress = similar(g)
+    BLAS.axpy!(1.0, g, zeros(b.N), added_stress)
+
+    # Add added stress to σ and update status using in-place operations
+    @inbounds for i in 1:b.cluster_outline_length[b.c]
+        fiber = b.cluster_outline[i]
+        b.σ[fiber] += added_stress[i]
+        b.status[fiber] = -3 #PAST_BORDER
+    end
+end =#
 
 
 #@time fb, storage = get_fb(100)

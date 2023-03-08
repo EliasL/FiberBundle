@@ -1,5 +1,5 @@
 using Plots
-#using DataStructures
+using DataStructures
 
 include("../burningMan.jl")
 include("../support/dataManager.jl")
@@ -36,7 +36,7 @@ end
 function shift_spanning_cluster!(b::FB, cm_shift=true)
     # Get shift
     m = reshape(b.status, (b.L, b.L))
-    if cm_shift
+    if cm_shift && b.spanning_cluster_id != -1
         shift = shift_to_cm(b)
     else
         shift = get_ideal_shift(m)
@@ -137,7 +137,7 @@ function plot_fb_cm(b::FB)
 end
 
 function save_picture(L, nr, t, α, seed, name, save_path="", data_path="data/")
-    settings = make_settings(L, t, nr, α, data_path)
+    settings = make_settings(L, t, nr, α, "Uniform", data_path)
     b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file
@@ -148,8 +148,8 @@ end
 
 function test(seeds=1)
     nr = "CLS"
-    t = 0.1
-    L=32
+    t = 0.0
+    L=8
     α = 2.0
     settings = make_settings(L, t, nr, α)
     bundles = get_bundles_from_settings(settings, seeds=seeds, step=-0)

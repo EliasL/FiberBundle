@@ -38,9 +38,9 @@ function get_plot_and_slope!(p, x, y, label, linestyle, marker; x_label=L"log$_2
     linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
     #   y values =#
     
-    scatter!(x, y, markershape=marker, color=:black, label=label, linewidth=1,
+    scatter!(x, y, markershape=marker, label=label, linewidth=1.2,
     markerstrokecolor=:black,legend=:topleft, xlabel=x_label,
-    markersize=3, markerstrokewidth=1)
+    markersize=5, markerstrokewidth=1.2)
     #   y fit
     plot!(Measurements.value.(x), f_lin(x, fit), label="", color=:black,
     linewidth=1, linestyle=linestyle)
@@ -83,15 +83,16 @@ function plot_dimension_thing(L, ts, α)
             title!("$nr: "*L"D_s="*"$s_rounded "*L"D_h="*"$h_rounded")
             end
         
-        # Plot for each t
-        #plot(plots..., size=(400, 200), layout = (length(NR)),)
-        #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"), )    
-        #savefig("plots/Graphs/SingleT/dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
+        #= # Plot for each t
+        plot(plots..., size=(400, 200), layout = (length(NR)),)
+        #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"))    
+        savefig("plots/Graphs/SingleT/dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf") =#
 
     end
     #scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
     scatter(ts, slopes, labels=permutedims(labels), markerstrokecolor=permutedims(theme_palette(:auto)[1:4]), markercolor=:transparent, markersize=5, markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
         size=(300, 250), legend=:right, xlabel=L"t_0", ylabel=L"D")
+    #println(slopes)
     savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
     
 end
@@ -175,10 +176,7 @@ L = [8, 16, 32, 64, 128, 256, 512, 1024]
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
 t = vcat((0:20) ./ 50, (5:9) ./ 10)
-#t = [0.0]
-#plot_dimensions_over_t(L, t)
-#plot_dimensions_over_t_with_radius_of_gyration(L, t)
-#plot_dimensions_with_radius_of_gyration(L, t)
+
 plot_dimension_thing(L, t, α)
 
 

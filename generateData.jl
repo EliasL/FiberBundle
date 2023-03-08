@@ -15,6 +15,7 @@ function get_ARGS()
     args["NR"]=[]
     args["s"]=[]
     args["a"]=[]
+    args["dist"] = []
     current_setting = nothing
     for value in ARGS
         if value in keys(args)
@@ -39,16 +40,18 @@ t=args["t"]
 NR=args["NR"]
 s=args["s"]
 α=args["a"]
+dist=args["dist"][1]
+@assert length(args["dist"]) == 1
 s = s[1]:(s[2]-1) # Zero indexing, -1 to get 1000 samples instead of 1001.
 
-#s = 0:30-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
-#L = [1024]
-#t = vcat((0:20) ./ 50, (5:9) ./ 10)
-#NR = ["CLS", "LLS"]
-#α = [2.0]
+#= s = 0:10000-1 # Zero indexing, -1 to get 1000 samples instead of 1001.
+L = [8]
+t = vcat((0:20) ./ 50, (5:9) ./ 10)
+NR = ["CLS", "LLS"]
+α = [2.0] =#
 
 use_threads = true
-overwrite = false
+overwrite = true
 #time_estimate(L, α, t, NR, seeds)
 
 if use_threads
@@ -61,11 +64,11 @@ if use_threads
     @everywhere include("dataGenerator.jl")
 
     @logmsg nodeLog "Running settings: \n $L, \n $t, \n $α"
-    @time itterate_settings(L, α, t, NR, s; overwrite=overwrite)
+    @time itterate_settings(L, α, t, NR, s, dist; overwrite=overwrite)
     @logmsg nodeLog "Removing workers"
     rmprocs(workers())
 else
     include("dataGenerator.jl")
     @logmsg nodeLog "Start run"
-    itterate_settings(L, α, t, NR, s; overwrite=overwrite, use_threads=use_threads)
+    itterate_settings(L, α, t, NR, s, dist; overwrite=overwrite, use_threads=use_threads)
 end

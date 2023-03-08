@@ -1,7 +1,13 @@
 
 
 include("dataManager.jl")
+include("../plottingScripts/showBundle.jl")
 
+function show_bundle(l, t, nr, α, seed; progression=0.0, critical=false)
+    settings = make_settings(l, t, nr, α)
+    b = get_bundles_from_settings(settings, seeds=seed, spanning=false, critical=critical, progression=progression)
+    p = plot_fb(b, cm_shift=true)
+end
 
 
 function print_d(d)
@@ -20,35 +26,37 @@ function print_d(d)
     end
 end
 
-
-
-L=1024
+L=256
 a=2.0
 nr="CLS"
-t=0.18
-seed = 1
+t=0.7
+seed = 995
 f_path = get_file_path(L, a, t, nr, average=false)
-f = load(f_path)
-println("Loaded $f_path")
+jldopen(f_path, "r") do f
+    println("Loaded $f_path")
 
-if haskey(f, "average_nr_clusters")
-    println("Averages: ")
-    for key in averaged_data_keys
-        print("$key => ")
-        d = f["average_$key"]
-        print_d(d)
+    if haskey(f, "average_nr_clusters")
+        println("Averages: ")
+        for key in averaged_data_keys
+            print("$key => ")
+            d = f["average_$key"]
+            print_d(d)
+        end
+    else
+        println("Seed $seed: ")
+        for key in data_keys
+            #display(f)
+            print("$key => ")
+            d = f["$key/$seed"]
+            print_d(d)
+        end
     end
-else
-    println("Seed $seed: ")
-    for key in data_keys
-        #display(f)
-        print("$key => ")
-        d = f["$key/$seed"]
-        print_d(d)
-    end
+    seeds = f["seeds_used"]
+    except = setdiff(first(seeds):last(seeds), seeds)
+    println("Seeds: $(first(seeds)) - $(last(seeds))" * (isempty(except) ? "" : " except $(join(seeds, " , "))"))
+    #println(f["largest_cluster/995"])
 end
-seeds = f["seeds_used"]
-except = setdiff(first(seeds):last(seeds), seeds)
-println("Seeds: $(first(seeds)) - $(last(seeds))" * (isempty(except) ? "" : " except $(join(seeds, " , "))"))
 
-
+#= for seed in 995:999
+    show_bundle(L, t, nr, α, seed, critical=true)
+end =#

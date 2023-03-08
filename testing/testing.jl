@@ -154,14 +154,13 @@ function neighbourhood_id_test()
 end
 
 function neighbourhood_strength_test_with_alpha(nr)
-    for α in [1.0, 2, 2.2, 3.3]
+    for α in [1.0, 2.0, 2.2, 3.3]
         L = 4
         b = get_fb(L, seed, α=α, nr=nr, without_storage=true)
-
+        
         for _ in 1:b.N-1
             findAndBreakNextFiber!(b)
             update_tension!(b)
-
             @test sum(b.σ) ≈ b.N #"No conservation of tension.\n$(sum(σ)) ≠ $N "
             resetBundle!(b)                
         end
@@ -311,7 +310,7 @@ end
 
 function storageTest()
     test_data_path = "test_data/"
-    settings = make_settings(8, 0.1, "CLS", 2.0, test_data_path)
+    settings = make_settings(8, 0.1, "CLS", 2.0, "Uniform", test_data_path)
 
     # Test clean generation
     seeds = 1:3
@@ -343,16 +342,15 @@ function storageTest()
         @test key in keys(f)
     end
 
-    #You cannot resume progress! D:
-#= 
+    
     # Test to see if a bundle can partially be broken and continue later
     L = 8
-    settings = make_settings(L, 0.1, "CLS", 2.0, test_data_path)
+    settings = make_settings(L, 0.1, "CLS", 2.0, "Uniform", test_data_path)
     # First do everything at once to create a correct answer
     break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=false)
     clean_after_run(settings, [seed])
     correct_f = load_file(settings, average=false)
-    b = get_bundle_from_file(correct_f, L, "CLS", seed=seed, step=22)
+    b = get_bundle_from_file(correct_f, L, nr="CLS", seed=seed, step=22)
     plot_fb(b, use_shift=false, stress=false)
     @test correct_f["last_step/$seed"] == L*L
     @test length(correct_f["break_sequence/$seed"]) == L*L
@@ -365,18 +363,22 @@ function storageTest()
     clean_after_run(settings, [seed])
     break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=true)
     clean_after_run(settings, [seed])
+    # Esure that running break_bundle on an already broken bundle doesn't mess things up
+    break_bundle(settings, nothing, nothing, seed, use_threads=false,stop_after_spanning=false, use_past_progress=true)
+    clean_after_run(settings, [seed])
     test_f = load_file(settings, average=false)
 
     
-    b = get_bundle_from_file(test_f, L, "CLS", seed=seed, step=22)
+    b = get_bundle_from_file(test_f, L, nr="CLS", seed=seed, step=22)
     plot_fb(b, use_shift=false, stress=false)
 
     @test test_f["last_step/$seed"] == L*L
     @test length(test_f["break_sequence/$seed"]) == L*L
     @test all(correct_break_seq .== test_f["break_sequence/$seed"])
-    @test abs(correct_simulation_time - test_f["simulation_time/$seed"]) < correct_simulation_time *0.05
+    
+    #Simulation time is unreliable
+    #@test correct_simulation_time < test_f["simulation_time/$seed"] < correct_simulation_time *1.3
 
- =#
 
     search_for_loose_files(settings)
     rm(test_data_path, force=true, recursive=true)
@@ -448,6 +450,32 @@ function custom_cluster_test()
 end
 #custom_cluster_test()
 
+
+function breakb(b::FB, s::FBS)
+    for _ in 1:b.N-1
+        findAndBreakNextFiber!(b, s)
+        update_tension!(b)
+        resetBundle!(b)                
+    end
+    healBundle!(b)
+    return 
+end
+
+function performance_test()
+    L=64
+    α=2.0
+    nr="CLS"
+    seed=1
+    b, s = get_fb(L, seed, α=α, nr=nr, without_storage=false)    
+    
+
+    result = @elapsed breakb(b, s)
+    @test result < 1.3 
+    #println(result)
+    return
+end
+#performance_test()
+
 function test()
     
     @testset verbose=true "Tests" begin
@@ -468,7 +496,7 @@ function test()
         #@testset "1D cluster size" begin end
 
         @testset "Storage" begin storageTest() end
-        
+        @testset "Performance" begin performance_test() end
     end
 end
 test()

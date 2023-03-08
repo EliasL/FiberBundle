@@ -11,21 +11,22 @@ include("support/dataManager.jl")
 include("support/distributions.jl")
 
 function break_bundle(settings, progress_channel, working_channel, seed;
-    save_data=true, use_threads=true, stop_after_spanning=false, use_past_progress=false)
+    save_data=true, use_threads=true, stop_after_spanning=false, use_past_progress=true)
     
     if use_threads
         put!(working_channel, true) # Indicate a process has started
     end
 
 
-    file_name = get_file_name(settings, seed)       
+    file_name = get_file_name(settings, seed, false)       
 
     # Check if there already exists previous data
-    if use_past_progress
-        @assert false "This feature does not work!"
-        b, s = get_bundles_from_settings(settings, seeds=seed, without_storage=false, update_tension=false)
+    if use_past_progress && isfile(file_name)
+        b, s, old_sim_time = get_bundles_from_settings(settings, seeds=seed, without_storage=false, update_tension=false,
+                                                        return_simulation_time=true)
     else
         b, s = get_fb(settings, seed)
+        old_sim_time = 0
     end
 
 
@@ -41,11 +42,10 @@ function break_bundle(settings, progress_channel, working_channel, seed;
            put!(progress_channel, true) # trigger a progress bar update
         end
     end
-
     if save_data
         jldopen(file_name, "w") do file
             file["last_step"] = b.current_step
-            file["simulation_time"] = simulation_time
+            file["simulation_time"] = simulation_time + old_sim_time
             file["spanning_cluster_size"] = s.spanning_cluster_size_storage
             file["spanning_cluster_perimiter"] = s.spanning_cluster_perimiter_storage
             file["spanning_cluster_step"] = s.spanning_cluster_step
@@ -119,7 +119,7 @@ function run_workers(settings, seeds; save_data=true, use_threads=true)
                 i^2 #I have no idea what this does
                 end
             end
-end             
+        end             
     else
         @showprogress for i in seeds
             break_bundle(settings, progress, working, i; save_data=save_data, use_threads=false)
@@ -148,10 +148,10 @@ function generate_data(settings, requested_seeds, overwrite; save_data=true, use
     end
 end
 
-function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds; overwrite=false, path="data/", use_threads=true)
+function itterate_settings(dimensions, α, regimes, neighbourhood_rules, seeds, dist; overwrite=false, path="data/", use_threads=true)
     for L=dimensions, t=regimes, nr=neighbourhood_rules, a=α
         # There is no point in itterating over alphas when using LLS
-        settings = make_settings(L, t, nr, a, path)
+        settings = make_settings(L, t, nr, a, dist, path)
         @logmsg settingLog "$(now()): Starting $(settings["name"])"
         generate_data(settings, seeds, overwrite; use_threads=use_threads)
     end

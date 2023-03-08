@@ -6,21 +6,21 @@ include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
-function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
-    add_ELS=true
+function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
+    add_ELS=false
     N = L.*L
     files_and_t = []
     for t in ts
-        push!(files_and_t, load_file(L, α, t, nr))
+        push!(files_and_t, load_file(L, α, t, nr, dist))
         # Check that the data we use is from completely borken bundles
-        min_steps = get_min_steps_in_files(make_settings(L, t, nr, α)) 
-        @assert min_steps == N "This bundle is not fully broken! $min_steps != $N"
+        min_steps = get_min_steps_in_files(make_settings(L, t, nr, α, dist)) 
+        @assert min_steps == N "This bundle, $nr L=$L t0=$t, is not fully broken! $min_steps != $N"
     end
 
     if nr=="LLS" && add_ELS
-        push!(files_and_t, load_file(L, α, 0.0, "ELS"))
+        push!(files_and_t, load_file(L, α, 0.0, "ELS", dist))
         # Check that the data we use is from completely borken bundles
-        min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α)) 
+        min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α, dist)) 
         @assert min_steps == N "This bundle is not fully broken! $min_steps != $N"
     end
 
@@ -36,24 +36,23 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
         extra_label=[]
     end
     labels = permutedims(vcat(["$t" for t in ts], extra_label))
-    colors = theme_palette(:auto)[1:length(labels)]
+    colors = vcat(theme_palette(:auto)[1:12],theme_palette(:auto)[1:12])[1:length(labels)]
     
     function add_points(y_data)
         # Add spanning point
         x_data = get_data("average_spanning_cluster_step")
         y = [y[round(Int64, x*N)] for (x,y) in zip(x_data,y_data)]
         #Draw spanning
-        scatter!(x_data, y, color=colors, label=nothing, markershape=:x) 
+        scatter!(x_data, y, color=colors, label=nothing, markershape=:x, markeralpha=1) 
 
         #Add energy change point
         x_data = [argmax(σ_to_energy(σ)[2]) for σ in most_stressed_fiber]    
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
-        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline, markersize=10)
+        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline, markersize=10, markeralpha=1, markerstrokewidth=1)
         
         #Add max σ_max
         x_data = [argmax(σ) for σ in most_stressed_fiber]    
-        println(x_data)
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
@@ -100,14 +99,17 @@ function basicPropertiesPlot(L, ts, nr; use_y_lable=true)
 end
 
 L = 128
-ts = [0.0, 0.1, 0.2, 0.3, 0.7]
+ts = [0.0, 0.1, 0.2,0.3,0.4, 0.7, 0.9]
+
+#ts = vcat((0:20) ./ 50, (5:7) ./ 10)
 α = 2.0
 nr = ["LLS", "CLS"]
+dist = "ConstantAverageUniform"
 nrs = length(nr)
-nr_plots = [basicPropertiesPlot(L, ts, nr[i], use_y_lable=i==1) for i in 1:nrs]
+nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
-p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm)
+p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
 
-savefig(p, "plots/Graphs/BundleProperties.svg")
+savefig(p, "plots/Graphs/$(dist)_BundleProperties.svg")
 
 println("Saved plot!")
