@@ -25,7 +25,7 @@ seed_specific_keys = [
 data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
-function make_settings(L::Int64, t::Float64, nr::String, α::Float64, dist::String="Uniform", path::String="data/")
+function make_settings(L::Int64, t::Float64, nr::String, α::Float64, dist::String="ConstantAverageUniform", path::String="data/")
     if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
@@ -326,7 +326,7 @@ function search_for_settings(path, dist)
 end
 
 global_settings = nothing
-function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=true)
+function get_file_path(L, α, t, NR, dist="ConstantAverageUniform", data_path="data/"; average=true)
     setting = make_settings(L, t, NR, α, dist, data_path)
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end

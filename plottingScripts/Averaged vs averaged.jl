@@ -55,21 +55,23 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         return p
     end
 
-    function make_plot3(X, Y, ylabel, NR; labels=labels, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
+    function make_plot3(X, Y, ylabel, NR; labels=labels, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf), scale_x=true, scale_y = false,
         position=:topright, log=:identity)
 
         p = plot(xlims=xlims, ylims=ylims,  markersize=5, 
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=:identity, yaxis=log)
 
         
-        colors = theme_palette(:auto)[1:length(NR)]
+        colors = theme_palette(:auto)[1:length(L)]
         markershape=[:diamond :rect :star4 :utriangle :dtriangle :circle]
+        series_annotation = [0.3, 0.5]
+        series_annotation = text.([t in series_annotation ?  L" $t_0=$"*"$t " : "" for t in ts], pointsize=8, halign=:left, valign=:bottom)
 
         for i in eachindex(L)
             for nr in NR
                 nri = nr=="LLS" ? 1 : 2
-                scatter!(X, Y[:, i, nri], label = "$nr "*latexstring("L=$(L[i])"),
-                legend=position, markerstrokecolor=colors[nri], markershape=markershape[i])
+                scatter!((scale_x ? X[:, i, nri]./L[i]^2 : X), (scale_y ? Y[:, i, nri]./L[i]^2 : Y[:, i, nri]), label = "$nr "*latexstring("L=$(L[i])"),
+                legend=position, markerstrokecolor=colors[nri], markershape=markershape[i], series_annotation= (i==1 ? series_annotation : ""))
             end
         end
         return p
@@ -87,30 +89,36 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
     labels = permutedims(NR)
     
-
-    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false)
+    σ_c, x = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, return_x=true)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
 
-    σ_c_plot = make_plot3(ts, σ_c[:, :, :], log=:log, 
+    σ_c_plot = make_plot3(x, σ_c[:, :, :], log=:identity, 
     L"<σ_c>", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:topleft, )
+                        xlabel=L"<k_c/N>", position=:topleft, )
 
-    #add_fit!(ts, σ_c)
+    x_c_plot = make_plot3(ts, x, log=:identity, scale_x=false, scale_y=true,
+    L"<k_c/N>", permutedims(["$nr" for nr in NR]), title="",
+                        xlabel=L"t_0", position=:bottomleft, )
 
-    σ_cofσ = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true)
+    σ_cofσ, x = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true, return_x=true)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
-    σ_cofσ_plot = make_plot3(ts, σ_cofσ[:, :, :], log=:log, 
+
+    σ_cofσ_plot = make_plot3(x, σ_cofσ[:, :, :], log=:identity, 
     L"σ_c(<σ>)", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:topleft, )   
+                        xlabel=L"k_c/N", position=:topleft, )   
+
+    x_cofσ_plot = make_plot3(ts, x, log=:identity, scale_x=false, scale_y=true,
+    L"k_c/N", permutedims(["$nr" for nr in NR]), title="",
+                        xlabel=L"t_0", position=:bottomleft, )
     
-    return [σ_c_plot, σ_cofσ_plot]
+    return [σ_c_plot, σ_cofσ_plot, x_c_plot, x_cofσ_plot]
 end
 
 L = [16, 32, 64, 128]
 α = 2.0
-nr = ["LLS", "CLS"]
-ts = vcat((0:20) ./ 50, (5:8) ./ 10)
+nr = ["LLS"]
+ts = vcat((0:20) ./ 50, (5:9) ./ 10)
 dist = "ConstantAverageUniform"
 #ts = (0:7) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
@@ -118,9 +126,9 @@ dist = "ConstantAverageUniform"
 plots = otherPropertiesPlot(L, ts, nr, dist)
 xpsize=270
 ypsize=330
-p = plot(plots..., size=(xpsize*1.1*length(plots),ypsize), layout = @layout([ A B ;]))
+p = plot(plots..., size=(xpsize*1.1*length(plots)/2,ypsize*length(plots)/2), layout = @layout([ A B ; C D]))
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
-savefig(p, "plots/Graphs/$(dist)_average_sigma_C_over_t0.pdf")
+savefig(p, "plots/Graphs/average or average.pdf")
 #savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 println("Saved plot!")
