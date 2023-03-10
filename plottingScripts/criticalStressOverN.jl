@@ -81,7 +81,6 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         s = param[1]>0 ? "+" : "-"
         plot!(xx, f, labels="$(param[2])$(s)$(abs(param[1]))×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
     end
-fs
 
     labels = permutedims(NR)
     
@@ -108,7 +107,7 @@ nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 #ts = (0:7) ./ 10
 
-ts = [0.0, 0.1, 0.2,0.3,0.4]
+ts = [0.0, 0.1, 0.2,0.3,0.4, 0.5, 0.7, 0.8, 0.9]
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)

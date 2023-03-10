@@ -115,7 +115,7 @@ function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]
         end
     end # Close compact file
 end
-
+   
 function get_seeds_in_file(settings, average=false)
     file_name = get_file_name(settings, -1, average)
     if isfile(file_name)
@@ -593,6 +593,19 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
     println("Success!")
 end
 
+function new_t0(path="data/", dists=["gyration_data"])
+    new_name(s) = replace(s, "r_slope" => "r")
+    for dist in dists
+        full_path = path*dist
+        for file in readdir(full_path)
+            new_file_name = new_name(file)
+            if new_file_name != file
+                mv(full_path*"/"*file, full_path*"/"*new_file_name)
+            end
+        end
+    end
+    println("Success!")
+end
 function rename_files_and_folders(path="data/", dists=["gyration_data"])
     new_name(s) = replace(s, "r_slope" => "r")
     for dist in dists
