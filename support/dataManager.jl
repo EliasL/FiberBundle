@@ -593,18 +593,30 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
     println("Success!")
 end
 
-function new_t0(path="data/", dists=["gyration_data"])
-    new_name(s) = replace(s, "r_slope" => "r")
-    for dist in dists
-        full_path = path*dist
-        for file in readdir(full_path)
-            new_file_name = new_name(file)
-            if new_file_name != file
-                mv(full_path*"/"*file, full_path*"/"*new_file_name)
+function rename_t0()
+    new_path = "newData/ConstantAverageUniform"
+    path="data/ConstantAverageUniforms"
+    files = readdir(path)
+    for f in files
+        f_path = path*f*"/"        
+        for ff in readdir(f_path)
+            ff_path = f_path*ff
+            param = split(path, "=")
+            l=length(param)
+            t_0 = parse(Float64, param[l])
+            L = parse(Int64, split(param[l-2], " ")[1])
+            if L==512
+                continue
+            else
+                cp(ff_path, f_path*replace(ff, "a=2.0" => "a=0.0"))
             end
         end
+        
+        if occursin("a=2.0", f) && occursin("nr=LLS", f)
+            cp(f_path, replace(f_path, "a=2.0" => "a=0.0"))
+        end
+        
     end
-    println("Success!")
 end
 function rename_files_and_folders(path="data/", dists=["gyration_data"])
     new_name(s) = replace(s, "r_slope" => "r")
@@ -625,3 +637,4 @@ end
 #recalculate_average_file()
 
 #get_data_overview()
+
