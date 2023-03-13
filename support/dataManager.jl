@@ -594,30 +594,33 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
 end
 
 function rename_t0()
-    new_path = "newData/ConstantAverageUniform"
-    path="data/ConstantAverageUniforms"
+    new_path = "newData/ConstantAverageUniform/"
+    path="data/ConstantAverageUniform/"
     files = readdir(path)
-    for f in files
+    @showprogress for f in files
         f_path = path*f*"/"        
-        for ff in readdir(f_path)
-            ff_path = f_path*ff
-            param = split(path, "=")
-            l=length(param)
-            t_0 = parse(Float64, param[l])
-            L = parse(Int64, split(param[l-2], " ")[1])
-            if L==512
-                continue
-            else
-                cp(ff_path, f_path*replace(ff, "a=2.0" => "a=0.0"))
+        new_f_path = new_path*f*"/"
+        param = split(f, "=")
+        l=length(param)
+        t_0 = parse(Float64, param[l])
+        new_t0 = (1-t_0)/2
+        L = parse(Int64, split(param[l-2], " ")[1])
+        if L!=512
+            new_f_name = replace(new_f_path, r"t=(\d+\.\d+)" => "t=$new_t0")
+            if !isdir(new_f_name)
+                mkpath(new_f_name)
+            end
+            for ff in readdir(f_path)
+                ff_path = f_path*ff
+                new_ff_path = new_f_name*ff
+                # copy and change t_0 value
+                new_ff_name = replace(new_ff_path, r"t=(\d+\.\d+)" => "t=$new_t0")
+                cp(ff_path, new_ff_name)
             end
         end
-        
-        if occursin("a=2.0", f) && occursin("nr=LLS", f)
-            cp(f_path, replace(f_path, "a=2.0" => "a=0.0"))
-        end
-        
     end
 end
+rename_t0()
 function rename_files_and_folders(path="data/", dists=["gyration_data"])
     new_name(s) = replace(s, "r_slope" => "r")
     for dist in dists
