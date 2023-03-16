@@ -75,7 +75,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     end
     
     yLabel(string) = use_y_lable ? string : ""
-    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.2), position=:topright)
+    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.3), position=:topright)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
@@ -102,7 +102,7 @@ end
 L = 128
 ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
 ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
-ts = [0.05,0.1, 0.2, 0.3, 0.4, 0.45, 0.5]
+ts = [0.1, 0.2, 0.3, 0.4, 0.45, 0.5]
 α = 2.0
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
