@@ -62,12 +62,12 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=:identity, yaxis=log)
 
         
-        colors = permutedims(theme_palette(:auto)[1:length(ts)])
+        colors = permutedims(vcat(theme_palette(:auto),theme_palette(:auto)))
         markershape=[:diamond :rect :star4 :utriangle :dtriangle :circle]
         series_annotation = [0.3, 0.5]
         series_annotation = text.([t in series_annotation ?  L" $t_0=$"*"$t " : "" for t in ts], pointsize=8, halign=:left, valign=:bottom)
         labels= permutedims([latexstring("t_0=$(ts[i])") for i in eachindex(ts)])
-        plot!(X, permutedims(Y), label = labels, markerstrokecolor=colors,
+        plot!(X, permutedims(Y), label = labels, markerstrokecolor=permutedims(theme_palette(:auto)[1:length(ts)]),
         legend=position, markershape=markershape)
 
         return p
@@ -84,17 +84,17 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
     labels = permutedims(NR)
     
-    σ_c, x = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, return_x=true)
+    σ_c, x = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, return_x=true, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
     lnN = log.(log.(L.*L))
     LLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 1], L"1/<σ_c>", "LLS",
                         labels=permutedims(["$nr" for nr in NR]), title="LLS",log=:identity, 
-                        xlabel=L"ln(ln"*L"(N))", position=:bottomright, )
+                        xlabel=L"ln(ln"*L"(N))", position=:right, )
     
     CLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 2], L"1/<σ_c>", "CLS",
                         labels=permutedims(["$nr" for nr in NR]), title="CLS",log=:identity,
-                        xlabel="ln(ln"*L"(N))", position=:bottomright, )
+                        xlabel="ln(ln"*L"(N))", position=:right, )
                         
     return [LLS_σ_c_N_plot, CLS_σ_c_N_plot]
 end
@@ -106,8 +106,9 @@ nr = ["LLS", "CLS"]
 #ts = vcat((0:20) ./ 50, (5:9) ./ 10)
 dist = "ConstantAverageUniform"
 #ts = (0:7) ./ 10
-
-ts = [0.0, 0.1, 0.2,0.3,0.4, 0.5, 0.7, 0.8, 0.9]
+data_path = "newData/"
+ts = [0.05, 0.1,0.3,0.35, 0.4, 0.45, 0.5]
+#ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)

@@ -98,21 +98,21 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     labels = permutedims(NR)
     
 
-    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false)
+    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
 
     σ_c_plot = make_plot3(ts, σ_c[:, :, :], log=:log, 
     L"<σ_c>", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:topleft, )
+                        xlabel=L"t_0", position=:topright, )
 
     #add_fit!(ts, σ_c)
 
-    σ_cofσ = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true)
+    σ_cofσ = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
     σ_cofσ_plot = make_plot3(ts, σ_cofσ[:, :, :], log=:log, 
     L"σ_c(<σ>)", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:topleft, )
+                        xlabel=L"t_0", position=:topright, )
     #add_fit!(ts, σ_cofσ)
     #min_y = round(minimum(most_stressed_fiber_spanning[:, :, 1]), digits=3)
     #slope = 0.22
@@ -121,7 +121,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
 #=     σ_over_t_CLS = make_plot(σ_c[:, :, 2], log=:identity, 
     L"σ_c", permutedims([L"L="*"$l" for l in L]), title="CLS",
-                        x=ts, xlabel=L"t_0", position=:topleft, )
+                        x=ts, xlabel=L"t_0", position=:topright, )
 
     y = σ_c[:, end, 2]
     f, param = myfit(ts, y, fit_interval=0.4)
@@ -149,11 +149,13 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     return [σ_c_plot, σ_cofσ_plot]
 end
 
-L = [16, 32, 64, 128]
+L = [32, 64, 128,256]
 α = 2.0
 nr = ["LLS", "CLS"]
 ts = vcat((0:20) ./ 50, (5:8) ./ 10)
+ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 dist = "ConstantAverageUniform"
+data_path="newData/"
 #ts = (0:7) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]

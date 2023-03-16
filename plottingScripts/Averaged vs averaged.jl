@@ -64,14 +64,14 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         
         colors = theme_palette(:auto)[1:length(L)]
         markershape=[:diamond :rect :star4 :utriangle :dtriangle :circle]
-        series_annotation = [0.3, 0.5]
+        series_annotation = [0.3, 0.25]
         series_annotation = text.([t in series_annotation ?  L" $t_0=$"*"$t " : "" for t in ts], pointsize=8, halign=:left, valign=:bottom)
 
         for i in eachindex(L)
             for nr in NR
                 nri = nr=="LLS" ? 1 : 2
                 scatter!((scale_x ? X[:, i, nri]./L[i]^2 : X), (scale_y ? Y[:, i, nri]./L[i]^2 : Y[:, i, nri]), label = "$nr "*latexstring("L=$(L[i])"),
-                legend=position, markerstrokecolor=colors[nri], markershape=markershape[i], series_annotation= (i==1 ? series_annotation : ""))
+                legend=position, markerstrokecolor=colors[i], markershape=markershape[i], series_annotation= (i==1 ? series_annotation : ""))
             end
         end
         return p
@@ -89,7 +89,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
     labels = permutedims(NR)
     
-    σ_c, x = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, return_x=true)
+    σ_c, x = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, return_x=true, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
 
@@ -99,9 +99,9 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
     x_c_plot = make_plot3(ts, x, log=:identity, scale_x=false, scale_y=true,
     L"<k_c/N>", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:bottomleft, )
+                        xlabel=L"t_0", position=:topleft, )
 
-    σ_cofσ, x = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true, return_x=true)
+    σ_cofσ, x = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true, return_x=true, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
     σ_cofσ_plot = make_plot3(x, σ_cofσ[:, :, :], log=:identity, 
@@ -110,16 +110,17 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
     x_cofσ_plot = make_plot3(ts, x, log=:identity, scale_x=false, scale_y=true,
     L"k_c/N", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:bottomleft, )
+                        xlabel=L"t_0", position=:topleft, )
     
     return [σ_c_plot, σ_cofσ_plot, x_c_plot, x_cofσ_plot]
 end
 
-L = [16, 32, 64, 128]
+L = [16, 32, 64, 128, 256]
 α = 2.0
 nr = ["LLS"]
-ts = vcat((0:20) ./ 50, (5:9) ./ 10)
+ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 dist = "ConstantAverageUniform"
+data_path = "newData/"
 #ts = (0:7) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]

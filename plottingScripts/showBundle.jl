@@ -136,8 +136,8 @@ function plot_fb_cm(b::FB)
     return plot!(b.cluster_cm_x, b.cluster_cm_y, seriestype = :scatter)
 end
 
-function save_picture(L, nr, t, α, seed, name, save_path="", data_path="data/")
-    settings = make_settings(L, t, nr, α, "Uniform", data_path)
+function save_picture(L, nr, t, α, seed, name, dist, save_path="", data_path="data/")
+    settings = make_settings(L, t, nr, α, dist, data_path)
     b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
     p = plot_fb(b, show=false)
     # We always save the plot as latest_plot, so we can just copy that file

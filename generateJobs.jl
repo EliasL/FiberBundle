@@ -33,7 +33,7 @@ end
     #SBATCH -p $partition
     #SBATCH -N 1
     #SBATCH -n 64
-    #SBATCH --nice
+    #SBATCH --nice 50000
     #SBATCH --time=$formated_time
 
     ml eb

@@ -25,7 +25,8 @@ seed_specific_keys = [
 data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
-function make_settings(L::Int64, t::Float64, nr::String, α::Float64, dist::String="ConstantAverageUniform", path::String="data/")
+function make_settings(L::Int64, t::Float64, nr::String, α::Float64,
+    dist::String="ConstantAverageUniform", path::String="data/")
     if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
@@ -603,7 +604,7 @@ function rename_t0()
         param = split(f, "=")
         l=length(param)
         t_0 = parse(Float64, param[l])
-        new_t0 = (1-t_0)/2
+        new_t0 = round((1-t_0)/2,digits=2)
         L = parse(Int64, split(param[l-2], " ")[1])
         if L!=512
             new_f_name = replace(new_f_path, r"t=(\d+\.\d+)" => "t=$new_t0")
@@ -620,7 +621,8 @@ function rename_t0()
         end
     end
 end
-rename_t0()
+#rename_t0()
+
 function rename_files_and_folders(path="data/", dists=["gyration_data"])
     new_name(s) = replace(s, "r_slope" => "r")
     for dist in dists

@@ -12,7 +12,7 @@ function show_spanning_cluster()
     α = 2.0
     seeds = 1:5
     for seed=seeds, l=L
-        settings = make_settings(l, t, nr, α)
+        settings = make_settings(l, t, nr, α, dist, data_path)
         b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
         R = find_radius_of_gyration(b)
         p = plot_fb(b, show=false)
@@ -36,7 +36,7 @@ function show_progression()
         progression = round.((1:steps) ./ (steps+1), digits=2)
         plots = []
         for progress in progression
-            settings = make_settings(l, t, nr, α)
+            settings = make_settings(l, t, nr, α, dist, data_path)
             b = get_bundles_from_settings(settings, seeds=seed, progression=progress)
             p = plot_fb(b, show=false, use_shift=false)
             title!(p, L"k/N="*"$progress", titlefontsize=30)
@@ -48,15 +48,15 @@ function show_progression()
 end
 
 function show_t_change(NR)
-    T = [0.0, 0.1, 0.2, 0.3, 0.7,0.9]
+    T = [0.1, 0.2, 0.3, 0.4, 0.5]
     L=128
     α = 2.0
     plots = []
-    seeds = 0
+    seeds = 1
     s = L+200
 
     for seed=seeds, l=L, t=T
-        settings = make_settings(l, t, NR, α)
+        settings = make_settings(l, t, NR, α, dist, data_path)
         b = get_bundles_from_settings(settings, seeds=seed, spanning=true,)
         p = plot_fb(b, show=false, use_shift=true, cm_shift=false)
         kN = round(b.current_step/b.N, digits=2)
@@ -75,19 +75,19 @@ function generate_illustrations()
     α = 2.0
     seed = 1
     nr = "LLS"
-
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
     nr="CLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
     L=1024
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
     nr="LLS"
-    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", save_path)
+    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
 end
-
+dist="ConstantAverageUniform"
+data_path="newData/"
 #generate_illustrations()
 
 #show_spanning_cluster()
-show_progression()
-#show_t_change("LLS")
-#show_t_change("CLS")
+#show_progression()
+show_t_change("LLS")
+show_t_change("CLS")

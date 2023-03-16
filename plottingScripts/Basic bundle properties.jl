@@ -7,20 +7,21 @@ include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
 function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
+    data_path="newData/"
     add_ELS=false
     N = L.*L
     files_and_t = []
     for t in ts
-        push!(files_and_t, load_file(L, α, t, nr, dist))
+        push!(files_and_t, load_file(L, α, t, nr, dist, data_path=data_path))
         # Check that the data we use is from completely borken bundles
-        min_steps = get_min_steps_in_files(make_settings(L, t, nr, α, dist)) 
+        min_steps = get_min_steps_in_files(make_settings(L, t, nr, α, dist, data_path)) 
         @assert min_steps == N "This bundle, $nr L=$L t0=$t, is not fully broken! $min_steps != $N"
     end
 
     if nr=="LLS" && add_ELS
-        push!(files_and_t, load_file(L, α, 0.0, "ELS", dist))
+        push!(files_and_t, load_file(L, α, 0.0, "ELS", dist, data_path=data_path))
         # Check that the data we use is from completely borken bundles
-        min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α, dist)) 
+        min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α, dist, data_path)) 
         @assert min_steps == N "This bundle is not fully broken! $min_steps != $N"
     end
 
@@ -79,7 +80,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title,
-        linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-1)]),[:dot]))
+        linestyle=hcat([:dot], permutedims([:solid for _ in 1:(length(ts)-(add_ELS ? 1 : 2))]),[:dash]))
         add_points(y)
         return plot
     end
@@ -99,9 +100,9 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
 end
 
 L = 128
-ts = [0.0, 0.1, 0.2,0.3,0.4, 0.7, 0.9]
-
-#ts = vcat((0:20) ./ 50, (5:7) ./ 10)
+ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
+ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
+ts = [0.05,0.1, 0.2, 0.3, 0.4, 0.45, 0.5]
 α = 2.0
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
