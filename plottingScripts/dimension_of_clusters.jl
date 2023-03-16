@@ -37,12 +37,14 @@ function get_plot_and_slope!(p, x, y, label, linestyle, marker; x_label=L"log$_2
     p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
     linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
     #   y values =#
-    
+    i=('s' in label) ? 1 : 2
+    c = theme_palette(:auto)[i]
+
     scatter!(x, y, markershape=marker, label=label, linewidth=1.2,
-    markerstrokecolor=:black,legend=:topleft, xlabel=x_label,
+    markerstrokecolor=c,legend=:topleft, xlabel=x_label,
     markersize=5, markerstrokewidth=1.2)
     #   y fit
-    plot!(Measurements.value.(x), f_lin(x, fit), label="", color=:black,
+    plot!(Measurements.value.(x), f_lin(x, fit), label="", color=c,
     linewidth=1, linestyle=linestyle)
 
     return p, slope# ± slope_err
