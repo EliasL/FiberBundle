@@ -160,8 +160,8 @@ data_path="newData/"
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)
-xpsize=270
-ypsize=330
+xpsize=300
+ypsize=280
 p = plot(plots..., size=(xpsize*1.1*length(plots),ypsize), layout = @layout([ A B ;]))
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
 savefig(p, "plots/Graphs/$(dist)_average_sigma_C_over_t0.pdf")
