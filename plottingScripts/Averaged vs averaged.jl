@@ -66,7 +66,9 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         markershape=[:diamond :rect :star4 :utriangle :dtriangle :circle]
         series_annotation = [0.3, 0.25]
         series_annotation = text.([t in series_annotation ?  L" $t_0=$"*"$t " : "" for t in ts], pointsize=8, halign=:left, valign=:bottom)
-
+        if xlabel == L"t_0"
+            series_annotation = ""
+        end
         for i in eachindex(L)
             for nr in NR
                 nri = nr=="LLS" ? 1 : 2
