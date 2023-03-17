@@ -37,12 +37,14 @@ function get_plot_and_slope!(p, x, y, label, linestyle, marker; x_label=L"log$_2
     p = plot(slope_err_x, slope_err_y, label=nothing, color=:red,
     linewidth=1, linestyle=:dash, markersize=3, markershape=:none)
     #   y values =#
-    
+    i=('s' in label) ? 1 : 2
+    c = theme_palette(:auto)[i]
+
     scatter!(x, y, markershape=marker, label=label, linewidth=1.2,
-    markerstrokecolor=:black,legend=:topleft, xlabel=x_label,
+    markerstrokecolor=c,legend=:topleft, xlabel=x_label,
     markersize=5, markerstrokewidth=1.2)
     #   y fit
-    plot!(Measurements.value.(x), f_lin(x, fit), label="", color=:black,
+    plot!(Measurements.value.(x), f_lin(x, fit), label="", color=c,
     linewidth=1, linestyle=linestyle)
 
     return p, slope# ± slope_err
@@ -83,17 +85,17 @@ function plot_dimension_thing(L, ts, α)
             title!("$nr: "*L"D_s="*"$s_rounded "*L"D_h="*"$h_rounded")
             end
         
-        #= # Plot for each t
+         # Plot for each t
         plot(plots..., size=(400, 200), layout = (length(NR)),)
         #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"))    
-        savefig("plots/Graphs/SingleT/dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf") =#
+        savefig("plots/Graphs/SingleT/new_dist_dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
 
     end
-    #scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
+    #scatter!(x_newData/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
     scatter(ts, slopes, labels=permutedims(labels), markerstrokecolor=permutedims(theme_palette(:auto)[1:4]), markercolor=:transparent, markersize=5, markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
         size=(300, 250), legend=:right, xlabel=L"t_0", ylabel=L"D")
     #println(slopes)
-    savefig("plots/Graphs/dimension_L=$(L[1])-$(L[end]).pdf")
+    savefig("plots/Graphs/new_dist_dimension_L=$(L[1])-$(L[end]).pdf")
     
 end
 
@@ -122,19 +124,20 @@ function get_gyration_radii(L, nr, t, α)
     std_R = []
     std_S = []
     std_H = []
-    if !isdir("data/gyration_data/")
-        mkpath("data/gyration_data/")
+    if !isdir("newData/gyration_data/")
+        mkpath("newData/gyration_data/")
     end
     for l in L
-        if isfile(get_file_name(l, α, t, nr))
-            if isfile("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
-                f = load("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
+        file_name = get_file_name(l, α, t, nr,dist, data_path=data_path)
+        if isfile(file_name)
+            if isfile("newData/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
+                f = load("newData/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
                 r, s, h = f["$(l)_$(nr)_$(t)_r"]
             else
-                bulk_file = load_file(l, α, t, nr,average=false)
+                bulk_file = load_file(l, α, t, nr,dist, average=false, data_path=data_path)
                 r, s, h = calculate_gyration_radi(l, nr, t, bulk_file)
                 # Save data
-                jldopen("data/gyration_data/$(l)_$(nr)_$(t)_r.jld2", "w") do file
+                jldopen("newData/gyration_data/$(l)_$(nr)_$(t)_r.jld2", "w") do file
                     file["$(l)_$(nr)_$(t)_r"] = (r, s, h)
                 end
             end
@@ -145,8 +148,9 @@ function get_gyration_radii(L, nr, t, α)
             push!(H, mean(h))
             push!(std_H, std(h))
             #println("$l, $t, $(length(r))")
+        else 
+            @error "No file found! $file_name" 
         end
-
     end
     return R, S, H, std_R, std_S, std_H
 end
@@ -170,13 +174,15 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [8, 16, 32, 64, 128, 256, 512, 1024]
+L = [16, 32, 64, 128, 256, ]#512, 1024]
 α = 2.0
-
+dist = "ConstantAverageUniform"
+data_path = "newData/"
 #t = vcat((1:9) ./ 10)
 #t = vcat((0:1) ./ 10, (10:20) ./ 50, (5:9) ./ 10)
-t = vcat((0:20) ./ 50, (5:9) ./ 10)
+#t = vcat((0:20) ./ 50, (5:9) ./ 10)
 
+t = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 plot_dimension_thing(L, t, α)
 
 

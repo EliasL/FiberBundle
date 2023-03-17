@@ -33,7 +33,7 @@ end
     #SBATCH -p $partition
     #SBATCH -N 1
     #SBATCH -n 64
-    #SBATCH --nice
+    #SBATCH --nice 50000
     #SBATCH --time=$formated_time
 
     ml eb
@@ -51,9 +51,28 @@ function start_job()
 end
 
 
-
-seeds = [0, 1000] # From seed to seed
-L = [256]
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+Remember to change the distribution before running more scripts
+seeds = [0, 200] # From seed to seed
+L = [512]
 #t = [0.38]
 #t = vcat((0:9) ./ 10)
 #t = vcat((0:10) ./ 50)

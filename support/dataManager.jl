@@ -25,7 +25,8 @@ seed_specific_keys = [
 data_keys = Set(vcat(averaged_data_keys, seed_specific_keys))
 
 
-function make_settings(L::Int64, t::Float64, nr::String, α::Float64, dist::String="Uniform", path::String="data/")
+function make_settings(L::Int64, t::Float64, nr::String, α::Float64,
+    dist::String="ConstantAverageUniform", path::String="data/")
     if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
@@ -115,7 +116,7 @@ function expand_file(settings, overwritten_seeds::AbstractArray=Vector{Int64}([]
         end
     end # Close compact file
 end
-
+   
 function get_seeds_in_file(settings, average=false)
     file_name = get_file_name(settings, -1, average)
     if isfile(file_name)
@@ -326,7 +327,7 @@ function search_for_settings(path, dist)
 end
 
 global_settings = nothing
-function get_file_path(L, α, t, NR, dist="Uniform", data_path="data/"; average=true)
+function get_file_path(L, α, t, NR, dist="ConstantAverageUniform", data_path="data/"; average=true)
     setting = make_settings(L, t, NR, α, dist, data_path)
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
@@ -593,6 +594,35 @@ function recalculate_average_file(path="data/", dists=["Uniform"]; max_seed=9999
     println("Success!")
 end
 
+function rename_t0()
+    new_path = "newData/ConstantAverageUniform/"
+    path="data/ConstantAverageUniform/"
+    files = readdir(path)
+    @showprogress for f in files
+        f_path = path*f*"/"        
+        new_f_path = new_path*f*"/"
+        param = split(f, "=")
+        l=length(param)
+        t_0 = parse(Float64, param[l])
+        new_t0 = round((1-t_0)/2,digits=2)
+        L = parse(Int64, split(param[l-2], " ")[1])
+        if L!=512
+            new_f_name = replace(new_f_path, r"t=(\d+\.\d+)" => "t=$new_t0")
+            if !isdir(new_f_name)
+                mkpath(new_f_name)
+            end
+            for ff in readdir(f_path)
+                ff_path = f_path*ff
+                new_ff_path = new_f_name*ff
+                # copy and change t_0 value
+                new_ff_name = replace(new_ff_path, r"t=(\d+\.\d+)" => "t=$new_t0")
+                cp(ff_path, new_ff_name)
+            end
+        end
+    end
+end
+#rename_t0()
+
 function rename_files_and_folders(path="data/", dists=["gyration_data"])
     new_name(s) = replace(s, "r_slope" => "r")
     for dist in dists
@@ -612,3 +642,4 @@ end
 #recalculate_average_file()
 
 #get_data_overview()
+

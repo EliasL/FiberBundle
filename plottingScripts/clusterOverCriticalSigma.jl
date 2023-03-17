@@ -83,9 +83,9 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     d = [0,0]
     tlabel1=0.3
     tlabel2=0.5
-    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=a, average=false)
-    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=b, average=false)
-    most_stressed_fiber_spanning = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=c, average=false)
+    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=a, average=false, data_path=data_path)
+    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=b, average=false, data_path=data_path)
+    most_stressed_fiber_spanning = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=c, average=false, data_path=data_path)
     xLLS = most_stressed_fiber_spanning[:, :, 1]
     xCLS = most_stressed_fiber_spanning[:, :, 2]
     xxLLS = lin.(eachcol(xLLS))[end]
@@ -135,8 +135,8 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     #plot!(xxCLS, myfunk(xxCLS, -4, 6), labels=L"σ_c^{-4}/6", color=:black, linestyle=:dash, alpha=0.5)
     #plot!([minimum(xCLS),maximum(xCLS)], [minimum(xCLS),maximum(xCLS)], labels="y=x", color=:black, linestyle=:dash)
 
-    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=[0,0], average=false)
-    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=[0,0], average=false)
+    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=[0,0], average=false, data_path=data_path)
+    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=[0,0], average=false, data_path=data_path)
 
     y1 = (largest_cluster_spanning[:, :, 1] ./ largest_perimeter_spanning[:, :, 1]) ./ permutedims(L.^d[1])
     y2 = (largest_cluster_spanning[:, :, 2] ./ largest_perimeter_spanning[:, :, 2]) ./ permutedims(L.^d[2])
@@ -167,11 +167,13 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     return other_plots
 end
 
-L = [32, 64, 128]#[16, 32, 64, 128, 256, 512]
+L = [32, 64, 128, 256]#[16, 32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
-ts = vcat((0:20) ./ 50, (5:7) ./ 10)
+data_path="newData/"
+#ts = vcat((0:20) ./ 50, (5:7) ./ 10)
+ts = vcat(0.15:0.05:0.25, 0.3:0.01:0.5)
 #ts2 = (0:9) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
