@@ -48,6 +48,7 @@ function get_data(L, NR, ts, dist, key, xKey, xKeyf; average=true, ex=[2,2], α=
                 x = avg_x
             else
                 x = xKeyf(file["average_$xKey"])
+                println(x)
                 value = file[key][round(Int64, x)]
             end
             data[t, l, nr] = value/L[l]^ex[nr]

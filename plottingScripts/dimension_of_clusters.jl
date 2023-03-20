@@ -86,14 +86,14 @@ function plot_dimension_thing(L, ts, α)
             end
         
          # Plot for each t
-        plot(plots..., size=(400, 200), layout = (length(NR)),)
+        #plot(plots..., size=(400, 200), layout = (length(NR)),)
         #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"))    
-        savefig("plots/Graphs/SingleT/new_dist_dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
+        #savefig("plots/Graphs/SingleT/new_dist_dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
 
     end
     #scatter!(x_newData/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
     scatter(ts, slopes, labels=permutedims(labels), markerstrokecolor=permutedims(theme_palette(:auto)[1:4]), markercolor=:transparent, markersize=5, markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
-        size=(300, 250), legend=:right, xlabel=L"t_0", ylabel=L"D")
+        size=(300, 250), legend=:left, xlabel=L"t_0", ylabel=L"D")
     #println(slopes)
     savefig("plots/Graphs/new_dist_dimension_L=$(L[1])-$(L[end]).pdf")
     
