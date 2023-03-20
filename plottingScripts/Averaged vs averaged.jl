@@ -108,16 +108,17 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         for l in eachindex(L)
             σ_c[:, l, nri] .*= 1#log(log(L[l]^2))
             σ_cofσ[:, l, nri] .*= 1#log(log(L[l]^2))
-            av_k_c[:, l, nri] .*= ((L[l]^2))
-            k_c[:, l, nri] .*= ((L[l]^2))
+            av_k_c[:, l, nri] .*=1# ((L[l]^2))
+            k_c[:, l, nri] .*= 1#((L[l]^2))
         end
     end
 
-    x_c_plot = make_plot3(ts, av_k_c, log=:log, scale_x=false, scale_y=true,
+    x_c_plot = make_plot3(ts, av_k_c, log=:log, scale_x=false, scale_y=false,
         L"\langle k_c\rangle ", permutedims(["$nr" for nr in NR]), title="",
         xlabel=L"t_0", position=:topleft,)
 
-    x_cofσ_plot = make_plot3(ts, k_c, log=:log, scale_x=false, scale_y=true,
+    println(k_c)
+    x_cofσ_plot = make_plot3(ts, k_c, log=:log, scale_x=false, scale_y=false,
         L"k_c", permutedims(["$nr" for nr in NR]), title="",
         xlabel=L"t_0", position=:topleft,)
 

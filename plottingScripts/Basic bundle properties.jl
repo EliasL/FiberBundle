@@ -91,10 +91,10 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
 
 
-    nr_clusters_plot = make_plot(nr_clusters, L"M/N", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""), ylims=(0,0.13))
-    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"σ")
-    largest_cluster_plot = make_plot(largest_cluster,L"s_{\mathrm{max}}/N")    
-    largest_perimiter_plot = make_plot(largest_perimiter,L"h_{\mathrm{max}}/N", ylims=(0,0.375), xlabel=L"k/N")
+    nr_clusters_plot = make_plot(nr_clusters, L"\langle M/N \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""), ylims=(0,0.13))
+    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle")
+    largest_cluster_plot = make_plot(largest_cluster,L"\langle s_{\mathrm{max}}/N \rangle")    
+    largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375), xlabel=L"k/N")
     basic_plots = [nr_clusters_plot, most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot]
     return basic_plots
 end
