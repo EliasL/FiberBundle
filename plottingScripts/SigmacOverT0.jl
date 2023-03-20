@@ -103,7 +103,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
 
     σ_c_plot = make_plot3(ts, σ_c[:, :, :], log=:log, 
-    L"<σ_c>", permutedims(["$nr" for nr in NR]), title="",
+    L"\langle σ_c \rangle", permutedims(["$nr" for nr in NR]), title="",
                         xlabel=L"t_0", position=:topright, )
 
     #add_fit!(ts, σ_c)
@@ -111,7 +111,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     σ_cofσ = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
     σ_cofσ_plot = make_plot3(ts, σ_cofσ[:, :, :], log=:log, 
-    L"σ_c(<σ>)", permutedims(["$nr" for nr in NR]), title="",
+    L"σ_c(\langle σ \rangle)", permutedims(["$nr" for nr in NR]), title="",
                         xlabel=L"t_0", position=:topright, )
     #add_fit!(ts, σ_cofσ)
     #min_y = round(minimum(most_stressed_fiber_spanning[:, :, 1]), digits=3)
