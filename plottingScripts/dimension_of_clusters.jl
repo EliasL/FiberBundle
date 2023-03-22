@@ -86,9 +86,9 @@ function plot_dimension_thing(L, ts, α)
             end
         
          # Plot for each t
-        #plot(plots..., size=(400, 200), layout = (length(NR)),)
+        plot(plots..., size=(400, 200), layout = (length(NR)),)
         #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"))    
-        #savefig("plots/Graphs/SingleT/new_dist_dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
+        savefig("plots/Graphs/SingleT/new_dist_dimension_t=$(t)_L=$(L[1])-$(L[end]).pdf")
 
     end
     #scatter!(x_newData/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)

@@ -70,5 +70,5 @@ if use_threads
 else
     include("dataGenerator.jl")
     @logmsg nodeLog "Start run"
-    itterate_settings(L, α, t, NR, s, dist; overwrite=overwrite, use_threads=use_threads)
+    itterate_settings(L, α, t, NR, s, dist; overwrite=overwrite, use_threads=use_threads, path="newData/")
 end
