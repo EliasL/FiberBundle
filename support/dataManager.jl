@@ -606,7 +606,7 @@ function rename_t0()
         t_0 = parse(Float64, param[l])
         new_t0 = round((1-t_0)/2,digits=2)
         L = parse(Int64, split(param[l-2], " ")[1])
-        if L!=512
+        if L==512
             new_f_name = replace(new_f_path, r"t=(\d+\.\d+)" => "t=$new_t0")
             if !isdir(new_f_name)
                 mkpath(new_f_name)
