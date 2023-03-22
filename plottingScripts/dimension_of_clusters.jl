@@ -174,7 +174,7 @@ function uncertainty_in_slope(x, v)
     return x, y, max_slope, min_slope
 end
 
-L = [16, 32, 64, 128, 256, ]#512, 1024]
+L = [16, 32, 64, 128, 256, 512]#512, 1024]
 α = 2.0
 dist = "ConstantAverageUniform"
 data_path = "newData/"

@@ -99,7 +99,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     return [LLS_σ_c_N_plot, CLS_σ_c_N_plot]
 end
 
-L = [16, 32, 64, 128]
+L = [16, 32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
 
@@ -107,7 +107,7 @@ nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 #ts = (0:7) ./ 10
 data_path = "newData/"
-ts = [0.05, 0.1,0.3,0.35, 0.4, 0.45, 0.5]
+ts = [0.05,0.1, 0.3, 0.35, 0.4, 0.5]
 #ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
