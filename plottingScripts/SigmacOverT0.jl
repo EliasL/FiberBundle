@@ -149,7 +149,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     return [σ_c_plot, σ_cofσ_plot]
 end
 
-L = [32, 64, 128,256]
+L = [32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
 ts = vcat((0:20) ./ 50, (5:8) ./ 10)
