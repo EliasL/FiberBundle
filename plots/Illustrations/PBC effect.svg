@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="87.463005mm"
+   width="64.973434mm"
    height="18.828838mm"
-   viewBox="0 0 87.463005 18.828838"
+   viewBox="0 0 64.973434 18.828838"
    version="1.1"
    id="svg5"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09, custom)"
@@ -28,19 +28,19 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="true"
-     inkscape:zoom="5.3065149"
-     inkscape:cx="237.63242"
-     inkscape:cy="70.479402"
-     inkscape:window-width="3440"
-     inkscape:window-height="1389"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
+     inkscape:zoom="3.7522727"
+     inkscape:cx="133.25258"
+     inkscape:cy="48.63719"
+     inkscape:window-width="2252"
+     inkscape:window-height="1230"
+     inkscape:window-x="421"
+     inkscape:window-y="111"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1">
     <inkscape:grid
        type="xygrid"
        id="grid132"
-       originx="-72.606413"
+       originx="-72.606411"
        originy="-105.67932" />
   </sodipodi:namedview>
   <defs
@@ -91,10 +91,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-72.606415,-105.67933)">
+     transform="translate(-72.606415,-105.67934)">
     <path
        style="fill:none;stroke:#000000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 140.22916,105.83334 v 18.52083 h 18.52083 v -18.52083 z"
+       d="m 117.73959,105.83335 v 18.52083 h 18.52083 v -18.52083 z"
        id="path247"
        sodipodi:nodetypes="ccccc"
        inkscape:export-filename="../6588b2b3/CenterOfMass.pdf"
@@ -137,35 +137,14 @@
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 95.25,105.83334 10e-7,18.52082 h 18.520829 v -18.52082 z"
+       d="m 92.604172,83.343773 10e-7,18.520817 H 111.125 V 83.343773 Z"
        id="path247-7-2"
        sodipodi:nodetypes="ccccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 149.48957,105.83334 -9.26041,9.26041 9.26041,9.26042 9.26042,-9.26042 z"
-       id="path1733" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 117.73958,105.83333 v 18.52083 h 18.52083 v -18.52083 z"
+       d="m 95.250007,105.83334 v 18.52083 h 18.520833 v -18.52083 z"
        id="path247-3"
        sodipodi:nodetypes="ccccc" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 126.99999,115.09374 9.26042,9.26042 v -9.26042 -9.26041 l -9.26042,9.26041 -9.26041,9.26042 v -18.52083 z"
-       id="path1733-6"
-       sodipodi:nodetypes="cccccccc" />
-    <path
-       style="fill:#ff2222;fill-opacity:1;stroke:#ff2222;stroke-width:0.0410419;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 144.97111,119.60254 -4.50397,-4.50408 4.51283,-4.51273 4.51284,-4.51274 4.50397,4.50397 4.50397,4.50398 -4.51284,4.51283 -4.51283,4.51284 z"
-       id="path5181" />
-    <path
-       style="fill:#ff2222;fill-opacity:1;stroke:#ff2222;stroke-width:0.0580419;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 117.92342,115.08698 v -8.81267 l 4.41262,4.41241 4.41262,4.41241 -4.40005,4.40026 c -2.42002,2.42014 -4.4057,4.40026 -4.41262,4.40026 -0.007,0 -0.0126,-3.9657 -0.0126,-8.81267 z"
-       id="path8442" />
-    <path
-       style="fill:#ff2222;fill-opacity:1;stroke:#ff2222;stroke-width:0.0580419;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 131.6473,119.49939 -4.40004,-4.40026 4.41261,-4.41241 4.41262,-4.41241 v 8.81267 c 0,4.84697 -0.006,8.81267 -0.0126,8.81267 -0.007,0 -1.9926,-1.98012 -4.41262,-4.40026 z"
-       id="path8444" />
     <path
        style="fill:#ff2222;fill-opacity:1;stroke:#000000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
        d="m 89.958331,109.80209 h -1.322916 l 1e-6,10.58333 h 2.645833 l -10e-7,-10.58333 z"
@@ -176,9 +155,13 @@
        d="m 72.760415,109.80209 h 2.645833 l 10e-7,10.58333 h -2.645833 z"
        id="path8853"
        sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#ff2222;fill-opacity:1;stroke:#040000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       d="m 117.73958,112.44793 h 1.32292 l 7.9375,-6.61459 7.9375,6.61459 h 1.32292 v 5.29166 h -1.32292 l -7.9375,6.61459 -7.9375,-6.61459 h -1.32292 z"
+       id="path7662" />
     <a
        id="a9282-5"
-       transform="matrix(1.0770054,0,0,1.077012,61.363912,-10.36218)">
+       transform="matrix(1.0770054,0,0,1.077012,38.874339,-10.362177)">
       <g
          id="g9277-3"
          transform="translate(25.600234,4.6981592)">
@@ -202,7 +185,7 @@
     </a>
     <a
        id="a9282-5-7"
-       transform="matrix(1.0770054,0,0,1.077012,52.103495,-10.36218)">
+       transform="matrix(1.0770054,0,0,1.077012,29.613922,-10.362177)">
       <g
          id="g9277-3-0"
          transform="translate(25.600234,4.6981592)">
@@ -226,7 +209,7 @@
     </a>
     <a
        id="a9282-5-7-6"
-       transform="matrix(1.0770054,0,0,1.077012,70.624328,-10.36218)">
+       transform="matrix(1.0770054,0,0,1.077012,48.134755,-10.362177)">
       <g
          id="g9277-3-0-0"
          transform="translate(25.600234,4.6981592)">
@@ -248,9 +231,13 @@
            transform="rotate(45)" />
       </g>
     </a>
+    <path
+       style="fill:#ff2222;fill-opacity:1;stroke:#040000;stroke-width:0.308;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       d="m 95.250002,105.83334 7.937498,6.61459 h 2.64583 l 7.9375,-6.61459 v 18.52084 l -7.9375,-6.61459 h -2.64583 l -7.937498,6.61459 z"
+       id="path7006" />
     <a
        id="a9282-5-7-61"
-       transform="matrix(1.0770054,0,0,1.077012,29.613912,-10.362177)">
+       transform="matrix(1.0770054,0,0,1.077012,7.1243388,-10.362174)">
       <g
          id="g9277-3-0-8"
          transform="translate(25.600234,4.6981592)">
@@ -274,7 +261,7 @@
     </a>
     <a
        id="a9282-5-7-61-2"
-       transform="matrix(1.0770054,0,0,1.077012,38.874329,-10.362177)">
+       transform="matrix(1.0770054,0,0,1.077012,16.384756,-10.362174)">
       <g
          id="g9277-3-0-8-0"
          transform="translate(25.600234,4.6981592)">
@@ -298,7 +285,7 @@
     </a>
     <a
        id="a9282-5-7-61-2-7"
-       transform="matrix(1.0770054,0,0,1.077012,48.187547,-10.414978)">
+       transform="matrix(1.0770054,0,0,1.077012,25.697974,-10.414975)">
       <g
          id="g9277-3-0-8-0-5"
          transform="translate(25.600234,4.6981592)">
@@ -346,11 +333,11 @@
     </a>
     <path
        style="fill:#ff2222;fill-opacity:1;stroke:#000000;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-opacity:1;paint-order:fill markers stroke"
-       d="m 101.86458,109.80208 h 5.29167 v 10.58334 h -5.29167 z"
+       d="m 99.218752,87.312513 h 5.291668 v 10.58334 h -5.291668 z"
        id="path9666" />
     <a
        id="a9282-5-2-8"
-       transform="matrix(1.0770054,0,0,1.077012,16.384743,-10.362173)">
+       transform="matrix(1.0770054,0,0,1.077012,13.738915,-32.85174)">
       <g
          id="g9277-3-9-9"
          transform="translate(25.600234,4.6981592)">
@@ -426,47 +413,47 @@
     <text
        xml:space="preserve"
        style="font-size:4.23333px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-dasharray:none;stroke-dashoffset:0;paint-order:fill markers stroke"
-       x="80.435448"
-       y="109.80209"
+       x="80.528587"
+       y="109.8021"
        id="text1697"><tspan
          sodipodi:role="line"
          id="tspan1695"
          style="font-size:4.23333px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.308"
-         x="80.435448"
-         y="109.80209">A</tspan></text>
+         x="80.528587"
+         y="109.8021">A</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23333px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-dasharray:none;stroke-dashoffset:0;paint-order:fill markers stroke"
-       x="141.40392"
-       y="109.80209"
+       x="118.38941"
+       y="109.8021"
        id="text2075"><tspan
          sodipodi:role="line"
          id="tspan2073"
          style="stroke-width:0.308"
-         x="141.40392"
-         y="109.80209">D</tspan></text>
+         x="118.38941"
+         y="109.8021">C</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23333px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-dasharray:none;stroke-dashoffset:0;paint-order:fill markers stroke"
-       x="125.47388"
-       y="109.80209"
+       x="103.07744"
+       y="109.8021"
        id="text2079"><tspan
          sodipodi:role="line"
          id="tspan2077"
          style="stroke-width:0.308"
-         x="125.47388"
-         y="109.80209">C</tspan></text>
+         x="103.07744"
+         y="109.8021">B</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23333px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-dasharray:none;stroke-dashoffset:0;paint-order:fill markers stroke"
-       x="96.462852"
-       y="109.80209"
+       x="93.817024"
+       y="87.312531"
        id="text2083"><tspan
          sodipodi:role="line"
          id="tspan2081"
          style="stroke-width:0.308"
-         x="96.462852"
-         y="109.80209">B</tspan></text>
+         x="93.817024"
+         y="87.312531">B</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:4.23333px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif';fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.307999;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:3.5;stroke-dasharray:none;stroke-dashoffset:0;paint-order:fill markers stroke"
