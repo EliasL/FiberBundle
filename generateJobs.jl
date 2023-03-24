@@ -33,7 +33,7 @@ end
     #SBATCH -p $partition
     #SBATCH -N 1
     #SBATCH -n 64
-    #SBATCH --nice 50000
+    #SBATCH --nice=50000
     #SBATCH --time=$formated_time
 
     ml eb
@@ -50,38 +50,11 @@ function start_job()
     run(`sbatch job.sh`)
 end
 
+seeds = [0, 10000] # From seed to seed
+L = [16,32]
 
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-Remember to change the distribution before running more scripts
-seeds = [0, 200] # From seed to seed
-L = [512]
-#t = [0.38]
-#t = vcat((0:9) ./ 10)
-#t = vcat((0:10) ./ 50)
-#t = vcat((11:20) ./ 50)
-t = vcat((0:9) ./ 50, (10:20) ./ 50, (5:9) ./ 10)
-#t = vcat((0:5) ./ 50)
-#t = vcat((6:10) ./ 50)
-#t = vcat((11:15) ./ 50)
-#t = vcat((16:20) ./ 50)
+NR = ["LLS", "CLS"]
+t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 dist = "ConstantAverageUniform"
 #seeds = [0, 100] # From seed to seed
@@ -93,13 +66,33 @@ dist = "ConstantAverageUniform"
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 #start_job()
 
-NR = ["LLS", "CLS"]
-for ts in t
-    make_job(seeds, L, t=[ts], α=[2.0], NR=NR, dist=dist, force_short=false)
-    start_job()
-end
-#t = vcat((6:10) ./ 50)
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
 
+L = [64]
+seeds = [0,6000]
+
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
+
+L=[128]
+seeds = [1,3000]
+
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
+
+L=[256]
+seeds = [1,1000]
+
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
+
+L=[512]
+seeds = [1,200]
+
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
+#t = vcat((6:10) ./ 50)
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
 #start_job()
 

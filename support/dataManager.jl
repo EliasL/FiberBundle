@@ -69,7 +69,7 @@ function get_setting_name(settings)
     return chop(name)
 end
 
-function get_file_name(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
+function get_file_name(L, α, t, NR, dist="ConstantAverageUniform"; data_path="newData/", seed=-1, average=true)
     s = make_settings(L, t, NR, α, dist, data_path)
     return get_file_name(s, seed, average)
 end

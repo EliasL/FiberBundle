@@ -167,7 +167,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     return other_plots
 end
 
-L = [32, 64, 128, 256]#[16, 32, 64, 128, 256, 512]
+L = [32, 64, 128, 256, 512]#[16, 32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
