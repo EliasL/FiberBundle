@@ -51,7 +51,7 @@ NR = ["CLS", "LLS"]
 α = [2.0] =#
 
 use_threads = true
-overwrite = true
+overwrite = false
 #time_estimate(L, α, t, NR, seeds)
 
 if use_threads
