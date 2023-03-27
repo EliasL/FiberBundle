@@ -66,15 +66,6 @@ dist = "ConstantAverageUniform"
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 #start_job()
 
-make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
-
-L = [64]
-seeds = [0,6000]
-
-make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
-
 L=[128]
 seeds = [1,3000]
 

@@ -75,14 +75,29 @@ function generate_illustrations()
     α = 2.0
     seed = 1
     nr = "LLS"
-    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", dist, save_path, data_path)
     nr="CLS"
-    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", dist, save_path, data_path)
     L=1024
-    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", dist, save_path, data_path)
     nr="LLS"
-    save_picture(L, nr, t, α, seed, dist, "$(nr)$(L)s$seed", save_path, data_path)
+    save_picture(L, nr, t, α, seed, "$(nr)$(L)s$seed", dist, save_path, data_path)
 end
+
+function show_radius_of_gyration()
+    save_path = "plots/Visualizations/radiusOfGyration"
+    
+    t = 0.5
+    L=128
+    α = 2.0
+    seed = 6
+    nr = "CLS"
+    save_picture(L, nr, t, α, seed, "$(t)$(nr)$(L)s$seed", dist, save_path, data_path, radius=true)
+    #seed = 6
+    nr= "LLS"
+    save_picture(L, nr, t, α, seed, "$(t)$(nr)$(L)s$seed", dist, save_path, data_path, radius=true)
+end
+
 dist="ConstantAverageUniform"
 data_path="newData/"
 #generate_illustrations()
@@ -91,3 +106,4 @@ data_path="newData/"
 #show_progression()
 show_t_change("LLS")
 show_t_change("CLS")
+show_radius_of_gyration()
