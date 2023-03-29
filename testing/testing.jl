@@ -468,10 +468,9 @@ function performance_test()
     seed=1
     b, s = get_fb(L, seed, α=α, nr=nr, without_storage=false)    
     
-
     result = @elapsed breakb(b, s)
+    
     @test result < 1.3 
-    #println(result)
     return
 end
 #performance_test()

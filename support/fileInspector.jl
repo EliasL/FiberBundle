@@ -81,13 +81,14 @@ end
 
 L=16
 a=2.0
-nr="CLS"
-t=0.3
+nr="LLS"
+t=0.05
+data_path = "newData/"
 dist = "ConstantAverageUniform"
-f_path = get_file_path(L, a, t, nr, dist, average=false)
+f_path = get_file_path(L, a, t, nr, dist, data_path, average=true,)
 
-investigate2(f_path,0)
-#print_file(f_path)
+#investigate2(f_path,0)
+print_file(f_path,4)
 
 #= for seed in 995:999
     show_bundle(L, t, nr, α, seed, critical=true)

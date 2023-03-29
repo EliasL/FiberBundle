@@ -88,11 +88,11 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
     lnN = log.(log.(L.*L))
-    LLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 1], L"1/<σ_c>", "LLS",
+    LLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 1], L"1/\langle σ_c \rangle", "LLS",
                         labels=permutedims(["$nr" for nr in NR]), title="LLS",log=:identity, 
-                        xlabel=L"ln(ln"*L"(N))", position=:right, )
+                        xlabel="ln(ln"*L"(N))", position=:right, )
     
-    CLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 2], L"1/<σ_c>", "CLS",
+    CLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 2], L"1/ \langle σ_c \rangle", "CLS",
                         labels=permutedims(["$nr" for nr in NR]), title="CLS",log=:identity,
                         xlabel="ln(ln"*L"(N))", position=:right, )
                         
@@ -107,7 +107,7 @@ nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 #ts = (0:7) ./ 10
 data_path = "newData/"
-ts = [0.05,0.1, 0.3, 0.35, 0.4, 0.5]
+ts = [0.05,0.1, 0.3, 0.35, 0.4, 0.5, 1.0]
 #ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]

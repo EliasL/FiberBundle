@@ -55,6 +55,7 @@ L = [16,32]
 
 NR = ["LLS", "CLS"]
 t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
+t = [1.0]
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 dist = "ConstantAverageUniform"
 #seeds = [0, 100] # From seed to seed
@@ -65,6 +66,15 @@ dist = "ConstantAverageUniform"
 #L = [64]
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 #start_job()
+
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
+
+L = [64]
+seeds = [0,6000]
+
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
 
 L=[128]
 seeds = [1,3000]

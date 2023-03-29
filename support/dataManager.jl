@@ -327,7 +327,7 @@ function search_for_settings(path, dist)
 end
 
 global_settings = nothing
-function get_file_path(L, α, t, NR, dist="ConstantAverageUniform", data_path="data/"; average=true)
+function get_file_path(L, α, t, NR, dist="ConstantAverageUniform", data_path="newData/"; average=true)
     setting = make_settings(L, t, NR, α, dist, data_path)
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
