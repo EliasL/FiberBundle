@@ -46,12 +46,12 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         #Draw spanning
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x, markeralpha=1) 
 
-        #Add energy change point
+       #=  #Add energy change point
         x_data = [argmax(σ_to_energy(σ)[2]) for σ in most_stressed_fiber]    
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline, markersize=10, markeralpha=1, markerstrokewidth=1)
-        
+        =# 
         #Add max σ_max
         x_data = [argmax(σ) for σ in most_stressed_fiber]    
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
@@ -95,7 +95,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle")
     largest_cluster_plot = make_plot(largest_cluster,L"\langle s_{\mathrm{max}}/N \rangle")    
     largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375), xlabel=L"k/N")
-    basic_plots = [nr_clusters_plot, most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot]
+    basic_plots = [most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot, nr_clusters_plot]
     return basic_plots
 end
 

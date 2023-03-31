@@ -55,7 +55,6 @@ L = [16,32]
 
 NR = ["LLS", "CLS"]
 t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
-t = [1.0]
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 dist = "ConstantAverageUniform"
 #seeds = [0, 100] # From seed to seed
@@ -67,7 +66,7 @@ dist = "ConstantAverageUniform"
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
 #start_job()
 
-make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+#= make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
 start_job()
 
 L = [64]
@@ -80,30 +79,22 @@ L=[128]
 seeds = [1,3000]
 
 make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
+start_job() =#
+for single_t in t
+    L=[256]
+    seeds = [1,1000]
 
-L=[256]
-seeds = [1,1000]
+    make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist, force_short=false)
+    start_job()
 
-make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
+    L=[512]
+    seeds = [1,200]
 
-L=[512]
-seeds = [1,200]
+    make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist, force_short=false)
+    start_job()
+end
+#= L=[128]
+seeds = [1,3000]
 
-make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
-#t = vcat((6:10) ./ 50)
-#make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-#start_job()
-
-
-#=
-t = vcat((11:15) ./ 50)
-make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
-start_job()
-
-t = vcat((16:20) ./ 50)
-make_job(seeds, L, t=t, α=[2.0], NR=NR, force_short=false)
-start_job()
- =#
+make_job(seeds, L, t=[0.5], α=[2.0], NR=["ELS"], dist=dist, force_short=false)
+start_job() =#

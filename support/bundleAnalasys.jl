@@ -70,12 +70,14 @@ function find_radius_of_gyration(b::FB)
 end
 
 function σ_to_energy(σ_max)
+    @warn "Not sure if works! Check dddΔ"
     N = length(σ_max)
     d = (1:N) ./ N #Damage
     κ = 1 # Spring constant
     # NB! This function assumes that σ_max is equal to stretch. For that to be true,
     # κ is required to be 1!
     Δ = σ_max # Stretch/elongation
+    dddΔ =  #derivative of damage with respect to elongation
     E = N*κ/2 .*Δ.^2 .*(1 .-d)
     dEdΔ = N*κ .*Δ .*(1 .-d)
     return E, dEdΔ
