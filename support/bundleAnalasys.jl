@@ -84,6 +84,28 @@ function σ_to_energy(σ_max)
 end
 
 
+function find_avalanches(σ)
+    # σ is the most stressed fiber, so max(σ), not all N of them, but one for each k
+    #TODO test function
+    current_avalanche_index = 0
+    in_avalanche =  false    
+    a = zeros(Int64, length(σ))
+    for i in eachindex(σ)[1:end-1]
+        if σ[i] > σ[i+1] && in_avalanche
+            current_avalanche_index=i
+            in_avalanche = true
+        else
+            a[i] = 0
+        end
+        if σ[i] < σ[i+1] && in_avalanvhe
+            a[current_avalanche_index] = i - current_avalanche_index
+            in_avalanche = false
+        end
+    end
+    return a
+end
+
+
 function test()
     nr = "ELS"
     path = "data/"

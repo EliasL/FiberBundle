@@ -65,7 +65,7 @@ end
 
 function load_data(bulk_file, key, l, nr, t, dist, xKey, xKeyf,data_path)
     path = "$data_path/$xKey/"
-    name = "$(dist)_$(l)_$(nr)_$(t)_$key"
+    name = "$(dist)_$(l)_$(nr)_$(t)_$(key)_$(string(xKeyf))"
     avg_x = 0
     if !isdir(path)
         mkpath(path)
