@@ -87,7 +87,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         position=:topright, log_scale=:identity)
 
         p = plot(xlims=xlims, ylims=ylims, markersize=5,
-            xlabel=xlabel, ylabel=yLabel(ylabel), title="LLS and CLS", xaxis=:identity,
+            xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
             yaxis=log_scale)
 
 
@@ -111,11 +111,11 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         plot!(X, permutedims(Y[:, :, 1]), label="",
         c=colors[1], markerstrokecolor=colors[1], linestyle=:dash,
         legend=position, markershape=markershape)
-        plot!(X, X.+3, label=L"\ln(\ln(N))+2", c=:black)
+        plot!(X, 1.25*X.+2.1, label=L"\frac{5}{4}\ln(\ln(N))+2.1", c=:black)
         plot!([], [], label=" ", alpha=0)
         tc = [colors[1], :black, colors[2]]
         for (i,s) in enumerate(["LLS", "and", "CLS"])
-            annotate!(1.5+ 0.25*i , 1+0.9, text(s, tc[i], 18))
+            annotate!(1.85+ 0.135*i , 5.7, text(s, tc[i], 14))
         end
         return p
     end
@@ -141,7 +141,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
  =#    
     σ_c_N_plot = make_plot4(lnN, 1 ./ σ_c[:, :, :],
         L"1/ \langle σ_c \rangle", log_scale=:identity,
-        xlabel=L"\ln(N^2)/\ln(\ln(N^2))", position=:bottomright,)
+        xlabel=L"\ln(\ln(N))", position=:bottomright,)
 
 
     return [σ_c_N_plot]#[LLS_σ_c_N_plot, CLS_σ_c_N_plot]
@@ -170,4 +170,5 @@ savefig(p, "plots/Graphs/CriticalStressOverN.pdf")
 #savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 println("Saved plot!")
+p
 

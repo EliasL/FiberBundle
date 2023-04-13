@@ -1,0 +1,13 @@
+
+   INOTIFY   INSTANCES
+   WATCHES      PER   
+    COUNT     PROCESS   PID USER         COMMAND
+------------------------------------------------------------
+
+       0  WATCHES TOTAL COUNT
+
+INotify instances per user (e.g. limits specified by fs.inotify.max_user_instances): 
+
+INSTANCES    USER
+-----------  ------------------
+
