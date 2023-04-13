@@ -115,7 +115,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         plot!([], [], label=" ", alpha=0)
         tc = [colors[1], :black, colors[2]]
         for (i,s) in enumerate(["LLS", "and", "CLS"])
-            annotate!(1 + 0.25*i , 1+0.9, text(s, tc[i], 18))
+            annotate!(1.5+ 0.25*i , 1+0.9, text(s, tc[i], 18))
         end
         return p
     end
