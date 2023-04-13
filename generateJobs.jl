@@ -14,7 +14,7 @@ function format(total_seconds)
 end
 
 function make_job(s, L; t = (0:9) ./ 10, NR = ["CLS", "LLS"], α = [2.0], dist="Uniform", force_short=false)
-    threads = 50
+    threads = 2
     seconds = time_estimate(L, α, t, NR, dist=dist, collect(seeds[1]:seeds[2]), threads=threads)
     formated_time = format(seconds)
     #partition = seconds < 3600 || force_short ? "short" : "porelab"
@@ -32,7 +32,7 @@ end
     #SBATCH -J $(maximum(L))-$(seeds[2])
     #SBATCH -p $partition
     #SBATCH -N 1
-    #SBATCH -n 64
+    #SBATCH -n 2
     #SBATCH --nice=50000
     #SBATCH --time=$formated_time
 
@@ -54,7 +54,7 @@ seeds = [0, 10000] # From seed to seed
 L = [16,32]
 
 NR = ["LLS", "CLS"]
-t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
+t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5, [0.6, 0.7, 0.8, 0.1])
 #NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 dist = "ConstantAverageUniform"
 #seeds = [0, 100] # From seed to seed
@@ -80,19 +80,27 @@ seeds = [1,3000]
 
 make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
 start_job() =#
-for single_t in t
-    L=[256]
-    seeds = [1,1000]
-
-    make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist, force_short=false)
-    start_job()
-
-    L=[512]
-    seeds = [1,200]
-
-    make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist, force_short=false)
-    start_job()
+# cancle jobs
+for i in []
+    run(`scancel $i`)
 end
+
+#= 
+seeds = [0, 1] # From seed to seed
+L = [128]
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
+
+
+L = [256]
+seeds = [0, 1]
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job()
+
+L = [512]
+seeds = [0, 1]
+make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+start_job() =#
 #= L=[128]
 seeds = [1,3000]
 

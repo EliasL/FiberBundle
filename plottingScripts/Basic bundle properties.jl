@@ -8,7 +8,7 @@ include("../support/bundleAnalasys.jl")
 
 function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     data_path="newData/"
-    add_ELS=false
+    add_ELS=true
     N = L.*L
     files_and_t = []
     for t in ts
@@ -19,7 +19,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     end
 
     if nr=="LLS" && add_ELS
-        push!(files_and_t, load_file(L, α, 0.0, "ELS", dist, data_path=data_path))
+        push!(files_and_t, load_file(L, α, 0.5, "ELS", dist, data_path=data_path))
         # Check that the data we use is from completely borken bundles
         min_steps = get_min_steps_in_files(make_settings(L, 0.0, "ELS", α, dist, data_path)) 
         @assert min_steps == N "This bundle is not fully broken! $min_steps != $N"
@@ -91,10 +91,10 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
 
 
-    nr_clusters_plot = make_plot(nr_clusters, L"\langle M/N \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""), ylims=(0,0.13))
-    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle")
+    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""))
     largest_cluster_plot = make_plot(largest_cluster,L"\langle s_{\mathrm{max}}/N \rangle")    
     largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375), xlabel=L"k/N")
+    nr_clusters_plot = make_plot(nr_clusters, L"\langle M/N \rangle", ylims=(0,0.13))
     basic_plots = [most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot, nr_clusters_plot]
     return basic_plots
 end

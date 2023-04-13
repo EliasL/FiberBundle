@@ -128,7 +128,7 @@ end
 L = [32, 64, 128, 256, 512]
 α = 2.0
 nr = ["CLS"]
-ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
+ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)#,[1.0])
 dist = "ConstantAverageUniform"
 data_path = "newData/"
 #ts = (0:7) ./ 10

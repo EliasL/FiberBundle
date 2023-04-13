@@ -417,10 +417,10 @@ end
 #rename("data/Uniform/")
 #add_key("simulation_time", 0)
 
-function get_data_overview(path="data/", dists=["ConstantAverageUniform"])
+function get_data_overview(path="newData/", dists=["ConstantAverageUniform"])
     
     for dist in dists
-        println("Data for: $dist")
+        println("Data for: $dist in $path")
         settings = search_for_settings(path, dist)
         s = []
         nr = []
