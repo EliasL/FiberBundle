@@ -47,6 +47,29 @@ function show_progression()
     end
 end
 
+
+function show_progression2()
+    NR = ["LLS", "CLS"]
+    T = [0.26,0.30, 0.35]
+    L=128
+    s = L + 200
+    α = 2.0
+    seed = 4
+    plots=[]
+    steps = length(NR)
+    for t in T
+        for nr in NR
+            title = "$nr "*L"t_0="*"$t"
+            settings = make_settings(L, t, nr, α, dist, data_path)
+            b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
+            p = plot_fb(b, show=false, use_shift=true, cm_shift=false)
+            title!(p, title, titlefontsize=30)
+            push!(plots, p)
+        end
+    end
+    display(plot(plots..., layout=(length(T),steps), size=(s*(steps+1), length(T)*s*1.4)))
+end
+
 function show_t_change(NR)
     T = [0.1, 0.2, 0.3, 0.4, 0.5]
     L=128
@@ -104,6 +127,7 @@ data_path="newData/"
 
 #show_spanning_cluster()
 #show_progression()
-show_t_change("LLS")
-show_t_change("CLS")
-show_radius_of_gyration()
+show_progression2()
+#show_t_change("LLS")
+#show_t_change("CLS")
+#show_radius_of_gyration()
