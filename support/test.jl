@@ -1,8 +1,17 @@
-using Plots
+test1(x) = sum(x[x .!= Inf])
 
-# Generatesome data
-x = ([1:4 , 2:2:8]./8)./[3,9].^0.6333
-y2 = ([[0.1, 0.1, 0.1, 0.2], [0.2, 0.2, 0.2, 0.4]]./0.4)./[3,9].^0.63
+function test2(x)
+    s = 0
+    for i in eachindex(x)
+        @inbounds s += ifelse(isinf(x[i]), 0, x[i])
+    end
+    return 0
+end
 
-# Create the second plot with right y-axis and no label or ticks
-plot(x, y2, label="Plot 2", xlabel="", yaxis=:log, xaxis=:log)
+x = fill(Inf, 10^8)
+x = vcat(x, [1,2,3])
+
+@time test1(x)
+@time test1(x)
+@time test2(x)
+@time test2(x)

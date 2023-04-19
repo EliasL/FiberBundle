@@ -34,7 +34,6 @@ function basic_test()
     @test all(b.status[b.neighbours[1,:]] .== -3)#PAST_BORDER) #"These should be past borders"
     @test all(b.σ[b.neighbours[1,:]] .== 1.25) #"The tension is incorrect"
     @test sum(b.σ) ≈ b.N #"No conservation of tension"
-    
     # Second fiber
     resetBundle!(b)
     findAndBreakNextFiber!(b)
@@ -496,5 +495,6 @@ function test()
         @testset "Performance" begin performance_test() end
     end
 end
+#basic_test()
 test()
 println("Test done")
