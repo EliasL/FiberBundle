@@ -6,7 +6,7 @@ include("../support/dataManager.jl")
 function breakBundle(b::FB, s::FBS, real_values=false)
     x = zeros(Float64, 2*b.N+1)
     σ = zeros(Float64, 2*b.N+1)
-    b.x[argmax(b.x)] = 0.92
+    b.x[argmax(b.x)] = 0.90
     for i in 1:b.N
         update_tension!(b)
         find_next_fiber!(b)
@@ -34,10 +34,10 @@ function breakBundle(b::FB, s::FBS, real_values=false)
     return x, σ
 end
 
-function slowBreak(b::FB, s::FBS, real_sigma=false)
+function slowBreak(b::FB, s::FBS; real_sigma=false, real_threshold=false)
     x = [0.0]
     σ = [0.0]
-    b.x[argmax(b.x)] = 0.92
+    b.x[argmax(b.x)] = 0.90
     current_x = 0
     last_break_x = 0
     last_break_σ = 0
@@ -60,9 +60,12 @@ function slowBreak(b::FB, s::FBS, real_sigma=false)
         #Check if a fiber will break
         # Curent weakest fiber
         weak = b.break_sequence[b.current_step]
-        threshold = b.x[weak]
-        real_threshold = threshold / b.σ[weak]
-        if current_x >= real_threshold 
+        if real_threshold
+            threshold = b.x[weak] / b.σ[weak]
+        else
+            threshold = b.x[weak]
+        end
+        if current_x >= threshold 
             push!(x, current_x)
             push!(σ, current_σ)
             last_break_x = current_x
@@ -90,19 +93,19 @@ function slowBreak(b::FB, s::FBS, real_sigma=false)
 end
 
 function make_plot(b::FB, s::FBS)
-    x, σ = breakBundle(b, s)
-    p1 = plot(x, σ, legend=:topleft, title="C: No Load Sharing ", label="",
-            c=:black, xlabel=L"x_i", ylabel="Sort of " * L"σ",
+    x, σ = slowBreak(b, s, real_sigma=false, real_threshold=false)
+    p1 = plot(x, σ, legend=:topleft, title="B: No Load Sharing ", label="",
+            c=:black, xlabel=L"x", ylabel=L"\tilde{σ}",
             ylims=(0, Inf), xlims=(0, 1))
     healBundle!(b)
-    x, σ = slowBreak(b, s)
-    p2 = plot(x, σ, legend=:topleft, title="B: " * b.nr, label="", 
+    x, σ = slowBreak(b, s, real_sigma=false, real_threshold=true)
+    p2 = plot(x, σ, legend=:topleft, title="C: " * b.nr, label="", 
             c=:black, xlabel=L"x", ylabel=L"\tilde{σ}", ylims=(0, Inf), xlims=(0, Inf))
     healBundle!(b)
-    x, σ = slowBreak(b, s, true)
+    x, σ = slowBreak(b, s, real_sigma=true, real_threshold=true)
     p3 = plot(x, σ, legend=:topleft, title="A: "* b.nr, label="", c=:black, 
             xlabel=L"x", ylabel=L"σ", ylims=(0, Inf), xlims=(0, Inf))
-    return p3, p2, p1
+    return p3, p1, p2
 end
 
 
