@@ -97,7 +97,7 @@ function make_plot(b::FB, s::FBS)
     healBundle!(b)
     x, σ = slowBreak(b, s, true)
     p3 = plot(x, σ, legend=:topleft, title=b.nr, label="", c=:black, xlabel=L"x", ylabel=L"σ")
-    return p1, p2, p3
+    return p3, p2, p1
 end
 
 
