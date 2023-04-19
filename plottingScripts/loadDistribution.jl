@@ -6,7 +6,7 @@ include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 
-function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
+function plotLoadDistribution(L, ts, nr, dist; use_y_lable=true)
     data_path="newData/"
     add_ELS=true
     N = L.*L
@@ -58,20 +58,6 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         #Draw localization
         scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
 
-
-        #= # Add localization point
-        s_data = get_data("average_largest_cluster")
-        function large_slope(s)
-            return s>1/N
-        end
-        function large_cluster(s,t)
-            return s.>0.0000002*N*(1-t)
-        end
-        x_data = [ findfirst(large_slope, diff(s))*(1-t) for (s,t) in zip(s_data,ts)]
-        #x_data = [ findfirst(large_cluster(s,t)) for (s,t) in zip(s_data,ts)]
-        y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
-        #Draw localization
-        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+) =#
     end
     
     yLabel(string) = use_y_lable ? string : ""
@@ -79,7 +65,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title,
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, yaxis=:identity,
         linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-(add_ELS ? 1 : 2))]),[:dot]))
         add_points(y)
         return plot
@@ -90,13 +76,16 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     largest_perimiter = get_data("average_largest_perimiter")
     most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
 
+    load = []
+    for i in eachindex(largest_cluster)
+        push!(load, [])
+        for j in eachindex(largest_cluster[i])
+            v = largest_perimiter[i][j] / largest_cluster[i][j] #/ largest_perimiter[i][j] * nr_clusters[i][j]
+            push!(load[i], v)
+        end
+    end
 
-    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""))
-    largest_cluster_plot = make_plot(largest_cluster,L"\langle s_{\mathrm{max}}/N \rangle")    
-    largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375), xlabel=L"k/N")
-    nr_clusters_plot = make_plot(nr_clusters, L"\langle M/N \rangle", ylims=(0,0.13))
-    basic_plots = [most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot, nr_clusters_plot]
-    return basic_plots
+    return make_plot(load, L"\frac{\langle s \rangle}{\langle h \rangle} M", ylims=(-Inf, 0.23))
 end
 
 L = 128
@@ -107,10 +96,9 @@ ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 nrs = length(nr)
-nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
-plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
-p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
+plots = [plotLoadDistribution(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
+p = plot(plots..., layout=(1,nrs), size=(300,200), left_margin=2Plots.mm)
 
-savefig(p, "plots/Graphs/$(dist)_BundleProperties.svg")
+savefig(p, "plots/Graphs/$(dist)_LoadDist.svg")
 
 println("Saved plot!")
