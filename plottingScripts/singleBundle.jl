@@ -14,18 +14,18 @@ function breakBundle(b::FB, s::FBS, real_values=false)
         f = b.break_sequence[i]
         if real_values #Not quite working
             X = b.x[f]/b.σ[f] 
-            tension = b.tension[f]*(b.N-b.current_step+1)
+            tension = b.tension[f]*(b.N-b.current_step+1)/b.N
             x[2*i] = X
             x[2*i+1] = x[2*i]
             σ[2*i] = tension
             σ[2*i-1] = tension - b.max_σ
         else
             X = b.x[f] 
-            tension = X * (b.N-b.current_step+1)
+            tension = X * (b.N-b.current_step+1)/b.N
             x[2*i] = X
             x[2*i+1] = x[2*i]
             σ[2*i] = tension
-            σ[2*i+1] = tension-X
+            σ[2*i+1] = tension-X/b.N
         end
         break_fiber!(b)
         
@@ -48,9 +48,9 @@ function slowBreak(b::FB, s::FBS, real_sigma=false)
 
     while b.current_step <= b.N
         if real_sigma
-            current_σ = sum(current_x*b.σ) 
+            current_σ = sum(current_x*b.σ)/b.N 
         else
-            current_σ = current_x * (b.N-b.current_step+1)
+            current_σ = current_x * (b.N-b.current_step+1)/b.N
         end
         
         if current_x >= last_break_x || current_σ >= last_break_σ
@@ -66,7 +66,7 @@ function slowBreak(b::FB, s::FBS, real_sigma=false)
             push!(x, current_x)
             push!(σ, current_σ)
             last_break_x = current_x
-            last_break_σ = current_σ - b.tension[weak]*1.8
+            last_break_σ = current_σ - (b.tension[weak]*1.8)/b.N
             current_x = 0
 
             # Update bundle stuff
@@ -91,13 +91,17 @@ end
 
 function make_plot(b::FB, s::FBS)
     x, σ = breakBundle(b, s)
-    p1 = plot(x, σ, legend=:topleft, title="No Load Sharing ", label="", c=:black, xlabel="sort of "*L"x", ylabel="slightly " * L"σ")
+    p1 = plot(x, σ, legend=:topleft, title="No Load Sharing ", label="",
+            c=:black, xlabel="sort of "*L"x", ylabel="slightly " * L"σ",
+            ylims=(0, Inf), xlims=(0, 1))
     healBundle!(b)
     x, σ = slowBreak(b, s)
-    p2 = plot(x, σ, legend=:topleft, title="Almost " * b.nr, label="", c=:black, xlabel=L"x", ylabel=L"\tilde{σ}")
+    p2 = plot(x, σ, legend=:topleft, title="Almost " * b.nr, label="", 
+            c=:black, xlabel=L"x", ylabel=L"\tilde{σ}", ylims=(0, Inf), xlims=(0, Inf))
     healBundle!(b)
     x, σ = slowBreak(b, s, true)
-    p3 = plot(x, σ, legend=:topleft, title=b.nr, label="", c=:black, xlabel=L"x", ylabel=L"σ")
+    p3 = plot(x, σ, legend=:topleft, title=b.nr, label="", c=:black, 
+            xlabel=L"x", ylabel=L"σ", ylims=(0, Inf), xlims=(0, Inf))
     return p3, p2, p1
 end
 
