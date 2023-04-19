@@ -37,6 +37,7 @@ end
 function slowBreak(b::FB, s::FBS, real_sigma=false)
     x = [0.0]
     σ = [0.0]
+    b.x[argmax(b.x)] = 0.92
     current_x = 0
     last_break_x = 0
     last_break_σ = 0
@@ -73,7 +74,7 @@ function slowBreak(b::FB, s::FBS, real_sigma=false)
             resetBundle!(b)
             update_tension!(b)
             if b.current_step==b.N
-                push!(x, 0)
+                push!(x, last_break_x)
                 push!(σ, 0)
                 break 
             else
