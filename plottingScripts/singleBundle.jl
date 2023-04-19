@@ -91,16 +91,16 @@ end
 
 function make_plot(b::FB, s::FBS)
     x, σ = breakBundle(b, s)
-    p1 = plot(x, σ, legend=:topleft, title="No Load Sharing ", label="",
-            c=:black, xlabel="sort of "*L"x", ylabel="slightly " * L"σ",
+    p1 = plot(x, σ, legend=:topleft, title="C: No Load Sharing ", label="",
+            c=:black, xlabel=L"x_i", ylabel="Sort of " * L"σ",
             ylims=(0, Inf), xlims=(0, 1))
     healBundle!(b)
     x, σ = slowBreak(b, s)
-    p2 = plot(x, σ, legend=:topleft, title="Almost " * b.nr, label="", 
+    p2 = plot(x, σ, legend=:topleft, title="B: " * b.nr, label="", 
             c=:black, xlabel=L"x", ylabel=L"\tilde{σ}", ylims=(0, Inf), xlims=(0, Inf))
     healBundle!(b)
     x, σ = slowBreak(b, s, true)
-    p3 = plot(x, σ, legend=:topleft, title=b.nr, label="", c=:black, 
+    p3 = plot(x, σ, legend=:topleft, title="A: "* b.nr, label="", c=:black, 
             xlabel=L"x", ylabel=L"σ", ylims=(0, Inf), xlims=(0, Inf))
     return p3, p2, p1
 end
