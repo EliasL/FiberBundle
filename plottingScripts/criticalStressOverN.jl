@@ -128,7 +128,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
     N = L .* L
-    lnN = log.(log.(N))
+    lnN =log.(log.(N))
 #=     LLS_σ_c_N_plot = make_plot3(lnN, 1 ./ σ_c[:, :, 1],
         L"1/\langle σ_c \rangle", "LLS",
         labels=permutedims(["$nr" for nr in NR]), title="LLS", log_scale=:identity,
