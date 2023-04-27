@@ -1,23 +1,14 @@
+# pyplot()
 using Plots
-#gr() # The same issue is also present in the gr backend
+using Measures, Random
 pyplot()
 
-function make_plot(X, Y, add_plot=true)
-
-    p = plot()
-    if add_plot
-        plot!([1,2],[1,2])
-        plot!([1,2],[1,2])
-        plot!([1,2],[1,2])
-    end
-    tc = [:red, :black, :orange]
-    for (i,s) in enumerate(["text", "with", "color"])
-        annotate!(1 + 0.25*i , 1 + 0.5, text(s, tc[i], 18))
-    end
-    return p
-end
-
-plot1 = make_plot([1], [1], true)
-plot2 = make_plot([1], [1], false)
-plot(plot1, plot2)
-
+include("ploting_settings.jl")
+Random.seed!(2018)
+plot(randn(100), ylabel="y1", leg=:topright)
+plot!(twinx(), randn(100)*10,
+    c=:red,
+    ylabel="y2",
+    leg=:bottomright,
+    size=(600, 400))
+plot!(right_bottom=10mm)
