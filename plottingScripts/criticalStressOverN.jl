@@ -19,11 +19,15 @@ function lin(x)
     return minimum(x):0.1:maximum(x)
 end
 
+function myerror(x, y, f)
+    fit = funk(x, f.param)
+    return sum(abs.(fit.-y))./length(y)
+end
 
 function myfit(x, y; fit_interval=1)
     r = round(Int64, fit_interval * length(x))
     f = get_fit(x[1:r], y[1:r])
-    return funk(lin(x), f.param), f.param, margin_error(f,)
+    return funk(lin(x), f.param), f.param, myerror(x, y, f)
 end
 
 function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
@@ -34,7 +38,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
     function add_fits(x, y, plot_index)
         params = zeros(Float64, (size(y)[1],2))
-        errors = zeros(Float64, (size(y)[1],2))
+        errors = zeros(Float64, size(y)[1])
         nr_color = 1
         for i in 1:size(y)[1] 
             fit, param, error = myfit(x, y[i, :])
@@ -45,7 +49,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
                 nr_color += 1
             end
             params[i, :] = param
-            errors[i, :] = error#[sum(abs.(error[1])), sum(abs.(error[2][1]))]
+            errors[i] = error#[sum(abs.(error[1])), sum(abs.(error[2][1]))]
         end
         return collect(params), collect(errors)
     end
@@ -58,7 +62,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
         p = plot(xlims=xlims, ylims=ylims, markersize=5,
             xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
-            yaxis=log_scale)
+            yaxis=log_scale, framestyle=:box)
         plot!([], [], label=L"t_0", alpha=0)
 
         plot_ts = [0.1, 0.30, 0.35, 0.4, 0.5]
@@ -68,14 +72,19 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         plot_Y = permutedims(Y[[i for i in eachindex(ts) if ts[i] in plot_ts], :, 2])
         scatter!(X, plot_Y, label=labels, linestyle=:solid,
         legend=position, markershape=markershape, markersize=7,
-        markerstrokecolor=colors)
+        markerstrokecolor=colors, framestyle="")
         
         params, errors = add_fits(X, Y[:, :, 2], plot_index)
         #println((errors[:,1]))
-        scatter!(ts, [params[:, 1] errors[:,2] ], label=["Slope" "Error"],
+        scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
             markershape=markershape, markerstrokecolor=colors, markersize=7,
-            legend=:topleft, xlabel=L"t_0", ylabel="",
-            inset = (1, bbox(0.40, 0.42, 0.58, 0.4)), subplot=2)
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(0, 2), 
+            inset = (1, bbox(0.35, 0.42, 0.53, 0.4)), subplot=2)
+        scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
+            framestyle="", ylims=(0, 0.06),
+            markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
+        )
+        
         return p
     end
 
@@ -108,7 +117,7 @@ ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)
-xpsize = 330
+xpsize = 350
 ypsize = 330
 p = plot(plots..., size=(xpsize * 1.1 * length(plots), ypsize *
                                                        maximum([length(plots) / 2, 1])))

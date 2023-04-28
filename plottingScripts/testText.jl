@@ -1,14 +1,10 @@
-# pyplot()
 using Plots
-using Measures, Random
-pyplot()
 
-include("ploting_settings.jl")
-Random.seed!(2018)
-plot(randn(100), ylabel="y1", leg=:topright)
-plot!(twinx(), randn(100)*10,
-    c=:red,
-    ylabel="y2",
-    leg=:bottomright,
-    size=(600, 400))
-plot!(right_bottom=10mm)
+pyplot()
+Plots.reset_defaults()
+default(framestyle=:box)
+
+p = plot(100rand(10), c=:green, framestyle=:box)
+plot!(p, rand(10), c=:blue, inset=bbox(0, 0, 0.4, 0.4, :center), subplot=2)
+plot!(twinx(p[2]), 10rand(10), c=:red)
+plot!(p[2], framestyle=:box)
