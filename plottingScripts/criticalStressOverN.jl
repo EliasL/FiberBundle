@@ -78,12 +78,14 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         #println((errors[:,1]))
         scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
             markershape=markershape, markerstrokecolor=colors, markersize=7,
-            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(0, 2), 
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(0, 2),
             inset = (1, bbox(0.35, 0.42, 0.53, 0.4)), subplot=2)
+            println(maximum(params[:, 1]))
         scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
             framestyle="", ylims=(0, 0.06),
             markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
         )
+        
         
         return p
     end

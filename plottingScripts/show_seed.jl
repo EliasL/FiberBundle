@@ -71,7 +71,7 @@ function show_progression2()
 end
 
 function show_t_change(NR)
-    T = [0.1, 0.2, 0.3, 0.4, 0.5]
+    T = [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5]
     L=128
     α = 2.0
     plots = []
@@ -127,7 +127,7 @@ data_path="newData/"
 
 #show_spanning_cluster()
 #show_progression()
-show_progression2()
-#show_t_change("LLS")
-#show_t_change("CLS")
+#show_progression2()
+show_t_change("LLS")
+show_t_change("CLS")
 #show_radius_of_gyration()
