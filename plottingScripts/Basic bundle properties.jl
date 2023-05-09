@@ -5,10 +5,11 @@ using LaTeXStrings
 include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
+include("../support/dataIterator.jl")
 
 function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     data_path="newData/"
-    add_ELS=true
+    add_ELS=false
     N = L.*L
     files_and_t = []
     for t in ts
@@ -60,15 +61,15 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
 
 
         #= # Add localization point
-        s_data = get_data("average_largest_cluster")
+        s_data = get_data("average_largestluster")
         function large_slope(s)
             return s>1/N
         end
-        function large_cluster(s,t)
+        function largeluster(s,t)
             return s.>0.0000002*N*(1-t)
         end
         x_data = [ findfirst(large_slope, diff(s))*(1-t) for (s,t) in zip(s_data,ts)]
-        #x_data = [ findfirst(large_cluster(s,t)) for (s,t) in zip(s_data,ts)]
+        #x_data = [ findfirst(largeluster(s,t)) for (s,t) in zip(s_data,ts)]
         y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
         #Draw localization
         scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+) =#
@@ -85,18 +86,33 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         return plot
     end
 
-    nr_clusters = get_data("average_nr_clusters")
-    largest_cluster = get_data("average_largest_cluster")
+    nrlusters = get_data("average_nr_clusters")
+    largestluster = get_data("average_largest_cluster")
     largest_perimiter = get_data("average_largest_perimiter")
     most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
 
 
     most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""))
-    largest_cluster_plot = make_plot(largest_cluster,L"\langle s_{\mathrm{max}}/N \rangle")    
+    largestluster_plot = make_plot(largestluster,L"\langle s_{\mathrm{max}}/N \rangle")    
     largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375), xlabel=L"k/N")
-    nr_clusters_plot = make_plot(nr_clusters, L"\langle M/N \rangle", ylims=(0,0.13))
-    basic_plots = [most_stressed_fiber_plot, largest_cluster_plot, largest_perimiter_plot, nr_clusters_plot]
+    nrlusters_plot = make_plot(nrlusters, L"\langle M/N \rangle", ylims=(0,0.13))
+    basic_plots = [most_stressed_fiber_plot, largestluster_plot, largest_perimiter_plot, nrlusters_plot]
     return basic_plots
+end
+
+
+function make_none_averaged_σ_plot(L, ts, nr, dist)
+        nr_seeds = 200
+        σ, x = get_data_kN(L, nr, ts, dist, "most_stressed_fiber",
+        average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
+        every=round(Int64, L^2/50)
+        
+        σ = collect([map(mean, Iterators.partition(σ[1][:, 1, 1, i], every)) for i in 1:nr_seeds])
+        x = collect([map(mean, Iterators.partition(x[1], every)) for i in 1:nr_seeds])
+        
+        p = plot(x,  σ, label="", title=nr[1]*" "*L"t_0 = "*"$(ts[1])",
+            xlabel=L"k/N", ylabel="σ", c=:black, alpha=0.05)
+        return p
 end
 
 L = 128
@@ -107,10 +123,16 @@ ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 nrs = length(nr)
-nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
+#= nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
 
-savefig(p, "plots/Graphs/$(dist)_BundleProperties.svg")
-
+savefig(p, "plots/Graphs/$(dist)_BundleProperties.svg") =#
+L=512
+ts = [0.5, 0.4, 0.3]
+p = [make_none_averaged_σ_plot(L, [ts], [nr], dist) for nr=nr, ts=ts]
+#= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
+p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#
+p = plot(p..., size=(300*length(nr),300*length(ts)), layout=reverse(size(p)))
+savefig(p, "plots/Graphs/non_averaged.pdf")
 println("Saved plot!")
