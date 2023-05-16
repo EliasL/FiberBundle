@@ -50,14 +50,14 @@ function start_job()
     run(`sbatch job.sh`)
 end
 
-seeds = [0, 10000] # From seed to seed
-L = [16,32]
-
-NR = ["LLS", "CLS"]
-#t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
 t = 0.0:0.01:0.25
-#NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
+NR = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
+seeds = [0, 10000] # From seed to seed
+#= L = [16,32]
+
+#t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
+#NB Alpha in code should be one higher than in the paper! α=2 in code means α=1 in paper.
 make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
 start_job()
 
@@ -71,19 +71,24 @@ L=[128]
 seeds = [0,3000]
 
 make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
+start_job() =#
 
-for single_t in t
+#= for single_t in t
     L=[256]
     seeds = [0,1000]
-    make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist)
+    make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist)
     start_job()
     L=[512]
     seeds = [0,200]
-    make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist)
+    make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist)
     start_job()
-end
+end =#
+
+L=[512]
+seeds = [0,200]
+make_job(seeds, L, t=[0.0], α=[2.0], NR=NR, dist=dist)
+start_job()
 # cancle jobs
-#= for i in 1248286:1248340
+#= for i in 1248344:1248395
     run(`scancel $i`)
 end =#

@@ -43,37 +43,19 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     function add_points(y_data)
         # Add spanning point
         x_data = get_data("average_spanning_cluster_step")
-        println(size(y_data))
-        y = [y[round(Int64, x*N)] for (x,y) in zip(x_data,y_data)]
+
+        y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
         #Draw spanning
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x, markeralpha=1) 
 
-       #=  #Add energy change point
-        x_data = [argmax(σ_to_energy(σ)[2]) for σ in most_stressed_fiber]    
-        y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
+        x_data = [argmax(σ)/length(σ) for σ in most_stressed_fiber]   
+         
+        y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
         #Draw localization
-        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:vline, markersize=10, markeralpha=1, markerstrokewidth=1)
-        =# 
-        #Add max σ_max
-        x_data = [argmax(σ) for σ in most_stressed_fiber]    
-        y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
-        #Draw localization
-        scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
+        scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent,
+        label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
 
 
-        #= # Add localization point
-        s_data = get_data("average_largestluster")
-        function large_slope(s)
-            return s>1/N
-        end
-        function largeluster(s,t)
-            return s.>0.0000002*N*(1-t)
-        end
-        x_data = [ findfirst(large_slope, diff(s))*(1-t) for (s,t) in zip(s_data,ts)]
-        #x_data = [ findfirst(largeluster(s,t)) for (s,t) in zip(s_data,ts)]
-        y = [y[round(Int64, x)] for (x,y) in zip(x_data,y_data)]
-        #Draw localization
-        scatter!(x_data/N, y, color=colors, label=nothing, markershape=:+) =#
     end
     
     function make_none_averaged_σ_plot(L, ts, nr, dist)
@@ -81,7 +63,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
             divisions=200
             p = plot()
             colors = theme_palette(:auto)[1:length(ts)]
-            for (t, c) in zip(ts, colors)
+            for (i, t, c) in zip(1:length(ts), ts, colors)
                 raw_σ, x = get_data_kN(L, [nr], t, dist, "most_stressed_fiber",
                 average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
                 every=round(Int64, L^2/divisions)
@@ -91,18 +73,49 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
                 x = collect([map(maximum, Iterators.partition(x[1], every)) for i in 1:nr_seeds])
                 
                 p = plot!(x,  σ, label="", title=nr[1]*" "*L"t_0 = "*"$(ts[1])",
-                    xlabel=L"k/N", ylabel="σ", c=c, alpha=0.05)
-                add_points(mean(raw_σ[1][:, 1, 1, :], dims=2)[1])
+                xlabel=L"k/N", ylabel="σ", c=c, alpha=0.05)
+                add_points(mean(raw_σ[1][:, 1, 1, :], dims=2), i=i)
             end
             return p
-    end
+        end
+
+        function get_σ_data(ts)
+            Y = []
+            max_range = L^2/200
+            nr_seeds = 3000
+            max_σ = zeros(Float64, L^2)    
+            for (i, t) in zip(1:length(ts), ts)
+                σ, x = get_data_kN(L, [nr], t, dist, "most_stressed_fiber",
+                average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
+                σ = σ[1][:, 1, 1, :]
+                for seed in 1:nr_seeds
+                    current_max = 0
+                    current_max_k = 0
+                    for k in 1:L^2 
+                        new_value = σ[k,seed]
+                        if current_max < new_value
+                            current_max = new_value
+                            current_max_k = k
+                        end
+                        if k-current_max_k > max_range/2
+                            current_max_k = argmax(σ[k-round(Int64,max_range/2):minimum([k+round(Int64,max_range/2), L^2]), seed])
+                            current_max = σ[current_max_k, seed]
+                        end
+                        max_σ[k] += current_max
+                    end
+                    max_σ ./= nr_seeds     
+                end
+                push!(Y, max_σ)
+            end
+            return Y
+        end
     
     yLabel(string) = use_y_lable ? string : ""
     function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.3), position=:topright)
         # Use empty scatter as title
         plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
         plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title,
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, size=(300,250),
         linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-(add_ELS ? 1 : 2))]),[:dot]))
         add_points(y)
         return plot
@@ -111,11 +124,10 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     nrlusters = get_data("average_nr_clusters")
     largestluster = get_data("average_largest_cluster")
     largest_perimiter = get_data("average_largest_perimiter")
-    most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
-
-
-#    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""))
-    most_stressed_fiber_plot = make_none_averaged_σ_plot(L, ts, nr, dist)
+    most_stressed_fiber = get_σ_data(ts)
+    #most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
+    most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""))
+    #most_stressed_fiber_plot = make_none_averaged_σ_plot(L, ts, nr, dist)
     largestluster_plot = make_plot(largestluster,L"\langle s_{\mathrm{max}}/N \rangle")    
     largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375), xlabel=L"k/N")
     nrlusters_plot = make_plot(nrlusters, L"\langle M/N \rangle", ylims=(0,0.13))
@@ -134,6 +146,10 @@ dist = "ConstantAverageUniform"
 nrs = length(nr)
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
+names = ["sigma", "cluster_size", "perimiter_length", "nrClusters"]
+for i in eachindex(plots)
+    savefig(plots[i], "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).svg")
+end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
 
 savefig(p, "plots/Graphs/$(dist)_BundleProperties.svg")
