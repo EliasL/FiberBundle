@@ -162,9 +162,10 @@ println("Started...")
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
 names = ["sigma", "cluster_size", "perimiter_length", "nrClusters"]
+yValues = [L"\langle σ \rangle", L"\langle s_{\mathrm{max}}/N \rangle",L"\langle h_{\mathrm{max}}/N \rangle", L"\langle M/N \rangle"] 
 for i in eachindex(plots)
     p = plots[i]
-    p = plot(p,  xlabel=L"k/N")
+    p = plot(p,  xlabel=L"k/N", ylabel=yValues[ceil(Int64,i/2)])
     savefig(p, "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).svg")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
