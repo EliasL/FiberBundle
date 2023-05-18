@@ -77,7 +77,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
          
         y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
         #Draw localization
-        scatter!(x_data/N, y, markerstrokecolor=colors, markercolor=:transparent,
+        scatter!(x_data, y, markerstrokecolor=colors, markercolor=:transparent,
         label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
 
 
@@ -109,9 +109,10 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
 
         function get_σ_data(ts)
             Y = []
-            max_range = L^2/100
+            max_range = L^2/200
             nr_seeds = 3000
             for (i, t) in zip(1:length(ts), ts)
+                println(t)
                 σ, x = get_data_kN(L, [nr], t, dist, "most_stressed_fiber",
                 average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
                 σ = σ[1][:, 1, 1, :]
@@ -142,8 +143,8 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""))
     #most_stressed_fiber_plot = make_none_averaged_σ_plot(L, ts, nr, dist)
     largestluster_plot = make_plot(largestluster,L"\langle s_{\mathrm{max}}/N \rangle")    
-    largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375), xlabel=L"k/N")
-    nrlusters_plot = make_plot(nrlusters, L"\langle M/N \rangle", ylims=(0,0.13))
+    largest_perimiter_plot = make_plot(largest_perimiter,L"\langle h_{\mathrm{max}}/N \rangle", ylims=(0,0.375))
+    nrlusters_plot = make_plot(nrlusters, L"\langle M/N \rangle", ylims=(0,0.13), xlabel=L"k/N")
     basic_plots = [most_stressed_fiber_plot, largestluster_plot, largest_perimiter_plot, nrlusters_plot]
     return basic_plots
 end
@@ -162,7 +163,9 @@ nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
 names = ["sigma", "cluster_size", "perimiter_length", "nrClusters"]
 for i in eachindex(plots)
-    savefig(plots[i], "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).svg")
+    p = plots[i]
+    p = plot(p,  xlabel=L"k/N")
+    savefig(p, "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).svg")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
 
