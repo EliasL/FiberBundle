@@ -7,6 +7,31 @@ include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 include("../support/dataIterator.jl")
 
+
+function maxify(σ, nr_seeds, max_range, L)
+    max_σ = zeros(Float64, L^2)    
+    for seed in 1:nr_seeds
+        current_max = 0
+        current_max_k = 0
+        for k in 1:L^2 
+            new_value = σ[k,seed]
+            if current_max < new_value
+                current_max = new_value
+                current_max_k = k
+            end
+            if k-current_max_k > max_range/2
+                search_interval = k-round(Int64,max_range/2):minimum([k+round(Int64,max_range/2), L^2])
+                current_max_k = argmax((view(σ,search_interval, seed)))
+                current_max = σ[search_interval[current_max_k], seed]
+            end
+            max_σ[k] += current_max
+        end
+    end 
+    max_σ ./= nr_seeds     
+    return max_σ
+end
+
+
 function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     data_path="newData/"
     add_ELS=false
@@ -58,9 +83,12 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
 
     end
     
+
+
+
     function make_none_averaged_σ_plot(L, ts, nr, dist)
-            nr_seeds = 3000
-            divisions=200
+            nr_seeds = 30
+            divisions=2000
             p = plot()
             colors = theme_palette(:auto)[1:length(ts)]
             for (i, t, c) in zip(1:length(ts), ts, colors)
@@ -81,31 +109,14 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
 
         function get_σ_data(ts)
             Y = []
-            max_range = L^2/200
+            max_range = L^2/100
             nr_seeds = 3000
-            max_σ = zeros(Float64, L^2)    
             for (i, t) in zip(1:length(ts), ts)
                 σ, x = get_data_kN(L, [nr], t, dist, "most_stressed_fiber",
                 average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
                 σ = σ[1][:, 1, 1, :]
-                for seed in 1:nr_seeds
-                    current_max = 0
-                    current_max_k = 0
-                    for k in 1:L^2 
-                        new_value = σ[k,seed]
-                        if current_max < new_value
-                            current_max = new_value
-                            current_max_k = k
-                        end
-                        if k-current_max_k > max_range/2
-                            current_max_k = argmax(σ[k-round(Int64,max_range/2):minimum([k+round(Int64,max_range/2), L^2]), seed])
-                            current_max = σ[current_max_k, seed]
-                        end
-                        max_σ[k] += current_max
-                    end
-                    max_σ ./= nr_seeds     
-                end
-                push!(Y, max_σ)
+                
+                push!(Y, maxify(σ, nr_seeds, max_range, L))
             end
             return Y
         end
@@ -125,6 +136,8 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     largestluster = get_data("average_largest_cluster")
     largest_perimiter = get_data("average_largest_perimiter")
     most_stressed_fiber = get_σ_data(ts)
+#=     println(size(most_stressed_fiber[1]))
+    println(size(largest_perimiter[1])) =#
     #most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
     most_stressed_fiber_plot = make_plot(most_stressed_fiber,L"\langle σ \rangle", title=nr*(nr=="LLS" && add_ELS ? " and ELS" : ""))
     #most_stressed_fiber_plot = make_none_averaged_σ_plot(L, ts, nr, dist)
@@ -144,6 +157,7 @@ ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
 nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 nrs = length(nr)
+println("Started...")
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
 names = ["sigma", "cluster_size", "perimiter_length", "nrClusters"]

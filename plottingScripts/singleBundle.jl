@@ -108,17 +108,19 @@ end
 
 nr = "ELS"
 t = 0.5
-L=64
+L=4
 α = 2.0
-seed = 6
+seed = 1
 dist="ConstantAverageUniform"
 data_path="newData/"
-
-#= b,s = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist)
+println("Running...")
+b,s = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist)
+println("Making plot...")
 ELSPlot = make_plot(b,s)
-=#
+p=plot(ELSPlot..., size=(300*length(ELSPlot), 300), layout= @layout([ A B C;]))
+savefig("plots/Graphs/ForceOfSingleBundle.pdf")
 
-for nr = ["LLS", "CLS"]
+#= for nr = ["LLS", "CLS"]
     p = plot()
 
     for seed= 1:200 
@@ -132,4 +134,4 @@ for nr = ["LLS", "CLS"]
     end
     display(p)
     savefig("plots/Graphs/$(nr)ForceOfSingleBundle.pdf")
-end
+end =#
