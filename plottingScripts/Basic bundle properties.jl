@@ -20,7 +20,7 @@ function maxify(σ, nr_seeds, max_range, L)
                 current_max_k = k
             end
             if k-current_max_k > max_range/2
-                search_interval = k-round(Int64,max_range/2):minimum([k+round(Int64,max_range/2), L^2])
+                search_interval = k:minimum([k+round(Int64,max_range/2), L^2])
                 current_max_k = argmax((view(σ,search_interval, seed)))
                 current_max = σ[search_interval[current_max_k], seed]
             end
@@ -109,7 +109,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
 
         function get_σ_data(ts)
             Y = []
-            max_range = L^2/200
+            max_range = L^2/800
             nr_seeds = 3000
             for (i, t) in zip(1:length(ts), ts)
                 println(t)

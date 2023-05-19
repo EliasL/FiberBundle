@@ -153,3 +153,12 @@
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
 ┌ LogLevel(-2): 68%, Active workers: 2, Completed tasks: 135.
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 69%, Active workers: 2, Completed tasks: 137.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 70%, Active workers: 2, Completed tasks: 139.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+slurmstepd-compute-11: error: *** JOB 1248436 ON compute-11 CANCELLED AT 2023-05-18T21:23:11 DUE TO TIME LIMIT ***
+
+signal (15): Terminated
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:57
+pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
