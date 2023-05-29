@@ -1,0 +1,24 @@
+┌ Warning: rmprocs: process 1 not removed
+└ @ Distributed /buildworker/worker/package_linux64/build/usr/share/julia/stdlib/v1.7/Distributed/src/cluster.jl:1045
+┌ LogLevel(-1): Starting 2 workers... 
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:62
+┌ LogLevel(-1): Running settings: 
+│  Any[256], 
+│  Any[0.1], 
+│  Any[2.0]
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:66
+┌ LogLevel(-2): 2023-05-26T16:58:49.565: Starting a=0.0 dist=ConstantAverageUniform L=256 nr=LLS t=0.1
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:278
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:263
+┌ LogLevel(-2): 2023-05-26T16:58:53.740: Starting a=2.0 dist=ConstantAverageUniform L=256 nr=CLS t=0.1
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:278
+┌ LogLevel(-2): All seeds already exist
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:263
+  7.967250 seconds (14.99 M allocations: 795.644 MiB, 4.24% gc time, 99.75% compilation time)
+┌ LogLevel(-1): Removing workers
+└ @ Main /work/vemundlu/FiberBundle/generateData.jl:68

@@ -85,28 +85,6 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     
 
 
-
-    function make_none_averaged_σ_plot(L, ts, nr, dist)
-            nr_seeds = 30
-            divisions=2000
-            p = plot()
-            colors = theme_palette(:auto)[1:length(ts)]
-            for (i, t, c) in zip(1:length(ts), ts, colors)
-                raw_σ, x = get_data_kN(L, [nr], t, dist, "most_stressed_fiber",
-                average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
-                every=round(Int64, L^2/divisions)
-                
-                σ = collect([map(maximum, Iterators.partition(raw_σ[1][:, 1, 1, i], every)) for i in 1:nr_seeds])
-                σ = mean(σ, dims=1)
-                x = collect([map(maximum, Iterators.partition(x[1], every)) for i in 1:nr_seeds])
-                
-                p = plot!(x,  σ, label="", title=nr[1]*" "*L"t_0 = "*"$(ts[1])",
-                xlabel=L"k/N", ylabel="σ", c=c, alpha=0.05)
-                add_points(mean(raw_σ[1][:, 1, 1, :], dims=2), i=i)
-            end
-            return p
-        end
-
         function get_σ_data(ts)
             Y = []
             max_range = L^2/800
@@ -117,7 +95,8 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
                 average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
                 σ = σ[1][:, 1, 1, :]
                 
-                push!(Y, maxify(σ, nr_seeds, max_range, L))
+                #push!(Y, maxify(σ, nr_seeds, max_range, L))
+                push!(Y,vec(mean(σ, dims=2)))
             end
             return Y
         end
@@ -125,12 +104,14 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     yLabel(string) = use_y_lable ? string : ""
     function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.3), position=:topright)
         # Use empty scatter as title
-        plot = scatter([0],[0], label=L"t_0", ms=0, mc=:white, msc=:white)
+        #plot = scatter([0.01], label=L"t_0", ms=0, mc=:white, msc=:white)
+        p=plot()
+        plot!([0.01], label=L"t_0", ms=0, mc=:white, msc=:white, c=:white)
         plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title, size=(300,250),
         linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-(add_ELS ? 1 : 2))]),[:dot]))
         add_points(y)
-        return plot
+        return p
     end
 
     nrlusters = get_data("average_nr_clusters")
@@ -150,7 +131,31 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
 end
 
 
-L = 128
+
+function make_none_averaged_σ_plot(L, ts, nr, dist, pos)
+    nr_seeds = 100
+    divisions=100
+    p = plot()
+    colors = theme_palette(:auto)[1:length(ts)]
+    for (i, t, c) in zip(1:length(ts), ts, colors)
+        raw_σ, x = get_data_kN(L, nr, t, dist, "most_stressed_fiber",
+        average=false, return_kN=true, divide=1, nr_seeds=nr_seeds)
+        every=round(Int64, L^2/divisions)
+        
+        σ = collect([map(maximum, Iterators.partition(raw_σ[1][:, 1, 1, i], every)) for i in 1:nr_seeds])
+        #σ = mean(σ, dims=1)
+        x = collect([map(maximum, Iterators.partition(x[1], every)) for i in 1:nr_seeds])
+        
+        p = plot!(x,  σ, label="", title=nr[1],
+        xlabel=L"k/N", ylabel=(nr[1]=="CLS" ? "" : "max("*L"σ)_{100}"), c=c, alpha=0.1)
+        #add_points(mean(raw_σ[1][:, 1, 1, :], dims=2), i=i)
+    end
+    plot!([1.0], label=L"t_0", ms=0, mc=:white, msc=:white, xlims=xlims(p), ylims=ylims(p), c=:white)
+    plot!([1.0 1.0 1.0], label=["0.5" "0.4" "0.3"], c=permutedims(colors), xlims=xlims(p), ylims=ylims(p), legend=pos)
+    return p
+end
+
+#= L = 128
 ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
 ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
@@ -166,16 +171,17 @@ yValues = [L"\langle σ \rangle", L"\langle s_{\mathrm{max}}/N \rangle",L"\langl
 for i in eachindex(plots)
     p = plots[i]
     p = plot(p,  xlabel=L"k/N", ylabel=yValues[ceil(Int64,i/2)])
-    savefig(p, "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).svg")
+    savefig(p, "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).pdf")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
+savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf") =#
 
-savefig(p, "plots/Graphs/$(dist)_BundleProperties.svg")
-#= L=512
+L=128
+nr = ["LLS", "CLS"]
 ts = [0.5, 0.4, 0.3]
-p = [make_none_averaged_σ_plot(L, ts, [nr], dist) for nr=nr]
+p = [make_none_averaged_σ_plot(L, ts, [nr], dist, (nr=="LLS" ? :bottom : :topright)) for nr=nr]
 #= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
 p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#
 p = plot(p..., size=(300*length(nr), 300), layout=(1,length(nr)))
-savefig(p, "plots/Graphs/non_averaged.pdf") =#
+savefig(p, "plots/Graphs/non_averaged.pdf")
 println("Saved plot!")
