@@ -151,7 +151,7 @@ function make_none_averaged_σ_plot(L, ts, nr, dist, pos)
         #add_points(mean(raw_σ[1][:, 1, 1, :], dims=2), i=i)
     end
     plot!([1.0], label=L"t_0", ms=0, mc=:white, msc=:white, xlims=xlims(p), ylims=ylims(p), c=:white)
-    plot!([1.0 1.0 1.0], label=["0.5" "0.4" "0.3"], c=permutedims(colors), xlims=xlims(p), ylims=ylims(p), legend=pos)
+    plot!(ones((1, length(ts))), label=permutedims(ts), c=permutedims(colors), xlims=xlims(p), ylims=ylims(p), legend=pos)
     return p
 end
 
@@ -178,7 +178,7 @@ savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf") =#
 
 L=128
 nr = ["LLS", "CLS"]
-ts = [0.5, 0.4, 0.3]
+ts = [0.5, 0.4, 0.3, 0.27]
 p = [make_none_averaged_σ_plot(L, ts, [nr], dist, (nr=="LLS" ? :bottom : :topright)) for nr=nr]
 #= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
 p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#
