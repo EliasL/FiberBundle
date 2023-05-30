@@ -30,7 +30,7 @@ function make_settings(L::Int64, t::Float64, nr::String, α::Float64,
     if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
-    @assert dist in ["Uniform", "ConstantAverageUniform"] "$dist is not a valid dist"
+    @assert dist in ["Uniform", "ConstantAverageUniform", "Weibull"] "$dist is not a valid dist"
     settings = Dict(
         "dist" => dist,
         "L" => L,

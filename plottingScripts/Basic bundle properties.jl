@@ -66,21 +66,37 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     colors = vcat(theme_palette(:auto)[1:12],theme_palette(:auto)[1:12])[1:length(labels)]
     
     function add_points(y_data)
-        # Add spanning point
+        # Draw spanning
         x_data = get_data("average_spanning_cluster_step")
-
         y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
-        #Draw spanning
         scatter!(x_data, y, color=colors, label=nothing, markershape=:x, markeralpha=1) 
 
+        # Draw max stress
         x_data = [argmax(σ)/length(σ) for σ in most_stressed_fiber]   
-         
         y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
-        #Draw localization
         scatter!(x_data, y, markerstrokecolor=colors, markercolor=:transparent,
         label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
 
+        # Draw localization
+        
+        clusterSize = get_data_kN(L, [nr], ts, dist, "average_largest_cluster", return_kN=false)
+        x_data = [find_localization(clusterSize[1][:, i, 1])/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
+        y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
+        scatter!(x_data, y, c=colors, markeralpha=1, 
+        label=nothing, markershape=:vline, markersize=8, markerstrokewidth=1)
 
+        nrClusters = get_data_kN(L, [nr], ts, dist, "average_nr_clusters", return_kN=false)
+        x_data = [find_localization_nr_clusters(nrClusters[1][:, i, 1])/length(nrClusters[1][:, i, 1]) for i in eachindex(ts)]
+        y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
+        scatter!(x_data, y, c=colors, markeralpha=1, 
+        label=nothing, markershape=:+, markersize=5, markerstrokewidth=1)
+
+#=         threshhold=0.01
+        x_data = [findfirst(x->x>threshhold, s)/length(s) for s in largestluster]
+        y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
+        scatter!(x_data, y, c=colors, markeralpha=1, 
+        label=nothing, markershape=:vline, markersize=8, markerstrokewidth=1) =#
+        
     end
     
 
@@ -155,7 +171,7 @@ function make_none_averaged_σ_plot(L, ts, nr, dist, pos)
     return p
 end
 
-#= L = 128
+L = 128
 ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
 ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
@@ -174,14 +190,16 @@ for i in eachindex(plots)
     savefig(p, "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).pdf")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
-savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf") =#
+savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf")
 
-L=128
+#= L=128
 nr = ["LLS", "CLS"]
 ts = [0.5, 0.4, 0.3, 0.27]
 p = [make_none_averaged_σ_plot(L, ts, [nr], dist, (nr=="LLS" ? :bottom : :topright)) for nr=nr]
 #= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
 p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#
 p = plot(p..., size=(300*length(nr), 300), layout=(1,length(nr)))
-savefig(p, "plots/Graphs/non_averaged.pdf")
+savefig(p, "plots/Graphs/non_averaged.pdf") =#
+
+
 println("Saved plot!")

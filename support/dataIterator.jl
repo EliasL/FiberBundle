@@ -42,7 +42,7 @@ function get_data_kN(L, NR, ts, dist, key; average=true, nr_seeds=0, divide=:N, 
     end
 end
 
-function get_data(L, NR, ts, dist, key, xKey, xKeyf; yValuef=f(x)=x, average=true, ex=[2,2], α=2.0, return_x=false, data_path="newData")
+function get_data(L, NR, ts, dist, key, xKey, xKeyf; yValuef=f(x)=x, average=true, ex=[2,2], rel_x=false, α=2.0, return_x=false, data_path="newData")
     do_data_test = true
     data = zeros(length(ts), length(L), length(NR))
     x_values = zeros(length(ts), length(L), length(NR))
@@ -61,7 +61,7 @@ function get_data(L, NR, ts, dist, key, xKey, xKeyf; yValuef=f(x)=x, average=tru
                 value = file[key][round(Int64, x)]
             end
             data[t, l, nr] = yValuef(value)/L[l]^ex[nr]
-            x_values[t, l, nr] = x
+            x_values[t, l, nr] = rel_x ? x/L[l]^2 : x
         end
     end        
     if return_x

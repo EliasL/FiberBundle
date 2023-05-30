@@ -1,4 +1,5 @@
 using LinearAlgebra
+using Interpolations
 
 include("dataManager.jl")
 include("../burningMan.jl")
@@ -77,12 +78,35 @@ function σ_to_energy(σ_max)
     # NB! This function assumes that σ_max is equal to stretch. For that to be true,
     # κ is required to be 1!
     Δ = σ_max # Stretch/elongation
-    dddΔ =  #derivative of damage with respect to elongation
-    E = N*κ/2 .*Δ.^2 .*(1 .-d)
+    p = 1
+    #dddΔ =  #derivative of damage with respect to elongation
+    #E = @. N*κ/2 *(1 -d)*Δ^2 
+    E = @. N*κ/2 * (2*Δ*(1-d) - Δ^2*p)
     dEdΔ = N*κ .*Δ .*(1 .-d)
     return E, dEdΔ
 end
 
+function find_localization(cluster_size)
+    # gives the first x at which the cluster is growing at a certain rate
+    interp = interpolate((eachindex(cluster_size),), cluster_size, Gridded(Linear()))
+    grad = only.(Interpolations.gradient.(Ref(interp), eachindex(cluster_size)))[10:end]
+    #p = plot(grad)
+    #display(p)
+    critical_gradiant = (maximum(grad)-minimum(grad))/2
+    return findfirst(x->x>critical_gradiant, grad)
+end
+
+function find_localization_nr_clusters(nr_clusters)
+
+    # gives the first x at which the number of clusters stop growing
+    interp = interpolate((eachindex(nr_clusters),), nr_clusters, Gridded(Linear()))
+    grad = only.(Interpolations.gradient.(Ref(interp), eachindex(nr_clusters)))[10:end]
+    #p = plot(grad)
+    #display(p)
+    critical_gradiant = 0
+    return findfirst(x-> isapprox(x,critical_gradiant;atol=10^-7), grad)
+    
+end
 
 function find_avalanches(σ)
     # σ is the most stressed fiber, so max(σ), not all N of them, but one for each k
