@@ -118,7 +118,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         end
     
     yLabel(string) = use_y_lable ? string : ""
-    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.3), position=:topright)
+    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.35), position=:topright)
         # Use empty scatter as title
         #plot = scatter([0.01], label=L"t_0", ms=0, mc=:white, msc=:white)
         p=plot()
@@ -175,7 +175,7 @@ L = 128
 ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
 ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
-ts = 0.5:0.5:5
+ts = [0.5, 1, 1.5, 2, 3, 4, 5]
 α = 2.0
 nr = ["LLS", "CLS"]
 dist = "Weibull"
@@ -187,7 +187,7 @@ names = ["sigma", "cluster_size", "perimiter_length", "nrClusters"]
 yValues = [L"\langle σ \rangle", L"\langle s_{\mathrm{max}}/N \rangle",L"\langle h_{\mathrm{max}}/N \rangle", L"\langle M/N \rangle"] 
 for i in eachindex(plots)
     p = plots[i]
-    p = plot(p,  xlabel=L"k/N", ylabel=yValues[ceil(Int64,i/2)])
+    p = plot(p,  xlabel=L"k/N", ylabel=yValues[ceil(Int64,i/2)], size=(340, 220), title="")
     savefig(p, "plots/Graphs/Basic/$(dist) $(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).pdf")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)

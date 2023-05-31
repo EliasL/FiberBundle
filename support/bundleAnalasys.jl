@@ -97,7 +97,7 @@ function find_localization(cluster_size)
 end
 
 function find_localization_nr_clusters(nr_clusters)
-    @warn "This does not work well!" #It does find the max of the number of clusters, but
+    #@warn "This does not work well!" #It does find the max of the number of clusters, but
     # that does not corespond to localization (It seems)
     # gives the first x at which the number of clusters stop growing
     interp = interpolate((eachindex(nr_clusters),), nr_clusters, Gridded(Linear()))
