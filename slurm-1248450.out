@@ -203,3 +203,64 @@
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
 ┌ LogLevel(-2): 93%, Active workers: 2, Completed tasks: 185.
 └ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 94%, Active workers: 2, Completed tasks: 187.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 95%, Active workers: 2, Completed tasks: 189.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 96%, Active workers: 2, Completed tasks: 191.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 97%, Active workers: 2, Completed tasks: 193.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 98%, Active workers: 2, Completed tasks: 195.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 99%, Active workers: 2, Completed tasks: 197.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 100%, Active workers: 0, Completed tasks: 200.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:96
+┌ LogLevel(-2): Done!
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:142
+┌ LogLevel(-2): Calculating averages... 
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:145
+┌ LogLevel(-2): Done!
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:147
+┌ LogLevel(-2): 2023-05-31T00:09:32.417: Starting a=2.0 dist=ConstantAverageUniform L=512 nr=CLS t=0.09
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:155
+┌ LogLevel(-2): Searching for loose files... 
+└ @ Main /work/vemundlu/FiberBundle/support/dataManager.jl:278
+┌ LogLevel(-2): Running workers...
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:140
+┌ LogLevel(-2): Starting work on a=2.0 dist=ConstantAverageUniform L=512 nr=CLS t=0.09
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:80
+┌ LogLevel(-2): 0%, Active workers: 2, Completed tasks: 0.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 1%, Active workers: 2, Completed tasks: 1.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 2%, Active workers: 2, Completed tasks: 3.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 3%, Active workers: 2, Completed tasks: 5.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 4%, Active workers: 2, Completed tasks: 7.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 5%, Active workers: 2, Completed tasks: 9.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 6%, Active workers: 2, Completed tasks: 11.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 7%, Active workers: 2, Completed tasks: 13.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 8%, Active workers: 2, Completed tasks: 15.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 9%, Active workers: 2, Completed tasks: 17.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 10%, Active workers: 2, Completed tasks: 19.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 11%, Active workers: 2, Completed tasks: 21.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+┌ LogLevel(-2): 12%, Active workers: 2, Completed tasks: 23.
+└ @ Main /work/vemundlu/FiberBundle/dataGenerator.jl:92
+slurmstepd-compute-14: error: *** JOB 1248450 ON compute-14 CANCELLED AT 2023-05-31T11:20:10 ***
+
+signal (15): Terminated
+in expression starting at /work/vemundlu/FiberBundle/generateData.jl:57
+pthread_cond_wait at /lib/x86_64-linux-gnu/libpthread.so.0 (unknown line)
+uv_cond_wait at /workspace/srcdir/libuv/src/unix/thread.c:847
+jl_task_get_next at /buildworker/worker/package_linux64/build/src/partr.c:517
