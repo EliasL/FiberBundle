@@ -104,7 +104,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         function get_σ_data(ts)
             Y = []
             max_range = L^2/800
-            nr_seeds = 3000
+            nr_seeds = 1000
             for (i, t) in zip(1:length(ts), ts)
                 println(t)
                 σ, x = get_data_kN(L, [nr], t, dist, "most_stressed_fiber",
@@ -175,9 +175,10 @@ L = 128
 ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
 ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
+ts = 0.5:0.5:5
 α = 2.0
 nr = ["LLS", "CLS"]
-dist = "ConstantAverageUniform"
+dist = "Weibull"
 nrs = length(nr)
 println("Started...")
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
@@ -187,7 +188,7 @@ yValues = [L"\langle σ \rangle", L"\langle s_{\mathrm{max}}/N \rangle",L"\langl
 for i in eachindex(plots)
     p = plots[i]
     p = plot(p,  xlabel=L"k/N", ylabel=yValues[ceil(Int64,i/2)])
-    savefig(p, "plots/Graphs/Basic/$(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).pdf")
+    savefig(p, "plots/Graphs/Basic/$(dist) $(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).pdf")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
 savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf")
@@ -195,6 +196,7 @@ savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf")
 #= L=128
 nr = ["LLS", "CLS"]
 ts = [0.5, 0.4, 0.3, 0.27]
+ts = [0.5, 1, 1.5, 2]
 p = [make_none_averaged_σ_plot(L, ts, [nr], dist, (nr=="LLS" ? :bottom : :topright)) for nr=nr]
 #= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
 p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#

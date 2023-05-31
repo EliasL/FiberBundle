@@ -57,19 +57,13 @@ dist = "Weibull"
 L=[128]
 seeds = [0,1000]
 
-make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
-start_job()
+#make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
+#start_job()
 
-#= for single_t in t
-    L=[256]
-    seeds = [0,1000]
+for single_t in t
     make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist)
     start_job()
-    L=[512]
-    seeds = [0,200]
-    make_job(seeds, L, t=[single_t], α=[2.0], NR=NR, dist=dist)
-    start_job()
-end =#
+end
 
 #= L=[512]
 seeds = [0,200]
