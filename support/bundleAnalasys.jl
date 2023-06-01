@@ -88,24 +88,26 @@ end
 
 function find_localization(cluster_size)
     # gives the first x at which the cluster is growing at a certain rate
-    interp = interpolate((eachindex(cluster_size),), cluster_size, Gridded(Linear()))
+    interp = interpolate((eachindex(cluster_size),), cluster_size*length(cluster_size), Gridded(Linear()))
     grad = only.(Interpolations.gradient.(Ref(interp), eachindex(cluster_size)))[10:end]
     #p = plot(grad)
     #display(p)
-    critical_gradiant = (maximum(grad)-minimum(grad))/2
-    return findfirst(x->x>critical_gradiant, grad)
+    critical_gradiant = 1
+    #critical_gradiant = (maximum(grad) - minimum(grad))/2
+    return findfirst(x->x>=critical_gradiant, grad)
 end
 
 function find_localization_nr_clusters(nr_clusters)
-    #@warn "This does not work well!" #It does find the max of the number of clusters, but
-    # that does not corespond to localization (It seems)
+    @warn "This does not work well!" #It does find the max of the number of clusters, but
+    #= # that does not corespond to localization (It seems)
     # gives the first x at which the number of clusters stop growing
     interp = interpolate((eachindex(nr_clusters),), nr_clusters, Gridded(Linear()))
     grad = only.(Interpolations.gradient.(Ref(interp), eachindex(nr_clusters)))[10:end]
     #p = plot(grad)
     #display(p)
     critical_gradiant = 0
-    return findfirst(x-> isapprox(x,critical_gradiant;atol=10^-7), grad) 
+    return findfirst(x-> isapprox(x,critical_gradiant;atol=10^-7), grad)  =#
+    return argmax(nr_clusters)
 end
 
 function find_avalanches(σ)

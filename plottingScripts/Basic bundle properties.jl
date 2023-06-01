@@ -52,11 +52,11 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     end
 
     
-    get_data(key; divide=N) = map(x -> x[key] ./divide, files_and_t)
+    simple_get_data(key; divide=N) = map(x -> x[key] ./divide, files_and_t)
     
     k_N = [1:n for n in N]./N
     
-    seeds = round(Int64, minimum(get_data("nr_seeds_used", divide=1)))
+    seeds = round(Int64, minimum(simple_get_data("nr_seeds_used", divide=1)))
     if nr=="LLS" && add_ELS
         extra_label=["ELS"]
     else
@@ -67,15 +67,24 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
     
     function add_points(y_data)
         # Draw spanning
-        x_data = get_data("average_spanning_cluster_step")
+#=         x_data = simple_get_data("average_spanning_cluster_step")
+        println(size(x_data))
         y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
-        scatter!(x_data, y, color=colors, label=nothing, markershape=:x, markeralpha=1) 
+        scatter!(x_data, y, color=colors, label=nothing,
+                markersize=6, markershape=:vline, markeralpha=1)  =#
 
-        # Draw max stress
-        x_data = [argmax(σ)/length(σ) for σ in most_stressed_fiber]   
+        # Draw average max stress
+#=         x_data = [argmax(σ)/length(σ) for σ in most_stressed_fiber]   
         y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
         scatter!(x_data, y, markerstrokecolor=colors, markercolor=:transparent,
-        label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
+        label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1) =#
+
+        # Draw critical stressed
+        x_data = σ_c_x[:, 1, 1]
+        y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
+        scatter!(x_data, y, markerstrokecolor=colors, markercolor=:transparent,
+        label=nothing, markershape=:diamond, markersize=6, markerstrokewidth=1)
+
 
         # Draw localization
         
@@ -83,13 +92,13 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         x_data = [find_localization(clusterSize[1][:, i, 1])/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
         y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
         scatter!(x_data, y, c=colors, markeralpha=1, 
-        label=nothing, markershape=:vline, markersize=8, markerstrokewidth=1)
+        label=nothing, markershape=:+, markersize=8, markerstrokewidth=1)
 
-        nrClusters = get_data_kN(L, [nr], ts, dist, "average_nr_clusters", return_kN=false)
+        #= nrClusters = get_data_kN(L, [nr], ts, dist, "average_nr_clusters", return_kN=false)
         x_data = [find_localization_nr_clusters(nrClusters[1][:, i, 1])/length(nrClusters[1][:, i, 1]) for i in eachindex(ts)]
         y = [y[round(Int64, x*length(y))] for (x,y) in zip(x_data,y_data)]
         scatter!(x_data, y, c=colors, markeralpha=1, 
-        label=nothing, markershape=:+, markersize=5, markerstrokewidth=1)
+        label=nothing, markershape=:+, markersize=5, markerstrokewidth=1) =#
 
 #=         threshhold=0.01
         x_data = [findfirst(x->x>threshhold, s)/length(s) for s in largestluster]
@@ -122,7 +131,8 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         # Use empty scatter as title
         #plot = scatter([0.01], label=L"t_0", ms=0, mc=:white, msc=:white)
         p=plot()
-        plot!([0.01], label=L"t_0", ms=0, mc=:white, msc=:white, c=:white)
+        label = dist=="Weibull" ? L"t_w" : L"t_0"
+        plot!([0.01], label=label, ms=0, mc=:white, msc=:white, c=:white)
         plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title, size=(300,250),
         linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-(add_ELS ? 1 : 2))]),[:dot]))
@@ -130,10 +140,14 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         return p
     end
 
-    nrlusters = get_data("average_nr_clusters")
-    largestluster = get_data("average_largest_cluster")
-    largest_perimiter = get_data("average_largest_perimiter")
+    nrlusters = simple_get_data("average_nr_clusters")
+    largestluster = simple_get_data("average_largest_cluster")
+    largest_perimiter = simple_get_data("average_largest_perimiter")
+    σ_c, σ_c_x = get_data(L, [nr], ts, dist, "most_stressed_fiber",
+        "most_stressed_fiber", argmax, ex=[0, 0], rel_x=true, average=false,
+        return_x=true, data_path=data_path)
     most_stressed_fiber = get_σ_data(ts)
+    
 #=     println(size(most_stressed_fiber[1]))
     println(size(largest_perimiter[1])) =#
     #most_stressed_fiber = get_data("average_most_stressed_fiber", divide=1)
@@ -174,11 +188,15 @@ end
 L = 128
 ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
 ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
-ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
-ts = [0.5, 1, 1.5, 2, 3, 4, 5]
 α = 2.0
 nr = ["LLS", "CLS"]
+dist = "ConstantAverageUniform"
 dist = "Weibull"
+if dist == "Weibull"
+    ts = reverse([0.5, 1, 1.5, 2, 3, 4, 5])
+else
+    ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
+end
 nrs = length(nr)
 println("Started...")
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
