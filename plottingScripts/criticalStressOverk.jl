@@ -43,11 +43,17 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         data_path=data_path)
      
  
-    pos = :topright
+    if dist=="Weibull"
+        pos = :topright
+        xlabel=L"k"
+    else
+        pos = :topleft
+        xlable=L"t_0"
+    end
 
     LLS_σ_c_N_plot = make_plot1(ts, x[:, :, 1], label=L"σ_c",
         L"k_c/N", log_scale=:identity, title="LLS",
-        xlabel=L"t_0", position=pos,)
+        xlabel=xlabel, position=pos,)
 
 #=     most_stressed_fiber = get_data_kN(L, nr, ts, dist, "average_most_stressed_fiber", return_kN=false)
     E = [σ_to_energy(most_stressed_fiber[1][:, i, 1]) for i in eachindex(ts)]
@@ -65,7 +71,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
     CLS_σ_c_N_plot = make_plot1(ts, x[:, :, 2], label=L"σ_c",
         L"k_c/N", log_scale=:identity, title="CLS", 
-        xlabel=L"t_0", position=pos,)
+        xlabel=xlabel, position=pos,)
     
 #=     E = [σ_to_energy(most_stressed_fiber[1][:, i, 2]) for i in eachindex(ts)]
     k = [argmax(E[1])/length(E[1]) for E in E]
@@ -90,7 +96,7 @@ dist = "Weibull"
 data_path = "newData/"
 ts = vcat(0.3:0.01:0.5)
 ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
-ts = 0.5:0.5:5
+ts = vcat([0.5], 1:0.1:1.5, 2:0.5:5)
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)

@@ -9,6 +9,6 @@
 
 ml eb
 ml Julia/1.7.2-linux-x86_64
-julia --threads 64 generateData.jl L 128 t 5.0 a 2.0 NR LLS CLS s 0 1000 dist Weibull 
+julia --threads 64 generateData.jl L 128 t 1.4 a 2.0 NR LLS CLS s 0 1000 dist Weibull 
 
 wait

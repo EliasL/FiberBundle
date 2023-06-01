@@ -50,7 +50,7 @@ function start_job()
     run(`sbatch job.sh`)
 end
 
-t = 0.5:0.5:5
+t = 1.1:0.1:1.4
 NR = ["LLS", "CLS"]
 dist = "Weibull"
 
