@@ -43,7 +43,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         data_path=data_path)
      
 
-    LLS_σ_c_N_plot = make_plot1(ts, x[:, :, 1], label=L"σ_c",
+    LLS_σ_c_N_plot = make_plot1(ts, x[:, :, 1], label=L"k_c",
         L"k/N", log_scale=:identity, title="LLS",
         xlabel=xlabel, position=pos,)
 
@@ -55,10 +55,10 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
     clusterSize = get_data_kN(L, nr, ts, dist, "average_largest_cluster", return_kN=false)
     localization = [find_localization(clusterSize[1][:, i, 1])/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
-    add_plot(ts, localization, label=L"\frac{\partial s}{\partial k} = 1")
+    add_plot(ts, localization, label=L"k_l")
 
 
-    CLS_σ_c_N_plot = make_plot1(ts, x[:, :, 2], label=L"σ_c",
+    CLS_σ_c_N_plot = make_plot1(ts, x[:, :, 2], label=L"k_c",
         L"k/N", log_scale=:identity, title="CLS", 
         xlabel=xlabel, position=pos,)
     
@@ -67,7 +67,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     add_plot(ts, k, label="Max energy") =#
 
     localization = [find_localization(clusterSize[1][:, i, 2])/length(clusterSize[1][:, i, 2]) for i in eachindex(ts)]
-    add_plot(ts, localization, label=L"\frac{\partial s}{\partial k} = 1")
+    add_plot(ts, localization, label=L"k_l")
 
 
     return [LLS_σ_c_N_plot,CLS_σ_c_N_plot]
@@ -78,8 +78,8 @@ L = [128]
 nr = ["LLS", "CLS"]
 
 #ts = vcat((0:20) ./ 50, (5:9) ./ 10)
-dist = "Weibull"
 dist = "ConstantAverageUniform"
+dist = "Weibull"
 if dist=="Weibull"
     pos = :topright
     xlabel=L"t_w"
