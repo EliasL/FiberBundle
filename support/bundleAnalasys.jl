@@ -86,13 +86,12 @@ function σ_to_energy(σ_max)
     return E, dEdΔ
 end
 
-function find_localization(cluster_size)
+function find_localization(cluster_size, critical_gradiant=1)
     # gives the first x at which the cluster is growing at a certain rate
     interp = interpolate((eachindex(cluster_size),), cluster_size*length(cluster_size), Gridded(Linear()))
     grad = only.(Interpolations.gradient.(Ref(interp), eachindex(cluster_size)))[10:end]
     #p = plot(grad)
     #display(p)
-    critical_gradiant = 1
     #critical_gradiant = (maximum(grad) - minimum(grad))/2
     return findfirst(x->x>=critical_gradiant, grad)
 end
