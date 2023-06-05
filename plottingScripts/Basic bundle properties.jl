@@ -190,14 +190,14 @@ ts = round.((1 .- vcat((0:20) ./ 50, (5:7) ./ 10)) ./2, digits=2)
 ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
 α = 2.0
 nr = ["LLS", "CLS"]
-dist = "ConstantAverageUniform"
 dist = "Weibull"
+dist = "ConstantAverageUniform"
 if dist == "Weibull"
     ts = reverse([0.5, 1, 1.5, 2, 3, 4, 5])
 else
     ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
 end
-nrs = length(nr)
+#= nrs = length(nr)
 println("Started...")
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
@@ -209,17 +209,17 @@ for i in eachindex(plots)
     savefig(p, "plots/Graphs/Basic/$(dist) $(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).pdf")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
-savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf")
+savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf") =#
 
-#= L=128
+L=128
 nr = ["LLS", "CLS"]
-ts = [0.5, 0.4, 0.3, 0.27]
 ts = [0.5, 1, 1.5, 2]
+ts = [0.5, 0.4, 0.3, 0.27]
 p = [make_none_averaged_σ_plot(L, ts, [nr], dist, (nr=="LLS" ? :bottom : :topright)) for nr=nr]
 #= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
 p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#
 p = plot(p..., size=(300*length(nr), 300), layout=(1,length(nr)))
-savefig(p, "plots/Graphs/non_averaged.pdf") =#
+savefig(p, "plots/Graphs/$(dist)_non_averaged.pdf")
 
 
 println("Saved plot!")
