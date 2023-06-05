@@ -12,5 +12,6 @@ y=[
     2  2 2;
 ]./2
 x = repeat([0, 1, 1, 2, 2, 3].*2, 1, 2)
-p = plot(x, y, size=(250,200), style=[:solid :dot :dash], label=["A" "B" "av."])
+p = plot(x, y, size=(250,200), style=[:solid :solid :dash], label=[L"A" L"B" ""],
+    xlabel=L"k", ylabel=L"\sigma")
 savefig(p, "plots/Graphs/illustrativeExample.pdf")
