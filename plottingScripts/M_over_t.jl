@@ -22,8 +22,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
             xlabel=xlabel, ylabel=ylabel, title=title, xaxis=:identity,
             yaxis=log_scale, framestyle=:box)
         #plot!([], [], label=L"L", alpha=0)
-        println(size(X))
-        println(size(Y))
+        plot!([0.01], [0], label="L", ms=0, mc=:white, msc=:white, c=:white)
         scatter!(X, Y, label=label, linestyle=:solid,
         legend=position, markershape=markershape, markersize=7,
         markerstrokecolor=colors, framestyle="")
