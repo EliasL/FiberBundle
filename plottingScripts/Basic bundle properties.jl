@@ -177,7 +177,7 @@ function make_none_averaged_σ_plot(L, ts, nr, dist, pos)
         x = collect([map(maximum, Iterators.partition(x[1], every)) for i in 1:nr_seeds])
         
         p = plot!(x,  σ, label="", title=nr[1],
-        xlabel=L"k/N", ylabel=(nr[1]=="CLS" ? "" : "max("*L"σ)_{100}"), c=c, alpha=0.05)
+        xlabel=L"k/N", ylabel=(nr[1]=="CLS" ? "" : L"σ"), c=c, alpha=0.05)
         #add_points(mean(raw_σ[1][:, 1, 1, :], dims=2), i=i)
     end
     plot!([1.0], label=L"t_0", ms=0, mc=:white, msc=:white, xlims=xlims(p), ylims=ylims(p), c=:white)
