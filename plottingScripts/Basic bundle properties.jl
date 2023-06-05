@@ -164,7 +164,7 @@ end
 
 function make_none_averaged_σ_plot(L, ts, nr, dist, pos)
     nr_seeds = 100
-    divisions=L*L
+    divisions=100
     p = plot()
     colors = theme_palette(:auto)[1:length(ts)]
     for (i, t, c) in zip(1:length(ts), ts, colors)
@@ -177,7 +177,7 @@ function make_none_averaged_σ_plot(L, ts, nr, dist, pos)
         x = collect([map(maximum, Iterators.partition(x[1], every)) for i in 1:nr_seeds])
         
         p = plot!(x,  σ, label="", title=nr[1],
-        xlabel=L"k/N", ylabel=(nr[1]=="CLS" ? "" : L"σ"), c=c, alpha=0.05)
+        xlabel=L"k/N", ylabel=(nr[1]=="CLS" ? "" : "max("*L"σ)_{100}"), c=c, alpha=0.1)
         #add_points(mean(raw_σ[1][:, 1, 1, :], dims=2), i=i)
     end
     plot!([1.0], label=L"t_0", ms=0, mc=:white, msc=:white, xlims=xlims(p), ylims=ylims(p), c=:white)
@@ -213,20 +213,13 @@ savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf") =#
 
 L=128
 nr = ["LLS", "CLS"]
-ts = [0.5, 0.4, 0.3, 0.27]
-Plots.scalefontsizes(4)
-p = [make_none_averaged_σ_plot(L, ts, [nr], dist, (nr=="LLS" ? :bottom : :topright)) for nr=nr]
-#= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
-p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#
-p = plot(p..., size=(1200*length(nr), 1200), layout=(1,length(nr)))
-savefig(p, "plots/Graphs/$(dist)_non_averaged_NotMAX.png")
-
-dist = "Weibull"
 ts = [0.5, 1, 1.5, 2]
-
+ts = [0.5, 0.4, 0.3, 0.27]
 p = [make_none_averaged_σ_plot(L, ts, [nr], dist, (nr=="LLS" ? :bottom : :topright)) for nr=nr]
 #= p1 = make_none_averaged_σ_plot(L, [0.4], ["LLS"], dist)
 p2 = make_none_averaged_σ_plot(L, [0.4], ["CLS"], dist) =#
-p = plot(p..., size=(1200*length(nr), 1200), layout=(1,length(nr)))
-savefig(p, "plots/Graphs/$(dist)_non_averaged_NotMAX.png")
+p = plot(p..., size=(300*length(nr), 300), layout=(1,length(nr)))
+savefig(p, "plots/Graphs/$(dist)_non_averaged.pdf")
+
+
 println("Saved plot!")
