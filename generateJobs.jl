@@ -50,12 +50,12 @@ function start_job()
     run(`sbatch job.sh`)
 end
 
-t = 1.1:0.1:1.4
+t = vcat([0.5, 1],1.1:0.1:1.4, 1.5:0.5:5)
 NR = ["LLS", "CLS"]
 dist = "Weibull"
 
-L=[128]
-seeds = [0,1000]
+L=[64]
+seeds = [0,2000]
 
 #make_job(seeds, L, t=t, α=[2.0], NR=NR, dist=dist, force_short=false)
 #start_job()

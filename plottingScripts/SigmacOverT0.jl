@@ -109,7 +109,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
     σ_c_plot = make_plot3(ts, new_σ_c, log=:log, 
     L"\langle σ_c \rangle", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:topright, )
+                        xlabel=xlabel, position=:topright, )
 
     #add_fit!(ts, σ_c)
 #= 
@@ -123,19 +123,28 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     slope = 1
     #a = 22
     #b = 0.54
-    plot!(ts[1:6], max_y .- slope.*ts[1:6], labels="$max_y"*L" -" * L"t_0", color=:black, linestyle=:dash, alpha=0.5)
+    #plot!(ts[1:6], max_y .- slope.*ts[1:6], labels="$max_y"*L" -" * L"t_0", color=:black, linestyle=:dash, alpha=0.5)
 
     
     
     return [σ_c_plot]
 end
 
-L = [64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
-ts = vcat((0:20) ./ 50, (5:8) ./ 10)
-ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
+
 dist = "ConstantAverageUniform"
+dist = "Weibull"
+if dist=="Weibull"
+    L=[128]
+    xlabel=L"t_w"
+    ts = vcat([0.5], 1:0.1:1.5, 2:0.5:5)
+else
+    L = [64, 128, 256, 512]
+    pos = :topleft
+    xlabel=L"t_0"
+    ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
+end
 data_path="newData/"
 #ts = (0:7) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)

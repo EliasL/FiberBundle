@@ -117,6 +117,11 @@ function calculate_gyration_radi(l, nr, t, file)
     return r, s, h
 end
 
+function do_box_count(l, nr, t, file)
+    b = get_bundle_from_file(file, l, nr=nr, t=t, spanning=true)
+    counts = box_counting(b)
+end
+
 function get_gyration_radii(L, nr, t, α)
     R = []
     S = []

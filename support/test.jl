@@ -1,17 +1,22 @@
-test1(x) = sum(x[x .!= Inf])
+include("bundleAnalasys.jl")
+include("dataManager.jl")
 
-function test2(x)
-    s = 0
-    for i in eachindex(x)
-        @inbounds s += ifelse(isinf(x[i]), 0, x[i])
+
+function do_box_count(l, nr, t, file)
+    for seed in 1:1
+        b = get_bundle_from_file(file, l, nr=nr, t=t, spanning=true, seed=seed)
+
+        counts = box_counting(b)
+        println(counts)
     end
-    return 0
 end
 
-x = fill(Inf, 10^8)
-x = vcat(x, [1,2,3])
+L = 32
+α = 2.0
+t = 0.4
+nr = "CLS"
+dist = "ConstantAverageUniform"
+dataPath = "newData/"
 
-@time test1(x)
-@time test1(x)
-@time test2(x)
-@time test2(x)
+bulk_file = load_file(L, α, t, nr, dist, data_path=dataPath, average=false)
+do_box_count(L, nr, t, bulk_file)
