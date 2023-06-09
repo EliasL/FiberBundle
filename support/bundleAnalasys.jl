@@ -131,43 +131,6 @@ function find_avalanches(σ)
 end
 
 
-function box_counting(b::FB)
-
-    # Find spanning cluster
-    @assert b.spanning_cluster_id != -1
-    sc = b.spanning_cluster_id
-
-    # box counts
-    nr_sizes = round(Int64, log2(b.L))
-    nr_boxes = zeros(Int64, nr_sizes)
-    box_sizes = 2 .^(0:1:nr_sizes)
-    boxes = []
-    # Here we create all the boxes. Later we count how many are true
-    for (i, box_size) in enumerate(box_sizes)
-        push!(boxes, zeros(Bool, (2^(nr_sizes - i+1), 2^(nr_sizes - i+1))))
-    end
-
-    
-    for (i, state) in enumerate(b.status)
-        if state == sc
-            x, y = fiber_index_to_xy(i, b.L)
-            #println("$x, $y")
-            for i in 1:nr_sizes
-                pow = 2^i
-                # We want to find the coordinate for each of the larger boxes
-                new_x = ceil(Int64, x/pow)
-                new_y = ceil(Int64, y/pow)
-                println(pow)
-                println(new_x)
-                println(new_y)
-                boxes[i][new_x, new_y] = true
-            end
-        end
-    end
-    counts = [count(a) for a in boxes]
-    return counts 
-end
-
 function test()
     nr = "ELS"
     path = "data/"
@@ -185,3 +148,58 @@ function test()
     display(p)
 end
 #test()
+
+function box_counting(b::FB)
+    # If L=32, returns conunts for boxes of size 2, 4, 8 and 16, but not 1 and 32
+    # Find spanning cluster
+    @assert b.spanning_cluster_id != -1
+    sc = b.spanning_cluster_id
+
+    # box counts
+    nr_sizes = round(Int64, log2(b.L))-1
+
+    s_boxes = []
+    h_boxes = []
+    # Here we create all the boxes. Later we count how many are true
+    for boxes in [s_boxes, h_boxes]
+        for i in 1:nr_sizes
+            push!(boxes, zeros(Bool, (2^(nr_sizes - i+1), 2^(nr_sizes - i+1))))
+        end
+    end
+
+    for (i, state) in enumerate(b.status)
+
+        if state == sc
+            x, y = fiber_index_to_xy(i, b.L)
+            #println("$x, $y")
+            for i in 1:nr_sizes
+                pow = 2^i
+                # We want to find the coordinate for each of the larger boxes
+                new_x = ceil(Int64, x/pow)
+                new_y = ceil(Int64, y/pow)
+                s_boxes[i][new_x, new_y] = true
+            end
+        elseif sc in b.status[b.neighbours[i, :]] # state != sc
+            x, y = fiber_index_to_xy(i, b.L)
+            #println("$x, $y")
+            for i in 1:nr_sizes
+                pow = 2^i
+                # We want to find the coordinate for each of the larger boxes
+                new_x = ceil(Int64, x/pow)
+                new_y = ceil(Int64, y/pow)
+                h_boxes[i][new_x, new_y] = true
+            end
+        end
+
+    end
+
+
+    #plot_fb(b, use_shift=false)
+    #display.(heatmap.(rotl90.(s_boxes)))
+    #display.(heatmap.(rotl90.(h_boxes)))
+    s_count = [count(a) for a in s_boxes]
+    h_count = [count(a) for a in h_boxes]
+    pushfirst!(s_count, b.cluster_size[sc])
+    pushfirst!(h_count, b.cluster_outline_length[sc])
+    return s_count, h_count
+end

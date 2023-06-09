@@ -13,7 +13,7 @@ include("showBundle.jl")
 f_lin(x,p) = p[1] .+ Measurements.value.(x) .* p[2]
 
 function get_fit(x, y)
-    p0_lin = [0.0, 1.0]
+    p0_lin = [0.0, 0.0]
     return curve_fit(f_lin, x, y, p0_lin).param
 end
 
@@ -99,6 +99,55 @@ function plot_dimension_thing(L, ts, α)
     
 end
 
+function plot_dimension_box_thing(l, ts, α)
+    NR = ["CLS", "LLS"]
+    ms = [:utriangle, :dtriangle, :diamond, :star4]
+    slopes = zeros(Float64, (length(ts) , length(NR), 2))
+    c = permutedims(theme_palette(:auto)[1:4])
+    for (j,t) in enumerate(ts)
+        
+        # Get plot and slope
+        p = plot(size=(320, 320), ylabel=L"\log_2(s), \log_2(h)",
+                xlabel=L"\log_2(\epsilon)")
+        for (i, nr) in enumerate(NR)
+            # we don't like the last data points
+            end_datapoint = 6 #Max 9, 9=256
+            start_datapoint = 2 #Min 1
+            count = get_box_count(l, nr, t, α)
+            s_count, h_count = log2.(count[1][start_datapoint:end_datapoint]), log2.(count[2][start_datapoint:end_datapoint])
+            nr_sizes = round(Int64, log2(l))-1
+            box_sizes = start_datapoint-1:end_datapoint-1 #log2(box_sizes) actually
+            
+            s_fit = get_fit(box_sizes, s_count)
+            s_slope = s_fit[2]
+            s_rounded_slope = round(s_slope, digits=2)
+            slopes[j, i, 1] = -s_slope
+            scatter!(box_sizes, s_count, label="$nr "*L"D_s"*": slope $s_rounded_slope", markershape=ms[i*2-1],
+            markerstrokecolor=c[i*2-1])
+            plot!(box_sizes, f_lin(box_sizes, s_fit), label="", c=c[i*2-1])
+
+            h_fit = get_fit(box_sizes, h_count)
+            h_slope = h_fit[2]
+            h_rounded_slope = round(h_slope, digits=2)
+            slopes[j, i, 2] = -h_slope
+            scatter!(box_sizes, h_count, label="$nr "*L"D_h"*": slope $h_rounded_slope", markershape=ms[i*2],
+                markerstrokecolor=c[i*2])
+            plot!(box_sizes, f_lin(box_sizes, h_fit), label="", c=c[i*2])
+         # Plot for each t
+        end
+        #plot_title=latexstring("Dimensionality: \$t_0=$(t)\$"))    
+        savefig("plots/Graphs/SingleT/box_dimension_t=$(t)_L=$l.pdf")
+    end
+    #scatter!(x_newData/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
+    s = hcat(slopes[:, 1, :], slopes[:, 2, :])
+    scatter(ts, s,
+        size=(300, 250), legend=:left, xlabel=L"t_0", ylabel=L"D", markershape=[:utriangle :dtriangle :diamond :star4],
+        markerstrokecolor=c, label=[L"CLS $D_s$" L"CLS $D_h$" L"LLS $D_s$" L"LLS $D_h$"])
+    #println(slopes)
+    savefig("plots/Graphs/box_dimension_L=$l.pdf")
+    
+end
+
 function calculate_gyration_radi(l, nr, t, file)
     b = get_fb(l, 0, nr=nr, t=t, without_storage=true)
     r = []
@@ -118,8 +167,41 @@ function calculate_gyration_radi(l, nr, t, file)
 end
 
 function do_box_count(l, nr, t, file)
-    b = get_bundle_from_file(file, l, nr=nr, t=t, spanning=true)
-    counts = box_counting(b)
+    seeds = file["seeds_used"]
+    nr_seeds = length(seeds)
+    s_counts = zeros(round(Int64, log2(l)))
+    h_counts = zeros(round(Int64, log2(l)))
+    for seed in seeds
+        b = get_bundle_from_file(file, l, nr=nr, t=t, spanning=true, seed=seed)
+
+        counts = box_counting(b)
+        s_counts .+= counts[1]
+        h_counts .+= counts[2]
+    end
+    return s_counts ./ nr_seeds, h_counts ./ nr_seeds
+end
+
+function get_box_count(l, nr, t, α)
+    if !isdir("newData/box_counting_data/")
+        mkpath("newData/box_counting_data/")
+    end
+    file_name = get_file_name(l, α, t, nr, dist, data_path=data_path)
+    if isfile(file_name)
+        if isfile("newData/box_counting_data/$(l)_$(nr)_$(t)_boxes.jld2")
+            f = load("newData/box_counting_data/$(l)_$(nr)_$(t)_boxes.jld2")
+            count = f["$(l)_$(nr)_$(t)_boxes"]
+        else
+            bulk_file = load_file(l, α, t, nr, dist, average=false, data_path=data_path)
+            count = do_box_count(l, nr, t, bulk_file)
+            # Save data
+            jldopen("newData/box_counting_data/$(l)_$(nr)_$(t)_boxes.jld2", "w") do file
+                file["$(l)_$(nr)_$(t)_boxes"] = count
+            end
+        end
+    else 
+        @error "No file found! $file_name" 
+    end
+    return count
 end
 
 function get_gyration_radii(L, nr, t, α)
@@ -133,7 +215,7 @@ function get_gyration_radii(L, nr, t, α)
         mkpath("newData/gyration_data/")
     end
     for l in L
-        file_name = get_file_name(l, α, t, nr,dist, data_path=data_path)
+        file_name = get_file_name(l, α, t, nr, dist, data_path=data_path)
         if isfile(file_name)
             if isfile("newData/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
                 f = load("newData/gyration_data/$(l)_$(nr)_$(t)_r.jld2")
@@ -188,8 +270,8 @@ data_path = "newData/"
 #t = vcat((0:20) ./ 50, (5:9) ./ 10)
 #t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5, [0.6, 0.7, 0.8, 0.1])
 t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
-plot_dimension_thing(L, t, α)
-
+#plot_dimension_thing(L, t, α)
+plot_dimension_box_thing(512, t, α)
 
 
 println("Saved plot!")
