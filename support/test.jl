@@ -10,7 +10,7 @@ function do_box_count(l, nr, t, file)
     end
 end
 
-L = 512
+L = 32
 α = 2.0
 t = 0.5
 nr = "LLS"
@@ -19,3 +19,29 @@ dataPath = "newData/"
 
 bulk_file = load_file(L, α, t, nr, dist, data_path=dataPath, average=false)
 do_box_count(L, nr, t, bulk_file)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

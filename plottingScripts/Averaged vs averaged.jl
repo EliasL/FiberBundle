@@ -108,21 +108,23 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         for l in eachindex(L)
             σ_c[:, l, nri] .*= 1#log(log(L[l]^2))
             σ_cofσ[:, l, nri] .*= 1#log(log(L[l]^2))
-            av_k_c[:, l, nri] .*=1# ((L[l]^2))
+            av_k_c[:, l, nri] ./= ((L[l]^2))
             k_c[:, l, nri] .*= 1#((L[l]^2))
         end
     end
 
     x_c_plot = make_plot3(ts, av_k_c, log=:log, scale_x=false, scale_y=false,
-        L"\langle k_c\rangle ", permutedims(["$nr" for nr in NR]), title="",
-        xlabel=L"t_0", position=:topleft,)
+        L"\langle k_c\rangle /N", permutedims(["$nr" for nr in NR]), title="",
+        xlabel=L"t_0", position=:bottomright,)
 
-    println(k_c)
     x_cofσ_plot = make_plot3(ts, k_c, log=:log, scale_x=false, scale_y=false,
         L"k_c", permutedims(["$nr" for nr in NR]), title="",
         xlabel=L"t_0", position=:topleft,)
 
-    return [σ_c_plot, σ_cofσ_plot, x_c_plot, x_cofσ_plot]
+    plots = [σ_c_plot, σ_cofσ_plot, x_c_plot, x_cofσ_plot]
+    p = plot(x_c_plot, size=(300,300), title=nr[1], position=:bottomright)
+    savefig(p, "plots/Graphs/kc_scaling_averageOrAverage$(nr[1]).pdf")
+    return plots
 end
 
 L = [32, 64, 128, 256, 512]
@@ -139,14 +141,14 @@ xpsize=280
 ypsize=240
 p = plot(plots..., plot_title=nr[1],size=(xpsize*1.1*length(plots)/2,ypsize*length(plots)/2), layout = @layout([ A B ; C D]))
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
-savefig(p, "plots/Graphs/averageOrAverageCLS.pdf")
+#savefig(p, "plots/Graphs/averageOrAverageCLS.pdf")
 #savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 nr=["LLS"]
 plots = otherPropertiesPlot(L, ts, nr, dist)
 p = plot(plots..., plot_title=nr[1], size=(xpsize*1.1*length(plots)/2,ypsize*length(plots)/2), layout = @layout([ A B ; C D]))
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
-savefig(p, "plots/Graphs/averageOrAverageLLS.pdf")
+#savefig(p, "plots/Graphs/averageOrAverageLLS.pdf")
 #
 
 println("Saved plot!")

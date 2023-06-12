@@ -112,6 +112,7 @@ function plot_dimension_box_thing(l, ts, α)
         for (i, nr) in enumerate(NR)
             # we don't like the last data points
             end_datapoint = 6 #Max 9, 9=256
+
             start_datapoint = 2 #Min 1
             count = get_box_count(l, nr, t, α)
             s_count, h_count = log2.(count[1][start_datapoint:end_datapoint]), log2.(count[2][start_datapoint:end_datapoint])

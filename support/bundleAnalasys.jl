@@ -194,9 +194,9 @@ function box_counting(b::FB)
     end
 
 
-    #plot_fb(b, use_shift=false)
-    #display.(heatmap.(rotl90.(s_boxes)))
-    #display.(heatmap.(rotl90.(h_boxes)))
+    plot_fb(b, use_shift=false)
+    display.(heatmap.(rotl90.(s_boxes)))
+    display.(heatmap.(rotl90.(h_boxes)))
     s_count = [count(a) for a in s_boxes]
     h_count = [count(a) for a in h_boxes]
     pushfirst!(s_count, b.cluster_size[sc])
