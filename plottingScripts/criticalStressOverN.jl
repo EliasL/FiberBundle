@@ -204,7 +204,7 @@ p = plot(σ_plot, size=(xpsize * 1.1 * length(plots), ypsize *
 p2 = plot(k_plot, size=(xpsize * 1.1 * length(plots), ypsize *
                                                        maximum([length(plots) / 2, 1])))
 
-p3 = plot(strange_plot, size=(400, 350))
+p3 = plot(strange_plot, size=(300, 250))
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize
 #length(plots)/2/length(nr)), layout = @layout([ A B;]))
 #display(p2)
