@@ -175,11 +175,12 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ", log_scale=:identity,
         xlabel=L"1/\ln(\ln(N))") =#
     r_k_c =(reverse(k_c, dims=1))
-    strange_p = scatter(tts, σ_c[:, 1, 2] .- r_k_c[:, 1, 2],
+    strange_p = plot([], [], label=L"L", alpha=0)
+    scatter!(tts, σ_c[:, :, 2] .- r_k_c[:, :, 2],
             ylabel=L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ",
-            xlabel=L"t_0",
-            label=L"L=16",
-            legend=:topleft)
+            xlabel=L"t_0",markershape=markershape, markerstrokecolor=colors,
+            label=permutedims(L),
+            legend=:bottomright)
     return [σ_c_N_plot, k_c_N_plot, strange_p]
 end
 
