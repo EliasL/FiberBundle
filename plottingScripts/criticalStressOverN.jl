@@ -171,7 +171,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     "most_stressed_fiber", argmax, ex=[0, 0], average=false, return_x=true,
     data_path=data_path, rel_x=true)
     r_k_c = reverse(k_c, dims=1)
-    strange_p = make_plot3(lnN, σ_c - r_k_c, tts,
+    strange_p = make_plot3(lnN, σ_c .- r_k_c, tts,
         L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ", log_scale=:identity,
         xlabel=L"\ln(\ln(N))", position=:outerright,)
     return [σ_c_N_plot, k_c_N_plot, strange_p]
