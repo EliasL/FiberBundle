@@ -78,10 +78,10 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         #println((errors[:,1]))
         scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
             markershape=markershape, markerstrokecolor=colors, markersize=7,
-            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.35),
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.042),
             inset = (1, bbox(0.37, 0.1, 0.50, 0.4)), subplot=2)
         scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
-            framestyle="", ylims=(0, 0.003),
+            framestyle="", ylims=(0, 0.0033),
             markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
         )
         
@@ -91,14 +91,14 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
     function make_plot2(X, Y, ylabel; 
         ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
-        position=:bottomleft, log_scale=:identity)
+        position=:left, log_scale=:identity)
 
         p = plot(xlims=xlims, ylims=ylims, markersize=5,
             xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
             yaxis=log_scale, framestyle=:box)
         plot!([], [], label=L"t_0", alpha=0)
 
-        plot_ts = [0.1, 0.2, 0.25, 0.26, 0.5]
+        plot_ts = [0.1, 0.2, 0.25, 0.27, 0.45, 0.5]
         plot_index = [i for i in eachindex(ts) if ts[i] in plot_ts] 
         labels = permutedims([latexstring("$t") for t in plot_ts])
             
@@ -111,10 +111,10 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         #println((errors[:,1]))
         scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
             markershape=markershape, markerstrokecolor=colors, markersize=7,
-            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 1.3),
-            inset = (1, bbox(0.368, 0.32, 0.50, 0.4)), subplot=2)
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.1),
+            inset = (1, bbox(0.38, 0.29, 0.49, 0.43)), subplot=2)
         scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
-            framestyle="", ylims=(0, 0.010),
+            framestyle="", ylims=(0, 0.015),
             markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
         )
         
@@ -156,15 +156,15 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         data_path=data_path, rel_x=true)
 
     N = L .* L
-    lnN = 1 ./ log.(log.(N))
+    lnN = log.(log.(N))
     σ_c_N_plot = make_plot1(lnN, σ_c[:, :, :],
         L"\langle σ_c \rangle", log_scale=:identity,
-        xlabel=L"1/\ln(\ln(N))")
+        xlabel=L"\ln(\ln(N))")
     
 
     k_c_N_plot = make_plot2(lnN, k_c[:, :, :],
         L"\langle k_c \rangle", log_scale=:identity,
-        xlabel=L"1/\ln(\ln(N))")
+        xlabel=L"\ln(\ln(N))")
 
     tts = [0.1, 0.15, 0.20, 0.25, 0.26, 0.27, 0.28, 0.29, 0.31, 0.32, 0.33, 0.34, 0.35, 0.40, 0.45, 0.5]
     σ_c, k_c = get_data(L, nr, tts, dist, "most_stressed_fiber",
@@ -175,9 +175,11 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ", log_scale=:identity,
         xlabel=L"1/\ln(\ln(N))") =#
     r_k_c =(reverse(k_c, dims=1))
-    println(σ_c[:, 1, 2])
-    println(r_k_c[:, 1, 2])
-    strange_p = scatter(tts, σ_c[:, 6, 2] .- r_k_c[:, 6, 2])
+    strange_p = scatter(tts, σ_c[:, 1, 2] .- r_k_c[:, 1, 2],
+            ylabel=L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ",
+            xlabel=L"t_0",
+            label=L"L=16",
+            legend=:topleft)
     return [σ_c_N_plot, k_c_N_plot, strange_p]
 end
 
