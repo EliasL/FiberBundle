@@ -93,7 +93,7 @@ function make_plot(b::FB, s::FBS)
     x, σ = slowBreak(b, s, real_sigma=true, real_threshold=true)
     p3 = plot(x, σ, legend=:topleft, title="A: "* b.nr, label="", c=:black, 
             xlabel=L"x", ylabel=L"σ", ylims=(0, Inf), xlims=(0, Inf))
-    return p3, p1, p2
+    return p3, p1#, p2
 end
 
 
@@ -117,7 +117,7 @@ println("Running...")
 b,s = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist)
 println("Making plot...")
 ELSPlot = make_plot(b,s)
-p=plot(ELSPlot..., size=(300*length(ELSPlot), 300), layout= @layout([ A B C;]))
+p=plot(ELSPlot..., size=(300*length(ELSPlot), 300), layout= @layout([ A B ;]))
 savefig("plots/Graphs/ForceOfSingleBundle.pdf")
 
 #= for nr = ["LLS", "CLS"]
