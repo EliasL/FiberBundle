@@ -40,7 +40,7 @@ function slowBreak(b::FB, s::FBS; real_sigma=false, real_threshold=false)
             current_σ = current_x * (b.N-b.current_step+1)/b.N
         end
         
-        if current_x >= last_break_x || current_σ >= last_break_σ
+        if current_x > last_break_x || current_σ > last_break_σ
             push!(x, current_x)
             push!(σ, current_σ)
         end
@@ -56,7 +56,7 @@ function slowBreak(b::FB, s::FBS; real_sigma=false, real_threshold=false)
             push!(x, current_x)
             push!(σ, current_σ)
             last_break_x = current_x
-            last_break_σ = current_σ - (b.tension[weak]*1.8)/b.N
+            last_break_σ = current_σ - b.tension[weak]/b.N
             current_x = 0
 
             # Update bundle stuff
@@ -73,7 +73,7 @@ function slowBreak(b::FB, s::FBS; real_sigma=false, real_threshold=false)
             update_storage!(b, s)
 
         end
-        current_x += 1/(50*b.N)
+        current_x += 1/(1000*b.N)
         
     end
     return x, σ
