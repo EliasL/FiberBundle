@@ -110,11 +110,12 @@ nr = "ELS"
 t = 0.5
 L=4
 α = 2.0
-seed = 1
+seed = 5
 dist="ConstantAverageUniform"
 data_path="newData/"
 println("Running...")
 b,s = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist)
+println(sort(b.x))
 println("Making plot...")
 ELSPlot = make_plot(b,s)
 p=plot(ELSPlot..., size=(300*length(ELSPlot), 300), layout= @layout([ A B ;]))
