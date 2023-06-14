@@ -77,8 +77,8 @@ L = [128]
 nr = ["LLS", "CLS"]
 
 #ts = vcat((0:20) ./ 50, (5:9) ./ 10)
-dist = "ConstantAverageUniform"
 dist = "Weibull"
+dist = "ConstantAverageUniform"
 if dist=="Weibull"
     pos = :topright
     xlabel=L"t_w"
