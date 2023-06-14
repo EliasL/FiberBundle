@@ -13,9 +13,9 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     yLabel(string) = use_y_lable ? string : ""
 
     colors = permutedims(theme_palette(:auto)[1:16])
-    markershape = [:circle :star4 :diamond :rect :ltriangle :rtriangle :star6]
+    markershape = [:+ :star4 :diamond :rect :ltriangle :rtriangle :star6]
 
-    function make_plot1(X, Y, ylabel; 
+    function make_plot1(X, Y, ylabel, nr_index; 
         ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf), label=permutedims(L),
         position=:topright, log_scale=:identity, title="")
         p = plot(xlims=xlims, ylims=ylims, markersize=5,
@@ -23,18 +23,27 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
             yaxis=log_scale, framestyle=:box)
         #plot!([], [], label=L"L", alpha=0)
 
-        scatter!(X, Y, label=label, linestyle=:solid,
+        clusterSize = get_data_kN(L, nr, ts, dist, "average_largest_cluster", return_kN=false)
+        localization = [find_localization(clusterSize[1][:, i, nr_index], critical_gradient)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
+        add_plot(ts, localization, 2, label=L"k_l")
+        
+        localization = [find_localization(clusterSize[1][:, i, nr_index], 0.5)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
+        add_plot_not_scatter(ts, localization, 3, label=L"k_l \: (1/2)")
+    
+        scatter!(X, Y, label=label,markeralpha=1.0, c=colors[1],
         legend=position, markershape=markershape, markersize=7,
-        markerstrokecolor=colors, framestyle="")
-        extra_plot_nr=2
+        markerstrokecolor=colors[1], z_order=:back)
         return p
     end
 
-    extra_plot_nr = 2
-    function add_plot(X, Y; label="")
+    function add_plot(X, Y, i; label="")
         scatter!(X, Y, label=label, linestyle=:solid, markersize=7,
-        markerstrokecolor=colors[extra_plot_nr], framestyle="", markershape=markershape[extra_plot_nr])
-        extra_plot_nr += 1
+        markerstrokecolor=colors[i],
+        markershape=markershape[i], z_order=:front)
+    end
+    function add_plot_not_scatter(X, Y, i; label="")
+        plot!(X, Y, label=label, linestyle=:solid, markersize=7, c=colors[i],
+        markerstrokecolor=colors[i], z_order=:front)
     end
     labels = permutedims(NR)
 
@@ -44,7 +53,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
      
 
     LLS_σ_c_N_plot = make_plot1(ts, x[:, :, 1], label=L"k_c",
-        L"k/N", log_scale=:identity, title="LLS",
+        L"k/N", 1, log_scale=:identity, title="LLS",
         xlabel=xlabel, position=pos,)
 
 #=     most_stressed_fiber = get_data_kN(L, nr, ts, dist, "average_most_stressed_fiber", return_kN=false)
@@ -52,26 +61,13 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     k = [argmax(E[1])/length(E[1]) for E in E]
     add_plot(ts, k, label="Max energy") =#
 
-    clusterSize = get_data_kN(L, nr, ts, dist, "average_largest_cluster", return_kN=false)
-    localization = [find_localization(clusterSize[1][:, i, 1], critical_gradient)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
-    add_plot(ts, localization, label=L"k_l")
     
     #localization = [find_localization(clusterSize[1][:, i, 1], 1/2)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
     #add_plot(ts, localization, label=L"k_l")
     
     CLS_σ_c_N_plot = make_plot1(ts, x[:, :, 2], label=L"k_c",
-        L"k/N", log_scale=:identity, title="CLS", 
+        L"k/N", 2, log_scale=:identity, title="CLS", 
         xlabel=xlabel, position=pos,)
-    
-#=     E = [σ_to_energy(most_stressed_fiber[1][:, i, 2]) for i in eachindex(ts)]
-k = [argmax(E[1])/length(E[1]) for E in E]
-add_plot(ts, k, label="Max energy") =#
-
-    localization = [find_localization(clusterSize[1][:, i, 2], critical_gradient)/length(clusterSize[1][:, i, 2]) for i in eachindex(ts)]
-    add_plot(ts, localization, label=L"k_l")#, (\frac{\partial s_{\mathrm{max}}}{\partial k}=1)")
-
-    #localization = [find_localization(clusterSize[1][:, i, 2], 1/2)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
-    #add_plot(ts, localization, label=L"k_l, (\frac{\partial s_{\mathrm{max}}}{\partial k}=\frac{1}{2})")
 
     return [LLS_σ_c_N_plot,CLS_σ_c_N_plot]
 end
@@ -81,8 +77,8 @@ L = [128]
 nr = ["LLS", "CLS"]
 
 #ts = vcat((0:20) ./ 50, (5:9) ./ 10)
-dist = "Weibull"
 dist = "ConstantAverageUniform"
+dist = "Weibull"
 if dist=="Weibull"
     pos = :topright
     xlabel=L"t_w"
@@ -95,12 +91,12 @@ end
 
 #ts = (0:7) ./ 10
 data_path = "newData/"
-critical_gradient = 1/2
+critical_gradient = 1
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)
-xpsize = 200
-ypsize = 200
+xpsize = 230
+ypsize = 230
 println("plot")
 p = plot(plots..., size=(xpsize * 1.1 * length(plots), ypsize *
                                                        maximum([length(plots) / 2, 1])))
