@@ -58,14 +58,14 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
     function make_plot1(X, Y, ylabel; 
         ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
-        position=:topleft, log_scale=:identity)
+        position=:left, log_scale=:identity)
 
         p = plot(xlims=xlims, ylims=ylims, markersize=5,
             xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
             yaxis=log_scale, framestyle=:box)
         plot!([], [], label=L"t_0", alpha=0)
 
-        plot_ts = [0.1, 0.25, 0.3, 0.4, 0.5]
+        plot_ts = [0.1, 0.15, 0.3, 0.4, 0.5]
         plot_index = [i for i in eachindex(ts) if ts[i] in plot_ts] 
         labels = permutedims([latexstring("$t") for t in plot_ts])
             
@@ -78,10 +78,10 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         #println((errors[:,1]))
         scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
             markershape=markershape, markerstrokecolor=colors, markersize=7,
-            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.042),
-            inset = (1, bbox(0.37, 0.1, 0.50, 0.4)), subplot=2)
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.43),
+            inset = (1, bbox(0.34, 0.305, 0.50, 0.37)), subplot=2)
         scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
-            framestyle="", ylims=(0, 0.0033),
+            framestyle="", ylims=(0, 0.0015),
             markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
         )
         
@@ -91,30 +91,30 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
     function make_plot2(X, Y, ylabel; 
         ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
-        position=:left, log_scale=:identity)
+        position=:bottomleft, log_scale=:identity)
 
         p = plot(xlims=xlims, ylims=ylims, markersize=5,
             xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
             yaxis=log_scale, framestyle=:box)
         plot!([], [], label=L"t_0", alpha=0)
 
-        plot_ts = [0.1, 0.2, 0.25, 0.27, 0.45, 0.5]
+        plot_ts = [0.1, 0.2, 0.25, 0.45, 0.5]
         plot_index = [i for i in eachindex(ts) if ts[i] in plot_ts] 
         labels = permutedims([latexstring("$t") for t in plot_ts])
             
         plot_Y = permutedims(Y[[i for i in eachindex(ts) if ts[i] in plot_ts], :, 2])
         scatter!(X, plot_Y, label=labels, linestyle=:solid,
         legend=position, markershape=markershape, markersize=7,
-        markerstrokecolor=colors, framestyle="")
+        markerstrokecolor=colors, framestyle="", ylims=(-0.01, Inf))
         
         params, errors = add_fits(X, Y[:, :, 2], plot_index)
         #println((errors[:,1]))
         scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
             markershape=markershape, markerstrokecolor=colors, markersize=7,
-            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.1),
-            inset = (1, bbox(0.38, 0.29, 0.49, 0.43)), subplot=2)
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 1.35),
+            inset = (1, bbox(0.38, 0.38, 0.49, 0.39)), subplot=2)
         scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
-            framestyle="", ylims=(0, 0.015),
+            framestyle="", ylims=(0, 0.006),
             markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
         )
         
@@ -157,34 +157,34 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
 
     N = L .* L
     lnN = log.(log.(N))
-    σ_c_N_plot = make_plot1(lnN, σ_c[:, :, :],
+    σ_c_N_plot = make_plot1(1 ./lnN, σ_c[:, :, :],
         L"\langle σ_c \rangle", log_scale=:identity,
-        xlabel=L"\ln(\ln(N))")
+        xlabel=L"1/\ln(\ln(N))")
     
 
-    k_c_N_plot = make_plot2(lnN, k_c[:, :, :],
+    k_c_N_plot = make_plot2(1 ./lnN, k_c[:, :, :],
         L"\langle k_c \rangle", log_scale=:identity,
-        xlabel=L"\ln(\ln(N))")
+        xlabel=L"1/\ln(\ln(N))")
 
-    tts = [0.1, 0.15, 0.20, 0.25, 0.26, 0.27, 0.28, 0.29, 0.31, 0.32, 0.33, 0.34, 0.35, 0.40, 0.45, 0.5]
+#=     tts = [0.15, 0.20, 0.25, 0.26, 0.27, 0.28, 0.29, 0.31, 0.32, 0.33, 0.34, 0.35, 0.40, 0.45, 0.5]
     σ_c, k_c = get_data(L, nr, tts, dist, "most_stressed_fiber",
     "most_stressed_fiber", argmax, ex=[0, 0], average=false, return_x=true,
     data_path=data_path, rel_x=true)
-#=     r_k_c =(reverse(k_c, dims=1))
+    r_k_c =(reverse(k_c, dims=1))
     strange_p = make_plot3(lnN, σ_c .- r_k_c, tts,
         L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ", log_scale=:identity,
-        xlabel=L"1/\ln(\ln(N))") =#
+        xlabel=L"1/\ln(\ln(N))")
     r_k_c =(reverse(k_c, dims=1))
     strange_p = plot([], [], label=L"L", alpha=0)
     scatter!(tts, σ_c[:, :, 2] .- r_k_c[:, :, 2],
             ylabel=L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ",
             xlabel=L"t_0",markershape=markershape, markerstrokecolor=colors,
             label=permutedims(L),
-            legend=:bottomright)
-    return [σ_c_N_plot, k_c_N_plot, strange_p]
+            legend=:bottomright) =#
+    return [σ_c_N_plot, k_c_N_plot]
 end
 
-L = [16, 32, 64, 128, 256, 512]
+L = [32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
 
@@ -196,7 +196,7 @@ ts = vcat(0.3:0.01:0.5)
 ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
-σ_plot, k_plot, strange_plot = otherPropertiesPlot(L, ts, nr, dist)
+σ_plot, k_plot = otherPropertiesPlot(L, ts, nr, dist)
 xpsize = 360
 ypsize = 330
 p = plot(σ_plot, size=(xpsize * 1.1 * length(plots), ypsize *
@@ -204,13 +204,13 @@ p = plot(σ_plot, size=(xpsize * 1.1 * length(plots), ypsize *
 p2 = plot(k_plot, size=(xpsize * 1.1 * length(plots), ypsize *
                                                        maximum([length(plots) / 2, 1])))
 
-p3 = plot(strange_plot, size=(300, 250))
+#p3 = plot(strange_plot, size=(300, 250))
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize
 #length(plots)/2/length(nr)), layout = @layout([ A B;]))
 #display(p2)
 savefig(p, "plots/Graphs/CriticalStressOverN.pdf")
 savefig(p2, "plots/Graphs/CriticalStressKOverN.pdf")
-savefig(p3, "plots/Graphs/StrangeCriticalStressAndKOverN.pdf")
+#savefig(p3, "plots/Graphs/StrangeCriticalStressAndKOverN.pdf")
 #savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 println("Saved plot!")
