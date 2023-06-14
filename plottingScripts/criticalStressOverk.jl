@@ -104,7 +104,7 @@ p = plot(plots..., size=(xpsize * 1.1 * length(plots), ypsize *
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize
 #length(plots)/2/length(nr)), layout = @layout([ A B;]))
 display(p)
-savefig(p, "plots/Graphs/$(dist)_$(critical_gradient)_CriticalStressOverk.pdf")
+savefig(p, "plots/Graphs/$(dist)_CriticalStressOverk.pdf")
 #savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 println("Saved plot!")
