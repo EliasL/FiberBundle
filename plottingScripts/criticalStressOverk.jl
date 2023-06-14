@@ -52,23 +52,22 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     k = [argmax(E[1])/length(E[1]) for E in E]
     add_plot(ts, k, label="Max energy") =#
 
-
     clusterSize = get_data_kN(L, nr, ts, dist, "average_largest_cluster", return_kN=false)
-    localization = [find_localization(clusterSize[1][:, i, 1], 1)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
+    localization = [find_localization(clusterSize[1][:, i, 1], critical_gradient)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
     add_plot(ts, localization, label=L"k_l")
-
+    
     #localization = [find_localization(clusterSize[1][:, i, 1], 1/2)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
     #add_plot(ts, localization, label=L"k_l")
-
+    
     CLS_σ_c_N_plot = make_plot1(ts, x[:, :, 2], label=L"k_c",
         L"k/N", log_scale=:identity, title="CLS", 
         xlabel=xlabel, position=pos,)
     
 #=     E = [σ_to_energy(most_stressed_fiber[1][:, i, 2]) for i in eachindex(ts)]
-    k = [argmax(E[1])/length(E[1]) for E in E]
-    add_plot(ts, k, label="Max energy") =#
+k = [argmax(E[1])/length(E[1]) for E in E]
+add_plot(ts, k, label="Max energy") =#
 
-    localization = [find_localization(clusterSize[1][:, i, 2], 1)/length(clusterSize[1][:, i, 2]) for i in eachindex(ts)]
+    localization = [find_localization(clusterSize[1][:, i, 2], critical_gradient)/length(clusterSize[1][:, i, 2]) for i in eachindex(ts)]
     add_plot(ts, localization, label=L"k_l")#, (\frac{\partial s_{\mathrm{max}}}{\partial k}=1)")
 
     #localization = [find_localization(clusterSize[1][:, i, 2], 1/2)/length(clusterSize[1][:, i, 1]) for i in eachindex(ts)]
@@ -96,6 +95,7 @@ end
 
 #ts = (0:7) ./ 10
 data_path = "newData/"
+critical_gradient = 1/2
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)
@@ -108,7 +108,7 @@ p = plot(plots..., size=(xpsize * 1.1 * length(plots), ypsize *
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize
 #length(plots)/2/length(nr)), layout = @layout([ A B;]))
 display(p)
-savefig(p, "plots/Graphs/$(dist)_CriticalStressOverk.pdf")
+savefig(p, "plots/Graphs/$(dist)_$(critical_gradient)_CriticalStressOverk.pdf")
 #savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 println("Saved plot!")
