@@ -32,7 +32,9 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     
         scatter!(X, Y, label=label,markeralpha=1.0, c=colors[1],
         legend=position, markershape=markershape, markersize=7,
-        markerstrokecolor=colors[1], z_order=:back)
+        markerstrokecolor=colors[1], z_order=:back,
+        ylims=(minimum(Y)-0.01*maximum(Y), maximum(Y)*1.02),
+        xlims=(minimum(X)-0.01*maximum(Y), maximum(X)*1.02))
         
         if dist=="Weibull"
             xflip!(p)
@@ -81,8 +83,8 @@ L = [128]
 nr = ["LLS", "CLS"]
 
 #ts = vcat((0:20) ./ 50, (5:9) ./ 10)
-dist = "ConstantAverageUniform"
 dist = "Weibull"
+dist = "ConstantAverageUniform"
 if dist=="Weibull"
     xlabel=L"t_w"
     ts = vcat([0.5], 1:0.1:1.5, 2:0.5:5)
