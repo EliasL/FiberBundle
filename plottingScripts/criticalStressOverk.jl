@@ -33,6 +33,10 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         scatter!(X, Y, label=label,markeralpha=1.0, c=colors[1],
         legend=position, markershape=markershape, markersize=7,
         markerstrokecolor=colors[1], z_order=:back)
+        
+        if dist=="Weibull"
+            xflip!(p)
+        end
         return p
     end
 
@@ -50,8 +54,8 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     σ_c, x = get_data(L, nr, ts, dist, "most_stressed_fiber",
         "most_stressed_fiber", argmax, ex=[0, 0], rel_x=true, average=false, return_x=true,
         data_path=data_path)
-     
-
+    
+        
     LLS_σ_c_N_plot = make_plot1(ts, x[:, :, 1], label=L"k_c",
         L"k/N", 1, log_scale=:identity, title="LLS",
         xlabel=xlabel, position=pos,)
@@ -77,14 +81,12 @@ L = [128]
 nr = ["LLS", "CLS"]
 
 #ts = vcat((0:20) ./ 50, (5:9) ./ 10)
-dist = "Weibull"
 dist = "ConstantAverageUniform"
+dist = "Weibull"
 if dist=="Weibull"
-    pos = :topright
     xlabel=L"t_w"
     ts = vcat([0.5], 1:0.1:1.5, 2:0.5:5)
 else
-    pos = :topleft
     xlabel=L"t_0"
     ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
 end
@@ -92,6 +94,7 @@ end
 #ts = (0:7) ./ 10
 data_path = "newData/"
 critical_gradient = 1
+pos = :topleft
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
 plots = otherPropertiesPlot(L, ts, nr, dist)
