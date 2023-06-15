@@ -34,7 +34,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
         legend=position, markershape=markershape, markersize=7,
         markerstrokecolor=colors[1], z_order=:back,
         ylims=(minimum(Y)-0.01*maximum(Y), maximum(Y)*1.02),
-        xlims=(minimum(X)-0.01*maximum(Y), maximum(X)*1.02))
+        xlims=(minimum(X)-0.01*maximum(X), maximum(X)*1.02))
         
         if dist=="Weibull"
             xflip!(p)

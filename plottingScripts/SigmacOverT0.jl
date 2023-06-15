@@ -55,11 +55,15 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         return p
     end
 
-    function make_plot3(X, Y, ylabel, NR; labels=labels, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
+    function make_plot3(X, Y, ylabel, NR; labels=labels, title="",
+        ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
         position=:topright, log=:identity)
 
-        p = plot(xlims=xlims, ylims=ylims,  markersize=5, 
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=:identity, yaxis=:identity)
+        p = plot(markersize=5, 
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=:identity,
+        yaxis=:identity,
+        ylims=(minimum(Y)-0.01*maximum(Y), maximum(Y)*1.02),
+        xlims=(minimum(X)-0.01*maximum(X), maximum(X)*1.02))
 
         
         colors = theme_palette(:auto)[1:length(NR)]
@@ -98,19 +102,26 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     labels = permutedims(NR)
     
 
-    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, data_path=data_path)
+    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber",
+        argmax, ex=[0,0], average=false, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
-    ts = vcat([0.0], ts)
-    new_σ_c = zeros(length(ts), length(L), length(nr))
-    for l=eachindex(L), n=eachindex(nr)
-        new_σ_c[:, l, n] = vcat([0.5], σ_c[:, l, n]) 
+    if dist!="Weibull"
+        ts = vcat([0.0], ts)
+        new_σ_c = zeros(length(ts), length(L), length(nr))
+        for l=eachindex(L), n=eachindex(nr)
+            new_σ_c[:, l, n] = vcat([0.5], σ_c[:, l, n]) 
+        end
+        σ_c = new_σ_c
     end
 
-    σ_c_plot = make_plot3(ts, new_σ_c, log=:log, 
+    σ_c_plot = make_plot3(ts, σ_c, log=:log, 
     L"\langle σ_c \rangle", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=xlabel, position=:topright, )
+                        xlabel=xlabel, position=pos, )
 
+    if dist=="Weibull"
+        xflip!(σ_c_plot)
+    end
     #add_fit!(ts, σ_c)
 #= 
     σ_cofσ = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true, data_path=data_path)
@@ -139,9 +150,10 @@ if dist=="Weibull"
     L=[128]
     xlabel=L"t_w"
     ts = vcat([0.5], 1:0.1:1.5, 2:0.5:5)
+    pos=:topright
 else
     L = [64, 128, 256, 512]
-    pos = :topleft
+    pos = :topright
     xlabel=L"t_0"
     ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
 end
