@@ -73,7 +73,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
             for nr in NR
                 nri = nr=="LLS" ? 1 : 2
                 scatter!(X, Y[:, i, nri], label = "$nr "*latexstring("L=$(L[i])"),
-                legend=position, markerstrokecolor=colors[nri], markershape=markershape[i])
+                legend=position, markerstrokecolor=colors[nri], markershape=markershape[i+(dist=="Weibull" ? nri-1 : 0)])
             end
         end
         return p
