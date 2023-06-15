@@ -76,6 +76,14 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
                 legend=position, markerstrokecolor=colors[nri], markershape=markershape[i+(dist=="Weibull" ? nri-1 : 0)])
             end
         end
+
+        if dist!="Weibull"
+            plot!([0, 0.25], [0.5, 0.25],c=:black, label=L"0.5-t_0",
+                linestyle=:dash, alpha=0.3)
+            vline!(p, [0.25], label="", c=:black, linestyle=:dot, alpha=0.3)
+            annotate!([0.05],[0.475], text("Brittle region", :left, 10))
+            
+        end
         return p
     end
 
@@ -144,8 +152,8 @@ end
 α = 2.0
 nr = ["LLS", "CLS"]
 
-dist = "ConstantAverageUniform"
 dist = "Weibull"
+dist = "ConstantAverageUniform"
 if dist=="Weibull"
     L=[128]
     xlabel=L"t_w"
