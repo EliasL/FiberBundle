@@ -18,7 +18,7 @@ function breakBundle(b::FB, s::FBS)
     end
     #average sigma
     every=500
-    return map(mean, Iterators.partition(σ, every))
+    return σ, map(mean, Iterators.partition(σ, every))
 end
 
 function timeBreak(b::FB, s::FBS; real_sigma=false, real_threshold=false,
@@ -158,15 +158,17 @@ function make_plot(b::FB, s::FBS)
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=false, real_threshold=true)
     p2 = plot(x, σ, legend=:topleft, title="C: " * b.nr, label="", 
-            c=:black, xlabel=L"x", ylabel=L"\tilde{σ}", ylims=(0, Inf), xlims=(0, Inf))
+            c=:black, xlabel=L"x", ylabel=L"\tilde{σ}", ylims=(0, maximum(σ)*1.1), xlims=(0, Inf))
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=true, real_threshold=true)
-    p2 = plot(x, σ, legend=:topleft, title="A: "* b.nr, label="", c=:black, 
-            xlabel="x", ylabel=L"σ", ylims=(0, maximum(σ)*1.0), xlims=(0, Inf))
+    p2 = plot(x, σ, legend=:topleft, title="A", label="", c=:black, 
+            xlabel="x", ylabel=L"σ", ylims=(0, maximum(σ)*1.1), xlims=(0, Inf))
     healBundle!(b)
-    x, σ = timeBreak(b, s, real_sigma=true, real_threshold=true)
-    p3 = plot((1:length(σ))./length(σ)*1, σ, legend=:topleft, title="B: "* b.nr, label="", c=:black, 
-            xlabel="time", ylabel=L"σ, x", ylims=(0, Inf), xlims=(0, 1.1))
+    x, σ = breakBundle(b, s)
+    p3 = scatter(1:length(x), x, legend=:topleft, title="B", label="", c=:black, 
+            xlabel="k", ylabel=L"σ, x", ylims=(0, maximum(x)*1.1), xlims=(0.5, 9.5),
+            xticks=1:9)
+    #p3 = make_k_plot(b, s)
 #=     healBundle!(b)
     x, σ = timeBreak(b, s, real_sigma=true, real_threshold=true, force_controlled=true)
     plot!((1:length(σ))./length(σ)*10, σ, legend=:topleft, title="A: "* b.nr, label="", c=:black, 
@@ -179,7 +181,7 @@ end
 function make_k_plot(b::FB, s::FBS)
     σ = breakBundle(b, s) 
     x = (1:length(σ)) ./ length(σ)
-    p1 = plot!(x, σ, legend=:topleft,  label="",
+    p1 = plots(x, σ, legend=:topleft,  label="",
             c=:black, xlabel=L"k/N", ylabel=L"σ",
             alpha=0.1)
     return p1 
