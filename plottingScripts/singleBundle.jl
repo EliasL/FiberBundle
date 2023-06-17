@@ -153,7 +153,7 @@ end
 function make_plot(b::FB, s::FBS)
     x, σ = slowBreak(b, s, real_sigma=false, real_threshold=false)
     p1 = plot(x, σ, legend=:topleft, title="No Load Sharing ", label="",
-            c=:black, xlabel=L"x", ylabel=L"σ",
+            c=:black, xlabel=L"x", ylabel=L"\tilde{σ}",
             ylims=(0, Inf), xlims=(0, 1), size=(300,250))
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=false, real_threshold=true)
