@@ -152,7 +152,7 @@ end
 
 function make_plot(b::FB, s::FBS)
     x, σ = slowBreak(b, s, real_sigma=false, real_threshold=false)
-    p1 = plot(x, σ, legend=:topleft, title="B: No Load Sharing ", label="",
+    p1 = plot(x, σ, legend=:topleft, title="No Load Sharing ", label="",
             c=:black, xlabel=L"x", ylabel=L"\tilde{σ}",
             ylims=(0, Inf), xlims=(0, 1))
     healBundle!(b)
@@ -171,6 +171,7 @@ function make_plot(b::FB, s::FBS)
     x, σ = timeBreak(b, s, real_sigma=true, real_threshold=true, force_controlled=true)
     plot!((1:length(σ))./length(σ)*10, σ, legend=:topleft, title="A: "* b.nr, label="", c=:black, 
             xlabel="time", ylabel=L"σ, x", ylims=(0, maximum(σ)*1.1), xlims=(0, 11), linestyle=:dash) =#
+    savefig(p1, "plots/Graphs/ForceOfSingleBundleWithoutLoadSharing.pdf")
     return p2, p3
 end
 
