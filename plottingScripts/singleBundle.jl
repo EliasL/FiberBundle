@@ -219,7 +219,7 @@ function make_plot(b::FB, s::FBS)
         linestyle=:dash, label="", c=:black)
     healBundle!(b)
     x, σ = slowBreak2(b, s, real_sigma=false, real_threshold=true)
-    p4 = plot(x, σ, legend=:topleft, title="C: " * b.nr, label="", 
+    p4 = plot(x, σ, legend=:topleft, title="Equal Load Sharing", label="", size=(300,250), 
             c=:black, xlabel=L"x", ylabel=L"\tilde{σ}", ylims=(0, maximum(σ)*1.0), xlims=(0, Inf))
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=true, real_threshold=true)
