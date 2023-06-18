@@ -155,6 +155,10 @@ function make_plot(b::FB, s::FBS)
     p1 = plot(x, σ, legend=:topleft, title="No Load Sharing ", label="",
             c=:black, xlabel=L"x", ylabel=L"\tilde{σ}",
             ylims=(0, Inf), xlims=(0, 1), size=(300,250))
+        x1 = 4100
+        x2 = 7115
+        plot!([0 0 ; x[x1] x[x2]], [0 0 ; σ[x1] σ[x2]],
+        linestyle=:dash, label="", c=:black)
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=false, real_threshold=true)
     p2 = plot(x, σ, legend=:topleft, title="C: " * b.nr, label="", 
@@ -201,7 +205,7 @@ println("Making plot...")
 ELSPlot = make_plot(b,s)
 p=plot(ELSPlot..., size=(300*length(ELSPlot), 300), layout= @layout([ A B;]))
 savefig("plots/Graphs/ForceOfSingleBundle.pdf")
-display(p)
+#display(p)
 #= for nr = ["LLS", "CLS"]
     p = plot()
 
