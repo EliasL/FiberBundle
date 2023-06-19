@@ -107,8 +107,6 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         label=nothing, markershape=:vline, markersize=8, markerstrokewidth=1) =#
         
     end
-    
-
 
         function get_σ_data(ts)
             Y = []
@@ -197,7 +195,7 @@ if dist == "Weibull"
 else
     ts = [0.1, 0.27, 0.3, 0.35, 0.40, 0.5]
 end
-#= nrs = length(nr)
+nrs = length(nr)
 println("Started...")
 nr_plots = [basicPropertiesPlot(L, ts, nr[i], dist, use_y_lable=i==1) for i in 1:nrs]
 plots = reduce(vcat, reduce(vcat, collect.(zip(nr_plots...))))
@@ -209,7 +207,7 @@ for i in eachindex(plots)
     savefig(p, "plots/Graphs/Basic/$(dist) $(nr[mod1(i, 2)]) $(names[ceil(Int64,i/2)]).pdf")
 end
 p = plot(plots..., layout=(length(plots)÷nrs,nrs), size=(700,800), left_margin=2Plots.mm, link=:x)
-savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf") =#
+savefig(p, "plots/Graphs/$(dist)_BundleProperties.pdf")
 
 L=128
 nr = ["LLS", "CLS"]
