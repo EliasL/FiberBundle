@@ -82,7 +82,8 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
                 linestyle=:dash, alpha=0.3)
             vline!(p, [0.25], label="", c=:black, linestyle=:dot, alpha=0.3)
             annotate!([0.05],[0.475], text("Brittle region", :left, 10))
-            
+            #println(Y[end, 4, 1])
+            #println(X[end])
         end
         return p
     end
