@@ -55,11 +55,15 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         return p
     end
 
-    function make_plot3(X, Y, ylabel, NR; labels=labels, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
+    function make_plot3(X, Y, ylabel, NR; labels=labels, title="",
+        ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
         position=:topright, log=:identity)
 
-        p = plot(xlims=xlims, ylims=ylims,  markersize=5, 
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=:identity, yaxis=log)
+        p = plot(markersize=5, 
+        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=:identity,
+        yaxis=:identity,
+        ylims=(minimum(Y)-0.01*maximum(Y), maximum(Y)*1.02),
+        xlims=(minimum(X)-0.01*maximum(X), maximum(X)*1.02))
 
         
         colors = theme_palette(:auto)[1:length(NR)]
@@ -69,8 +73,17 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
             for nr in NR
                 nri = nr=="LLS" ? 1 : 2
                 scatter!(X, Y[:, i, nri], label = "$nr "*latexstring("L=$(L[i])"),
-                legend=position, markerstrokecolor=colors[nri], markershape=markershape[i])
+                legend=position, markerstrokecolor=colors[nri], markershape=markershape[i+(dist=="Weibull" ? nri-1 : 0)])
             end
+        end
+
+        if dist!="Weibull"
+            plot!([0, 0.25], [0.5, 0.25],c=:black, label=L"0.5-t_0",
+                linestyle=:dash, alpha=0.3)
+            vline!(p, [0.25], label="", c=:black, linestyle=:dot, alpha=0.3)
+            annotate!([0.05],[0.475], text("Brittle region", :left, 10))
+            #println(Y[end, 4, 1])
+            #println(X[end])
         end
         return p
     end
@@ -98,70 +111,68 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     labels = permutedims(NR)
     
 
-    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, data_path=data_path)
+    σ_c = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber",
+        argmax, ex=[0,0], average=false, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
+    if dist!="Weibull"
+        ts = vcat([0.0], ts)
+        new_σ_c = zeros(length(ts), length(L), length(nr))
+        for l=eachindex(L), n=eachindex(nr)
+            new_σ_c[:, l, n] = vcat([0.5], σ_c[:, l, n]) 
+        end
+        σ_c = new_σ_c
+    end
 
-    σ_c_plot = make_plot3(ts, σ_c[:, :, :], log=:log, 
+    σ_c_plot = make_plot3(ts, σ_c, log=:log, 
     L"\langle σ_c \rangle", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:topright, )
+                        xlabel=xlabel, position=pos, )
 
+    if dist=="Weibull"
+        xflip!(σ_c_plot)
+    end
     #add_fit!(ts, σ_c)
-
+#= 
     σ_cofσ = get_data(L, nr, ts, dist, "average_most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=true, data_path=data_path)
     #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
     σ_cofσ_plot = make_plot3(ts, σ_cofσ[:, :, :], log=:log, 
     L"σ_c(\langle σ \rangle)", permutedims(["$nr" for nr in NR]), title="",
-                        xlabel=L"t_0", position=:topright, )
-    #add_fit!(ts, σ_cofσ)
-    #min_y = round(minimum(most_stressed_fiber_spanning[:, :, 1]), digits=3)
-    #slope = 0.22
-    #plot!(ts, min_y .+ ts*slope, labels="$min_y+$slope"*L"\times t_0", color=:black, linestyle=:dash, alpha=0.5)
-
-
-#=     σ_over_t_CLS = make_plot(σ_c[:, :, 2], log=:identity, 
-    L"σ_c", permutedims([L"L="*"$l" for l in L]), title="CLS",
-                        x=ts, xlabel=L"t_0", position=:topright, )
-
-    y = σ_c[:, end, 2]
-    f, param = myfit(ts, y, fit_interval=0.4)
-    param = round.(param, digits=2)
-    xx = lin(ts)
-    plot!(xx, f, labels="$(param[2])+$(param[1])×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5) =#
+                        xlabel=L"t_0", position=:topright, ) =#
+    #add_fit!(ts, σ_c)
+    max_y = 0.5#round(maximum(σ_c[:, :, 1]), digits=2)
+    slope = 1
+    #a = 22
+    #b = 0.54
+    #plot!(ts[1:6], max_y .- slope.*ts[1:6], labels="$max_y"*L" -" * L"t_0", color=:black, linestyle=:dash, alpha=0.5)
 
     
-#=     L=[128]    
-    ts = [0.0, 0.1, 0.2, 0.3, 0.5, 0.8]
-    S = get_data_kN(L, NR, ts, dist, "average_largest_cluster", return_kN=false, divide=:N)
-    σ = get_data_kN(L, NR, ts, dist, "average_most_stressed_fiber", return_kN=false, divide=1)
-
-
-    size_over_σ_LLS = make_plot2(S, σ, L"σ", "LLS", log=:identity, #ylims=(log(4),Inf),
-                       labels=permutedims([L"t_0="*"$t" for t in ts]), title="LLS",
-                       xlabel=L"s_{\mathrm{max}}", position=:bottomleft)
-    annotate!(0.35, 0.7, text("L=$(L[1])", 10))
-    size_over_σ_CLS = make_plot2(S, σ, "", "CLS", log=:identity, #ylims=(log(4),Inf),
-    labels=permutedims([L"t_0="*"$t" for t in ts]), title="CLS",
-                       xlabel=L"s_{\mathrm{max}}", position=:bottomleft)
-    annotate!(0.35, 0.7, text("L=$(L[1])", 10)) =#
     
-    
-    return [σ_c_plot, σ_cofσ_plot]
+    return [σ_c_plot]
 end
 
-L = [64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
-ts = vcat((0:20) ./ 50, (5:8) ./ 10)
-ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
+
+dist = "Weibull"
 dist = "ConstantAverageUniform"
+if dist=="Weibull"
+    L=[128]
+    xlabel=L"t_w"
+    ts = vcat([0.5], 1:0.1:1.5, 2:0.5:5)
+    pos=:topright
+else
+    L = [64, 128, 256, 512]
+    pos = :topright
+    xlabel=L"t_0"
+    ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
+end
 data_path="newData/"
 #ts = (0:7) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
-plots = otherPropertiesPlot(L, ts, nr, dist)
+plots = [otherPropertiesPlot(L, ts, nr, dist)[1]]
 xpsize=300
-ypsize=280
+ypsize=300
 p = plot(plots..., size=(xpsize*1.1*length(plots),ypsize), layout = @layout([ A B ;]))
 #p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
 savefig(p, "plots/Graphs/$(dist)_average_sigma_C_over_t0.pdf")

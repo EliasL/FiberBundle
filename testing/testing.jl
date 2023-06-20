@@ -34,7 +34,6 @@ function basic_test()
     @test all(b.status[b.neighbours[1,:]] .== -3)#PAST_BORDER) #"These should be past borders"
     @test all(b.σ[b.neighbours[1,:]] .== 1.25) #"The tension is incorrect"
     @test sum(b.σ) ≈ b.N #"No conservation of tension"
-    
     # Second fiber
     resetBundle!(b)
     findAndBreakNextFiber!(b)
@@ -454,8 +453,6 @@ end
 function breakb(b::FB, s::FBS)
     for _ in 1:b.N-1
         findAndBreakNextFiber!(b, s)
-        update_tension!(b)
-        resetBundle!(b)                
     end
     healBundle!(b)
     return 
@@ -467,11 +464,10 @@ function performance_test()
     nr="CLS"
     seed=1
     b, s = get_fb(L, seed, α=α, nr=nr, without_storage=false)    
-    
-
+    #println(@benchmark(breakb($b, $s)))
     result = @elapsed breakb(b, s)
-    @test result < 1.3 
-    #println(result)
+    #println(result)    
+    @test result < 0.7 
     return
 end
 #performance_test()
@@ -499,5 +495,6 @@ function test()
         @testset "Performance" begin performance_test() end
     end
 end
+#basic_test()
 test()
 println("Test done")

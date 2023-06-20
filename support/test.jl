@@ -1,8 +1,47 @@
-using Plots
+include("bundleAnalasys.jl")
+include("dataManager.jl")
+include("../plottingScripts/showBundle.jl")
 
-# Generatesome data
-x = ([1:4 , 2:2:8]./8)./[3,9].^0.6333
-y2 = ([[0.1, 0.1, 0.1, 0.2], [0.2, 0.2, 0.2, 0.4]]./0.4)./[3,9].^0.63
+function do_box_count(l, nr, t, file)
+    for seed in 1:1
+        b = get_bundle_from_file(file, l, nr=nr, t=t, spanning=true, seed=seed)
+        counts = box_counting(b)
+        println(counts)
+    end
+end
 
-# Create the second plot with right y-axis and no label or ticks
-plot(x, y2, label="Plot 2", xlabel="", yaxis=:log, xaxis=:log)
+L = 32
+α = 2.0
+t = 0.5
+nr = "LLS"
+dist = "ConstantAverageUniform"
+dataPath = "newData/"
+
+bulk_file = load_file(L, α, t, nr, dist, data_path=dataPath, average=false)
+do_box_count(L, nr, t, bulk_file)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

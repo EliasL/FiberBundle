@@ -77,22 +77,28 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
 
     labels = permutedims(NR)
-    a = [2, 0]
-    b = [2, 0]
-    c = [0, 0]
-    d = [0,0]
-    tlabel1=0.3
-    tlabel2=0.5
-    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=a, average=false, data_path=data_path)
-    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=b, average=false, data_path=data_path)
-    most_stressed_fiber_spanning = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=c, average=false, data_path=data_path)
-    xLLS = most_stressed_fiber_spanning[:, :, 1]
-    xCLS = most_stressed_fiber_spanning[:, :, 2]
+    a = [0.23, 0.05]
+    b = [0.239, 0.03]
+    c = [0.005, 0.033]
+    d = [0,0.085]
+    e = 0.03
+    f = 0.2
+    tlabel1=0.32
+    tlabel2=0.48
+    yf(y) = log.(y)
+    xf(x) = log.(x)
+    largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, yValuef=yf, ex=a, average=false, data_path=data_path)
+    largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, yValuef=yf, ex=b, average=false, data_path=data_path)
+    most_stressed_fiber_spanning = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, yValuef=xf, ex=c, average=false, data_path=data_path)
+    scale = :identity
+    xLLS = (most_stressed_fiber_spanning[:, :, 1])
+    xCLS = (most_stressed_fiber_spanning[:, :, 2])
     xxLLS = lin.(eachcol(xLLS))[end]
     xxCLS = lin.(eachcol(xCLS))[end]
-    size_over_σ_LLS = make_plot(largest_cluster_spanning[:, :, 1], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []], 
-    L"s_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]), series_position=:left, title="LLS",
-                        x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
+    size_over_σ_LLS = make_plot(largest_cluster_spanning[:, :, 1],
+    L"\ln(s_{\mathrm{max}})/"*latexstring("L^{$(a[1])}"), permutedims([L"L="*"$l" for l in L]),
+        series_position=:left, title="LLS", x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:topright,
+        log=scale, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],  )
     
     #plot!(xxLLS[130:end], myfunk(xxLLS[130:end], -8, 2*10^7), labels=L"σ_c^{-8}/(2\times10^7)", color=:black, linestyle=:dash, alpha=0.5)
 
@@ -102,19 +108,19 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     df = derivative.(eachcol(x), eachcol(y))
     xx = lin.(eachcol(x))
     plot!(xx, f, labels="", color=permutedims(theme_palette(:auto)[1:length(L)]))
-    plot!(xx, df, inset = (1, bbox(0.5,0.35,0.45,0.5)), subplot = 2, xaxis=:log, labels="", xlims=(xmin, xmax),
+    plot!(xx, df, inset = (1, bbox(0.5,0.35,0.45,0.5)), subplot = 2, xaxis=scale, labels="", xlims=(xmin, xmax),
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{s}_{\mathrm{max}} / ∂\tilde{σ}}") =#
 
-    size_over_σ_CLS = make_plot(largest_cluster_spanning[:, :, 2], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
-    L"s_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]), title="CLS",
-                        x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, series_position=:left)
+    size_over_σ_CLS = make_plot(largest_cluster_spanning[:, :, 2], log=scale, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
+    L"\ln(s_{\mathrm{max}})/"*latexstring("L^{$(a[2])}"), permutedims([L"L="*"$l" for l in L]), title="CLS",
+                        x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:topright, series_position=:left)
     
     #plot!(xxCLS, myfunk(xxCLS, -5.5, 50), labels=L"σ_c^{-5.5}/50", color=:black, linestyle=:dash, alpha=0.5)
 
 
-    span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []], 
-    L"h_{\mathrm{max}}/L^2", permutedims([L"L="*"$l" for l in L]),
-                        x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft, )
+    span_over_σ_LLS = make_plot(largest_perimeter_spanning[:, :, 1], log=scale, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []], 
+    L"\ln(h_{\mathrm{max}})/"*latexstring("L^{$(b[1])}"), permutedims([L"L="*"$l" for l in L]),
+                        x=xLLS, #= xlabel=L"\tilde{σ}", =# position=:topright, )
                             
     #plot!(xxLLS[100:end], myfunk(xxLLS[100:end], -7, 5*10^6), labels=L"σ_c^{-6}/(4\times10^5)", color=:black, linestyle=:dash, alpha=0.5)
 
@@ -123,13 +129,13 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     df = derivative.(eachcol(x), eachcol(y))
     xx = lin.(eachcol(x))
     plot!(xx, f, labels="", color=permutedims(theme_palette(:auto)[1:length(L)]))
-    plot!(xx, df, inset = (1, bbox(0.5,0.35,0.45,0.5)), subplot = 2, xaxis=:log, labels="", xlims=(xmin, xmax),
+    plot!(xx, df, inset = (1, bbox(0.5,0.35,0.45,0.5)), subplot = 2, xaxis=scale, labels="", xlims=(xmin, xmax),
         xlabel=L"\tilde{σ}", ylabel=L"∂\tilde{h}_{\mathrm{max}} / ∂\tilde{σ}}") =#
        
 
-    span_over_σ_CLS = make_plot(largest_perimeter_spanning[:, :, 2], log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
-    L"h_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
-                        x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:bottomleft,
+    span_over_σ_CLS = make_plot(largest_perimeter_spanning[:, :, 2], log=scale, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
+    L"\ln(h_{\mathrm{max}})/"*latexstring("L^{$(b[2])}"), permutedims([L"L="*"$l" for l in L]),
+                        x=xCLS, #= xlabel=L"\tilde{σ}", =# position=:topright,
                         series_position=:left)
     
     #plot!(xxCLS, myfunk(xxCLS, -4, 6), labels=L"σ_c^{-4}/6", color=:black, linestyle=:dash, alpha=0.5)
@@ -137,13 +143,15 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
 
     largest_cluster_spanning = get_data(L, nr, ts, dist, "largest_cluster", "most_stressed_fiber", argmax, ex=[0,0], average=false, data_path=data_path)
     largest_perimeter_spanning = get_data(L, nr, ts, dist, "largest_perimiter", "most_stressed_fiber", argmax, ex=[0,0], average=false, data_path=data_path)
-
-    y1 = (largest_cluster_spanning[:, :, 1] ./ largest_perimeter_spanning[:, :, 1]) ./ permutedims(L.^d[1])
-    y2 = (largest_cluster_spanning[:, :, 2] ./ largest_perimeter_spanning[:, :, 2]) ./ permutedims(L.^d[2])
+#= 
+    y1 = yf(largest_cluster_spanning[:, :, 1]) ./ yf(largest_perimeter_spanning[:, :, 1]) 
+    y2 = yf(largest_cluster_spanning[:, :, 2]) ./ yf(largest_perimeter_spanning[:, :, 2]) =#
+    y1 = (largest_cluster_spanning[:, :, 1]) ./ (largest_perimeter_spanning[:, :, 1])  ./ permutedims(L.^d[1])
+    y2 = (largest_cluster_spanning[:, :, 2]) ./ (largest_perimeter_spanning[:, :, 2]) ./ permutedims(L.^d[2])
     
-    ratio_over_σ_LLS = make_plot(y1, log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
-                        L" s_{\mathrm{max}}/h_{\mathrm{max}}", permutedims([L"L="*"$l" for l in L]),
-                        x=xLLS, xlabel=L"σ_c", position=:bottomleft, title="LLS",
+    ratio_over_σ_LLS = make_plot(y1, log=scale, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
+                        L"(s_{\mathrm{max}}/h_{\mathrm{max}})"*latexstring("/L^{$(d[1])}"), permutedims([L"L="*"$l" for l in L]),
+                        x=xLLS, xlabel=L"\ln(σ_c)"*latexstring("/L^{$(c[1])}"), position=:topright, title="LLS",
                         series_position=:left)
     
     #plot!(xxLLS, myfunk(xxLLS, -3, 30), labels=L"σ_c^{-3}/30", color=:black, linestyle=:dash, alpha=0.5)
@@ -153,12 +161,12 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     df = derivative.(eachcol(x1), eachcol(y1))
     xx = lin.(eachcol(x1))
     plot!(xx, f, labels="", color=permutedims(theme_palette(:auto)[1:length(L)]))
-    plot!(xx, df, inset = (1, bbox(0.6,0.5,0.36,0.35)), subplot = 2, xaxis=:log, labels="", xlims=(xmin, xmax),
+    plot!(xx, df, inset = (1, bbox(0.6,0.5,0.36,0.35)), subplot = 2, xaxis=scale, labels="", xlims=(xmin, xmax),
         xlabel=""#= L"\tilde{σ}" =#, ylabel=L"∂\tilde{h}_{\mathrm{max}} / ∂\tilde{σ}}") =#
     
-    ratio_over_σ_CLS = make_plot(y2, log=:log, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
-    L" s_{\mathrm{max}}/h_{\mathrm{max}}", #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l" for l in L]),
-                        x=xCLS, xlabel=L"σ_c", position=:bottomleft, title="CLS",
+    ratio_over_σ_CLS = make_plot(y2, log=scale, series_annotation=[[tlabel1, tlabel2],[],[],[], [], []],
+    L"(s_{\mathrm{max}}/h_{\mathrm{max}})"*latexstring("/L^{$(d[2])}"), #= L"\tilde{h}_{\mathrm{max}}",  =#permutedims([L"L="*"$l" for l in L]),
+                        x=xCLS, xlabel=L"\ln(σ_c)"*latexstring("/L^{$(c[2])}"), position=:topright, title="CLS",
                         series_position=:left)
 
     #plot!(xxCLS, myfunk(xxCLS, -1.75, 10), labels=L"σ_c^{-1.75}/10", color=:black, linestyle=:dash, alpha=0.5)
@@ -173,7 +181,7 @@ nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 data_path="newData/"
 #ts = vcat((0:20) ./ 50, (5:7) ./ 10)
-ts = vcat(0.15:0.05:0.25, 0.3:0.01:0.5)
+ts = vcat(0.3:0.01:0.5)
 #ts2 = (0:9) ./ 10
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
@@ -183,3 +191,4 @@ p = plot(plots..., size=(psize*length(nr)*1.2,psize*length(plots)/length(nr)), l
 savefig(p, "plots/Graphs/$(dist)_sh_over_sigma_c.pdf")
 
 println("Saved plot!")
+p

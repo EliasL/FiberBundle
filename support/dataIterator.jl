@@ -1,7 +1,7 @@
 include("dataManager.jl")
 
 
-function get_data_kN(L, NR, ts, dist, key; average=true, divide=:N, return_kN=true, data_path="newData")
+function get_data_kN(L, NR, ts, dist, key; average=true, nr_seeds=0, divide=:N, return_kN=true, data_path="newData/")
     data = []
     kN = []
     for l in L
@@ -11,14 +11,25 @@ function get_data_kN(L, NR, ts, dist, key; average=true, divide=:N, return_kN=tr
         else
             divisor=divide
         end
-        LData = zeros(N, length(ts), length(NR))
-        LkN = zeros(size(LData))
+        if average
+            LData = zeros(N, length(ts), length(NR))
+        else
+            LData = zeros(N, length(ts), length(NR), nr_seeds)
+        end
+        LkN = zeros(N)
         for nr=eachindex(NR), t=eachindex(ts)
             name = get_file_name(l, 2.0, ts[t], NR[nr], dist, average=average, data_path=data_path)
             jldopen(name, "r") do file
-                fdata = file[key]
-                LData[:, t, nr] .= fdata./divisor
-                LkN[:, t, nr] .= (1:N)./N
+                if average
+                    fdata = file[key]
+                  LData[:, t, nr] .= fdata./divisor
+                else
+                    for seed in 0:nr_seeds-1
+                        fdata = file["$key/$seed"]
+                        LData[:, t, nr, seed+1] .= fdata./divisor
+                    end
+                end
+                LkN = (1:N)./N
             end
         end          
         push!(data, LData)
@@ -31,8 +42,7 @@ function get_data_kN(L, NR, ts, dist, key; average=true, divide=:N, return_kN=tr
     end
 end
 
-
-function get_data(L, NR, ts, dist, key, xKey, xKeyf; average=true, ex=[2,2], α=2.0, return_x=false, data_path="newData")
+function get_data(L, NR, ts, dist, key, xKey, xKeyf; yValuef=f(x)=x, average=true, ex=[2,2], rel_x=false, α=2.0, return_x=false, data_path="newData/")
     do_data_test = true
     data = zeros(length(ts), length(L), length(NR))
     x_values = zeros(length(ts), length(L), length(NR))
@@ -48,11 +58,10 @@ function get_data(L, NR, ts, dist, key, xKey, xKeyf; average=true, ex=[2,2], α=
                 x = avg_x
             else
                 x = xKeyf(file["average_$xKey"])
-                println(x)
                 value = file[key][round(Int64, x)]
             end
-            data[t, l, nr] = value/L[l]^ex[nr]
-            x_values[t, l, nr] = x
+            data[t, l, nr] = yValuef(value)/L[l]^ex[nr]
+            x_values[t, l, nr] = rel_x ? x/L[l]^2 : x
         end
     end        
     if return_x
@@ -65,7 +74,7 @@ end
 
 function load_data(bulk_file, key, l, nr, t, dist, xKey, xKeyf,data_path)
     path = "$data_path/$xKey/"
-    name = "$(dist)_$(l)_$(nr)_$(t)_$key"
+    name = "$(dist)_$(l)_$(nr)_$(t)_$(key)_$(string(xKeyf))"
     avg_x = 0
     if !isdir(path)
         mkpath(path)

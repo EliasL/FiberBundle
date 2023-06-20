@@ -105,6 +105,9 @@ function get_fb(L, seed; α=2.0, t=0, nr="LLS", dist="Uniform", without_storage=
     elseif dist == "ConstantAverageUniform"
         distribution_function = get_fixed_average_uniform_distribution(t)
         x = distribution_function(N)
+    elseif dist == "Weibull"
+        distribution_function = get_weibull_distribution(t)
+        x = distribution_function(N)
     elseif isa(dist, Function)
         x = dist(N)
     elseif isa(dist, AbstractVector)
@@ -299,6 +302,7 @@ function resetClusters!(b::FB)
     end
 end
 
+
 function update_tension!(b::FB)# σ is the relative tension of the fiber if x had been 1
     # If σ of a fiber is 2, this just means that it is under
     # twice as much tension as a fiber of σ=1. But in order to
@@ -309,6 +313,13 @@ function update_tension!(b::FB)# σ is the relative tension of the fiber if x ha
     for i in eachindex(b.σ)
         b.tension[i] = b.x[i] / b.σ[i] 
     end
+end
+
+function totalBundleTension(b::FB)
+    # I tried to replace Inf with zero in b.tension, but since we use argmin, 
+    # that doesn't quite work. It is better to use inf2zero when we need to 
+    # sum over the total tension
+    return sum(b.tension[b.tension .!= Inf])
 end
 
 function find_next_fiber!(b::FB)

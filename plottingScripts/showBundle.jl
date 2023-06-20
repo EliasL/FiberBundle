@@ -50,7 +50,7 @@ function shift_spanning_cluster!(b::FB, cm_shift=true)
 end
 
 
-function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false, cm_shift=true)
+function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false, cm_shift=true, radius=false)
     L=b.L
     spanning=argmax(b.cluster_size)
     
@@ -81,6 +81,14 @@ function plot_fb(b::FB; show=true, axes=false, use_shift=true, stress=false, cm_
     img = map(x -> c[x+1], m)
     p = plot(img, legend=:none, aspect_ratio=:equal, bg_inside = nothing,
     showaxis = axes, ticks=axes, size=(image_size, image_size))
+
+    if radius
+        R = find_radius_of_gyration(b)
+        plot_gyration_radi(b, R)
+        println(b.α)
+        println(maximum(R))
+        println(maximum(b.cluster_size))
+    end
 
     if show
         display(p)
@@ -120,15 +128,15 @@ function plot_gyration_radi(b::FB, R; nr=:all)
     if nr != :all
         R = sort(collect(enumerate(R)),by= x -> x[2], rev=true)[1:nr]
     else
-        R = enumerate(R)
+        R = collect(enumerate(R))
     end
     s = b.cluster_size[b.spanning_cluster_id]
     r_ = round(R[1][2]; digits=2)
     for (c, r) in R
         cmx = b.cluster_cm_x[c]
         cmy = b.cluster_cm_y[c]
-        plot!(circleShape(cmx, cmy, r), seriestype=[:shape,],lw=0.5, c=:blue,
-        linecolor=:black, legend=false, fillalpha = 0.2, aspect_ratio=1, title="r:$r_, s:$s")
+        plot!(circleShape(cmx, cmy, r), seriestype=[:shape,],lw=2, c=:green,
+        linecolor=:white, legend=false, fillalpha = 0.3, aspect_ratio=1, )#title="r:$r_, s:$s")
     end
 end
 
@@ -136,10 +144,11 @@ function plot_fb_cm(b::FB)
     return plot!(b.cluster_cm_x, b.cluster_cm_y, seriestype = :scatter)
 end
 
-function save_picture(L, nr, t, α, seed, name, dist, save_path="", data_path="data/")
+function save_picture(L, nr, t, α, seed, name, dist, save_path="", data_path="data/"; radius=false)
     settings = make_settings(L, t, nr, α, dist, data_path)
     b = get_bundles_from_settings(settings, seeds=seed, spanning=true)
-    p = plot_fb(b, show=false)
+    p = plot_fb(b, show=false, radius=radius)
+
     # We always save the plot as latest_plot, so we can just copy that file
     if save_path != ""
         cp("latest_plot.png", "$save_path/$name.png", force=true)

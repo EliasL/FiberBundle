@@ -3,103 +3,188 @@ using JLD2
 using LaTeXStrings
 using Trapz
 using LsqFit
-
 include("ploting_settings.jl")
 include("../support/dataManager.jl")
 include("../support/bundleAnalasys.jl")
 include("../support/dataIterator.jl")
 
-funk(X, p) = p[2] .+ p[1] .*X
+funk(X, p) = p[2] .+ p[1] .* X
 
 function get_fit(x, y)
     p0 = [0.22, 0.22]
-    return curve_fit(funk, x, y , p0)
+    return curve_fit(funk, x, y, p0)
 end
 
 function lin(x)
-    return minimum(x):0.001:maximum(x)
+    return LinRange(minimum(x),maximum(x),10)
 end
 
+function myerror(x, y, f)
+    fit = funk(x, f.param)
+    return sum(abs.(fit.-y))./length(y)
+end
 
 function myfit(x, y; fit_interval=1)
-    r = round(Int64, fit_interval*length(x))
-    println(x[r])
+    r = round(Int64, fit_interval * length(x))
     f = get_fit(x[1:r], y[1:r])
-    return funk(lin(x), f.param), f.param
+    return funk(lin(x), f.param), f.param, myerror(x, y, f)
 end
 
-
-function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
-    
-    
+function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true)
     yLabel(string) = use_y_lable ? string : ""
-    function make_plot(y, ylabel, labels; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
-        position=:topright, series_annotation=[], log=:identity)
-        p = scatter(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, xaxis=log, yaxis=log,
-            markershape=[:diamond :rect :star4 :utriangle :dtriangle :circle],
-            xlabel=xlabel, ylabel=yLabel(ylabel), title=title, mc=:auto, msc=:auto)
-        return p
-    end
 
-    function make_plot2(X, Y, ylabel, NR; labels=labels, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
-        position=:topright, log=:identity)
+    colors = permutedims(theme_palette(:auto)[1:16])
+    markershape = [:circle :pentagon :star4 :diamond :rect :utriangle :dtriangle :star6]
 
-        p = plot(xlims=xlims, ylims=ylims,  markersize=5, 
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=log, yaxis=log)
-
-        NR = NR=="LLS" ? 1 : 2
-
-        for i in eachindex(X)
-            plot!(X[i][:, :, NR], Y[i][:, :, NR], label = labels)
+    function add_fits(x, y, plot_index)
+        params = zeros(Float64, (size(y)[1],2))
+        errors = zeros(Float64, size(y)[1])
+        nr_color = 1
+        for i in 1:size(y)[1] 
+            fit, param, error = myfit(x, y[i, :])
+            if i in plot_index
+                plot!(lin(x), fit, label="", c=colors[nr_color],
+                markershape=markershape, markerstrokecolor=colors[nr_color],
+                markerstrokealpha=0)
+                nr_color += 1
+            end
+            params[i, :] = param
+            errors[i] = error#[sum(abs.(error[1])), sum(abs.(error[2][1]))]
         end
-        return p
+        return collect(params), collect(errors)
     end
 
-    function make_plot3(X, Y, ylabel, NR; labels=labels, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
-        position=:topright, log=:identity)
 
-        p = plot(xlims=xlims, ylims=ylims,  markersize=5, 
-        xlabel=xlabel, ylabel=yLabel(ylabel), title=title, xaxis=:identity, yaxis=log)
 
+    function make_plot1(X, Y, ylabel; 
+        ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
+        position=:left, log_scale=:identity)
+
+        p = plot(xlims=xlims, ylims=ylims, markersize=5,
+            xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
+            yaxis=log_scale, framestyle=:box)
+        plot!([], [], label=L"t_0", alpha=0)
+
+        plot_ts = [0.1, 0.15, 0.3, 0.4, 0.5]
+        plot_index = [i for i in eachindex(ts) if ts[i] in plot_ts] 
+        labels = permutedims([latexstring("$t") for t in plot_ts])
+            
+        plot_Y = permutedims(Y[[i for i in eachindex(ts) if ts[i] in plot_ts], :, 2])
+        scatter!(X, plot_Y, label=labels, linestyle=:solid,
+        legend=position, markershape=markershape, markersize=7,
+        markerstrokecolor=colors, framestyle="", ylims=(-Inf, 0.41))
         
-        colors = permutedims(vcat(theme_palette(:auto),theme_palette(:auto)))
-        markershape=[:diamond :rect :star4 :utriangle :dtriangle :circle]
-        series_annotation = [0.3, 0.5]
-        series_annotation = text.([t in series_annotation ?  L" $t_0=$"*"$t " : "" for t in ts], pointsize=8, halign=:left, valign=:bottom)
-        labels= permutedims([latexstring("t_0=$(ts[i])") for i in eachindex(ts)])
-        plot!(X, permutedims(Y), label = labels, markerstrokecolor=permutedims(theme_palette(:auto)[1:length(ts)]),
-        legend=position, markershape=markershape)
-
+        params, errors = add_fits(X, Y[:, :, 2], plot_index)
+        #println((errors[:,1]))
+        scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
+            markershape=markershape, markerstrokecolor=colors, markersize=7,
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.43),
+            inset = (1, bbox(0.34, 0.305, 0.50, 0.37)), subplot=2)
+        scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
+            framestyle="", ylims=(0, 0.0015),
+            markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
+        )
+        
+        
         return p
     end
 
-    function add_fit!(x, y, fit_interval=0.8)
-        y1 = y[:, end, 1]
-        f, param = myfit(x, y1, fit_interval=fit_interval)
-        param = round.(param, digits=2)
-        xx = lin(x)
-        s = param[1]>0 ? "+" : "-"
-        plot!(xx, f, labels="$(param[2])$(s)$(abs(param[1]))×"*L"t_0", color=:black, linestyle=:dash, alpha=0.5)
+    function make_plot2(X, Y, ylabel; 
+        ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
+        position=:bottomleft, log_scale=:identity)
+
+        p = plot(xlims=xlims, ylims=ylims, markersize=5,
+            xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
+            yaxis=log_scale, framestyle=:box)
+        plot!([], [], label=L"t_0", alpha=0)
+
+        plot_ts = [0.1, 0.2, 0.25, 0.45, 0.5]
+        plot_index = [i for i in eachindex(ts) if ts[i] in plot_ts] 
+        labels = permutedims([latexstring("$t") for t in plot_ts])
+            
+        plot_Y = permutedims(Y[[i for i in eachindex(ts) if ts[i] in plot_ts], :, 2])
+        scatter!(X, plot_Y, label=labels, linestyle=:solid,
+        legend=position, markershape=markershape, markersize=7,
+        markerstrokecolor=colors, framestyle="", ylims=(-0.01, Inf))
+        
+        params, errors = add_fits(X, Y[:, :, 2], plot_index)
+        #println((errors[:,1]))
+        scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
+            markershape=markershape, markerstrokecolor=colors, markersize=7,
+            legend=:topleft, xlabel=L"t_0", ylabel="", ylims=(-Inf, 1.35),
+            inset = (1, bbox(0.38, 0.38, 0.49, 0.39)), subplot=2)
+        scatter!( twinx(p[2]), ts, errors, label="Dev.", legend=:topright,
+            framestyle="", ylims=(0, 0.006),
+            markershape=markershape[3], markerstrokecolor=colors[2], markersize=7,
+        )
+        
+        
+        return p
+    end
+
+    function make_plot3(X, Y, ts, ylabel; 
+        ylims=(-Inf, Inf), xlabel="", xlims=(-Inf, Inf),
+        position=:outerright, log_scale=:identity)
+
+        p = plot(xlims=xlims, ylims=ylims, markersize=5,
+            xlabel=xlabel, ylabel=yLabel(ylabel), title=" ", xaxis=:identity,
+            yaxis=log_scale, framestyle=:box)
+        plot!([], [], label=L"t_0", alpha=0)
+
+        plot_ts = ts
+        plot_index = [i for i in eachindex(ts) if ts[i] in plot_ts] 
+        labels = permutedims([latexstring("$t") for t in plot_ts])
+            
+        plot_Y = permutedims(Y[[i for i in eachindex(ts) if ts[i] in plot_ts], :, 2])
+        scatter!(X, plot_Y, label=labels, linestyle=:solid,
+        legend=position, markershape=markershape, markersize=7,
+        markerstrokecolor=colors, framestyle="", ylims=(-0.1, Inf))
+        
+        params, errors = add_fits(X, Y[:, :, 2], plot_index)
+        #println((errors[:,1]))
+        scatter!(ts, [params[:, 1] ], label="Slope", framestyle="", 
+            markershape=markershape, markerstrokecolor=colors, markersize=7,
+            legend=:topright, xlabel=L"t_0", ylabel="", ylims=(-Inf, 0.33),
+            inset = (1, bbox(0.5, 0.50, 0.45, 0.35)), subplot=2)
+        return p
     end
 
     labels = permutedims(NR)
-    
-    σ_c, x = get_data(L, nr, ts, dist, "most_stressed_fiber", "most_stressed_fiber", argmax, ex=[0,0], average=false, return_x=true, data_path=data_path)
-    #σ_c -= [(1-t) / 2 for t=ts, l=L, n = nr]
 
-    lnN = log.(log.(L.*L))
-    LLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 1], L"1/<σ_c>", "LLS",
-                        labels=permutedims(["$nr" for nr in NR]), title="LLS",log=:identity, 
-                        xlabel=L"ln(ln"*L"(N))", position=:right, )
+    σ_c, k_c = get_data(L, nr, ts, dist, "most_stressed_fiber",
+        "most_stressed_fiber", argmax, ex=[0, 0], average=false, return_x=true,
+        data_path=data_path, rel_x=true)
+
+    N = L .* L
+    lnN = log.(log.(N))
+    σ_c_N_plot = make_plot1(1 ./lnN, σ_c[:, :, :],
+        L"\langle σ_c \rangle", log_scale=:identity,
+        xlabel=L"1/\ln(\ln(N))")
     
-    CLS_σ_c_N_plot = make_plot3(lnN, 1 ./σ_c[:, :, 2], L"1/<σ_c>", "CLS",
-                        labels=permutedims(["$nr" for nr in NR]), title="CLS",log=:identity,
-                        xlabel="ln(ln"*L"(N))", position=:right, )
-                        
-    return [LLS_σ_c_N_plot, CLS_σ_c_N_plot]
+
+    k_c_N_plot = make_plot2(1 ./lnN, k_c[:, :, :],
+        L"\langle k_c \rangle", log_scale=:identity,
+        xlabel=L"1/\ln(\ln(N))")
+
+#=     tts = [0.15, 0.20, 0.25, 0.26, 0.27, 0.28, 0.29, 0.31, 0.32, 0.33, 0.34, 0.35, 0.40, 0.45, 0.5]
+    σ_c, k_c = get_data(L, nr, tts, dist, "most_stressed_fiber",
+    "most_stressed_fiber", argmax, ex=[0, 0], average=false, return_x=true,
+    data_path=data_path, rel_x=true)
+    r_k_c =(reverse(k_c, dims=1))
+    strange_p = make_plot3(lnN, σ_c .- r_k_c, tts,
+        L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ", log_scale=:identity,
+        xlabel=L"1/\ln(\ln(N))")
+    r_k_c =(reverse(k_c, dims=1))
+    strange_p = plot([], [], label=L"L", alpha=0)
+    scatter!(tts, σ_c[:, :, 2] .- r_k_c[:, :, 2],
+            ylabel=L"\langle \sigma_c \rangle_{t_0} - \langle k_c \rangle_{0.6-t_0} ",
+            xlabel=L"t_0",markershape=markershape, markerstrokecolor=colors,
+            label=permutedims(L),
+            legend=:bottomright) =#
+    return [σ_c_N_plot, k_c_N_plot]
 end
 
-L = [16, 32, 64, 128, 256, 512]
+L = [32, 64, 128, 256, 512]
 α = 2.0
 nr = ["LLS", "CLS"]
 
@@ -107,16 +192,25 @@ nr = ["LLS", "CLS"]
 dist = "ConstantAverageUniform"
 #ts = (0:7) ./ 10
 data_path = "newData/"
-ts = [0.05,0.1, 0.3, 0.35, 0.4, 0.5]
-#ts = vcat(0.05:0.05:0.25, 0.3:0.01:0.5)
+ts = vcat(0.3:0.01:0.5)
+ts = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
 #ts2 = vcat((0:20) ./ 50, (5:9) ./ 10)
 #ts = [0.1,0.2]
-plots = otherPropertiesPlot(L, ts, nr, dist)
-xpsize=270
-ypsize=330
-p = plot(plots..., size=(xpsize*1.1*length(plots),ypsize*length(plots)/2))
-#p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize*length(plots)/2/length(nr)), layout = @layout([ A B;]))
+σ_plot, k_plot = otherPropertiesPlot(L, ts, nr, dist)
+xpsize = 360
+ypsize = 330
+p = plot(σ_plot, size=(xpsize * 1.1 * length(plots), ypsize *
+                                                       maximum([length(plots) / 2, 1])))
+p2 = plot(k_plot, size=(xpsize * 1.1 * length(plots), ypsize *
+                                                       maximum([length(plots) / 2, 1])))
+
+#p3 = plot(strange_plot, size=(300, 250))
+#p2 = plot(plots[3:4]..., size=(psize*length(nr)*1.1,psize
+#length(plots)/2/length(nr)), layout = @layout([ A B;]))
+#display(p2)
 savefig(p, "plots/Graphs/CriticalStressOverN.pdf")
+savefig(p2, "plots/Graphs/CriticalStressKOverN.pdf")
+#savefig(p3, "plots/Graphs/StrangeCriticalStressAndKOverN.pdf")
 #savefig(p2, "plots/Graphs/$(dist)_s_over_sigma.pdf")
 
 println("Saved plot!")

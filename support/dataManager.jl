@@ -30,7 +30,7 @@ function make_settings(L::Int64, t::Float64, nr::String, α::Float64,
     if nr=="LLS" || nr=="ELS"
         α = 0.0
     end
-    @assert dist in ["Uniform", "ConstantAverageUniform"] "$dist is not a valid dist"
+    @assert dist in ["Uniform", "ConstantAverageUniform", "Weibull"] "$dist is not a valid dist"
     settings = Dict(
         "dist" => dist,
         "L" => L,
@@ -327,15 +327,15 @@ function search_for_settings(path, dist)
 end
 
 global_settings = nothing
-function get_file_path(L, α, t, NR, dist="ConstantAverageUniform", data_path="data/"; average=true)
+function get_file_path(L, α, t, NR, dist="ConstantAverageUniform", data_path="newData/"; average=true)
     setting = make_settings(L, t, NR, α, dist, data_path)
     return setting["path"]*setting["name"]*(average ? "" : "_bulk")*".jld2"
 end
 
-function load_file(L, α, t, NR, dist="Uniform"; data_path="data/", seed=-1, average=true)
+function load_file(L, α, t, NR, dist="ConstantAverageUniform"; data_path="newData/", seed=-1, average=true)
     # We include this check so that we don't have to search for settings
     # every time we want to load a file
-    if global_settings === nothing || data_path != "data/"
+    if global_settings === nothing || data_path != "newData/"
         global global_settings = search_for_settings(data_path, dist)
     end
 
@@ -417,10 +417,10 @@ end
 #rename("data/Uniform/")
 #add_key("simulation_time", 0)
 
-function get_data_overview(path="data/", dists=["ConstantAverageUniform"])
+function get_data_overview(path="newData/", dists=["ConstantAverageUniform"])
     
     for dist in dists
-        println("Data for: $dist")
+        println("Data for: $dist in $path")
         settings = search_for_settings(path, dist)
         s = []
         nr = []
@@ -479,7 +479,7 @@ function get_data_overview(path="data/", dists=["ConstantAverageUniform"])
     end
 end
 
-function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="Uniform", seed=1, progression=0, step=0, critical=false,
+function get_bundle_from_file(file, L; nr="LLS", t=0.0, α=2.0, dist="ConstantAverageUniform", seed=1, progression=0, step=0, critical=false,
                             without_storage=true, spanning=false, update_tension=true, return_simulation_time=false)
     if without_storage
         b = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist, without_storage=without_storage)
