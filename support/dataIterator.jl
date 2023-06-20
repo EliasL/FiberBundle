@@ -42,7 +42,7 @@ function get_data_kN(L, NR, ts, dist, key; average=true, nr_seeds=0, divide=:N, 
     end
 end
 
-function get_data(L, NR, ts, dist, key, xKey, xKeyf; yValuef=f(x)=x, average=true, ex=[2,2], rel_x=false, α=2.0, return_x=false, data_path="newData")
+function get_data(L, NR, ts, dist, key, xKey, xKeyf; yValuef=f(x)=x, average=true, ex=[2,2], rel_x=false, α=2.0, return_x=false, data_path="newData/")
     do_data_test = true
     data = zeros(length(ts), length(L), length(NR))
     x_values = zeros(length(ts), length(L), length(NR))
