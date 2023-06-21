@@ -165,7 +165,7 @@ function slowBreak2(b::FB, s::FBS; real_sigma=false, real_threshold=false)
         if real_sigma
             current_σ = sum(current_x*b.σ)/b.N 
         else
-            current_σ = current_x * (b.N-b.current_step+1)/b.N
+            current_σ = current_x * (b.N-b.current_step+1)
         end
         
         push!(x, current_x)
@@ -220,7 +220,7 @@ function make_plot(b::FB, s::FBS)
     healBundle!(b)
     x, σ = slowBreak2(b, s, real_sigma=false, real_threshold=true)
     p4 = plot(x, σ, legend=:topleft, title="Equal Load Sharing", label="", size=(300,250), 
-            c=:black, xlabel=L"x", ylabel=L"\tilde{σ}", ylims=(0, maximum(σ)*1.0), xlims=(0, Inf))
+            c=:black, xlabel=L"x", ylabel=L"F", ylims=(0, maximum(σ)*1.0), xlims=(0, Inf))
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=true, real_threshold=true)
     p2 = plot(x, σ, legend=:topleft, title="A", label="", c=:black, 
