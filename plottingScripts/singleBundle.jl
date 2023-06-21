@@ -10,15 +10,13 @@ function breakBundle(b::FB, s::FBS)
         update_tension!(b)
         find_next_fiber!(b)
         update_storage!(b, s)
-        f = b.break_sequence[i]
-        tension = b.tension[f]
-        σ[i] = tension
+        σ[i] = b.max_σ
         break_fiber!(b)
         resetBundle!(b)
     end
     #average sigma
     every=500
-    return σ, map(mean, Iterators.partition(σ, every))
+    return σ
 end
 
 function timeBreak(b::FB, s::FBS; real_sigma=false, real_threshold=false,
@@ -149,10 +147,11 @@ function slowBreak(b::FB, s::FBS; real_sigma=false, real_threshold=false)
     return x, σ
 end
 
-function slowBreak2(b::FB, s::FBS; real_sigma=false, real_threshold=false)
+function slowBreak2(b::FB, s::FBS;)
     x = [0.0]
     σ = [0.0]
     b.x[argmax(b.x)] = 0.90
+    current_σ = 0
     current_x = 0
     last_break_x = 0
     last_break_σ = 0
@@ -162,30 +161,18 @@ function slowBreak2(b::FB, s::FBS; real_sigma=false, real_threshold=false)
     update_storage!(b, s)
 
     while b.current_step <= b.N
-        if real_sigma
-            current_σ = sum(current_x*b.σ)/b.N 
-        else
-            current_σ = current_x * (b.N-b.current_step+1)
-        end
-        
-        push!(x, current_x)
-        push!(σ, current_σ)
-        if current_x > last_break_x || current_σ > last_break_σ
-        end
+
         #Check if a fiber will break
         # Curent weakest fiber
         weak = b.break_sequence[b.current_step]
-        if real_threshold
-            threshold = b.x[weak] / b.σ[weak]
-        else
-            threshold = b.x[weak]
-        end
+        
+        push!(σ, current_σ)
+        push!(x, current_x)
+        threshold = b.x[weak]
         if current_x >= threshold 
             push!(x, current_x)
             push!(σ, current_σ)
-            last_break_x = current_x
-            last_break_σ = current_σ - b.tension[weak]/b.N
-            current_x = 0
+            last_break_x = current_x 
 
             # Update bundle stuff
             break_fiber!(b)
@@ -201,8 +188,15 @@ function slowBreak2(b::FB, s::FBS; real_sigma=false, real_threshold=false)
             update_storage!(b, s)
 
         end
-        current_x += 1/(1000*b.N)
-        
+        current_x = b.N * current_σ / (b.N-b.current_step+1)
+        current_σ += 1/(1000*b.N)
+ 
+        if current_x>=1
+
+            push!(x, 1)
+            push!(σ, current_σ)
+            break
+        end
     end
     return x, σ
 end
@@ -210,25 +204,26 @@ end
 
 function make_plot(b::FB, s::FBS)
     x, σ = slowBreak(b, s, real_sigma=false, real_threshold=false)
-    p1 = plot(x, σ, legend=:topleft, title="No Load Sharing ", label="",
-            c=:black, xlabel=L"x", ylabel=L"\tilde{σ}",
+    p1 = plot(x, σ, legend=:topleft, title="", label="",
+            c=:black, xlabel=L"x", ylabel=L"σ",
             ylims=(0, Inf), xlims=(0, 1), size=(300,250))
         x1 = 4100
         x2 = 7115
         plot!([0 0 ; x[x1] x[x2]], [0 0 ; σ[x1] σ[x2]],
         linestyle=:dash, label="", c=:black)
     healBundle!(b)
-    x, σ = slowBreak2(b, s, real_sigma=false, real_threshold=true)
-    p4 = plot(x, σ, legend=:topleft, title="Equal Load Sharing", label="", size=(300,250), 
-            c=:black, xlabel=L"x", ylabel=L"F", ylims=(0, maximum(σ)*1.0), xlims=(0, Inf))
+    x, σ = slowBreak2(b, s)
+    σ = σ
+    p4 = plot(σ, x, legend=:topleft, title="", label="", size=(300,250), 
+            c=:black, xlabel=L"σ", ylabel=L"x", ylims=(0, 1), xlims=(0, 0.38))
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=true, real_threshold=true)
     p2 = plot(x, σ, legend=:topleft, title="A", label="", c=:black, 
             xlabel="x", ylabel=L"σ", ylims=(0, maximum(σ)*1.1), xlims=(0, Inf))
     healBundle!(b)
-    x, σ = breakBundle(b, s)
-    p3 = scatter(1:length(x), x, legend=:topleft, title="B", label="", c=:black, 
-            xlabel="k", ylabel=L"σ, x", ylims=(0, maximum(x)*1.1), xlims=(0.5, 9.5),
+    σ = breakBundle(b, s)
+    p3 = scatter(1:length(σ), σ, legend=:topleft, title="", label="", c=:black, 
+            xlabel="k", ylabel=L"σ", ylims=(0, maximum(σ)*1.1), xlims=(0.5, 9.5),
             xticks=1:9)
     #p3 = make_k_plot(b, s)
 #=     healBundle!(b)
@@ -237,7 +232,7 @@ function make_plot(b::FB, s::FBS)
             xlabel="time", ylabel=L"σ, x", ylims=(0, maximum(σ)*1.1), xlims=(0, 11), linestyle=:dash) =#
     savefig(p1, "plots/Graphs/ForceOfSingleBundleWithoutLoadSharing.pdf")
     savefig(p4, "plots/Graphs/ForceOfSingleBundleWithLoadSharing.pdf")
-    return p2, p3
+    return [p3]
 end
 
 
@@ -262,7 +257,7 @@ b,s = get_fb(L, seed, α=α, t=t, nr=nr, dist=dist)
 println(sort(b.x))
 println("Making plot...")
 ELSPlot = make_plot(b,s)
-p=plot(ELSPlot..., size=(300*length(ELSPlot), 300), layout= @layout([ A B;]))
+p=plot(ELSPlot..., size=(300*length(ELSPlot), 300), layout= @layout([ A;]))
 savefig("plots/Graphs/ForceOfSingleBundle.pdf")
 #display(p)
 #= for nr = ["LLS", "CLS"]
