@@ -153,13 +153,13 @@ end
 α = 2.0
 nr = ["LLS", "CLS"]
 
-dist = "Weibull"
 dist = "ConstantAverageUniform"
+dist = "Weibull"
 if dist=="Weibull"
-    L=[128]
+    L=[64, 128]
     xlabel=L"t_w"
     ts = vcat([0.5], 1:0.1:1.5, 2:0.5:5)
-    pos=:topright
+    pos=:bottomleft
 else
     L = [64, 128, 256, 512]
     pos = :topright
