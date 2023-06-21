@@ -125,7 +125,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         end
     
     yLabel(string) = use_y_lable ? string : ""
-    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(0, 1.35), position=:topright)
+    function make_plot(y, ylabel; x=k_N, title="", ylims=(-Inf, Inf), xlabel="", xlims=(-0.03, 1.35), position=:topright)
         # Use empty scatter as title
         #plot = scatter([0.01], label=L"t_0", ms=0, mc=:white, msc=:white)
         p=plot()
