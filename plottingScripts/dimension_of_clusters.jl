@@ -71,12 +71,12 @@ function plot_dimension_thing(L, ts, α)
             s_plot, s_slope = get_plot_and_slope!(p, r, s, " "*L"s",
             :solid, :diamond, x_label=L"log$_2(R)$")
             slopes[j, i*2-1] = s_slope
-            push!(labels, "$nr "*L"D_s")
+            push!(labels, latexstring("D_s^{$nr}"))
             h_plot, h_slope = get_plot_and_slope!(p, r, h, " "*L"h",
             :dot, :dtriangle, x_label=L"log$_2(R)$")
             push!(plots, h_plot)
             slopes[j, i*2] =  h_slope
-            push!(labels, "$nr "*L"D_h")
+            push!(labels, latexstring("D_h^{$nr}"))
             s_rounded = round(s_slope, digits=2)
             h_rounded = round(h_slope, digits=2)
             if i==1
