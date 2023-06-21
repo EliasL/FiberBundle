@@ -216,6 +216,10 @@ function make_plot(b::FB, s::FBS)
     σ = σ
     p4 = plot(σ, x, legend=:topleft, title="", label="", size=(300,250), 
             c=:black, xlabel=L"σ", ylabel=L"x", ylims=(0, 1), xlims=(0, 0.38))
+        x1 = 1
+        x2 = 3000
+        plot!([0 0 ; σ[x1] σ[x2]], [0 0 ; x[x1] x[x2]],
+        linestyle=:dash, label="", c=:black)
     healBundle!(b)
     x, σ = slowBreak(b, s, real_sigma=true, real_threshold=true)
     p2 = plot(x, σ, legend=:topleft, title="A", label="", c=:black, 
