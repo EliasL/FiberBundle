@@ -100,7 +100,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         L"\langle σ_c\rangle ", permutedims(["$nr" for nr in NR]), title="",
         xlabel=L"\langle k_c/N \rangle", position=:topleft,)
     σ_cofσ_plot = make_plot3(k_c, σ_cofσ[:, :, :], log=:identity,
-        L"σ_c(\langle σ\rangle )", permutedims(["$nr" for nr in NR]), title="",
+        L"max(\langle σ\rangle )", permutedims(["$nr" for nr in NR]), title="",
         xlabel=L"k_c/N", position=:topleft,)
 
 
