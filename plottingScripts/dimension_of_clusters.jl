@@ -93,7 +93,7 @@ function plot_dimension_thing(L, ts, α)
 
     end
     #scatter!(x_newData/N, y, markerstrokecolor=colors, markercolor=:transparent, label=nothing, markershape=:diamond, markersize=5, markerstrokewidth=1)
-    scatter(ts, slopes, labels=permutedims(labels), markerstrokecolor=permutedims(theme_palette(:auto)[1:4]), markercolor=:transparent, markersize=5, markershape=[:utriangle :dtriangle :star4 :diamond :star6 :pentagon],
+    scatter(ts, slopes, labels=permutedims(labels), markerstrokecolor=permutedims(theme_palette(:auto)[1:4]), markercolor=:transparent, markersize=5, markershape=[:utriangle :dtriangle :diamond :star4 :star6 :pentagon],
         size=(300, 250), legend=:left, xlabel=L"t_0", ylabel=L"D")
     #println(slopes)
     savefig("plots/Graphs/new_dist_dimension_L=$(L[1])-$(L[end]).pdf")
@@ -102,7 +102,7 @@ end
 
 function plot_dimension_box_thing(l, ts, α)
     NR = ["CLS", "LLS"]
-    ms = [:utriangle, :dtriangle, :diamond, :star4]
+    ms = [:utriangle, :dtriangle, :star4, :diamond]
     slopes = zeros(Float64, (length(ts) , length(NR), 2))
     c = permutedims(theme_palette(:auto)[1:4])
     for (j,t) in enumerate(ts)
