@@ -82,7 +82,8 @@ function plot_dimension_thing(L, ts, α)
             if i==1
                 ylabel!(L"log$_2(s)$, log$_2(h)$")
             end
-            title!("$nr: "*L"D_s="*"$s_rounded "*L"D_h="*"$h_rounded")
+            title!(latexstring("D_s^{$nr}=")*"$s_rounded "*
+                   latexstring("D_h^{$nr}=")*"$h_rounded")
             end
         
          # Plot for each t
@@ -123,7 +124,7 @@ function plot_dimension_box_thing(l, ts, α)
             s_slope = s_fit[2]
             s_rounded_slope = round(s_slope, digits=2)
             slopes[j, i, 1] = -s_slope
-            scatter!(box_sizes, s_count, label="$nr "*L"D_s"*": slope $s_rounded_slope", markershape=ms[i*2-1],
+            scatter!(box_sizes, s_count, label=latexstring("D_s^{$nr}")*": slope $s_rounded_slope", markershape=ms[i*2-1],
             markerstrokecolor=c[i*2-1])
             plot!(box_sizes, f_lin(box_sizes, s_fit), label="", c=c[i*2-1])
 
@@ -131,7 +132,7 @@ function plot_dimension_box_thing(l, ts, α)
             h_slope = h_fit[2]
             h_rounded_slope = round(h_slope, digits=2)
             slopes[j, i, 2] = -h_slope
-            scatter!(box_sizes, h_count, label="$nr "*L"D_h"*": slope $h_rounded_slope", markershape=ms[i*2],
+            scatter!(box_sizes, h_count, label="$nr "*latexstring("D_h^{$nr}")*": slope $h_rounded_slope", markershape=ms[i*2],
                 markerstrokecolor=c[i*2])
             plot!(box_sizes, f_lin(box_sizes, h_fit), label="", c=c[i*2])
          # Plot for each t
@@ -143,7 +144,7 @@ function plot_dimension_box_thing(l, ts, α)
     s = hcat(slopes[:, 1, :], slopes[:, 2, :])
     scatter(ts, s,
         size=(300, 250), legend=:left, xlabel=L"t_0", ylabel=L"D", markershape=[:utriangle :dtriangle :diamond :star4],
-        markerstrokecolor=c, label=[L"CLS $D_s$" L"CLS $D_h$" L"LLS $D_s$" L"LLS $D_h$"])
+        markerstrokecolor=c, label=[L"$D_s^{CLS}$" L"$D_h^{CLS}$" L"$D_s^{LLS}$" L"$D_h^{LLS}$"])
     #println(slopes)
     savefig("plots/Graphs/box_dimension_L=$l.pdf")
     
@@ -271,7 +272,7 @@ data_path = "newData/"
 #t = vcat((0:20) ./ 50, (5:9) ./ 10)
 #t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5, [0.6, 0.7, 0.8, 0.1])
 t = vcat(0.05:0.05:0.20, 0.25:0.01:0.5)
-#plot_dimension_thing(L, t, α)
+plot_dimension_thing(L, t, α)
 plot_dimension_box_thing(512, t, α)
 
 
