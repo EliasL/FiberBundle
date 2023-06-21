@@ -134,7 +134,7 @@ function basicPropertiesPlot(L, ts, nr, dist; use_y_lable=true)
         plot!(x, y, label = labels, legend=position, xlims=xlims, ylims=ylims, color= permutedims(colors),
         xlabel=xlabel, ylabel=yLabel(ylabel), title=title, size=(300,250),
         linestyle=hcat([:dash], permutedims([:solid for _ in 1:(length(ts)-(add_ELS ? 1 : 2))]),[:dot]))
-        add_points(y)
+        #add_points(y)
         return p
     end
 

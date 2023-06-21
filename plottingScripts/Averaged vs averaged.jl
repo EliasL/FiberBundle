@@ -72,7 +72,14 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
         for i in eachindex(L)
             for nr in NR
                 nri =1# nr == "CLS" ? 1 : 2
-                scatter!((scale_x ? X[:, i, nri] ./ L[i]^2 : X), (scale_y ? Y[:, i, nri] ./ L[i]^2 : Y[:, i, nri]), label=latexstring("L=$(L[i])"),
+                x = (scale_x ? X[:, i, nri] ./ L[i]^2 : X)
+                y = (scale_y ? Y[:, i, nri] ./ L[i]^2 : Y[:, i, nri])
+                margin = 0.04
+                println(minimum(x), maximum(x))
+                println(minimum(y), maximum(y))
+                scatter!(x, y, label=latexstring("L=$(L[i])"),
+                    xlims=(minimum(x)-margin*0.5, maximum(x)*(1+margin)),
+                    ylims=(minimum(y)-margin*0.5, maximum(y)*(1+margin)),
                     legend=position, markerstrokecolor=colors[i], markershape=markershape[i], series_annotation=(i == 1 ? series_annotation : ""))
             end
         end
