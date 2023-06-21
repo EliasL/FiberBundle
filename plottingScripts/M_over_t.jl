@@ -45,7 +45,7 @@ function otherPropertiesPlot(L, ts, NR, dist; use_y_lable=true, add_ELS=true)
     
     
     max_nr_clusters_LLS_plot = make_plot1(repeat(ts,1,length(L)), max_nr_clust_LLS,
-        L"max$(M)$", title="LLS",xlabel=L"t_0")
+        L"$M_\mathrm{max}$", title="LLS",xlabel=L"t_0")
     max_nr_clusters_CLS_plot = make_plot1(repeat(ts,1,length(L)), max_nr_clust_CLS,
         "", title="CLS",xlabel=L"t_0")
     
